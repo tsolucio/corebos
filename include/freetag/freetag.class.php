@@ -1,33 +1,33 @@
 <?php
 /**
- *  Gordon Luk's Freetag - Generalized Open Source Tagging and Folksonomy.
- *  Copyright (C) 2004-2005 Gordon D. Luk <gluk AT getluky DOT net>
+ * Gordon Luk's Freetag - Generalized Open Source Tagging and Folksonomy.
+ * Copyright (C) 2004-2005 Gordon D. Luk <gluk AT getluky DOT net>
  *
- *  Released under both BSD license and Lesser GPL library license.  Whenever
- *  there is any discrepancy between the two licenses, the BSD license will
- *  take precedence. See License.txt.
+ * Released under both BSD license and Lesser GPL library license. Whenever
+ * there is any discrepancy between the two licenses, the BSD license will
+ * take precedence. See License.txt.
  *
  */
 /**
- *  Freetag - Simple PHP/MySQL tagging library
+ * Freetag - Simple PHP/MySQL tagging library
  *
- *  Freetag is a generic PHP class that can hook in to existing database
- *  schemas and allows tagging of content within a social website. It's fun,
- *  fast, and easy!  Try it today and see what all the folksonomy fuss is about.
+ * Freetag is a generic PHP class that can hook in to existing database
+ * schemas and allows tagging of content within a social website. It's fun,
+ * fast, and easy! Try it today and see what all the folksonomy fuss is about.
  *
- *  Contributions welcome.
+ * Contributions welcome.
  *
- *  http://github.com/freetag
- *  Author: Gordon Luk
- *  http://www.getluky.net
+ * http://github.com/freetag
+ * Author: Gordon Luk
+ * http://www.getluky.net
  *
  */
 
 class freetag {
 
 	/**#@+
-	 *  @access private
-	 *  @var string
+	 * @access private
+	 * @var string
 	 */
 	/**#@-*/
 
@@ -40,34 +40,34 @@ class freetag {
 	 * @access private
 	 * @var bool Prints out limited debugging information if true, not fully implemented yet.
 	 */
-	var $_debug = FALSE;
+	private $_debug = false;
 	/**
 	 * @access private
 	 * @var string The prefix of freetag database tables.
 	 */
-	var $_table_prefix = 'vtiger_';
+	private $_table_prefix = 'vtiger_';
 	/**
 	 * @access private
 	 * @var string The regex-style set of characters that are valid for normalized tags.
 	 */
-	var $_normalized_valid_chars = 'a-zA-Z0-9';
+	private $_normalized_valid_chars = 'a-zA-Z0-9';
 	/**
 	 * @access private
 	 * @var string Whether to normalize tags at all.
 	 * value 0 saves the tag in case insensitive mode
 	 * value 1 save the tag in lower case
 	 */
-	var $_normalize_tags = 0;
+	private $_normalize_tags = 0;
 	/**
 	 * @access private
 	 * @var string Whether to prevent multiple users from tagging the same object. By default, set to block (ala Upcoming.org)
 	 */
-	var $_block_multiuser_tag_on_object =0;
+	private $_block_multiuser_tag_on_object =0;
 	/**
 	 * @access private
-	 * @var string Will append this string to any integer tags sent through Freetag. This is supposed to prevent PHP casting "string" integer tags as ints. Won't do anything to floats or non-numeric strings.
+	 * @var string Will append this string to any integer tags sent through Freetag. This is supposed to prevent PHP casting 'string' integer tags as ints. Won't do anything to floats or non-numeric strings.
 	 */
-	var $_append_to_integer = '';
+	private $_append_to_integer = '';
 	/**
 	 * @access private
 	 * @var bool Whether to use persistent ADODB connections. False by default.
@@ -77,7 +77,7 @@ class freetag {
 	 * @access private
 	 * @var int The maximum length of a tag.
 	 */
-	var $_MAX_TAG_LENGTH = 30;
+	private $_MAX_TAG_LENGTH = 30;
 	/**
 	 * @access private
 	 * @var string The file path to the installation of ADOdb used.
@@ -101,12 +101,12 @@ class freetag {
 	 * - normalize_tags: Whether to normalize (lowercase and filter for valid characters) on tags at all. [default: 1]
 	 * - normalized_valid_chars: Pass a regex-style set of valid characters that you want your tags normalized against. [default: 'a-zA-Z0-9' for alphanumeric]
 	 * - block_multiuser_tag_on_object: Set to 0 in order to allow individual users to all tag the same object with the same tag. Default is 1 to only allow one occurence of a tag per object. [default: 1]
-	 * - append_to_integer: Will append this string to any integer tags sent through Freetag. This is supposed to prevent PHP casting "string" integer tags as ints. Won't do anything to floats or non-numeric strings.
+	 * - append_to_integer: Will append this string to any integer tags sent through Freetag. This is supposed to prevent PHP casting 'string' integer tags as ints. Won't do anything to floats or non-numeric strings.
 	 * - MAX_TAG_LENGTH: maximum length of normalized tags in chars. [default: 30]
 	 * - ADODB_DIR: directory in which adodb is installed. Change if you don't want to use the bundled version. [default: adodb/]
 	 * - PCONNECT: Whether to use ADODB persistent connections. [default: FALSE]
 	 */
-	function __construct($options = NULL) {
+	public function __construct($options = null) {
 /*
 		$available_options = array('debug', 'db', 'db_user', 'db_pass', 'db_host', 'db_name', 'table_prefix', 'normalize_tags', 'normalized_valid_chars', 'block_multiuser_tag_on_object', 'append_to_integer', 'MAX_TAG_LENGTH', 'ADODB_DIR', 'PCONNECT');
 		if (is_array($options)) {
@@ -124,13 +124,13 @@ class freetag {
 			}
 		}
 
-		require_once($this->_ADODB_DIR . "/adodb.inc.php");
+		require_once($this->_ADODB_DIR . '/adodb.inc.php');
 		if (is_object($this->_db)) {
 			$this->db = &$this->_db;
-			$this->debug_text("DB Instance already exists, using this one.");
+			$this->debug_text('DB Instance already exists, using this one.');
 		} else {
-			$this->db = ADONewConnection("mysql");
-			$this->debug_text("Connecting to db with:" . $this->_db_host . " " . $this->_db_user . " " . $this->_db_pass . " " . $this->_db_name);
+			$this->db = ADONewConnection('mysql');
+			$this->debug_text('Connecting to db with:' . $this->_db_host . ' ' . $this->_db_user . ' ' . $this->_db_pass . ' ' . $this->_db_name);
 			if ($this->_PCONNECT) {
 				$this->db->PConnect($this->_db_host, $this->_db_user, $this->_db_pass, $this->_db_name);
 			} else {
@@ -158,19 +158,19 @@ class freetag {
 	 * @param int (Optional) - The number of results per page to show. Defaults to 100.
 	 * @param int (Optional) - The unique ID of the 'user' who tagged the object.
 	 *
-	 * @return An array of Object ID numbers that reference your original objects.
+	 * @return array of Object ID numbers that reference your original objects.
 	 */
-	function get_objects_with_tag($tag, $offset = 0, $limit = 100, $tagger_id = NULL) {
-		if(!isset($tag)) {
+	public function get_objects_with_tag($tag, $offset = 0, $limit = 100, $tagger_id = null) {
+		if (!isset($tag)) {
 			return false;
 		}
 		global $adb;
 
-		$where = "tag = ? ";
+		$where = 'tag=? ';
 		$params = array($tag);
 
-		if(isset($tagger_id) && ($tagger_id > 0)) {
-			$where .= "AND tagger_id = ? ";
+		if (isset($tagger_id) && ($tagger_id > 0)) {
+			$where .= 'AND tagger_id=? ';
 			array_push($params, $tagger_id);
 		}
 
@@ -184,7 +184,7 @@ class freetag {
 
 		$rs = $adb->pquery($sql, $params);
 		$retarr = array();
-		while(!$rs->EOF) {
+		while (!$rs->EOF) {
 			$retarr[] = $rs->fields['object_id'];
 			$rs->MoveNext();
 		}
@@ -205,19 +205,19 @@ class freetag {
 	 * @param string - Pass the normalized tag form along to the function.
 	 * @param int (Optional) - The unique ID of the 'user' who tagged the object.
 	 *
-	 * @return An array of Object ID numbers that reference your original objects.
+	 * @return array of Object ID numbers that reference your original objects.
 	 */
-	function get_objects_with_tag_all($tag, $tagger_id = NULL) {
-		if(!isset($tag)) {
+	public function get_objects_with_tag_all($tag, $tagger_id = null) {
+		if (!isset($tag)) {
 			return false;
 		}
 		global $adb;
 
-		$where = "tag = ? ";
+		$where = 'tag=? ';
 		$params = array($tag);
 
-		if(isset($tagger_id) && ($tagger_id > 0)) {
-			$where .= "AND tagger_id = ? ";
+		if (isset($tagger_id) && ($tagger_id > 0)) {
+			$where .= 'AND tagger_id=? ';
 			array_push($params, $tagger_id);
 		}
 		$prefix = $this->_table_prefix;
@@ -229,7 +229,7 @@ class freetag {
 
 		$rs = $adb->pquery($sql, $params);
 		$retarr = array();
-		while(!$rs->EOF) {
+		while (!$rs->EOF) {
 			$retarr[] = $rs->fields['object_id'];
 			$rs->MoveNext();
 		}
@@ -247,24 +247,23 @@ class freetag {
 	 * @param int (Optional) - The number of results per page to show. Defaults to 100.
 	 * @param int (Optional) - Restrict the result to objects tagged by a particular user.
 	 *
-	 * @return An array of Object ID numbers that reference your original objects.
+	 * @return array of Object ID numbers that reference your original objects.
 	 */
-	 function get_objects_with_tag_combo($tagArray, $offset = 0, $limit = 100, $tagger_id = NULL) {
+	public function get_objects_with_tag_combo($tagArray, $offset = 0, $limit = 100, $tagger_id = null) {
 		if (!isset($tagArray) || !is_array($tagArray)) {
 			return false;
 		}
 		global $adb;
-		//$db = &$this->db;
 		$retarr = array();
 		if (count($tagArray) == 0) {
 			return $retarr;
 		}
 		$params = array($tagArray);
-		if(isset($tagger_id) && ($tagger_id > 0)) {
-			$tagger_sql = "AND tagger_id = ?";
+		if (isset($tagger_id) && ($tagger_id > 0)) {
+			$tagger_sql = 'AND tagger_id=?';
 			array_push($params, $tagger_id);
 		} else {
-			$tagger_sql = "";
+			$tagger_sql = '';
 		}
 
 		foreach ($tagArray as $key => $value) {
@@ -281,14 +280,13 @@ class freetag {
 		$sql = "SELECT {$prefix}freetagged_objects.object_id, tag, COUNT(DISTINCT tag) AS uniques
 			FROM {$prefix}freetagged_objects
 			INNER JOIN {$prefix}freetags ON ({$prefix}freetagged_objects.tag_id = {$prefix}freetags.id)
-			WHERE {$prefix}freetags.tag IN (". generateQuestionMarks($tagArray) .")
-			$tagger_sql
+			WHERE {$prefix}freetags.tag IN (". generateQuestionMarks($tagArray) .") $tagger_sql
 			GROUP BY {$prefix}freetagged_objects.object_id
 			HAVING uniques = $numTags
 			LIMIT $offset, $limit";
-		$this->debug_text("Tag combo: " . join("+", $tagArray) . " SQL: $sql");
+		$this->debug_text('Tag combo: ' . join('+', $tagArray) . " SQL: $sql");
 		$rs = $adb->pquery($sql, $params);
-		while(!$rs->EOF) {
+		while (!$rs->EOF) {
 			$retarr[] = $rs->fields['object_id'];
 			$rs->MoveNext();
 		}
@@ -309,19 +307,19 @@ class freetag {
 	 * @param int (Optional) - The number of results per page to show. Defaults to 100.
 	 * @param int (Optional) - The unique ID of the 'user' who tagged the object.
 	 *
-	 * @return An array of Object ID numbers that reference your original objects.
+	 * @return array of Object ID numbers that reference your original objects.
 	 */
-	function get_objects_with_tag_id($tag_id, $offset = 0, $limit = 100, $tagger_id = NULL) {
-		if(!isset($tag_id)) {
+	public function get_objects_with_tag_id($tag_id, $offset = 0, $limit = 100, $tagger_id = null) {
+		if (!isset($tag_id)) {
 			return false;
 		}
 		global $adb;
 
-		$where = "id = ? ";
+		$where = 'id=? ';
 		$params = array($tag_id);
 
-		if(isset($tagger_id) && ($tagger_id > 0)) {
-			$where .= "AND tagger_id = ?";
+		if (isset($tagger_id) && ($tagger_id > 0)) {
+			$where .= 'AND tagger_id=?';
 			array_push($params, $tagger_id);
 		}
 
@@ -331,10 +329,10 @@ class freetag {
 			FROM {$prefix}freetagged_objects INNER JOIN {$prefix}freetags ON (tag_id = id)
 			WHERE $where
 			ORDER BY object_id ASC
-			LIMIT $offset, $limit ";
+			LIMIT $offset, $limit";
 		$rs = $adb->pquery($sql, $params);
 		$retarr = array();
-		while(!$rs->EOF) {
+		while (!$rs->EOF) {
 			$retarr[] = $rs->fields['object_id'];
 			$rs->MoveNext();
 		}
@@ -356,25 +354,25 @@ class freetag {
 	 *
 	 * @return array Returns a PHP array with object elements ordered by object ID. Each element is an associative
 	 * array with the following elements:
-	 *   - 'tag' => Normalized-form tag
+	 *	 - 'tag' => Normalized-form tag
 	 *	 - 'raw_tag' => The raw-form tag
 	 *	 - 'tagger_id' => The unique ID of the person who tagged the object with this tag.
 	 */
-	function get_tags_on_object($object_id, $offset = 0, $limit = 10, $tagger_id = NULL) {
-		if(!isset($object_id)) {
+	public function get_tags_on_object($object_id, $offset = 0, $limit = 10, $tagger_id = null) {
+		if (!isset($object_id)) {
 			return false;
 		}
 
-		$where = "object_id = ? ";
+		$where = 'object_id=? ';
 		$params = array($object_id);
 
-		if(isset($tagger_id) && ($tagger_id > 0)) {
-			$where .= "AND tagger_id = ? ";
+		if (isset($tagger_id) && ($tagger_id > 0)) {
+			$where .= 'AND tagger_id=? ';
 			array_push($params, $tagger_id);
 		}
 
-		if($limit <= 0) {
-			$limit_sql = "";
+		if ($limit <= 0) {
+			$limit_sql = '';
 		} else {
 			$limit_sql = "LIMIT $offset, $limit";
 		}
@@ -389,12 +387,12 @@ class freetag {
 			$limit_sql";
 		$rs = $adb->pquery($sql, $params);
 		$retarr = array();
-		while(!$rs->EOF) {
+		while (!$rs->EOF) {
 			$retarr[] = array(
-					'tag' => $rs->fields['tag'],
-					'raw_tag' => $rs->fields['raw_tag'],
-					'tagger_id' => $rs->fields['tagger_id']
-					);
+				'tag' => $rs->fields['tag'],
+				'raw_tag' => $rs->fields['raw_tag'],
+				'tagger_id' => $rs->fields['tagger_id']
+			);
 			$rs->MoveNext();
 		}
 		return $retarr;
@@ -415,15 +413,15 @@ class freetag {
 	 *
 	 * @return boolean Returns true if successful, false otherwise. Does not operate as a transaction.
 	 */
-	function safe_tag($tagger_id, $object_id, $tag, $module) {
-		if(!isset($tagger_id)||!isset($object_id)||!isset($tag)) {
-			die("safe_tag argument missing");
+	public function safe_tag($tagger_id, $object_id, $tag, $module) {
+		if (!isset($tagger_id)||!isset($object_id)||!isset($tag)) {
+			die('safe_tag argument missing');
 			return false;
 		}
 		global $adb;
 
 		if ($this->_append_to_integer != '' && is_numeric($tag) && intval($tag) == $tag) {
-			// Converts numeric tag "123" to "123_" to facilitate
+			// Converts numeric tag '123' to '123_' to facilitate
 			// alphanumeric sorting (otherwise, PHP converts string to
 			// true integer).
 			$tag = preg_replace('/^([0-9]+)$/', "$1".$this->_append_to_integer, $tag);
@@ -431,32 +429,30 @@ class freetag {
 
 		$normalized_tag = $this->normalize_tag($tag);
 		$prefix = $this->_table_prefix;
-		$params = array();
+		$params = array($object_id);
 		// First, check for duplicate of the normalized form of the tag on this object.
 		// Dynamically switch between allowing duplication between users on the constructor param 'block_multiuser_tag_on_object'.
 		// If it's set not to block multiuser tags, then modify the existence
 		// check to look for a tag by this particular user. Otherwise, the following
 		// query will reveal whether that tag exists on that object for ANY user.
 		if ($this->_block_multiuser_tag_on_object == 0) {
-			$tagger_sql = " AND tagger_id = ? ";
-			array_push($params, $tagger_id);
-		} else $tagger_sql = "";
+			$tagger_sql = 'AND tagger_id=?';
+			$params[] = $tagger_id;
+		} else {
+			$tagger_sql = '';
+		}
 		$sql = "SELECT COUNT(*) as count
 			FROM {$prefix}freetagged_objects INNER JOIN {$prefix}freetags ON (tag_id = id)
-			WHERE 1=1
-			$tagger_sql
-			AND object_id = ?
-			AND tag = ? ";
-
-		array_push($params, $object_id, $normalized_tag);
+			WHERE object_id=? $tagger_sql AND tag=?";
+		$params[] = $normalized_tag;
 		$rs = $adb->pquery($sql, $params);
-		if($rs->fields['count'] > 0) {
+		if ($rs->fields['count'] > 0) {
 			return true;
 		}
 		// Then see if a raw tag in this form exists.
-		$sql = "SELECT id FROM {$prefix}freetags WHERE raw_tag = ? ";
+		$sql = "SELECT id FROM {$prefix}freetags WHERE raw_tag=? ";
 		$rs = $adb->pquery($sql, array($tag));
-		if(!$rs->EOF) {
+		if (!$rs->EOF) {
 			$tag_id = $rs->fields['id'];
 		} else {
 			// Add new tag!
@@ -465,11 +461,10 @@ class freetag {
 			$params = array($tag_id, $normalized_tag, $tag);
 			$rs = $adb->pquery($sql, $params);
 		}
-		if(!($tag_id > 0)) {
+		if (!($tag_id > 0)) {
 			return false;
 		}
-		$sql = "INSERT INTO {$prefix}freetagged_objects
-			(tag_id, tagger_id, object_id, tagged_on, module) VALUES (?,?,?, NOW(),?)";
+		$sql = "INSERT INTO {$prefix}freetagged_objects (tag_id, tagger_id, object_id, tagged_on, module) VALUES (?,?,?, NOW(),?)";
 		$params = array($tag_id, $tagger_id, $object_id, $module);
 		$rs = $adb->pquery($sql, $params);
 
@@ -496,10 +491,10 @@ class freetag {
 	 *
 	 * @return string Returns the tag in normalized form.
 	 */
-	function normalize_tag($tag) {
+	public function normalize_tag($tag) {
 		if ($this->_normalize_tags) {
 			$normalized_valid_chars = $this->_normalized_valid_chars;
-			$normalized_tag = preg_replace("/[^$normalized_valid_chars]/", "", $tag);
+			$normalized_tag = preg_replace("/[^$normalized_valid_chars]/", '', $tag);
 			return strtolower($normalized_tag);
 		} else {
 			return $tag;
@@ -520,9 +515,9 @@ class freetag {
 	 *
 	 * @return boolean true if deleted, false otherwise.
 	 */
-	function delete_object_tag($tagger_id, $object_id, $tag_list) {
-		if(!isset($tagger_id)||!isset($object_id)||!isset($tag_list)) {
-			die("delete_object_tag argument missing");
+	public function delete_object_tag($tagger_id, $object_id, $tag_list) {
+		if (!isset($tagger_id)||!isset($object_id)||!isset($tag_list)) {
+			die('delete_object_tag argument missing');
 			return false;
 		}
 		global $adb;
@@ -535,7 +530,9 @@ class freetag {
 				$sql = "DELETE FROM {$prefix}freetagged_objects WHERE tagger_id = ? AND object_id = ? AND tag_id = ? LIMIT 1";
 				$params = array($tagger_id, $object_id, $tag_id);
 				$rs = $adb->pquery($sql, $params);
-				if (!$rs) $delok = false;
+				if (!$rs) {
+					$delok = false;
+				}
 			} else {
 				$delok = false;
 			}
@@ -557,12 +554,12 @@ class freetag {
 	 *
 	 * @return boolean true if deleted, false otherwise.
 	 */
-	function delete_object_tags($object_id, $tag_list) {
-		if(!isset($object_id)||!isset($tag_list)) {
-			die("delete_object_tags argument missing");
+	public function delete_object_tags($object_id, $tag_list) {
+		if (!isset($object_id)||!isset($tag_list)) {
+			die('delete_object_tags argument missing');
 			return false;
 		}
-		global $adb,$log;
+		global $adb;
 		$delok = true;
 		$prefix = $this->_table_prefix;
 		$valid_tags_array = $this->_parse_tags($tag_list);
@@ -572,7 +569,9 @@ class freetag {
 				$sql = "DELETE FROM {$prefix}freetagged_objects WHERE object_id = ? AND tag_id = ?";
 				$params = array($object_id, $tag_id);
 				$rs = $adb->pquery($sql, $params);
-				if (!$rs) $delok = false;
+				if (!$rs) {
+					$delok = false;
+				}
 			} else {
 				$delok = false;
 			}
@@ -592,18 +591,17 @@ class freetag {
 	 *
 	 * @return boolean Returns true if successful, false otherwise. It will return true if the tagged object does not exist.
 	 */
-	function delete_all_object_tags($object_id) {
+	public function delete_all_object_tags($object_id) {
 		global $adb;
 		$prefix = $this->_table_prefix;
-		if($object_id > 0) {
+		if ($object_id > 0) {
 			$sql = "DELETE FROM {$prefix}freetagged_objects WHERE object_id = ? ";
-			$rs = $adb->pquery($sql, array($object_id));
+			$adb->pquery($sql, array($object_id));
 			return true;
 		} else {
 			return false;
 		}
 	}
-
 
 	/**
 	 * delete_all_object_tags_for_user
@@ -619,16 +617,15 @@ class freetag {
 	 *
 	 * @return boolean Returns true if successful, false otherwise. It will return true if the tagged object does not exist.
 	 */
-	function delete_all_object_tags_for_user($tagger_id, $object_id) {
-		if(!isset($tagger_id)||!isset($object_id)) {
-			die("delete_all_object_tags_for_user argument missing");
+	public function delete_all_object_tags_for_user($tagger_id, $object_id) {
+		if (!isset($tagger_id)||!isset($object_id)) {
+			die('delete_all_object_tags_for_user argument missing');
 			return false;
 		}
 		global $adb;
 		$prefix = $this->_table_prefix;
-		if($object_id > 0) {
-			$sql = "DELETE FROM {$prefix}freetagged_objects WHERE tagger_id = ? AND object_id = ?";
-			$rs = $adb->pquery($sql, array($tagger_id, $object_id));
+		if ($object_id > 0) {
+			$adb->pquery("DELETE FROM {$prefix}freetagged_objects WHERE tagger_id=? AND object_id=?", array($tagger_id, $object_id));
 			return true;
 		} else {
 			return false;
@@ -647,15 +644,14 @@ class freetag {
 	 *
 	 * @return string Returns the tag in normalized form.
 	 */
-	function get_tag_id($tag) {
-		if(!isset($tag)) {
-			die("get_tag_id argument missing");
+	public function get_tag_id($tag) {
+		if (!isset($tag)) {
+			die('get_tag_id argument missing');
 			return false;
 		}
 		global $adb;
 		$prefix = $this->_table_prefix;
-		$sql = "SELECT id FROM {$prefix}freetags WHERE tag = ? LIMIT 1 ";
-		$rs = $adb->pquery($sql, array($tag));
+		$rs = $adb->pquery("SELECT id FROM {$prefix}freetags WHERE tag=? LIMIT 1", array($tag));
 		return $rs->fields['id'];
 	}
 
@@ -670,15 +666,14 @@ class freetag {
 	 *
 	 * @return string Returns the tag in normalized form.
 	 */
-	function get_raw_tag_id($tag) {
-		if(!isset($tag)) {
-			die("get_tag_id argument missing");
+	public function get_raw_tag_id($tag) {
+		if (!isset($tag)) {
+			die('get_tag_id argument missing');
 			return false;
 		}
 		global $adb;
 		$prefix = $this->_table_prefix;
-		$sql = "SELECT id FROM {$prefix}freetags WHERE raw_tag = ? LIMIT 1 ";
-		$rs = $adb->pquery($sql, array($tag));
+		$rs = $adb->pquery("SELECT id FROM {$prefix}freetags WHERE raw_tag=? LIMIT 1", array($tag));
 		return $rs->fields['id'];
 	}
 
@@ -691,15 +686,14 @@ class freetag {
 	 *
 	 * @return int returns internal tag_id for the given tag.
 	 */
-	function get_tag_from_id($tag_id) {
-		if(!isset($tag_id)) {
-			die("get_tag_from_id argument missing");
+	public function get_tag_from_id($tag_id) {
+		if (!isset($tag_id)) {
+			die('get_tag_from_id argument missing');
 			return false;
 		}
 		global $adb;
 		$prefix = $this->_table_prefix;
-		$sql = "SELECT tag FROM {$prefix}freetags WHERE id = ? LIMIT 1";
-		$rs = $adb->pquery($sql, array($tag_id));
+		$rs = $adb->pquery("SELECT tag FROM {$prefix}freetags WHERE id=? LIMIT 1", array($tag_id));
 		return $rs->fields['tag'];
 	}
 
@@ -724,10 +718,10 @@ class freetag {
 	 *
 	 * @return string Returns the tag in normalized form.
 	 */
-	function tag_object($tagger_id_list, $object_id_list, $tag_string, $module, $skip_updates = 1) {
-		if($tag_string == '') {
+	public function tag_object($tagger_id_list, $object_id_list, $tag_string, $module, $skip_updates = 1) {
+		if ($tag_string == '') {
 			// If an empty string was passed, just return true, don't die.
-			// die("Empty tag string passed");
+			// die('Empty tag string passed');
 			return true;
 		}
 		// Break up CSL's for tagger id's and object id's
@@ -788,10 +782,10 @@ class freetag {
 	 *
 	 * @return boolean True if successful, false otherwise.
 	 */
-	function _tag_object_array($tagger_id, $object_id, $tagArray, $module) {
-		foreach($tagArray as $tag) {
+	public function _tag_object_array($tagger_id, $object_id, $tagArray, $module) {
+		foreach ($tagArray as $tag) {
 			$tag = trim($tag);
-			if(($tag != '') && (strlen($tag) <= $this->_MAX_TAG_LENGTH)) {
+			if (($tag != '') && (strlen($tag) <= $this->_MAX_TAG_LENGTH)) {
 				$this->safe_tag($tagger_id, $object_id, $tag, $module);
 			}
 		}
@@ -805,9 +799,9 @@ class freetag {
 	 *
 	 * @param string String to parse.
 	 *
-	 * @return array Returns an array of the raw "tags" parsed according to the freetag settings.
+	 * @return array Returns an array of the raw 'tags' parsed according to the freetag settings.
 	 */
-	function _parse_tags($tag_string) {
+	public function _parse_tags($tag_string) {
 		$newwords = array();
 		if ($tag_string == '') {
 			// If the tag string is empty, return the empty set.
@@ -815,10 +809,9 @@ class freetag {
 		}
 		# Perform tag parsing
 		$query = trim($tag_string);
-		$words = preg_split('/(")/', $query,-1,PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
+		$words = preg_split('/(")/', $query, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
 		$delim = 0;
-		foreach ($words as $key => $word)
-		{
+		foreach ($words as $key => $word) {
 			if ($word == '"') {
 				$delim++;
 				continue;
@@ -845,35 +838,34 @@ class freetag {
 	 *
 	 * @return array Returns a PHP array with tags ordered by popularity descending.
 	 * Each element is an associative array with the following elements:
-	 *   - 'tag' => Normalized-form tag
-	 *   - 'count' => The number of objects tagged with this tag.
+	 * - 'tag' => Normalized-form tag
+	 * - 'count' => The number of objects tagged with this tag.
 	 */
-	function get_most_popular_tags($tagger_id = NULL, $offset = 0, $limit = 25) {
+	public function get_most_popular_tags($tagger_id = null, $offset = 0, $limit = 25) {
 		global $adb;
 		$params = array();
-		if(isset($tagger_id) && ($tagger_id > 0)) {
-			$tagger_sql = "AND tagger_id = ?";
+		if (isset($tagger_id) && ($tagger_id > 0)) {
+			$tagger_sql = 'AND tagger_id=?';
 			array_push($params, $tagger_id);
 		} else {
-			$tagger_sql = "";
+			$tagger_sql = '';
 		}
 		$prefix = $this->_table_prefix;
 
 		$sql = "SELECT tag, COUNT(*) as count
 			FROM {$prefix}freetags INNER JOIN {$prefix}freetagged_objects ON (id = tag_id)
-			WHERE 1
-			$tagger_sql
+			WHERE 1 $tagger_sql
 			GROUP BY tag
 			ORDER BY count DESC, tag ASC
 			LIMIT $offset, $limit";
 
 		$rs = $adb->pquery($sql, $params);
 		$retarr = array();
-		while(!$rs->EOF) {
+		while (!$rs->EOF) {
 			$retarr[] = array(
-					'tag' => $rs->fields['tag'],
-					'count' => $rs->fields['count']
-					);
+				'tag' => $rs->fields['tag'],
+				'count' => $rs->fields['count']
+			);
 			$rs->MoveNext();
 		}
 
@@ -900,42 +892,40 @@ class freetag {
 	 * - 'object_id' => Object id
 	 * - 'tagged_on' => The timestamp of each object id
 	 */
-	function get_most_recent_objects($tagger_id = NULL, $tag = NULL, $offset = 0, $limit = 25) {
+	public function get_most_recent_objects($tagger_id = null, $tag = null, $offset = 0, $limit = 25) {
 		global $adb;
 		$params = array();
 		if (isset($tagger_id)) {
-			$tagger_sql = "AND tagger_id = ?";
+			$tagger_sql = 'AND tagger_id = ?';
 			$params[] = $tagger_id;
 		} else {
-			$tagger_sql = "";
+			$tagger_sql = '';
 		}
 		$prefix = $this->_table_prefix;
 
-		$sql = "";
+		$sql = '';
 		if (!$tag) {
 			$sql = "SELECT DISTINCT object_id, tagged_on FROM
 				{$prefix}freetagged_objects
-				WHERE 1
-				$tagger_sql
+				WHERE 1 $tagger_sql
 				ORDER BY tagged_on DESC
-				LIMIT $offset, $limit ";
+				LIMIT $offset, $limit";
 		} else {
-			$params = array_merge(array($tag) , $params);
+			$params = array_merge(array($tag), $params);
 			$sql = "SELECT DISTINCT object_id, tagged_on
 				FROM {$prefix}freetagged_objects INNER JOIN {$prefix}freetags ON (tag_id = id)
-				WHERE tag = $tag
-				$tagger_sql
+				WHERE tag=$tag $tagger_sql
 				ORDER BY tagged_on DESC
-				LIMIT $offset, $limit ";
+				LIMIT $offset, $limit";
 		}
 
 		$rs = $adb->pquery($sql, $params);
 		$retarr = array();
-		while($fields = $adb->fetch_array($rs)) {
+		while ($fields = $adb->fetch_array($rs)) {
 			$retarr[] = array(
-					'object_id' => $fields['object_id'],
-					'tagged_on' => $fields['tagged_on']
-					);
+				'object_id' => $fields['object_id'],
+				'tagged_on' => $fields['tagged_on']
+			);
 		}
 		return $retarr;
 	}
@@ -951,14 +941,14 @@ class freetag {
 	 *
 	 * @return int Returns the count
 	 */
-	function count_tags($tagger_id = NULL, $normalized_version = 0) {
+	public function count_tags($tagger_id = null, $normalized_version = 0) {
 		global $adb;
 		$params = array();
-		if(isset($tagger_id) && ($tagger_id > 0)) {
-			$tagger_sql = "AND tagger_id = ?";
+		if (isset($tagger_id) && ($tagger_id > 0)) {
+			$tagger_sql = 'AND tagger_id=?';
 			array_push($params, $tagger_id);
 		} else {
-			$tagger_sql = "";
+			$tagger_sql = '';
 		}
 		if ($normalized_version == 1) {
 			$distinct_col = 'tag';
@@ -969,11 +959,10 @@ class freetag {
 
 		$sql = "SELECT COUNT(DISTINCT $distinct_col) as count
 			FROM {$prefix}freetags INNER JOIN {$prefix}freetagged_objects ON (id = tag_id)
-			WHERE 1
-			$tagger_sql";
+			WHERE 1 $tagger_sql";
 
 		$rs = $adb->pquery($sql, $params);
-		if(!$rs->EOF) {
+		if (!$rs->EOF) {
 			return $rs->fields['count'];
 		}
 		return false;
@@ -994,13 +983,13 @@ class freetag {
 	 * @param int The maximum number of tags to return. (default: 100)
 	 * @param int The minimum font size in the cloud. (default: 10)
 	 * @param int The maximum number of tags to return. (default: 20)
-	 * @param string The "units" for the font size (i.e. 'px', 'pt', 'em') (default: px)
+	 * @param string The 'units' for the font size (i.e. 'px', 'pt', 'em') (default: px)
 	 * @param string The class to use for all spans in the cloud. (default: cloud_tag)
 	 * @param string The tag page URL (default: /tag/)
 	 *
 	 * @return string Returns an HTML snippet that can be used directly as a tag cloud.
 	 */
-	function get_tag_cloud_html($module="",$tagger_id = NULL,$obj_id= NULL,$num_tags = 100, $min_font_size = 10, $max_font_size = 20, $font_units = 'px', $span_class = '', $tag_page_url = '/tag/') {
+	public function get_tag_cloud_html($module = '', $tagger_id = null, $obj_id = null, $num_tags = 100, $min_font_size = 10, $max_font_size = 20, $font_units = 'px', $span_class = '', $tag_page_url = '/tag/') {
 		$tag_list = $this->get_tag_cloud_tags($num_tags, $tagger_id, $module, $obj_id);
 		if (count($tag_list[0])) {
 			// Get the maximum qty of tagged objects in the set
@@ -1020,21 +1009,21 @@ class freetag {
 		$step = ($max_font_size - $min_font_size)/($spread);
 
 		// Since the original tag_list is alphabetically ordered,
-		// we can now create the tag cloud by just putting a span
-		// on each element, multiplying the diff between min and qty
-		// by $step.
+		// we can now create the tag cloud by just putting a span on
+		// each element, multiplying the diff between min and qty by $step.
 		$cloud_html = '';
-		$cloud_spans = array();
-		if($module =='')
+		$cloud_span = array();
+		if ($module =='') {
 			$module = 'All';
-		if($module != 'All') {
+		}
+		if ($module != 'All') {
 			foreach ($tag_list[0] as $tag => $qty) {
 				$size = $min_font_size + ($qty - $min_qty) * $step;
 				$cloud_span[] = '
 				<span id="tag_'.$tag_list[1][$tag].'" class="' . $span_class
 					.'" onMouseOver=jQuery("#tagspan_'.$tag_list[1][$tag].'").show(); onMouseOut=jQuery("#tagspan_'.$tag_list[1][$tag].'").hide();>
 					<span title="'.getTranslatedString('Delete Tag', 'com_vtiger_workflow').'" class="slds-icon_container slds-icon-utility-announcement slds-current-color"'
-						.' id="tagspan_'.$tag_list[1][$tag].'" style="display:none;cursor:pointer;" onClick="DeleteTag('.$tag_list[1][$tag].','.$obj_id.');">
+					.' id="tagspan_'.$tag_list[1][$tag].'" style="display:none;cursor:pointer;" onClick="DeleteTag('.$tag_list[1][$tag].','.$obj_id.');">
 						<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 						</svg>
@@ -1046,18 +1035,18 @@ class freetag {
 				</span>';
 			}
 		} else {
-			foreach($tag_list[0] as $tag => $qty) {
+			foreach ($tag_list[0] as $tag => $qty) {
 				$size = $min_font_size + ($qty - $min_qty) * $step;
-				//$cloud_span[] = '<span class="' . $span_class . '"><a class="tagit" href="index.php?module=Utilities&action=UnifiedSearch&search_module='.$module.'&search_tag=tag_search&query_string='. urlencode($tag) . '" style="font-size: '. $size . $font_units . '">' . htmlspecialchars(stripslashes($tag)) . '</a></span>';
-				$cloud_span[] = '<li class="' . $span_class . '"><a class="tagit" href="index.php?module=Utilities&action=UnifiedSearch&search_module='.$module.'&search_tag=tag_search&query_string='. urlencode($tag) . '" style="font-size: '. $size . $font_units . '">' . htmlspecialchars(stripslashes($tag)) . '</a></li>';
+				$cloud_span[] = '<li class="'.$span_class.'"><a class="tagit" href="index.php?module=Utilities&action=UnifiedSearch&search_module='.$module
+					.'&search_tag=tag_search&query_string='.urlencode($tag).'" style="font-size: '.$size.$font_units.'">'
+					.htmlspecialchars(stripslashes($tag)).'</a></li>';
 			}
 		}
 		$cloud_html = join("\n ", $cloud_span);
 		return $cloud_html;
-
 	}
 
-	/*
+	/**
 	 * get_tag_cloud_tags
 	 *
 	 * This is a function built explicitly to set up a page with most popular tags
@@ -1073,41 +1062,40 @@ class freetag {
 	 * @return array Returns an array where the keys are normalized tags, and the
 	 * values are numeric quantity of objects tagged with that tag.
 	 */
-	function get_tag_cloud_tags($max = 100, $tagger_id = NULL,$module = "",$obj_id = NULL) {
+	public function get_tag_cloud_tags($max = 100, $tagger_id = null, $module = '', $obj_id = null) {
 		global $adb;
 		$params = array();
-		if(isset($tagger_id) && ($tagger_id > 0)) {
-			$tagger_sql = " AND tagger_id = ?";
+		if (isset($tagger_id) && ($tagger_id > 0)) {
+			$tagger_sql = ' AND tagger_id=?';
 			array_push($params, $tagger_id);
 		} else {
-			$tagger_sql = "";
+			$tagger_sql = '';
 		}
 
-		if($module != "") {
-			$tagger_sql .= " AND module = ?";
+		if ($module != '') {
+			$tagger_sql .= ' AND module=?';
 			array_push($params, $module);
 		} else {
-			$tagger_sql .= "";
+			$tagger_sql .= '';
 		}
 
-		if(isset($obj_id) && $obj_id > 0) {
-			$tagger_sql .= " AND object_id = ?";
+		if (isset($obj_id) && $obj_id > 0) {
+			$tagger_sql .= ' AND object_id=?';
 			array_push($params, $obj_id);
 		} else {
-			$tagger_sql .= "";
+			$tagger_sql .= '';
 		}
 
 		$prefix = $this->_table_prefix;
 		$sql = "SELECT tag,tag_id,COUNT(object_id) AS quantity
 			FROM {$prefix}freetags INNER JOIN {$prefix}freetagged_objects
 			ON ({$prefix}freetags.id = tag_id)
-			WHERE 1=1
-			$tagger_sql
+			WHERE 1=1 $tagger_sql
 			GROUP BY tag_id
 			ORDER BY quantity DESC LIMIT 0, $max";
 		$rs = $adb->pquery($sql, $params);
 		$retarr = $retarr1 = $return_value = array();
-		while(!$rs->EOF) {
+		while (!$rs->EOF) {
 			$retarr[$rs->fields['tag']] = $rs->fields['quantity'];
 			$retarr1[$rs->fields['tag']] = $rs->fields['tag_id'];
 			$rs->MoveNext();
@@ -1128,16 +1116,16 @@ class freetag {
 	 *
 	 * @return int Returns the count
 	 */
-	function count_unique_tags($tagger_id = NULL, $normalized_version = 0) {
+	public function count_unique_tags($tagger_id = null, $normalized_version = 0) {
 		return $this->count_tags($tagger_id, $normalized_version);
 	}
 
 	/**
 	 * similar_tags
 	 *
-	 * Finds tags that are "similar" or related to the given tag.
+	 * Finds tags that are 'similar' or related to the given tag.
 	 * It does this by looking at the other tags on objects tagged with the tag specified.
-	 * Confusing? Think of it like e-commerce's "Other users who bought this also bought,"
+	 * Confusing? Think of it like e-commerce's 'Other users who bought this also bought,'
 	 * as that's exactly how this works.
 	 *
 	 * Returns an empty array if no tag is passed, or if no related tags are found.
@@ -1158,13 +1146,13 @@ class freetag {
 	 * values are numeric quantity of objects tagged with BOTH tags, sorted by
 	 * number of occurences of that tag (high to low).
 	 */
-	function similar_tags($tag, $max = 100, $tagger_id = NULL) {
+	public function similar_tags($tag, $max = 100, $tagger_id = null) {
 		$retarr = array();
-		if(!isset($tag)) {
+		if (!isset($tag)) {
 			return $retarr;
 		}
 		global $adb;
-		$where_sql = "";
+		$where_sql = '';
 		if (isset($tagger_id) && intval($tagger_id) > 0) {
 			$tagger_id = intval($tagger_id);
 			$where_sql .= " AND o1.tagger_id = $tagger_id AND o2.tagger_id = $tagger_id ";
@@ -1180,14 +1168,13 @@ class freetag {
 			INNER JOIN {$prefix}freetags t1 ON ( t1.id = o1.tag_id )
 			INNER JOIN {$prefix}freetagged_objects o2 ON ( o1.object_id = o2.object_id )
 			INNER JOIN {$prefix}freetags t2 ON ( t2.id = o2.tag_id )
-			WHERE t2.tag = ? AND t1.tag != ?
-			$where_sql
+			WHERE t2.tag=? AND t1.tag!=? $where_sql
 			GROUP BY o1.tag_id
 			ORDER BY quantity DESC
 			LIMIT 0, ?";
 
 		$rs = $adb->pquery($sql, array($tag, $tag, $max));
-		while(!$rs->EOF) {
+		while (!$rs->EOF) {
 			$retarr[$rs->fields['tag']] = $rs->fields['quantity'];
 			$rs->MoveNext();
 		}
@@ -1221,7 +1208,7 @@ class freetag {
 	 * - 'object_id' => Unique ID of the matched object
 	 *
 	 */
-	function similar_objects($object_id, $threshold = 1, $max_objects = 5, $tagger_id = NULL) {
+	public function similar_objects($object_id, $threshold = 1, $max_objects = 5, $tagger_id = null) {
 		global $adb;
 		$retarr = array();
 
@@ -1257,37 +1244,35 @@ class freetag {
 		$sql = "SELECT matches.object_id, COUNT( matches.object_id ) AS num_common_tags
 			FROM {$prefix}freetagged_objects as matches
 			INNER JOIN {$prefix}freetags as tags ON ( tags.id = matches.tag_id )
-			WHERE tags.tag IN (". generateQuestionMarks($tagArray) .")
+			WHERE tags.tag IN (". generateQuestionMarks($tagArray) .')
 			GROUP BY matches.object_id
 			HAVING num_common_tags >= ?
 			ORDER BY num_common_tags DESC
-			LIMIT 0, ? ";
+			LIMIT 0, ?';
 
 		$rs = $adb->pquery($sql, array($tagArray, $threshold, $max_objects));
-		while(!$rs->EOF) {
+		while (!$rs->EOF) {
 			$retarr[] = array (
 				'object_id' => $rs->fields['object_id'],
 				'strength' => ($rs->fields['num_common_tags'] / $numTags)
-				);
+			);
 			$rs->MoveNext();
 		}
 
 		return $retarr;
 	}
 
-
-	/*
+	/**
 	 * Prints debug text if debug is enabled.
 	 *
 	 * @param string The text to output
 	 * @return boolean Always returns true
 	 */
-	function debug_text($text) {
+	public function debug_text($text) {
 		if ($this->_debug) {
 			echo "$text<br>\n";
 		}
 		return true;
 	}
-
 }
 

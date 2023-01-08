@@ -155,6 +155,7 @@ include/DatabaseUtil.php
 include/db_backup
 include/events
 include/fields
+include/freetag/freetag.class.php
 include/home.php
 include/integrations
 include/InventoryHandler.php
