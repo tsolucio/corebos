@@ -24,6 +24,7 @@ class ClickHouseDatabase extends PearDatabase {
 	public $dbType = 'clickhouse';
 	public $chdatabase;
 	public $lastResult;
+	public $log;
 
 	/**
 	 * Manage instance usage of this class
