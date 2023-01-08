@@ -298,6 +298,9 @@ class Emails extends CRMEntity {
 			$mail->AddReplyTo($HELPDESK_SUPPORT_EMAIL_REPLY_ID);
 		}
 		$mail_status = MailSend($mail);
+
+		cbEventHandler::do_action('corebos.email.aftersend', array($mail, $mail_status));
+
 		if ($mail_status != 1) {
 			$mail_error = getMailError($mail, $mail_status);
 		} else {
