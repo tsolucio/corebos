@@ -973,12 +973,6 @@ class freetag {
 	 *
 	 * This is a pretty straightforward, flexible method that automatically
 	 * generates some html that can be dropped in as a tag cloud.
-	 * It uses explicit font sizes inside of the style attribute of SPAN
-	 * elements to accomplish the differently sized objects.
-	 *
-	 * It will also link every tag to $tag_page_url, appended with the
-	 * normalized form of the tag. You should adapt this value to your own
-	 * tag detail page's URL.
 	 *
 	 * @param int The maximum number of tags to return. (default: 100)
 	 * @param int The minimum font size in the cloud. (default: 10)
@@ -989,7 +983,7 @@ class freetag {
 	 *
 	 * @return string Returns an HTML snippet that can be used directly as a tag cloud.
 	 */
-	public function get_tag_cloud_html($module = '', $tagger_id = null, $obj_id = null, $num_tags = 100, $min_font_size = 10, $max_font_size = 20, $font_units = 'px', $span_class = '', $tag_page_url = '/tag/') {
+	public function get_tag_cloud_html($module = '', $tagger_id = null, $obj_id = null, $num_tags = 100, $min_font_size = 10, $max_font_size = 20, $font_units = 'px', $span_class = '') {
 		$tag_list = $this->get_tag_cloud_tags($num_tags, $tagger_id, $module, $obj_id);
 		if (count($tag_list[0])) {
 			// Get the maximum qty of tagged objects in the set
@@ -1208,7 +1202,7 @@ class freetag {
 	 * - 'object_id' => Unique ID of the matched object
 	 *
 	 */
-	public function similar_objects($object_id, $threshold = 1, $max_objects = 5, $tagger_id = null) {
+	public function similar_objects($object_id, $threshold = 1, $max_objects = 5) {
 		global $adb;
 		$retarr = array();
 
