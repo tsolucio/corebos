@@ -992,9 +992,6 @@ class PearDatabase {
 		$this->checkConnection();
 		$db = $this->database;
 		$schema = new adoSchema($db);
-		//Debug Adodb XML Schema
-		$schema->XMLS_DEBUG = true;
-		//Debug Adodb
 		$schema->debug = true;
 		$sql = $schema->ParseSchema($schemaFile);
 
