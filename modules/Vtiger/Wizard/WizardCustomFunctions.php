@@ -196,7 +196,14 @@ class WizardCustomFunctions {
 			}
 		}
 		coreBOS_Session::set('DuplicatedRecords^parentpc^'.$parentpc, $parentpc);
-		MassCreate($target, $current_user);
+		$mc = MassCreate($target, $current_user);
+		if (isset($mc['wssuccess']) && !$mc['wssuccess']) {
+			return false;
+		}
+		foreach ($mc['success_creates'] as $key) {
+			$id = explode('x', $key['id'])[1];
+			coreBOS_Session::set('DuplicatedRecords^'.$step.'^'.$id, $id);
+		}
 		return true;
 	}
 
