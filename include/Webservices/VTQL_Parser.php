@@ -143,6 +143,7 @@ Array (
 	private $error_msg;
 	private $syntax_error;
 	private $user;
+	private $value;
 
 	public function __construct($user, $lex, $out) {
 		if (!is_array($out)) {

@@ -16,6 +16,21 @@ class Homestuff {
 	public $userid;
 	public $dashdetails=array();
 	public $reportdetails=array();
+	public $defaulttitle;
+	public $stufftitle;
+	public $stufftype;
+	public $fieldvalue;
+	public $selmodule;
+	public $maxentries;
+	public $selFiltername;
+	public $selAggregatename;
+	public $txtRss;
+	public $seldashbd;
+	public $seldashtype;
+	public $defaultvalue;
+	public $txtURL;
+	public $selreport;
+	public $selreportcharttype;
 
 	/**
 	 * this is the constructor for the class
