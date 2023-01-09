@@ -3259,6 +3259,14 @@ function gotourl(url) {
 	document.location.href=url;
 }
 
+function backtourl(storagename = '') {
+	if (storagename != '') {
+		document.location.href = localStorage.getItem(storagename);
+	} else {
+		document.location.href = localStorage.getItem(`${gVTModule}_${gVTUserID}_LastClickedURL`);
+	}
+}
+
 // Function to display the element with id given by showid and hide the element with id given by hideid
 function toggleShowHide(showid, hideid) {
 	var show_ele = document.getElementById(showid);

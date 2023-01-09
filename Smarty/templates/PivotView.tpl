@@ -115,8 +115,9 @@ $(function() {
 								});
 							});
 							const Pivot_AdvancedSearch = res[1];
-							const urlstring = `${JSON.stringify(Pivot_AdvancedSearch)}&advft_criteria_groups=[null,{"groupcondition":""}]`;
-							window.open(`index.php?module=${gVTModule}&action=index&query=true&search=true&searchtype=advance&advft_criteria=${urlstring}`, '_blank');
+							const urlstring = `index.php?module=${gVTModule}&action=index&query=true&search=true&searchtype=advance&advft_criteria=${JSON.stringify(Pivot_AdvancedSearch)}&advft_criteria_groups=[null,{"groupcondition":""}]`;
+							localStorage.setItem(`${gVTModule}_${gVTUserID}_LastClickedURL`, urlstring);
+							window.open(urlstring, '_blank');
 						});
 						advFilter = Array();
 						fields = Array();
@@ -137,8 +138,9 @@ $(function() {
 						'groupid': 1,
 						'columncondition': 'and'
 					}];
-					const urlstring = `${JSON.stringify(advSearch)}&advft_criteria_groups=[null,{"groupcondition":""}]`;
-					window.open(`index.php?module=${gVTModule}&action=index&query=true&search=true&searchtype=advance&advft_criteria=${urlstring}`, '_blank');
+					const urlstring = `index.php?module=${gVTModule}&action=index&query=true&search=true&searchtype=advance&advft_criteria=${JSON.stringify(advSearch)}&advft_criteria_groups=[null,{"groupcondition":""}]`;
+					localStorage.setItem(`${gVTModule}_${gVTUserID}_LastClickedURL`, urlstring);
+					window.open(urlstring, '_blank');
 				});
 			}
 		};
