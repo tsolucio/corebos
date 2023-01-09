@@ -65,6 +65,7 @@
 					</field>
 					...
 				</fields>
+				<conditions>[{"relatedmodule":"Products","relatedfieldname":"frompdo","fieldname":"productcategory","operation":"n","value":"Morsettiera","glue":"and"}]</conditions>
 			</listview>
 			<editview>
 				<fields>
@@ -120,6 +121,9 @@ class RelatedListBlock extends processcbMap {
 				if (isset($key->listview)) {
 					$this->detailModule = (string)$key->name;
 					$this->mapping_arr['modules'][$idx]['listview'] = $this->FormatFields((array)$key->listview->fields, 'listview');
+					if (isset($key->listview->conditions)) {
+						$this->mapping_arr['modules'][$idx]['listview']['conditions'] = (string)$key->listview->conditions;
+					}
 				}
 				if (isset($key->editview)) {
 					$this->detailModule = (string)$key->name;
