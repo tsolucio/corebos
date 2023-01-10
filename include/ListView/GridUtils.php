@@ -674,7 +674,7 @@ function TreeView($element, $modules, $map, $i = 0) {
 		if (empty($relatedfield)) {
 			return $tree;
 		}
-		$sql = generateRelationQuery($relatedmodule, $current, $relatedfield, $element['id'], array());
+		$sql = generateRelationQuery($relatedmodule, $current, $relatedfield, $element['id'], $map);
 		$rs = $adb->query($sql);
 		$lv = end($map['modules']);
 		if ($adb->num_rows($rs) > 0) {
