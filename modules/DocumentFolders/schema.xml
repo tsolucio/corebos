@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_documentfolders</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_documentfolders` (
+  `documentfoldersid` int(11) NOT NULL,
+  `documentfolders_no` varchar(56) default NULL,
+  `foldername` varchar(255) default NULL,
+  `sequence` int(11) NOT NULL,
+  `parentfolder` int(11) NOT NULL,
+  PRIMARY KEY (`documentfoldersid`),
+  INDEX (`foldername`),
+  INDEX (`parentfolder`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_documentfolderscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_documentfolderscf` (
+  `documentfoldersid` int(11) NOT NULL,
+  PRIMARY KEY (`documentfoldersid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>
