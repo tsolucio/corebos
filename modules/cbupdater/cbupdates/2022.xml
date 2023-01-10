@@ -286,4 +286,11 @@
 	<classname>add_workflow_addnotification</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Watermark worfklow task</description>
+	<filename>build/changeSets/2022/addWFWatermark.php</filename>
+	<classname>addWFWatermark</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

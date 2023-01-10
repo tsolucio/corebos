@@ -30,9 +30,7 @@
 						<div class="slds-select_container">
 							<select class="slds-select slds-page-header__meta-text" name="task_type" id="task_type">
 								{foreach item=taskType from=$taskTypes}
-									<option value='{$taskType}'>
-									{$taskType|@getTranslatedString:$module->name}
-									</option>
+								<option value='{$taskType}'{if $taskType=='VTEmailTask'} selected{/if}>{$taskType|@getTranslatedString:$module->name}</option>
 								{/foreach}
 							</select>
 						</div>

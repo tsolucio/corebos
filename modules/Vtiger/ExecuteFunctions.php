@@ -107,7 +107,7 @@ switch ($functiontocall) {
 	case 'getFieldValuesFromRecordRecursively':
 		$moduleName = vtlib_purify($_REQUEST['moduleName']);
 		$value = vtlib_purify($_REQUEST['value']);
-		$fieldsArray = explode(".", $value);
+		$fieldsArray = explode('.', $value);
 		// remove all $ signs
 		array_walk($fieldsArray, function (&$item, $key) {
 			$item = substr($item, 1);
@@ -659,11 +659,10 @@ switch ($functiontocall) {
 		$modulename = vtlib_purify($_REQUEST['modulename']);
 		$tabid = getTabid($modulename);
 		$fields = explode(',', $fields);
-		$fieldsIn = '';
-		foreach ($fields as $field) {
-			$fieldsIn .= "'$field',";
-		}
-		$rs = $adb->pquery('SELECT tablename, fieldname, columnname, fieldlabel, typeofdata FROM vtiger_field WHERE tabid=? AND fieldname IN ('.rtrim($fieldsIn, ',').')', array($tabid));
+		$rs = $adb->pquery(
+			'SELECT tablename, fieldname, columnname, fieldlabel, typeofdata FROM vtiger_field WHERE tabid=? AND fieldname IN ('.generateQuestionMarks($fields).')',
+			array($tabid, $fields)
+		);
 		$fieldInfo = array();
 		while ($row = $rs->FetchRow()) {
 			$typeofdata = explode('~', $row['typeofdata']);
@@ -691,15 +690,7 @@ switch ($functiontocall) {
 			$write = $_REQUEST['write'];
 			$old_ws_name = $_REQUEST['old_ws_name'];
 			$old_table_name = $_REQUEST['old_table_name'];
-			$res = $clickHouse->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name, $old_table_name);
-			if ($res) {
-				$success = true;
-			} else {
-				$success = false;
-			}
-			$ret = array(
-				'success' => $success,
-			);
+			$ret = $clickHouse->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name, $old_table_name);
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
 			$grid = new GridListView('Utilities');
 			$q = 'select * from vtiger_ws_clickhousetables';

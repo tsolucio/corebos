@@ -10,6 +10,9 @@
 
 class VTEventCondition {
 
+	public $expr;
+	public $data;
+
 	public function __construct($expr) {
 		if ($expr!='') {
 			$parser = $this->getParser($expr);

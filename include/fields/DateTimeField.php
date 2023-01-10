@@ -13,6 +13,8 @@ class DateTimeField {
 
 	protected static $databaseTimeZone = null;
 	protected $datetime;
+	public $date;
+	public $time;
 
 	/**
 	 *
@@ -357,9 +359,9 @@ class DateTimeField {
 
 	/**
 	 *
-	 * @param datetime $time
-	 * @param string $sourceTimeZoneName
-	 * @param string $targetTimeZoneName
+	 * @param string datetime
+	 * @param string source TimeZone Name
+	 * @param string target TimeZone Name
 	 * @return DateTime
 	 */
 	public static function convertTimeZone($time, $sourceTimeZoneName, $targetTimeZoneName) {

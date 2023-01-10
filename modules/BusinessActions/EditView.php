@@ -8,6 +8,15 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'modules/Vtiger/EditView.php';
-
+$fieldlabel = getTranslatedString('linktype', $currentModule);
+$kk = getFieldFromEditViewBlockArray($blocks, $fieldlabel);
+$batypearray = $blocks[$kk['block_label']][$kk['row_key']][$kk['field_key']][3][0];
+uasort($batypearray, function ($a, $b) {
+	return strtolower($a[0]) < strtolower($b[0]) ? -1 : 1;
+});
+$blocks[$kk['block_label']][$kk['row_key']][$kk['field_key']][3][0] = $batypearray;
+$basblocks[$kk['block_label']][$kk['row_key']][$kk['field_key']][3][0] = $batypearray;
+$smarty->assign('BLOCKS', $blocks);
+$smarty->assign('BASBLOCKS', $basblocks);
 $smarty->display('salesEditView.tpl');
 ?>

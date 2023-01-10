@@ -17,6 +17,8 @@ class VTEventTrigger {
 	private static $mandatoryEventClass = array('VTEntityDelta', 'ModTrackerHandler');
 
 	const CACHE_LOOKUP_TYPE_ALL = 'ALL';
+	public $name;
+	public $adb;
 
 	public static function initCache($name = false, $force = false) {
 		global $adb;

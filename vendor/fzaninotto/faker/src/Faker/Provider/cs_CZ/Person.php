@@ -438,8 +438,8 @@ class Person extends \Faker\Provider\Person
             $gender = $this->generator->boolean() ? static::GENDER_MALE : static::GENDER_FEMALE;
         }
 
-        $startTimestamp = strtotime("-${maxAge} year");
-        $endTimestamp = strtotime("-${minAge} year");
+        $startTimestamp = strtotime("-{$maxAge} year");
+        $endTimestamp = strtotime("-{$minAge} year");
         $randTimestamp = static::numberBetween($startTimestamp, $endTimestamp);
 
         $year = intval(date('Y', $randTimestamp));

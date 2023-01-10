@@ -485,4 +485,7 @@ var alert_arr = {
 	'LBL_EXPAND': 'in',
 	'currentuser': 'Current User',
 	'wfmodule': 'Workflow Module',
+	'RelatedList': 'Related List',
+	'SelectField': 'Select field',
+	'MoveFile': 'Move file',
 };

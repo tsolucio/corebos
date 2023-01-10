@@ -112,6 +112,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Horizontal | Vertical',
 	'definition' => 'Application menu direction.',
 ),
+'Application_Menu_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the main menu',
+),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Module Functionality',
@@ -1786,11 +1792,23 @@ $GlobalVariableDefinitons = array(
 	'values' => 'HTML ID',
 	'definition' => 'Element ID that will be focused when the page loads',
 ),
+'Application_Toolbar_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the Toolbar menu',
+),
 'Application_TitleInformation' => array(
 	'valuetype' => 'String|Integer',
 	'category' => 'Application',
 	'values' => 'MapID or string',
 	'definition' => 'Browser tab title. Can be an expression business map ID',
+),
+'Application_Header_Buttons_Position' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => 'percentage',
+	'definition' => 'Percentage of header space to leave for title before placing the buttons. By default buttons will be aligned to the right.',
 ),
 );
 

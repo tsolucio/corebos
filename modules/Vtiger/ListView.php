@@ -240,7 +240,7 @@ if ($sql_error) {
 	// Gather the custom link information to display
 		include_once 'vtlib/Vtiger/Link.php';
 		$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
-		$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW','LISTVIEWACTION'), $customlink_params));
+		$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW','LISTVIEWACTION','LISTVIEWBUTTON'), $customlink_params));
 	}
 } // try query
 $smarty->assign('IS_ADMIN', is_admin($current_user));
@@ -258,6 +258,8 @@ $smarty->assign('EDIT_FILTER_ALL', GlobalVariable::getVariable('Application_Filt
 $smarty->assign('moduleView', $layout);
 $smarty->assign('Apache_Tika_URL', GlobalVariable::getVariable('Apache_Tika_URL', ''));
 $smarty->assign('ShowCreateMessage', GlobalVariable::getVariable('Application_ListView_Show_Create_Message', '0'));
+$smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
+$smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
 
 // send advancedSearch business map data to the frontEnd
 $advancedSearchMapResult = 'MAP_NOT_FOUND';

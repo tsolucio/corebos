@@ -399,6 +399,14 @@ a:hover {
 	background-color:#ffffff;
 }
 
+#Push\ Along\ Flow .rightMailMergeContent {
+    padding:0 !important;
+}
+
+#Push\ Along\ Flow .slds-p-around_xx-small {
+    padding:0 !important;
+}
+
 .detailedViewHeader{
 
 	border:1px solid #DDDDDD;

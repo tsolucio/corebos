@@ -12,6 +12,7 @@ require_once 'include/db_backup/Targets/Response.php';
 class File extends Response {
 	private $defaultPath;
 	private $filePath = null;
+	private $file = null;
 
 	public function __construct($dbConfig, $fileName = null, $supportUTF8 = true) {
 		parent::__construct($dbConfig, $supportUTF8);
