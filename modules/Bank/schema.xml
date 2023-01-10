@@ -1,0 +1,32 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_bank</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_bank` (
+  `bankid` int NOT NULL DEFAULT '0',
+  `bankno` varchar(50) DEFAULT NULL,
+  `bank_name` varchar(255) DEFAULT NULL,
+  `manager_name` varchar(255) DEFAULT NULL,
+  `main_phone` varchar(255) DEFAULT NULL,
+  `other_phone` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `business_hours` varchar(255) DEFAULT NULL,
+  `officer_name` varchar(255) DEFAULT NULL,
+  `fax` varchar(255) DEFAULT NULL,
+  `main_email` varchar(255) DEFAULT NULL,
+  `alt_email` varchar(255) DEFAULT NULL,
+  `bank_website` varchar(255) DEFAULT NULL,
+  `bic` varchar(11) DEFAULT NULL,
+  PRIMARY KEY (`bankid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3]]></sql>
+		</table>
+		<table>
+			<name>vtiger_bankcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_bankcf` (
+  `bankid` int NOT NULL,
+  PRIMARY KEY (`bankid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3]]></sql>
+		</table>
+	</tables>
+</schema>
