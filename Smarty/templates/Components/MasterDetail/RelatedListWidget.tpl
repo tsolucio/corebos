@@ -46,7 +46,7 @@
 </article>
 <script>
 relatedlistgrid.RLInstanceInfo['{$functionName}']  = '{$RLInstance}';
-relatedlistgrid.FieldLabels['{$functionName}']  = '{$FieldLabels}';
+relatedlistgrid.FieldLabels['{$functionName}']  = "{$FieldLabels|addslashes}";
 relatedlistgrid.RelatedFields['{$functionName}']  = '{$RelatedFields}';
 relatedlistgrid.Tooltips['{$functionName}']  = '{$Tooltips}';
 relatedlistgrid.MapName['{$functionName}'] = '{$mapname}';

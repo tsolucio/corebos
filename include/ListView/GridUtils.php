@@ -810,7 +810,19 @@ function generateRelationQuery($module, $relatedmodule, $fieldname, $value, $map
 	} else {
 		$qg->setFields(array('*'));
 	}
-	$qg->addReferenceModuleFieldCondition($relatedmodule, $fieldname, 'id', $value, 'e');
+	$conditions = '';
+	foreach ($map['modules'] as $mod) {
+		if ($mod['name'] == $module) {
+			$conditions = json_decode(trim($mod['listview']['conditions']), true);
+			break;
+		}
+	}
+	if (!empty($conditions)) {
+		foreach ($conditions as $cond) {
+			$qg->addReferenceModuleFieldCondition($cond['relatedmodule'], $cond['relatedfieldname'], $cond['fieldname'], $cond['value'], $cond['operation'], $cond['glue']);
+		}
+	}
+	$qg->addReferenceModuleFieldCondition($relatedmodule, $fieldname, 'id', $value, 'e', 'and');
 	return $qg->getQuery();
 }
 

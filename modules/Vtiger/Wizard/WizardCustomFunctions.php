@@ -196,7 +196,14 @@ class WizardCustomFunctions {
 			}
 		}
 		coreBOS_Session::set('DuplicatedRecords^parentpc^'.$parentpc, $parentpc);
-		MassCreate($target, $current_user);
+		$mc = MassCreate($target, $current_user);
+		if (isset($mc['wssuccess']) && !$mc['wssuccess']) {
+			return false;
+		}
+		foreach ($mc['success_creates'] as $key) {
+			$id = explode('x', $key['id'])[1];
+			coreBOS_Session::set('DuplicatedRecords^'.$step.'^'.$id, $id);
+		}
 		return true;
 	}
 
@@ -216,7 +223,8 @@ class WizardCustomFunctions {
 				'data' => array(
 					[$rid],
 					[$adb->query_result($result, 0, 'productid')]
-				)
+				),
+				'step' => vtlib_purify($_REQUEST['step'])
 			);
 			$this->module = 'ProductComponent';
 			$data = $this->Create_ProductComponent();
