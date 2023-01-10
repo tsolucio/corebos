@@ -1,0 +1,35 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cbsodetails</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_cbsodetails` (
+`cbsodetailsid` INT(11) NOT NULL,
+`cbsodetailsno` VARCHAR(255) DEFAULT NULL,
+`salesorder_no` VARCHAR(255) DEFAULT NULL,
+`quantity` DECIMAL(11) DEFAULT NULL,
+`unit_price` DECIMAL(10,2) DEFAULT NULL,
+`pricebook` INT(40) DEFAULT NULL,
+`iva` DECIMAL(10,2) DEFAULT NULL,
+`total` DECIMAL(16,2) DEFAULT NULL,
+`description` VARCHAR(100) DEFAULT NULL,
+`subject_reference` VARCHAR(50) DEFAULT NULL,
+`product` INT(40) DEFAULT NULL,
+`sequence_num` DECIMAL(11) DEFAULT NULL,
+`vat_value` DECIMAL(10,2) DEFAULT NULL,
+`master_order` INT(40) DEFAULT NULL,
+`rate` DECIMAL(3,2) DEFAULT NULL,
+`descriptive_note` VARCHAR(56) DEFAULT NULL,
+`unit` DECIMAL(11) DEFAULT NULL,
+PRIMARY KEY (`cbsodetailsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbsodetailscf</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_cbsodetailscf` (
+`cbsodetailsid` INT(11) NOT NULL,
+PRIMARY KEY (`cbsodetailsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

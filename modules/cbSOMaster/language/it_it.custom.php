@@ -1,0 +1,70 @@
+<?php
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ************************************************************************************/
+
+$custom_strings = array(
+	'cbSOMaster' => 'Ordini',
+	'SINGLE_cbSOMaster' => 'Ordine',
+	'cbSOMaster ID' => 'ID Ordine',
+	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
+	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
+	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
+	'Sales Order Master no' => 'Ordine no',
+	'Soggetto' => 'Soggetto',
+	'Ordine di acquisto' => 'Ordine di acquisto',
+	'Data chiusura' => 'Data Ordine',
+	'Pendente' => 'Codice Cliente',
+	'Commissione Vendita' => 'Commissione Vendita',
+	'Nome Azienda' => 'Nome Azienda',
+	'Fatturata' => 'Fatturata',
+	'Città (fatturazione)' => 'Città (fatturazione)',
+	'Provincia (fatturazione)' => 'Provincia (fatturazione)',
+	'Codice (fatturazione)' => 'Codice (fatturazione)',
+	'Stato (fatturazione)' => 'Stato (fatturazione)',
+	'Numero cliente' => 'Numero Preventivo',
+	'Nome Preventivo' => 'Nome Preventivo',
+	'Nome Contatto' => 'Nome Contatto',
+	'Trasportatore' => 'Trasportatore',
+	'Stato' => 'Stato',
+	'Imposta Fabbricazione' => 'Imposta Fabbricazione',
+	'Prodotto' => 'Prodotto',
+	'VAT Valore' => 'VAT Valore',
+	'Assigned To' => 'Assegnato a ',
+	'Created By' => 'Creato da',
+	'Created Time' => 'Orario creazione',
+	'Modified Time' => 'Orario modifica',
+	'Description' => 'Descrizione',
+	'Città (spedizione)' => 'Città (spedizione)',
+	'Provincia (spedizione)' => 'Provincia (spedizione)',
+	'Codice (spedizione)' => 'Codice (spedizione)',
+	'Stato (spedizione)' => 'Stato (spedizione)',
+	'Business Case' => 'Business Case',
+	'Related Business Case' => 'Related Business Case',
+	'ModuleName' => 'Nome Modulo',
+	'SINGLE_ModuleName' => 'Nome Modulo',
+	'ModuleName ID' => 'ID Nome Modulo',
+	'Data Consegna' => 'Data Consegna',
+	'test' => 'test',
+	'Revision' => 'Versione',
+	'Active Revision' => 'Versione Attiva',
+	'Version number' => 'Version number',
+	'Fattura (ID)' => 'Fattura (ID)',
+	'Ind. Ragione Sociale' => 'Ragione Sociale',
+	'Indirizzo 1' => 'Indirizzo 1',
+	'Indirizzo 2' => 'Indirizzo 2',
+	'CAP' => 'CAP',
+	'Localita' => 'Localita',
+	'Comune' => 'Comune',
+	'Nazione' => 'Nazione',
+	'Ind. Telefono' => 'Ind. Telefono',
+	'cbSODetails' => 'cbSODetails',
+	'Issuecards' => 'Issuecards',
+	'Documents' => 'Documenti',
+);
+?>

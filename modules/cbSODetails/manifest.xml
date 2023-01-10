@@ -1,0 +1,472 @@
+<?xml version="1.0"?>
+<module>
+  <name>cbSODetails</name>
+  <label>Sales Order Details</label>
+  <parent>Eventi e attività;</parent>
+  <version>1.0</version>
+  <short_description>cbSODetails module</short_description>
+  <dependencies>
+    <vtiger_version>5.4.0</vtiger_version>
+    <vtiger_max_version>5.*</vtiger_max_version>
+  </dependencies>
+  <license>
+    <inline><![CDATA[*************************************************************************************************
+	 * Copyright 2022 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
+	 * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
+	 * Vizsage Public License (the "License"). You may not use this file except in compliance with the
+	 * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
+	 * and share improvements. However, for proper details please read the full License, available at
+	 * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
+	 * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
+	 * applicable law or agreed to in writing, any software distributed under the License is distributed
+	 * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and limitations under the
+	 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
+	 *************************************************************************************************
+	 *  Module       : cbSODetails
+	 *  Version      : 5.4.0
+	 *  Author       :  Administrator
+	 *************************************************************************************************
+		]]></inline>
+  </license>
+  <tables>
+    <table>
+      <name>vtiger_cbsodetails</name>
+      <sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_cbsodetails` (
+`cbsodetailsid` INT(11) NOT NULL,
+`cbsodetailsno` VARCHAR(255) DEFAULT NULL,
+`salesorder_no` VARCHAR(255) DEFAULT NULL,
+`quantity` DECIMAL(11) DEFAULT NULL,
+`unit_price` DECIMAL(10,2) DEFAULT NULL,
+`pricebook` INT(40) DEFAULT NULL,
+`iva` DECIMAL(10,2) DEFAULT NULL,
+`total` DECIMAL(16,2) DEFAULT NULL,
+`description` VARCHAR(100) DEFAULT NULL,
+`subject_reference` VARCHAR(50) DEFAULT NULL,
+`product` INT(40) DEFAULT NULL,
+`sequence_num` DECIMAL(11) DEFAULT NULL,
+`vat_value` DECIMAL(10,2) DEFAULT NULL,
+`master_order` INT(40) DEFAULT NULL,
+`rate` DECIMAL(3,2) DEFAULT NULL,
+`descriptive_note` VARCHAR(56) DEFAULT NULL,
+`unit` DECIMAL(11) DEFAULT NULL,
+PRIMARY KEY (`cbsodetailsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+    </table>
+    <table>
+      <name>vtiger_cbsodetailscf</name>
+      <sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_cbsodetailscf` (
+`cbsodetailsid` INT(11) NOT NULL,
+PRIMARY KEY (`cbsodetailsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+    </table>
+  </tables>
+  <blocks>
+    <block>
+      <label>LBL_CBSODETAILS_INFORMATION</label>
+      <fields>
+        <field>
+          <fieldname>cbsodetailsno</fieldname>
+          <uitype>4</uitype>
+          <columnname>cbsodetailsno</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Sales Order Details no</fieldlabel>
+          <presence>2</presence>
+          <readonly>1</readonly>
+          <sequence>0</sequence>
+          <typeofdata>V~O</typeofdata>
+          <quickcreate>1</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+          <entityidentifier>
+            <entityidfield>cbsodetailsid</entityidfield>
+            <entityidcolumn>cbsodetailsid</entityidcolumn>
+          </entityidentifier>
+        </field>
+        <field>
+          <fieldname>salesorder_no</fieldname>
+          <uitype>4</uitype>
+          <columnname>salesorder_no</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Dettagli Ordine no</fieldlabel>
+          <presence>0</presence>
+          <readonly>1</readonly>
+          <sequence>0</sequence>
+          <typeofdata>V~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>quantity</fieldname>
+          <uitype>7</uitype>
+          <columnname>quantity</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Quantit&#xE0;</fieldlabel>
+          <presence>0</presence>
+          <maximumlength>11</maximumlength>
+          <readonly>1</readonly>
+          <sequence>1</sequence>
+          <typeofdata>NN~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>unit_price</fieldname>
+          <uitype>7</uitype>
+          <columnname>unit_price</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Prezz. unit</fieldlabel>
+          <presence>0</presence>
+          <maximumlength>10,2</maximumlength>
+          <readonly>1</readonly>
+          <sequence>2</sequence>
+          <typeofdata>NN~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>pricebook</fieldname>
+          <uitype>10</uitype>
+          <columnname>pricebook</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Listino</fieldlabel>
+          <presence>0</presence>
+          <readonly>1</readonly>
+          <sequence>3</sequence>
+          <typeofdata>V~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+          <relatedmodules>
+            <relatedmodule>PriceBooks</relatedmodule>
+          </relatedmodules>
+        </field>
+        <field>
+          <fieldname>iva</fieldname>
+          <uitype>7</uitype>
+          <columnname>iva</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>IVA(%)</fieldlabel>
+          <presence>0</presence>
+          <maximumlength>10,2</maximumlength>
+          <readonly>1</readonly>
+          <sequence>4</sequence>
+          <typeofdata>NN~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>total</fieldname>
+          <uitype>7</uitype>
+          <columnname>total</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Totale</fieldlabel>
+          <presence>0</presence>
+          <maximumlength>16,2</maximumlength>
+          <readonly>1</readonly>
+          <sequence>5</sequence>
+          <typeofdata>NN~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>description</fieldname>
+          <uitype>1</uitype>
+          <columnname>description</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Descrizione</fieldlabel>
+          <presence>0</presence>
+          <maximumlength>100</maximumlength>
+          <readonly>1</readonly>
+          <sequence>6</sequence>
+          <typeofdata>V~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>subject_reference</fieldname>
+          <uitype>1</uitype>
+          <columnname>subject_reference</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Subject reference</fieldlabel>
+          <presence>0</presence>
+          <maximumlength>50</maximumlength>
+          <readonly>1</readonly>
+          <sequence>7</sequence>
+          <typeofdata>V~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>product</fieldname>
+          <uitype>10</uitype>
+          <columnname>product</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Prodotto</fieldlabel>
+          <presence>0</presence>
+          <readonly>1</readonly>
+          <sequence>8</sequence>
+          <typeofdata>V~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+          <relatedmodules>
+            <relatedmodule>Products</relatedmodule>
+          </relatedmodules>
+        </field>
+        <field>
+          <fieldname>sequence_num</fieldname>
+          <uitype>7</uitype>
+          <columnname>sequence_num</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Sequence Number</fieldlabel>
+          <presence>0</presence>
+          <maximumlength>11</maximumlength>
+          <readonly>1</readonly>
+          <sequence>9</sequence>
+          <typeofdata>NN~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>vat_value</fieldname>
+          <uitype>7</uitype>
+          <columnname>vat_value</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>VAT Valore</fieldlabel>
+          <presence>0</presence>
+          <maximumlength>10,2</maximumlength>
+          <readonly>1</readonly>
+          <sequence>10</sequence>
+          <typeofdata>NN~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>master_order</fieldname>
+          <uitype>10</uitype>
+          <columnname>master_order</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Ordine Master</fieldlabel>
+          <presence>0</presence>
+          <readonly>1</readonly>
+          <sequence>11</sequence>
+          <typeofdata>V~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+          <relatedmodules>
+            <relatedmodule>cbSOMaster</relatedmodule>
+          </relatedmodules>
+        </field>
+        <field>
+          <fieldname>rate</fieldname>
+          <uitype>7</uitype>
+          <columnname>rate</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Aliquota</fieldlabel>
+          <presence>0</presence>
+          <maximumlength>3,2</maximumlength>
+          <readonly>1</readonly>
+          <sequence>12</sequence>
+          <typeofdata>NN~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>descriptive_note</fieldname>
+          <uitype>1</uitype>
+          <columnname>descriptive_note</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Nota Desc.</fieldlabel>
+          <presence>0</presence>
+          <maximumlength>56</maximumlength>
+          <readonly>1</readonly>
+          <sequence>13</sequence>
+          <typeofdata>V~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>unit</fieldname>
+          <uitype>7</uitype>
+          <columnname>unit</columnname>
+          <tablename>vtiger_cbsodetails</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Unit&#xE0;</fieldlabel>
+          <presence>0</presence>
+          <maximumlength>11</maximumlength>
+          <readonly>1</readonly>
+          <sequence>14</sequence>
+          <typeofdata>NN~O</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+        <field>
+          <fieldname>assigned_user_id</fieldname>
+          <uitype>53</uitype>
+          <columnname>smownerid</columnname>
+          <tablename>vtiger_crmentity</tablename>
+          <generatedtype>0</generatedtype>
+          <fieldlabel>Assigned To</fieldlabel>
+          <presence>0</presence>
+          <readonly>1</readonly>
+          <sequence>15</sequence>
+          <typeofdata>V~M</typeofdata>
+          <quickcreate>0</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>0</masseditable>
+        </field>
+        <field>
+          <fieldname>created_user_id</fieldname>
+          <uitype>52</uitype>
+          <columnname>smcreatorid</columnname>
+          <tablename>vtiger_crmentity</tablename>
+          <generatedtype>0</generatedtype>
+          <fieldlabel>Created By</fieldlabel>
+          <presence>0</presence>
+          <readonly>1</readonly>
+          <sequence>16</sequence>
+          <typeofdata>V~O</typeofdata>
+          <quickcreate>3</quickcreate>
+          <displaytype>2</displaytype>
+          <masseditable>0</masseditable>
+        </field>
+        <field>
+          <fieldname>createdtime</fieldname>
+          <uitype>70</uitype>
+          <columnname>createdtime</columnname>
+          <tablename>vtiger_crmentity</tablename>
+          <generatedtype>0</generatedtype>
+          <fieldlabel>Created Time</fieldlabel>
+          <presence>0</presence>
+          <readonly>1</readonly>
+          <sequence>17</sequence>
+          <typeofdata>DT~O</typeofdata>
+          <quickcreate>3</quickcreate>
+          <displaytype>2</displaytype>
+          <masseditable>0</masseditable>
+        </field>
+        <field>
+          <fieldname>modifiedtime</fieldname>
+          <uitype>70</uitype>
+          <columnname>modifiedtime</columnname>
+          <tablename>vtiger_crmentity</tablename>
+          <generatedtype>0</generatedtype>
+          <fieldlabel>Modified Time</fieldlabel>
+          <presence>0</presence>
+          <readonly>1</readonly>
+          <sequence>18</sequence>
+          <typeofdata>DT~O</typeofdata>
+          <quickcreate>3</quickcreate>
+          <displaytype>2</displaytype>
+          <masseditable>0</masseditable>
+        </field>
+      </fields>
+    </block>
+    <block>
+      <label>LBL_CUSTOM_INFORMATION</label>
+      <fields/>
+    </block>
+    <block>
+      <label>LBL_DESCRIPTION_INFORMATION</label>
+      <fields>
+        <field>
+          <fieldname>description</fieldname>
+          <uitype>19</uitype>
+          <columnname>description</columnname>
+          <tablename>vtiger_crmentity</tablename>
+          <generatedtype>1</generatedtype>
+          <fieldlabel>Description</fieldlabel>
+          <presence>2</presence>
+          <readonly>1</readonly>
+          <sequence>19</sequence>
+          <typeofdata>V~O</typeofdata>
+          <quickcreate>1</quickcreate>
+          <displaytype>1</displaytype>
+          <masseditable>1</masseditable>
+        </field>
+      </fields>
+    </block>
+  </blocks>
+  <customviews>
+    <customview>
+      <viewname>All</viewname>
+      <setdefault>true</setdefault>
+      <setmetrics>false</setmetrics>
+      <fields>
+        <field>
+          <fieldname>cbsodetailsno</fieldname>
+          <columnindex>0</columnindex>
+        </field>
+        <field>
+          <fieldname>salesorder_no</fieldname>
+          <columnindex>1</columnindex>
+        </field>
+        <field>
+          <fieldname>quantity</fieldname>
+          <columnindex>2</columnindex>
+        </field>
+        <field>
+          <fieldname>pricebook</fieldname>
+          <columnindex>3</columnindex>
+        </field>
+        <field>
+          <fieldname/>
+          <columnindex>4</columnindex>
+        </field>
+      </fields>
+    </customview>
+  </customviews>
+  <sharingaccess>
+    <default>public</default>
+  </sharingaccess>
+  <relatedlists/>
+  <actions>
+    <action>
+      <name><![CDATA[Merge]]></name>
+      <status>disabled</status>
+    </action>
+    <action>
+      <name><![CDATA[Import]]></name>
+      <status>disabled</status>
+    </action>
+    <action>
+      <name><![CDATA[Export]]></name>
+      <status>disabled</status>
+    </action>
+  </actions>
+  <events>
+	</events>
+  <customlinks>
+	</customlinks>
+  <crons>
+	</crons>
+</module>

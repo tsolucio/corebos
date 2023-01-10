@@ -1,0 +1,27 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cbaddress</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_cbaddress` (
+  `cbaddressid` int(11) NOT NULL,
+  `cbaddressno` varchar(255) DEFAULT NULL,
+  `reference` varchar(250) DEFAULT NULL,
+  `street` varchar(250) DEFAULT NULL,
+  `pobox` varchar(250) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `state` varchar(100) DEFAULT NULL,
+  `postalcode` varchar(30) DEFAULT NULL,
+  `country` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`cbaddressid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbaddresscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbaddresscf` (
+  `cbaddressid` int(11) NOT NULL,
+  PRIMARY KEY (`cbaddressid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

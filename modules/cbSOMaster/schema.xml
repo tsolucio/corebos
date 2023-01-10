@@ -1,0 +1,47 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cbsomaster</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_cbsomaster` (
+`cbsomasterid` INT(11) NOT NULL,
+`cbsomasterno` VARCHAR(255) DEFAULT NULL,
+`subject` VARCHAR(30) DEFAULT NULL,
+`salesorder_no` VARCHAR(255) DEFAULT NULL,
+`purchase_order` VARCHAR(20) DEFAULT NULL,
+`duedate` DATE DEFAULT NULL,
+`pending` VARCHAR(20) DEFAULT NULL,
+`salescommission` DECIMAL(11) DEFAULT NULL,
+`account_id` INT(40) DEFAULT NULL,
+`invoiced` VARCHAR(5) DEFAULT NULL,
+`bill_street` VARCHAR(20) DEFAULT NULL,
+`bill_city` VARCHAR(30) DEFAULT NULL,
+`bill_state` VARCHAR(30) DEFAULT NULL,
+`bill_code` VARCHAR(30) DEFAULT NULL,
+`bill_country` VARCHAR(30) DEFAULT NULL,
+`bill_country` VARCHAR(20) DEFAULT NULL,
+`customerno` VARCHAR(20) DEFAULT NULL,
+`quote_id` INT(40) DEFAULT NULL,
+`contact_id` INT(40) DEFAULT NULL,
+`transporter` VARCHAR(100) DEFAULT NULL,
+`som_status` VARCHAR(100) DEFAULT NULL,
+`exciseduty` VARCHAR(20) DEFAULT NULL,
+`product` INT(40) DEFAULT NULL,
+`vat_value` DECIMAL(10,2) DEFAULT NULL,
+`ship_street` VARCHAR(20) DEFAULT NULL,
+`ship_city` VARCHAR(30) DEFAULT NULL,
+`ship_state` VARCHAR(30) DEFAULT NULL,
+`ship_code` VARCHAR(20) DEFAULT NULL,
+`ship_country` VARCHAR(20) DEFAULT NULL,
+PRIMARY KEY (`cbsomasterid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbsomastercf</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_cbsomastercf` (
+`cbsomasterid` INT(11) NOT NULL,
+PRIMARY KEY (`cbsomasterid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

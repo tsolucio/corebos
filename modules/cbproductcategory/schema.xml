@@ -1,0 +1,24 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_prodcat</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_prodcat` (
+  `catid` int(11) NOT NULL,
+  `catname` varchar(100) DEFAULT NULL,
+  `catno` varchar(100) DEFAULT NULL,
+  `categorytype` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`catid`),
+  KEY `catno` (`catno`),
+  KEY `categorytype` (`categorytype`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_prodcatcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_prodcatcf` (
+  `catid` int(11) NOT NULL,
+  PRIMARY KEY (`catid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>
