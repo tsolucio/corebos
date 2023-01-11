@@ -485,6 +485,9 @@ class WizardActions extends WizardCustomFunctions {
 				foreach ($oldRecord->column_fields as $key => $value) {
 					$newRecord->column_fields[$key] = $value;
 				}
+				if (isset($oldRecord->column_fields['_generated'])) {
+					$newRecord->column_fields['_generated'] = 1;
+				}
 				$newRecord->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newRecord->column_fields, $handlerMeta);
 				$newRecord->saveentity($modulename);
 				$step = $data['step'] - 1;
