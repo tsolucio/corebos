@@ -11480,7 +11480,7 @@ precacheAndRoute([{
   "revision": "aa47e9d1e0a201dff985c92e7bf4ad3f"
 }, {
   "url": "include/js/general.js",
-  "revision": "301a730c0f977f97eb8a075061ed4a70"
+  "revision": "be56e1e02d98ce3aa44a35c7f7833f31"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "98f36d72db2eab66f7c00e7037efc23b"
@@ -11852,7 +11852,7 @@ precacheAndRoute([{
   "revision": "6d9f81de1ff75ec596813151f2bd3034"
 }, {
   "url": "modules/com_vtiger_workflow/resources/upserttask.js",
-  "revision": "553834ae8f29bd25ced0730f0c33e19e"
+  "revision": "eb7941520bbda85a3767daf07ea4934c"
 }, {
   "url": "modules/com_vtiger_workflow/resources/vtigerwebservices.js",
   "revision": "57eb8c551a6bceb48b08822fb48438d0"
@@ -11864,7 +11864,7 @@ precacheAndRoute([{
   "revision": "9ca8d03c511c69f165bb5fa56b9c144c"
 }, {
   "url": "modules/com_vtiger_workflow/resources/wfWatermark.js",
-  "revision": "f34284292ee2dee970098cdd2a891ff6"
+  "revision": "7ddc6419e64b37794df7dd277895da67"
 }, {
   "url": "modules/com_vtiger_workflow/resources/Whatsappckeditor.js",
   "revision": "fab39532561524488d757c60df5fedd7"
