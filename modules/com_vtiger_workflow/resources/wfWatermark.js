@@ -25,9 +25,29 @@ function wfeditexptype(fieldValueNode, fieldType) {
 	document.getElementById('editpopup_expression_type').value = exptype;
 }
 
-document.addEventListener('DOMContentLoaded', function (event) {
+function fillingWmPositionSelectElement() {
+	const imagefieldName = document.querySelector('#imagefieldName');
+	var vtinst = new VtigerWebservices('webservice.php');
+	vtinst.extendSession(function () {
+		vtinst.describeObject(moduleName, function (status, result) {
+			let fields = result.fields;
+			for (let index = 0; index < fields.length; index++) {
+				const element = fields[index];
+				const {label, name, uitype} = element;
+				if (uitype == 69) {
+					imagefieldName.insertAdjacentHTML('beforeend', `<option value="${name}">${label}</option>`);
+				}
+			}
+		});
+	});
+}
+
+document.addEventListener('DOMContentLoaded', async function (event) {
 	jQuery('#editpopup').draggable({ handle: '#editpopup_draghandle' });
 	editpopupobj = fieldExpressionPopup(moduleName, $);
 	editpopupobj.setModule(moduleName);
 	editpopupobj.close();
+
+	// filling the wmPosition select element
+	fillingWmPositionSelectElement();
 });
