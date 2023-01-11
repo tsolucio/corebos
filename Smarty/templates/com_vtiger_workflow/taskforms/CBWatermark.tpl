@@ -42,7 +42,7 @@
 			<div class="slds-form-element">
 				<label class="slds-form-element__label">{'image field name'|@getTranslatedString}</label>
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
-					<input type="text" name="imagefieldName" id="imagefieldName" class="slds slds-input" value="{$task->imagefieldName}">
+					<select name="imagefieldName" id="imagefieldName" class="slds slds-input" value="{$task->imagefieldName}"></select>
 				</div>
 			</div>
 		</div>
@@ -52,7 +52,7 @@
 			<div class="slds-form-element">
 				<label class="slds-form-element__label">{'Water Mark Size'|@getTranslatedString}</label>
 				<div class="slds-form-element__control slds-input-has-fixed-addon">
-					<input type="text" name="wmSize" id="wmSize" class="slds slds-input" value="{$task->wmSize}">
+					<input type="number" name="wmSize" id="wmSize" class="slds slds-input" value="{$task->wmSize}">
 				</div>
 			</div>
 		</div>
