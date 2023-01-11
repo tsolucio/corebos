@@ -7575,6 +7575,49 @@ function onBodyClickActions(e) {
 	}
 }
 
+function openWizard(mapid) {
+	let getWizardActive = localStorage.getItem(`currentWizardActive`);
+	let modalContainer = document.getElementById('global-modal-container');
+	if (getWizardActive == null) {
+		localStorage.setItem(`currentWizardActive`, mapid);
+		if (modalContainer) {
+			ldsModal.close();
+		}
+	} else {
+		if (getWizardActive == mapid) {
+			if (modalContainer) {
+				modalContainer.style.display = '';
+				return false;
+			}
+		} else {
+			localStorage.setItem(`currentWizardActive`, mapid);
+			if (modalContainer) {
+				ldsModal.close();
+			}
+		}
+	}
+	let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+mapid;
+	ldsModal.show('Wizard', '<div id="cbds-loader" style="height: 200px"></div>', 'large');
+	loadJS('include/js/wizard.js');
+	setTimeout(function () {
+		Request(url, 'post', {
+			grid: mapid,
+			recordid: 0,
+			isModal: true
+		}).then(function(response) {
+			ldsModal.close();
+			ldsModal.show('Wizard', response, 'large', '', '', false);
+			let wizardTitle = document.getElementById('wizard-title').innerHTML;
+			document.getElementById('global-modal-container__title').innerHTML = wizardTitle;
+			document.getElementById('wizard-title').innerHTML = '';
+			const event = new CustomEvent('onWizardModal', {detail: {
+				'ProceedToNextStep': false
+			}});
+			window.dispatchEvent(event);
+		});
+	}, 100);
+}
+
 window.addEventListener('DOMContentLoaded', () => {
 	AutocompleteSetup();
 	initSelect2();
