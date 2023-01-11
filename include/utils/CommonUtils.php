@@ -3931,11 +3931,19 @@ function numberBytes($size) {
 	}
 }
 
-function getModuleFieldsInfo($module) {
+function getModuleFieldsInfo($module, $columns = ['*']) {
 	global $adb;
-	$rs = $adb->pquery('SELECT * FROM vtiger_field WHERE tabid=?', array(
-		getTabid($module)
-	));
+	$rs = '';
+	if ($columns[0] == '*') {
+		$rs = $adb->pquery('SELECT * FROM vtiger_field WHERE tabid=?', array(getTabid($module)));
+	} else {
+		$query = $adb->convert2Sql(
+			'SELECT ? FROM vtiger_field WHERE tabid=?',
+			array(implode(',', $columns), getTabid($module))
+		);
+		$query = str_replace("'", '', $query);
+		$rs = $adb->query($query);
+	}
 	if ($adb->num_rows($rs) > 0) {
 		return $rs->GetRows();
 	}
