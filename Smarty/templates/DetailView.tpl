@@ -34,6 +34,36 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 	{/if}
 </script>
 
+{if $Application_DetailView_ActionPanel_CenteredActions}
+<style>
+	#actioncolumn * {
+		padding: 0;
+		margin: 0;
+	}
+	#actioncolumn .actionlinks_events_todo{
+		margin: 0 !important;
+	}
+	#actioncolumn ul {
+		width: 80%;
+		margin: auto !important;
+	}
+	#actioncolumn ul li a {
+		padding: 0 15px;
+		width: 100%;
+		margin: 5px 0;
+	}
+	#actioncolumn div div a {
+		padding: 0 15px;
+		width: 100%;
+		margin: 5px 0;
+	}
+	#actioncolumn table {
+		width: 80% !important;
+		margin: auto !important;
+	}
+</style>
+{/if}
+
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
 
 {if $MODULE eq 'Accounts' || $MODULE eq 'Contacts'}
@@ -439,7 +469,9 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 																{* Pickup the translated label provided by the module *}
 																{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
 															{/if}
-															<br/>
+															{if !$Application_DetailView_ActionPanel_CenteredActions}
+																<br/>
+															{/if}
 															<input type="hidden" id="{$CUSTOMLINK->linklabel|replace:' ':''}LINKID" value="{$CUSTOMLINK->linkid}">
 															<table style="border:0;width:100%" class="rightMailMerge" id="{$CUSTOMLINK->linklabel}">
 																{if $CUSTOMLINK->widget_header}

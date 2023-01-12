@@ -430,6 +430,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'OFF | {Business Map ID} | UPDATE',
 	'definition' => 'Qué mostrar en el subtítulo del encabezado de página. Nada (OFF), el resultado de un mapa de negocio o el texto "Actualizado" predeterminado.',
 ),
+'Application_DetailView_ActionPanel_CenteredActions' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Centering action buttons',
+),
 'Application_EditView_Submit_Form_WithEnter' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
