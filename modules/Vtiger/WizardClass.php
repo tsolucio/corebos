@@ -92,6 +92,9 @@ class WizardView {
 		global $smarty;
 		$smarty->assign('formodule', $this->module);
 		$smarty->assign('GroupBy', $this->groupby);
+		if ($smarty->getTemplateVars('wizardOperation') == 'FORMTEMPLATE') {
+			return $smarty->fetch('Smarty/templates/Components/Wizard/WizardFormTemplate.tpl');
+		}
 		if ($this->mapid != 0) {
 			$cbMap = cbMap::getMapByID($this->mapid);
 			$fieldlist = $cbMap->MassUpsertGridView();
@@ -136,7 +139,7 @@ class WizardView {
 			}
 			$smarty->assign('WizardFilterBy', $condition);
 			$smarty->assign('WizardConditionQuery', $query);
-			return $smarty->fetch('Smarty/templates/Components/WizardListView.tpl');
+			return $smarty->fetch('Smarty/templates/Components/Wizard/WizardListView.tpl');
 		}
 	}
 
@@ -484,9 +487,6 @@ class WizardActions extends WizardCustomFunctions {
 				$newRecord->mode = '';
 				foreach ($oldRecord->column_fields as $key => $value) {
 					$newRecord->column_fields[$key] = $value;
-				}
-				if (isset($oldRecord->column_fields['_generated'])) {
-					$newRecord->column_fields['_generated'] = 1;
 				}
 				$newRecord->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newRecord->column_fields, $handlerMeta);
 				$newRecord->saveentity($modulename);

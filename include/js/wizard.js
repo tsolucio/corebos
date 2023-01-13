@@ -472,9 +472,6 @@ class WizardComponent {
 		if (this.WizardGoBack[this.ActiveStep-1] == 0) {
 			this.el(`btn-back`).setAttribute('disabled', '');
 		}
-		if (this.ActiveStep == 1 && this.isModal) {
-			this.el(`btn-back`).setAttribute('disabled', '');
-		}
 		let el = document.getElementById('save-btn');
 		el.innerHTML = '';
 		if (!this.ResetWizard[this.ActiveStep] && this.WizardSaveAction[this.ActiveStep]) {
