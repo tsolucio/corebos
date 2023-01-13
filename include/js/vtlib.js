@@ -111,7 +111,7 @@ function popup_filter_map_popup_window(fldname) {
 				.then((recordValue) => {
 					let advft_criteria = JSON.stringify(recordValue);
 					let advft_criteria_groups = JSON.stringify(PopupFilterMapResults[key]['advft_criteria_groups']);
-					window.open('index.php?module=' + fieldModule + '&action=Popup&html=Popup_picker&form=DetailView&forfield=' + fldname + '&query=true&search=true&searchtype=advance&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups, 'vtlibui10qc', cbPopupWindowSettings);
+					window.open('index.php?module=' + fieldModule + '&action=Popup&html=Popup_picker&form=DetailView&forfield=' + fldname + '&query=true&search=true&searchtype=advance&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups, '_blank', cbPopupWindowSettings);
 				});
 				return true;
 			}
@@ -121,7 +121,7 @@ function popup_filter_map_popup_window(fldname) {
 				.then((recordValue) => {
 					let advft_criteria = JSON.stringify(recordValue);
 					let advft_criteria_groups = JSON.stringify(PopupFilterMapResults[key]['advft_criteria_groups']);
-					window.open('index.php?module=' + fieldModule + '&action=Popup&html=Popup_picker&form=DetailView&forfield=' + fldname + '&query=true&search=true&searchtype=advance&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups, 'vtlibui10qc', cbPopupWindowSettings);
+					window.open('index.php?module=' + fieldModule + '&action=Popup&html=Popup_picker&form=DetailView&forfield=' + fldname + '&query=true&search=true&searchtype=advance&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups, '_blank', cbPopupWindowSettings);
 				});
 				return true;
 			}
