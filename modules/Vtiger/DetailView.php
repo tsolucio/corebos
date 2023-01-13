@@ -73,14 +73,16 @@ if (GlobalVariable::getVariable('Application_DetailView_Record_Navigation', 1) &
 }
 $IS_REL_LIST = isPresentRelatedLists($currentModule, true);
 $RLdata = array();
-foreach ($IS_REL_LIST as $id => $label) {
-	$name = getTabModuleName($id);
-	if (empty($name)) {
-		continue;
+if (!empty($IS_REL_LIST)) {
+	foreach ($IS_REL_LIST as $id => $label) {
+		$name = getTabModuleName($id);
+		if (empty($name)) {
+			continue;
+		}
+		$modInstance = CRMEntity::getInstance($name);
+		$icon = $modInstance->moduleIcon;
+		$RLdata[$id] = $icon;
 	}
-	$modInstance = CRMEntity::getInstance($name);
-	$icon = $modInstance->moduleIcon;
-	$RLdata[$id] = $icon;
 }
 $smarty->assign('IS_REL_LIST', $IS_REL_LIST);
 $smarty->assign('REL_MOD_ICONS', $RLdata);
