@@ -1559,7 +1559,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 			$returndata_[$curBlock]['__type'] = 'block';
 			$returndata_[$curBlock]['__sequence'] = empty($block_sequence[$idx]) ? 0 : (int)$block_sequence[$idx];
 			if (isset($returndata[$curBlock])) {
-				$returndata_[$curBlock] = $returndata[$curBlock];
+				$returndata_[$curBlock]['__fields'] = $returndata[$curBlock];
 			}
 			$idx++;
 		}
