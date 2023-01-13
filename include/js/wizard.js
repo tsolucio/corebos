@@ -268,7 +268,7 @@ class WizardComponent {
 			this.WizardInstance[`wzgrid${currentIdx}`].setRequestParams({
 				formodule: module,
 				query: this.WizardFilterBy[currentIdx],
-				context: this.Context,
+				context: filterFromContext == '' ? '' : this.Context,
 				filterFromContext: filterFromContext
 			});
 			this.WizardInstance[`wzgrid${currentIdx}`].setPerPage(parseInt(20));
