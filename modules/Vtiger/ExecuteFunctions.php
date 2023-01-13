@@ -193,8 +193,14 @@ switch ($functiontocall) {
 			$queryres=$adb->pquery($query, array());
 			if ($adb->num_rows($queryres)>0) {
 				$col=0;
+				$orgtabid = getTabid($module);
 				foreach ($fields as $field) {
-					$ret[$field]=$adb->query_result($queryres, 0, $col++);
+					$row = array(
+						$field => $adb->query_result($queryres, 0, $col++)
+					);
+					$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, $field);
+					$output = getDetailViewOutputHtml($finfo['uitype'], $finfo['fieldname'], $finfo['fieldlabel'], $row, $finfo['generatedtype'], $orgtabid, $module);
+					$ret[$field]= $output[1];
 				}
 			}
 		}
