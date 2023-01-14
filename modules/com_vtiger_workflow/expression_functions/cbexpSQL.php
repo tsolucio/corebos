@@ -77,6 +77,7 @@ function cbexpsql_supportedFunctions() {
 		'gt' => '>',
 		'ifelse' => 'if else then end',
 		'coalesce' => 'coalesce(a,...,n)',
+		'uniqid' => 'uniqid(prefix)',
 		'hash' => 'hash(field, method)',
 		'base64encode' => 'base64encode(string)',
 		'base64decode' => 'base64decode(string)',
@@ -172,6 +173,15 @@ function __cbexpsql_functionparamsvalue($prm, $mmodule) {
 
 function __cbexpsql_mathparams($func, $arr, $mmodule) {
 	return new VTExpressionSymbol(__cbexpsql_functionparamsvalue($arr[0], $mmodule).$func.__cbexpsql_functionparamsvalue($arr[1], $mmodule), 'math');
+}
+
+function cbexpsql_uniqid($arr, $mmodule) {
+	if (count($arr)) {
+		$arr[] = new VTExpressionSymbol('uuid_short()', 'function');
+		return __cbexpsql_functionparams('concat', $arr, $mmodule);
+	} else {
+		return __cbexpsql_functionparams('uuid_short', [], $mmodule);
+	}
 }
 
 function cbexpsql_concat($arr, $mmodule) {

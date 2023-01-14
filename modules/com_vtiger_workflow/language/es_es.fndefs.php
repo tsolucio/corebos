@@ -2454,6 +2454,23 @@ $WFExpressionFunctionDefinitons = array(
 		"regex('[a-z]+', msg )",
 	),
 ),
+'uniqid' => array(
+	'name' => 'uniqid(prefijo)',
+	'desc' => 'Esta función devuelve un ID único con un prefijo opcional delante.',
+	'params' => array(
+		array(
+			'name' => 'prefijo',
+			'type' => 'Texto',
+			'optional' => true,
+			'desc' => 'cualquier texto',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"uniqid('pfx')",
+		"uniqid()",
+	),
+),
 'array' => array(
 	'name' => 'array(valores...)',
 	'desc' => 'Esta función devuelve un array con los valores dados.',

@@ -2457,6 +2457,23 @@ $WFExpressionFunctionDefinitons = array(
 		"regex('[a-z]+', msg )",
 	),
 ),
+'uniqid' => array(
+	'name' => 'uniqid(prefix)',
+	'desc' => 'This function returns a unique ID with an optional prefix in front.',
+	'params' => array(
+		array(
+			'name' => 'prefix',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'any string',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"uniqid('pfx')",
+		"uniqid()",
+	),
+),
 'array' => array(
 	'name' => 'array(values...)',
 	'desc' => 'This function returns an array with the given values.',
