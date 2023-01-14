@@ -32,6 +32,7 @@ function cbexpsql_supportedFunctions() {
 		'stringlength' => 'stringlength(string)',
 		'stringreplace' => 'stringreplace(search,replace,subject)',
 		'regexreplace' => 'regexreplace(pattern,replace,subject)',
+		'char' => 'char(number)',
 		'substring' => 'substring(stringfield,start,length)',
 		'randomstring' => 'randomstring(length)',
 		'randomnumber' => 'randomnumber(min,max)',
@@ -343,6 +344,14 @@ function cbexpsql_hash($arr, $mmodule) {
 	}
 	unset($arr[1]);
 	return __cbexpsql_functionparams($func, $arr, $mmodule);
+}
+
+function cbexpsql_char($arr, $mmodule) {
+	if (count($arr)) {
+		return __cbexpsql_functionparams('char', [$arr[0]], $mmodule);
+	} else {
+		return '""';
+	}
 }
 
 function cbexpsql_substring($arr, $mmodule) {

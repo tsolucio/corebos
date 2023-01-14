@@ -877,6 +877,22 @@ $WFExpressionFunctionDefinitons = array(
 		'log(10, 10)',
 	),
 ),
+'char' => array(
+	'name' => 'char(number)',
+	'desc' => 'This function returns the character corresponding to the given ASCII code.',
+	'params' => array(
+		array(
+			'name' => 'number',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'ASCII code to convert to character',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		'char(39)',
+	),
+),
 'substring' => array(
 	'name' => 'substring(stringfield,start,length)',
 	'desc' => 'This function returns the portion of stringfield specified by the start and length parameters.',
