@@ -555,7 +555,8 @@ function cbexpsql_number_format($arr, $mmodule) {
 		$decimals = isset($arr[1]) ? $arr[1] : 0;
 		$dec_points = isset($arr[2]) ? $arr[2] : '.';
 		$thousands_sep = isset($arr[3]) ? $arr[3] : ',';
-		return 'REPLACE(REPLACE(REPLACE(FORMAT('.__cbexpsql_functionparamsvalue($number, $mmodule).', '.$decimals.'), ".", "@"), ",", '.__cbexpsql_functionparamsvalue($thousands_sep, $mmodule).'), "@", '.__cbexpsql_functionparamsvalue($dec_points, $mmodule).')';
+		return 'REPLACE(REPLACE(REPLACE(FORMAT('.__cbexpsql_functionparamsvalue($number, $mmodule).', '.$decimals.'), ".", "@"), ",", '
+			.__cbexpsql_functionparamsvalue($thousands_sep, $mmodule).'), "@", '.__cbexpsql_functionparamsvalue($dec_points, $mmodule).')';
 	}
 	return '""';
 }
