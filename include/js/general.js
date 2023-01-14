@@ -1592,6 +1592,9 @@ function getProcessInfo(edit_type, formName, action, callback, parameters) {
 	let forrecord = ps.shift();
 	let fparams = encodeURIComponent(ps.join('|'));
 	let params='&minfo='+minfo+'&bpmmodule='+module+'&pflowid=0&bpmrecord='+forrecord+'&params='+fparams+'&formName='+formName+'&actionName='+action;
+	if (callback!='') {
+		params = params + '&savefn=' + callback;
+	}
 	window.open('index.php?action=cbProcessInfoAjax&file=bpmpopup&module=cbProcessInfo'+params, null, cbPopupWindowSettings + ',dependent=yes');
 }
 
