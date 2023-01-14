@@ -477,7 +477,7 @@ class cbCalendar extends CRMEntity {
 		.'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
 		.' FROM vtiger_activity_reminder_popup'
 		.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
-		.' WHERE vtiger_crmentity.smownerid = '.$user->id.' and vtiger_crmentity.deleted=0 and vtiger_activity_reminder_popup.semodule!='."'cbCalendar'".$statcond
+		.' WHERE vtiger_crmentity.smownerid = '.$user->id." and vtiger_crmentity.deleted=0 and vtiger_activity_reminder_popup.semodule!='cbCalendar'".$statcond.$relcond
 		." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
 		."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
 		." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"
