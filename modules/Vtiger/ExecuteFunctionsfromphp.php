@@ -17,6 +17,7 @@
  *************************************************************************************************/
 require_once 'include/utils/utils.php';
 require_once 'include/utils/CommonUtils.php';
+require_once 'modules/cbMap/processmap/Validations.php';
 global $adb, $log, $current_user;
 
 function executefunctionsvalidate($functiontocall, $module, $structure = null) {
