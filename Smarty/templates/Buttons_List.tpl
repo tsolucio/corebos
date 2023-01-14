@@ -124,7 +124,8 @@
 									title="{$customlink_label}"
 									onclick="{$customlink_href}"
 									type="button"
-									name="button">
+									name="button"
+									id="{$customlink_id}">
 									{if $CUSTOMLINK->linkicon && strpos($CUSTOMLINK->linkicon, '}')>0}
 										{assign var="customlink_iconinfo" value=$CUSTOMLINK->linkicon|json_decode:true}
 										<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
