@@ -22,6 +22,14 @@ require_once 'modules/cbCalendar/cbCalendar.php';
 class CBAddNotification extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $cbmodule;
+	public $cbrecord;
+	public $cbdate;
+	public $cbtime;
+	public $moreaction;
+	public $moreinfo;
+	public $ownerid;
+	public $relwith;
 
 	public function getFieldNames() {
 		return array('cbmodule', 'cbrecord', 'cbdate', 'cbtime', 'moreaction', 'moreinfo', 'ownerid', 'relwith');

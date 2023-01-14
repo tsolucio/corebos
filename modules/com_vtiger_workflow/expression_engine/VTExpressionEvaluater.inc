@@ -14,6 +14,16 @@ interface VTExpressionEnv {
 
 class VTFieldExpressionEvaluater {
 
+	public $debug;
+	public $env;
+	public $expr;
+	public $functions;
+	public $needscontext;
+	public $operations;
+	public $operationsSQL;
+	public $operators;
+	public $rawparams;
+
 	public function __construct($expr) {
 		global $adb;
 		$this->debug = array();
