@@ -89,8 +89,7 @@ class corebos_stripepayment {
 				return $intentres;
 			} catch (Exception $e) {
 				$logbg->debug('createPaymentIntent failed:: '. $e->getMessage());
-				$body = $e->getJsonBody();
-				return $body;
+				return $e->getMessage();
 			}
 		}
 		return 0;
@@ -179,8 +178,7 @@ class corebos_stripepayment {
 			}
 		} catch (Exception $e) {
 			$logbg->debug('attachPaymentToCustomer failed:: '. $e->getMessage());
-			$body = $e->getJsonBody();
-			return $body;
+			return $e->getMessage();
 		}
 	}
 
