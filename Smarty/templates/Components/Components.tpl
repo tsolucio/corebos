@@ -33,6 +33,12 @@
 				<span class="slds-truncate">{$menuitem.mlabel}</span>
 			</a>
 		</li>
+		{elseif $menuitem.mtype == 'url'}
+		<li class="slds-context-bar__item">
+			<a href="{$menuitem.mvalue}" class="slds-context-bar__label-action" title="{$menuitem.mlabel}">
+				<span class="slds-truncate">{$menuitem.mlabel}</span>
+			</a>
+		</li>
 		{/if}
 		{$i = $i+1}
 	{/foreach}
