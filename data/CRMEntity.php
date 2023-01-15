@@ -2690,7 +2690,7 @@ class CRMEntity {
 	 * For eg: A trouble ticket can be related to an Account or a Contact.
 	 * From a given Contact/Account if we need to fetch all such dependent trouble tickets, get_dependents_list function can be used.
 	 */
-	public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+	public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions = false, $customactions = '') {
 		global $currentModule, $singlepane_view, $current_user, $adb;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -2737,6 +2737,7 @@ class CRMEntity {
 				$button .= '<input type="hidden" name="' . $dependentField . '_type" id="' . $dependentColumn . '_type" value="' . $currentModule . '">';
 			}
 			$relationconditions = '('.implode(' or ', $relconds).')';
+			$button .= $customactions;
 			if ($actions) {
 				if (is_string($actions)) {
 					$actions = explode(',', strtoupper($actions));
