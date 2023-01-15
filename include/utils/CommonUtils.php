@@ -958,6 +958,11 @@ function getRelatedAccountContact($entityid, $module = '') {
 				$rspot = $adb->pquery('select parent_id from vtiger_cobropago where cobropagoid=?', array($crmid));
 				$acid = $adb->query_result($rspot, 0, 'parent_id');
 				break;
+			case 'cbCalendar':
+				$fname = ($module=='Accounts' ? 'rel_id' : 'cto_id');
+				$rspot = $adb->pquery('select '.$fname.' from vtiger_activity where activityid=?', array($crmid));
+				$acid = $adb->query_result($rspot, 0, $fname);
+				break;
 			default: // we look for uitype 10
 				$rsfld = $adb->pquery(
 					'SELECT fieldname FROM vtiger_fieldmodulerel INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid WHERE module=? and relmodule=?',
@@ -970,7 +975,9 @@ function getRelatedAccountContact($entityid, $module = '') {
 					$queryGenerator->addCondition('id', $crmid, 'e');
 					$query = $queryGenerator->getQuery();
 					$rspot = $adb->pquery($query, array());
-					$acid = $adb->query_result($rspot, 0, $fname);
+					if ($rspot && $adb->num_rows($rspot)>0) {
+						$acid = $adb->query_result($rspot, 0, $fname);
+					}
 				}
 		}
 	}
