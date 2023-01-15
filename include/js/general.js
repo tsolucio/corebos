@@ -5719,7 +5719,11 @@ AutocompleteRelationPills.prototype.addPill = function () {
 		this.newValue = this.value;
 		this.field = this.field.replace('_display', '');
 	}
-	let fId = document.getElementById(this.field).value.split(' |##| ');
+	let fId = document.getElementById(this.field);
+	if (fId===null) {
+		fId = document.getElementById('jscal_field_'+this.field); // for date/time fields
+	}
+	fId = fId.value.split(' |##| ');
 	if (fId.length > 0) {
 		this.value = fId[fId.length-1];
 	}
