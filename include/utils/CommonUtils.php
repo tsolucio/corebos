@@ -959,9 +959,10 @@ function getRelatedAccountContact($entityid, $module = '') {
 				$acid = $adb->query_result($rspot, 0, 'parent_id');
 				break;
 			default: // we look for uitype 10
-				$rsfld = $adb->pquery('SELECT fieldname from vtiger_fieldmodulerel
-					INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
-					WHERE module=? and relmodule=?', array($setype,$module));
+				$rsfld = $adb->pquery(
+					'SELECT fieldname FROM vtiger_fieldmodulerel INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid WHERE module=? and relmodule=?',
+					array($setype, $module)
+				);
 				if ($rsfld && $adb->num_rows($rsfld)>0) {
 					$fname = $adb->query_result($rsfld, 0, 'fieldname');
 					$queryGenerator = new QueryGenerator($setype, $current_user);

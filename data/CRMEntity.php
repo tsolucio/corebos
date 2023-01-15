@@ -2749,9 +2749,9 @@ class CRMEntity {
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 					if (!$racbr || $racbr->hasRelatedListPermissionTo('create', $related_module)) {
 						$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
-							" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
+						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW').' '.$singular_modname."' class='crmbutton small create'"
+							." onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'"
+							." value='".getTranslatedString('LBL_ADD_NEW').' '.$singular_modname."'>&nbsp;";
 					}
 				}
 			}
