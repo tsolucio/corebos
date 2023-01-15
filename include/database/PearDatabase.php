@@ -438,7 +438,7 @@ class PearDatabase {
 		$sql_start_time = microtime(true);
 		$params = $this->flatten_array($params);
 		if (!is_null($params) && is_array($params)) {
-			$this->println('parameters', $params);
+			$this->println($params);
 		}
 
 		if ($this->avoidPreparedSql || empty($params)) {
