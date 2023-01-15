@@ -46,7 +46,7 @@ function facebooksync($input) {
 		if ($leadgen_id) {
 			$access_token = $facebook->getAccessToken();
 			$curl_handle = curl_init();
-			$url = "https://graph.facebook.com/v14.0/" . $leadgen_id . "?access_token=" . $access_token;
+			$url = 'https://graph.facebook.com/v14.0/' . $leadgen_id . '?access_token=' . $access_token;
 			curl_setopt($curl_handle, CURLOPT_URL, $url);
 			curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, true);
 			$curl_data = curl_exec($curl_handle);
