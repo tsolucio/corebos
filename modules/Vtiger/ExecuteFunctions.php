@@ -114,7 +114,7 @@ switch ($functiontocall) {
 		});
 		$firstFieldRecordID = vtlib_purify($_REQUEST['firstFieldRecordID']);
 
-		$result = '';
+		$ret = '';
 		$currentFieldvalue = $firstFieldRecordID;
 		foreach ($fieldsArray as $key => $fieldName) {
 			if ($key == 0) {
@@ -125,13 +125,12 @@ switch ($functiontocall) {
 			$queryGenerator->addCondition('id', $currentFieldvalue, 'e');
 			$query = $queryGenerator->getQuery();
 			if (count($fieldsArray) == $key + 1) {
-				$result = $adb->query($query)->fields;
+				$ret = $adb->query($query)->fields;
 			} else {
-				$result = $adb->query($query)->fields[0];
+				$ret = $adb->query($query)->fields[0];
 			}
-			$currentFieldvalue = $result;
+			$currentFieldvalue = $ret;
 		}
-		$ret = $result;
 		break;
 	case 'getFieldValuesFromSearch':
 		$ret = array();
@@ -659,6 +658,7 @@ switch ($functiontocall) {
 			'update vtiger_activity_reminder_popup set status=? WHERE moreinfo->"$.id"=?',
 			[vtlib_purify($_REQUEST['status']), vtlib_purify($_REQUEST['remid'])]
 		);
+		$ret = '';
 		break;
 	case 'getFieldsAttributes':
 		$fields = vtlib_purify($_REQUEST['fields']);
