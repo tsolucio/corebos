@@ -57,7 +57,7 @@ function facebooksync($input) {
 				if ($response_data) {
 					$facebookdata = array();
 					foreach ($response_data as $field => $value) {
-						$facebookdata[$key] = $value;
+						$facebookdata[$field] = $value;
 					}
 
 					// Send to corebos
