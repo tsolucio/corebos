@@ -69,7 +69,7 @@ function customFieldMappings() {
 	return $leadcf;
 }
 
-/*
+/**
  * function to get all the field in given module, with the corresponding field mapping
  */
 function getModuleValues($moduleid, $module) {
