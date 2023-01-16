@@ -315,10 +315,10 @@ class cbCalendar extends CRMEntity {
 			}
 			if (isset($reminderid)) {
 				$callback_query = 'UPDATE vtiger_activity_reminder_popup set status=0, date_start=?, time_start=?, ownerid=?, relwith=?, moreaction=?, moreinfo=? WHERE reminderid=?';
-				$callback_params = array($cbdate, $cbtime, $owner, $relwith, $action, $moreinfo, $reminderid);
+				$callback_params = array($cbdate, $cbtime, $owner, $relwith, empty($action) ? null : $action, empty($moreinfo) ? null : $moreinfo, $reminderid);
 			} else {
 				$callback_query = 'INSERT INTO vtiger_activity_reminder_popup (semodule, recordid, date_start, time_start, status, ownerid, relwith, moreaction, moreinfo) VALUES (?,?,?,?,0,?,?,?,?)';
-				$callback_params = array($cbmodule, $cbrecord, $cbdate, $cbtime, $owner, $relwith, $action, $moreinfo);
+				$callback_params = array($cbmodule, $cbrecord, $cbdate, $cbtime, $owner, $relwith, empty($action) ? null : $action, empty($moreinfo) ? null : $moreinfo);
 			}
 
 			$adb->pquery($callback_query, $callback_params);
