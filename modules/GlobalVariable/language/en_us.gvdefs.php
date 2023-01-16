@@ -334,6 +334,18 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The maximum number of letters of a field to show in a list view column. The default value is 40 and 0 shows the full string.',
 ),
+'Application_ListView_Mass_Edit_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the mass edit button',
+),
+'Application_ListView_Mass_Delete_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the mass delete button',
+),
 'Application_ListView_PageSize' => array(
 	'valuetype' => 'Integer',
 	'category' => 'Application',

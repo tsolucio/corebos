@@ -11,6 +11,14 @@
 class VTDummyTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = false;
+	public $statement;
+	public $id;
+	public $summary;
+	public $workflowId;
+	public $trigger;
+	public $test;
+	public $reevaluate;
+	public $active;
 
 	public function getFieldNames() {
 		return array('statement');

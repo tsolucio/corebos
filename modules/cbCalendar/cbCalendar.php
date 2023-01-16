@@ -315,10 +315,10 @@ class cbCalendar extends CRMEntity {
 			}
 			if (isset($reminderid)) {
 				$callback_query = 'UPDATE vtiger_activity_reminder_popup set status=0, date_start=?, time_start=?, ownerid=?, relwith=?, moreaction=?, moreinfo=? WHERE reminderid=?';
-				$callback_params = array($cbdate, $cbtime, $owner, $relwith, $action, $moreinfo, $reminderid);
+				$callback_params = array($cbdate, $cbtime, $owner, $relwith, empty($action) ? null : $action, empty($moreinfo) ? null : $moreinfo, $reminderid);
 			} else {
 				$callback_query = 'INSERT INTO vtiger_activity_reminder_popup (semodule, recordid, date_start, time_start, status, ownerid, relwith, moreaction, moreinfo) VALUES (?,?,?,?,0,?,?,?,?)';
-				$callback_params = array($cbmodule, $cbrecord, $cbdate, $cbtime, $owner, $relwith, $action, $moreinfo);
+				$callback_params = array($cbmodule, $cbrecord, $cbdate, $cbtime, $owner, $relwith, empty($action) ? null : $action, empty($moreinfo) ? null : $moreinfo);
 			}
 
 			$adb->pquery($callback_query, $callback_params);
@@ -477,7 +477,7 @@ class cbCalendar extends CRMEntity {
 		.'(SELECT vtiger_activity_reminder_popup.*,vtiger_activity_reminder_popup.status as readed'
 		.' FROM vtiger_activity_reminder_popup'
 		.' inner join '.$crmEntityTable.' on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid '
-		.' WHERE vtiger_crmentity.smownerid = '.$user->id.' and vtiger_crmentity.deleted=0 and vtiger_activity_reminder_popup.semodule!='."'cbCalendar'".$statcond
+		.' WHERE vtiger_crmentity.smownerid = '.$user->id." and vtiger_crmentity.deleted=0 and vtiger_activity_reminder_popup.semodule!='cbCalendar'".$statcond.$relcond
 		." and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date
 		."' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')"
 		." or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')"

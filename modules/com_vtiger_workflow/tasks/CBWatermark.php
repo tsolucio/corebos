@@ -135,138 +135,149 @@ class CBWatermark extends VTTask {
 			$waterMarkImg = null;
 			$mainImage = null;
 			$mainImageOriginal = null;
+			$invalidImage = false;
 			if ($waterMarkType == 'png') {
 				$waterMarkImg = imagecreatefrompng($waterMarkUrl);
 				if (!$waterMarkImg) {
 					$logbg->debug('(CBWatermark) The watermark image was not created');
+					$invalidImage = true;
 				}
 			} elseif ($waterMarkType == 'jpg' || $waterMarkType == 'jpeg') {
 				$waterMarkImg = imagecreatefromjpeg($waterMarkUrl);
 				if (!$waterMarkImg) {
 					$logbg->debug('(CBWatermark) The watermark image was not created ');
+					$invalidImage = true;
 				}
 			} else {
 				$logbg->debug('(CBWatermark) can\'t create the watermark image because extension is not supported');
+				$invalidImage = true;
 			}
 			if ($mainImageFileType == 'png') {
 				$mainImage = imagecreatefrompng($mainImagePath);
 				if (!$mainImage) {
 					$logbg->debug('(CBWatermark) The main image was not created');
+					$invalidImage = true;
 				}
 				$mainImageOriginal = imagecreatefrompng($mainImagePath);
 			} elseif ($mainImageFileType == 'jpg' || $mainImageFileType == 'jpeg') {
 				$mainImage = imagecreatefromjpeg($mainImagePath);
 				if (!$mainImage) {
 					$logbg->debug('(CBWatermark) The main image was not created');
+					$invalidImage = true;
 				}
 				$mainImageOriginal = imagecreatefromjpeg($mainImagePath);
 			} else {
 				$logbg->debug('(CBWatermark) can\'t create the main image because extension is not supported');
+				$invalidImage = true;
 			}
 
-			// Get the height/width of the watermark and main image
-			$wmsx = imagesx($waterMarkImg);
-			$wmsy = imagesy($waterMarkImg);
-			$misx = imagesx($mainImage);
-			$misy = imagesy($mainImage);
+			if (!$invalidImage) {
+				// Get the height/width of the watermark and main image
+				$wmsx = imagesx($waterMarkImg);
+				$wmsy = imagesy($waterMarkImg);
+				$misx = imagesx($mainImage);
+				$misy = imagesy($mainImage);
 
-			// set the size of the watermark image
-			$wmImageAspectRatio = $wmsx / $wmsy;
-			$mainImageAspectRatio = $misx / $misy;
-			$mainImageAspectRatioType = $wmImageAspectRatio <= $mainImageAspectRatio ? 'vertical' : 'horizontal';
+				// set the size of the watermark image
+				$wmImageAspectRatio = $wmsx / $wmsy;
+				$mainImageAspectRatio = $misx / $misy;
+				$mainImageAspectRatioType = $wmImageAspectRatio <= $mainImageAspectRatio ? 'vertical' : 'horizontal';
 
-			// water mark image options
-			$wmSize = (float)$wmsize * 0.01;
-			$position = $wmPosition;
+				// water mark image options
+				$wmSize = (float)$wmsize * 0.01;
+				$position = $wmPosition;
 
-			$wmnsx = null;
-			$wmnsy = null;
-			switch ($mainImageAspectRatioType) {
-				case 'horizontal':
-					$wmnsx = $misx * $wmSize;
-					$wmnsy = ($wmnsx / $wmImageAspectRatio);
-					break;
-				case 'vertical':
-					$wmnsy = $misy * $wmSize;
-					$wmnsx = ($wmnsy * $wmImageAspectRatio);
-					break;
+				$wmnsx = null;
+				$wmnsy = null;
+				switch ($mainImageAspectRatioType) {
+					case 'horizontal':
+						$wmnsx = $misx * $wmSize;
+						$wmnsy = ($wmnsx / $wmImageAspectRatio);
+						break;
+					case 'vertical':
+						$wmnsy = $misy * $wmSize;
+						$wmnsx = ($wmnsy * $wmImageAspectRatio);
+						break;
+				}
+
+				$wmpx = null;
+				$wmpy = null;
+				switch ($position) {
+					case 'center':
+						$wmpx = $misx / 2 - ($wmnsx / 2);
+						$wmpy = $misy / 2 - ($wmnsy / 2);
+						break;
+					case 'top':
+						$wmpx = $misx / 2 - ($wmnsx / 2);
+						$wmpy = 0;
+						break;
+					case 'bottom':
+						$wmpx = $misx / 2 - ($wmnsx / 2);
+						$wmpy = $misy - $wmnsy;
+						break;
+					case 'right':
+						$wmpx = $misx - $wmnsx;
+						$wmpy = $misy / 2 - ($wmnsy / 2);
+						break;
+					case 'left':
+						$wmpx = 0;
+						$wmpy = $misy / 2 - ($wmnsy / 2);
+						break;
+					case 'topright':
+						$wmpx = $misx - $wmnsx;
+						$wmpy = 0;
+						break;
+					case 'topleft':
+						$wmpx = 0;
+						$wmpy = 0;
+						break;
+					case 'bottomleft':
+						$wmpx = 0;
+						$wmpy = $misy - $wmnsy;
+						break;
+					case 'bottomright':
+						$wmpx = $misx - $wmnsx;
+						$wmpy = $misy - $wmnsy;
+						break;
+					default:
+						$logbg->debug('(CBWatermark) the watermark position you specified is not supported. we use bottom right');
+						$wmpx = $misx - $wmnsx;
+						$wmpy = $misy - $wmnsy;
+						break;
+				}
+
+				// resize the watermark image
+				$logbg->debug('(CBWatermark) adding the watermark to the image');
+				$waterMarkImgAfterResize = imagecreatetruecolor($wmnsx, $wmnsy);
+				imagesavealpha($waterMarkImgAfterResize, true);
+				$color = imagecolorallocatealpha($waterMarkImgAfterResize, 0, 0, 0, 127);
+				imagefill($waterMarkImgAfterResize, 0, 0, $color);
+				imagecopyresampled($waterMarkImgAfterResize, $waterMarkImg, 0, 0, 0, 0, $wmnsx, $wmnsy, $wmsx, $wmsy);
+
+				// add the watermark to the image
+				$res = imagecopy($mainImage, $waterMarkImgAfterResize, $wmpx, $wmpy, 0, 0, $wmnsx, $wmnsy);
+				if (!$res) {
+					$logbg->debug('(CBWatermark) could not add the watermark on the image');
+				}
+
+				// Save image
+				$mainOriginalImagePath = $mainImagePath . '_ORIGINAL';
+				if ($mainImageFileType == 'png') {
+					imagepng($mainImage, $mainImagePath);
+					imagepng($mainImageOriginal, $mainOriginalImagePath);
+				} elseif ($mainImageFileType == 'jpg' || $mainImageFileType == 'jpeg') {
+					imagejpeg($mainImage, $mainImagePath);
+					imagejpeg($mainImageOriginal, $mainOriginalImagePath);
+				} else {
+					$logbg->debug('(CBWatermark) can\'t save the main image because the extension is not supported');
+				}
+
+				// free the images
+				imagedestroy($waterMarkImgAfterResize);
+				imagedestroy($waterMarkImg);
+				imagedestroy($mainImageOriginal);
+				imagedestroy($mainImage);
 			}
-
-			$wmpx = null;
-			$wmpy = null;
-			switch ($position) {
-				case 'center':
-					$wmpx = $misx / 2 - ($wmnsx / 2);
-					$wmpy = $misy / 2 - ($wmnsy / 2);
-					break;
-				case 'top':
-					$wmpx = $misx / 2 - ($wmnsx / 2);
-					$wmpy = 0;
-					break;
-				case 'bottom':
-					$wmpx = $misx / 2 - ($wmnsx / 2);
-					$wmpy = $misy - $wmnsy;
-					break;
-				case 'right':
-					$wmpx = $misx - $wmnsx;
-					$wmpy = $misy / 2 - ($wmnsy / 2);
-					break;
-				case 'left':
-					$wmpx = 0;
-					$wmpy = $misy / 2 - ($wmnsy / 2);
-					break;
-				case 'topright':
-					$wmpx = $misx - $wmnsx;
-					$wmpy = 0;
-					break;
-				case 'topleft':
-					$wmpx = 0;
-					$wmpy = 0;
-					break;
-				case 'bottomleft':
-					$wmpx = 0;
-					$wmpy = $misy - $wmnsy;
-					break;
-				case 'bottomright':
-					$wmpx = $misx - $wmnsx;
-					$wmpy = $misy - $wmnsy;
-					break;
-				default:
-					$logbg->debug('(CBWatermark) the watermark position you specified is not supported');
-					break;
-			}
-
-			// resize the watermark image
-			$logbg->debug('(CBWatermark) adding the watermark to the image');
-			$waterMarkImgAfterResize = imagecreatetruecolor($wmnsx, $wmnsy);
-			imagesavealpha($waterMarkImgAfterResize, true);
-			$color = imagecolorallocatealpha($waterMarkImgAfterResize, 0, 0, 0, 127);
-			imagefill($waterMarkImgAfterResize, 0, 0, $color);
-			imagecopyresampled($waterMarkImgAfterResize, $waterMarkImg, 0, 0, 0, 0, $wmnsx, $wmnsy, $wmsx, $wmsy);
-
-			// add the watermark to the image
-			$res = imagecopy($mainImage, $waterMarkImgAfterResize, $wmpx, $wmpy, 0, 0, $wmnsx, $wmnsy);
-			if (!$res) {
-				$logbg->debug('(CBWatermark) could not add the watermark on the image');
-			}
-
-			// Save image
-			$mainOriginalImagePath = $mainImagePath . '_ORIGINAL';
-			if ($mainImageFileType == 'png') {
-				imagepng($mainImage, $mainImagePath);
-				imagepng($mainImageOriginal, $mainOriginalImagePath);
-			} elseif ($mainImageFileType == 'jpg' || $mainImageFileType == 'jpeg') {
-				imagejpeg($mainImage, $mainImagePath);
-				imagejpeg($mainImageOriginal, $mainOriginalImagePath);
-			} else {
-				$logbg->debug('(CBWatermark) can\'t save the main image because the extension is not supported');
-			}
-
-			// free the images
-			imagedestroy($waterMarkImgAfterResize);
-			imagedestroy($waterMarkImg);
-			imagedestroy($mainImageOriginal);
-			imagedestroy($mainImage);
 		}
 		$_REQUEST['ajxaction'] = $hold_ajxaction;
 		$from_wf = false;

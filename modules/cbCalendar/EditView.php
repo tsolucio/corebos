@@ -33,6 +33,9 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 	$mod_strings = array_merge($mod_strings, $emailStrings);
 	include 'modules/Emails/EditView.php';
 } else {
+	if (!empty($_REQUEST['rel_id']) && empty($_REQUEST['cto_id'])) {
+		$_REQUEST['cto_id'] = getRelatedAccountContact($_REQUEST['rel_id'], 'Contacts');
+	}
 	if (empty($record)) {
 		if (!empty($_REQUEST['dtstart'])) {
 			$date = new DateTimeField($_REQUEST['dtstart']);
@@ -195,17 +198,5 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 
 	$smarty->assign('REPEAT_LIMIT_DATEFORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 	$smarty->display('salesEditView.tpl');
-}
-
-// sending PopupFilter map results to the frontEnd
-$bmapname = $currentModule.'_PopupFilter';
-$Mapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-if ($Mapid) {
-	$MapObject = new cbMap();
-	$MapObject->id = $Mapid;
-	$MapObject->mode = '';
-	$MapObject->retrieve_entity_info($Mapid, "cbMap");
-	$MapResult = $MapObject->PopupFilter($record, $currentModule);
-	$smarty->assign('PopupFilterMapResults', $MapResult);
 }
 ?>

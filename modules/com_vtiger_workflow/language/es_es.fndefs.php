@@ -874,6 +874,22 @@ $WFExpressionFunctionDefinitons = array(
 		'log(10, 10)',
 	),
 ),
+'char' => array(
+	'name' => 'char(número)',
+	'desc' => 'Esta función devuelve el carácter correspondiente al código ASCII dado.',
+	'params' => array(
+		array(
+			'name' => 'número',
+			'type' => 'Entero',
+			'optional' => false,
+			'desc' => 'Código ASCII para convertir a carácter',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		'char(39)',
+	),
+),
 'substring' => array(
 	'name' => 'substring(stringfield,start,length)',
 	'desc' => 'Esta función devuelve la parte del campo de cadena especificada por los parámetros de inicio y longitud.',
@@ -2452,6 +2468,23 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Logical'),
 	'examples' => array(
 		"regex('[a-z]+', msg )",
+	),
+),
+'uniqid' => array(
+	'name' => 'uniqid(prefijo)',
+	'desc' => 'Esta función devuelve un ID único con un prefijo opcional delante.',
+	'params' => array(
+		array(
+			'name' => 'prefijo',
+			'type' => 'Texto',
+			'optional' => true,
+			'desc' => 'cualquier texto',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"uniqid('pfx')",
+		"uniqid()",
 	),
 ),
 'array' => array(

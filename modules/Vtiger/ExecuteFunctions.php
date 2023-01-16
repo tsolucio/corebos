@@ -114,7 +114,7 @@ switch ($functiontocall) {
 		});
 		$firstFieldRecordID = vtlib_purify($_REQUEST['firstFieldRecordID']);
 
-		$result = '';
+		$ret = '';
 		$currentFieldvalue = $firstFieldRecordID;
 		foreach ($fieldsArray as $key => $fieldName) {
 			if ($key == 0) {
@@ -125,13 +125,12 @@ switch ($functiontocall) {
 			$queryGenerator->addCondition('id', $currentFieldvalue, 'e');
 			$query = $queryGenerator->getQuery();
 			if (count($fieldsArray) == $key + 1) {
-				$result = $adb->query($query)->fields;
+				$ret = $adb->query($query)->fields;
 			} else {
-				$result = $adb->query($query)->fields[0];
+				$ret = $adb->query($query)->fields[0];
 			}
-			$currentFieldvalue = $result;
+			$currentFieldvalue = $ret;
 		}
-		$ret = $result;
 		break;
 	case 'getFieldValuesFromSearch':
 		$ret = array();
@@ -193,8 +192,14 @@ switch ($functiontocall) {
 			$queryres=$adb->pquery($query, array());
 			if ($adb->num_rows($queryres)>0) {
 				$col=0;
+				$orgtabid = getTabid($module);
 				foreach ($fields as $field) {
-					$ret[$field]=$adb->query_result($queryres, 0, $col++);
+					$row = array(
+						$field => $adb->query_result($queryres, 0, $col++)
+					);
+					$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, $field);
+					$output = getDetailViewOutputHtml($finfo['uitype'], $finfo['fieldname'], $finfo['fieldlabel'], $row, $finfo['generatedtype'], $orgtabid, $module);
+					$ret[$field]= $output[1];
 				}
 			}
 		}
@@ -653,6 +658,7 @@ switch ($functiontocall) {
 			'update vtiger_activity_reminder_popup set status=? WHERE moreinfo->"$.id"=?',
 			[vtlib_purify($_REQUEST['status']), vtlib_purify($_REQUEST['remid'])]
 		);
+		$ret = '';
 		break;
 	case 'getFieldsAttributes':
 		$fields = vtlib_purify($_REQUEST['fields']);
