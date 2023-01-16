@@ -86,11 +86,9 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	Next(ev) {
+		this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep+1]);
 		switch (this.Operation) {
 			case 'CREATEPRODUCTCOMPONENTS':
-				if (this.WizardFilterFromContext[this.ActiveStep+1] != '') {
-					this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep+1]);
-				}
 				if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
 						return false;
@@ -264,12 +262,22 @@ class WizardComponent {
 			currentIdx = this.ActiveStep+1;
 		}
 		if (this.WizardFilterBy[currentIdx] != '' && this.WizardInstance[`wzgrid${currentIdx}`] !== undefined) {
+			let ctx = {};
+			if (filterFromContext != '') {
+				const ContextObj = JSON.parse(filterFromContext);
+				for (let i in ContextObj) {
+					if (this.Context[ContextObj[i].find] != undefined) {
+						ctx[ContextObj[i].find] = this.Context[ContextObj[i].find];
+					}
+				}
+			}
 			const module = this.WizardCurrentModule[currentIdx];
 			this.WizardInstance[`wzgrid${currentIdx}`].setRequestParams({
 				formodule: module,
 				query: this.WizardFilterBy[currentIdx],
-				context: this.Context,
-				filterFromContext: filterFromContext
+				context: ctx,
+				filterFromContext: filterFromContext,
+				showdata: true,
 			});
 			this.WizardInstance[`wzgrid${currentIdx}`].setPerPage(parseInt(20));
 		}
@@ -470,9 +478,6 @@ class WizardComponent {
 			this.el(`btn-back`).setAttribute('disabled', '');
 		}
 		if (this.WizardGoBack[this.ActiveStep-1] == 0) {
-			this.el(`btn-back`).setAttribute('disabled', '');
-		}
-		if (this.ActiveStep == 1 && this.isModal) {
 			this.el(`btn-back`).setAttribute('disabled', '');
 		}
 		let el = document.getElementById('save-btn');

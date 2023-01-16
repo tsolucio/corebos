@@ -73,6 +73,9 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 			$RLInstance[] = $module;
 			if (isset($module['listview'])) {
 				foreach ($module['listview'] as $fld) {
+					if (!isset($fld['fieldinfo']['name'])) {
+						continue;
+					}
 					$Columns[] = array(
 						'name' => $fld['fieldinfo']['name'],
 						'label' => $fld['fieldinfo']['label'],

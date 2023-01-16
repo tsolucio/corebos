@@ -91,11 +91,7 @@
 		<div class="loading-wheel"></div>
 	</div>
 	{if $wizardTitle!=''}
-	<div class="slds-page-header__name slds-m-bottom_medium">
-		<div class="slds-page-header__name-title">
-			<span class="slds-page-header__title slds-truncate" title="{$wizardTitle}" id="wizard-title">{$wizardTitle}</span>
-		</div>
-	</div>
+		<span class="slds-page-header__title slds-truncate" title="{$wizardTitle}" id="wizard-title">{$wizardTitle}</span>
 	{/if}
 	<div class="slds-path">
 		<div class="slds-grid slds-path__track">
