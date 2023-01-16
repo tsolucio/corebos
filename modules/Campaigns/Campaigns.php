@@ -84,6 +84,7 @@ class Campaigns extends CRMEntity {
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('campaignname','createdtime' ,'modifiedtime');
+	public $campaignrelstatus;
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
@@ -135,7 +136,7 @@ class Campaigns extends CRMEntity {
 		$ahtml .= $customviewcombo_html;
 		$ahtml .= '</select>';
 
-		$button .= $ahtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= $ahtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
 		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
 		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";
@@ -235,7 +236,7 @@ class Campaigns extends CRMEntity {
 		$lhtml .= $customviewcombo_html;
 		$lhtml .= '</select>';
 
-		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
 		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
 		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";
@@ -339,7 +340,7 @@ class Campaigns extends CRMEntity {
 		$lhtml .= $customviewcombo_html;
 		$lhtml .= '</select>';
 
-		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
 		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
 		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";

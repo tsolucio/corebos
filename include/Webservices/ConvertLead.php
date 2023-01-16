@@ -123,6 +123,8 @@ function vtws_convertlead($entityvalues, $user) {
 				$screen_values['module'] = $entityvalue['name'];
 				$holdRecord = isset($_REQUEST['record']) ? $_REQUEST['record'] : '';
 				unset($screen_values['name'], $_REQUEST['record']);
+				$screen_values = vtlib_purify(Validations::flattenMultipicklistArrays($screen_values));
+				$screen_values = Validations::addFilesFields($screen_values);
 				$vals = executefunctionsvalidate('ValidationLoad', $entityvalue['name'], json_encode($screen_values));
 				$_REQUEST['record'] = $holdRecord;
 				if ($vals=='%%%OK%%%' || strpos($vals, '%%%CONFIRM%%%')!==false || strpos($vals, '%%%FUNCTION%%%')!==false) {

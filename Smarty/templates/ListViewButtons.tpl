@@ -1,13 +1,13 @@
 <div class="slds-button-group slds-template__container" role="group">
 	{foreach key=button_check item=button_label from=$BUTTONS}
-		{if $button_check eq 'del'}
+		{if $button_check eq 'del' &&  $Application_ListView_Mass_Delete_Show}
 			<button type="button" class="slds-button slds-button_text-destructive" onclick="return massDelete('{$MODULE}')">
 				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 				</svg>
 			{$button_label}
 		</button>
-		{elseif $button_check eq 'mass_edit'}
+		{elseif $button_check eq 'mass_edit' && $Application_ListView_Mass_Edit_Show}
 			<button type="button" class="slds-button slds-button_success" onclick="return mass_edit(this, 'massedit', '{$MODULE}')" style="color: #ffffff">
 				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>

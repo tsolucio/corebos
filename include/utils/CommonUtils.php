@@ -958,10 +958,16 @@ function getRelatedAccountContact($entityid, $module = '') {
 				$rspot = $adb->pquery('select parent_id from vtiger_cobropago where cobropagoid=?', array($crmid));
 				$acid = $adb->query_result($rspot, 0, 'parent_id');
 				break;
+			case 'cbCalendar':
+				$fname = ($module=='Accounts' ? 'rel_id' : 'cto_id');
+				$rspot = $adb->pquery('select '.$fname.' from vtiger_activity where activityid=?', array($crmid));
+				$acid = $adb->query_result($rspot, 0, $fname);
+				break;
 			default: // we look for uitype 10
-				$rsfld = $adb->pquery('SELECT fieldname from vtiger_fieldmodulerel
-					INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
-					WHERE module=? and relmodule=?', array($setype,$module));
+				$rsfld = $adb->pquery(
+					'SELECT fieldname FROM vtiger_fieldmodulerel INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid WHERE module=? and relmodule=?',
+					array($setype, $module)
+				);
 				if ($rsfld && $adb->num_rows($rsfld)>0) {
 					$fname = $adb->query_result($rsfld, 0, 'fieldname');
 					$queryGenerator = new QueryGenerator($setype, $current_user);
@@ -969,7 +975,9 @@ function getRelatedAccountContact($entityid, $module = '') {
 					$queryGenerator->addCondition('id', $crmid, 'e');
 					$query = $queryGenerator->getQuery();
 					$rspot = $adb->pquery($query, array());
-					$acid = $adb->query_result($rspot, 0, $fname);
+					if ($rspot && $adb->num_rows($rspot)>0) {
+						$acid = $adb->query_result($rspot, 0, $fname);
+					}
 				}
 		}
 	}
@@ -3931,11 +3939,19 @@ function numberBytes($size) {
 	}
 }
 
-function getModuleFieldsInfo($module) {
+function getModuleFieldsInfo($module, $columns = ['*']) {
 	global $adb;
-	$rs = $adb->pquery('SELECT * FROM vtiger_field WHERE tabid=?', array(
-		getTabid($module)
-	));
+	$rs = '';
+	if ($columns[0] == '*') {
+		$rs = $adb->pquery('SELECT * FROM vtiger_field WHERE tabid=?', array(getTabid($module)));
+	} else {
+		$query = $adb->convert2Sql(
+			'SELECT ? FROM vtiger_field WHERE tabid=?',
+			array(implode(',', $columns), getTabid($module))
+		);
+		$query = str_replace("'", '', $query);
+		$rs = $adb->query($query);
+	}
 	if ($adb->num_rows($rs) > 0) {
 		return $rs->GetRows();
 	}

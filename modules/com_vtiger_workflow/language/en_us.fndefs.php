@@ -877,6 +877,22 @@ $WFExpressionFunctionDefinitons = array(
 		'log(10, 10)',
 	),
 ),
+'char' => array(
+	'name' => 'char(number)',
+	'desc' => 'This function returns the character corresponding to the given ASCII code.',
+	'params' => array(
+		array(
+			'name' => 'number',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'ASCII code to convert to character',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		'char(39)',
+	),
+),
 'substring' => array(
 	'name' => 'substring(stringfield,start,length)',
 	'desc' => 'This function returns the portion of stringfield specified by the start and length parameters.',
@@ -2455,6 +2471,23 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Logical'),
 	'examples' => array(
 		"regex('[a-z]+', msg )",
+	),
+),
+'uniqid' => array(
+	'name' => 'uniqid(prefix)',
+	'desc' => 'This function returns a unique ID with an optional prefix in front.',
+	'params' => array(
+		array(
+			'name' => 'prefix',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'any string',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"uniqid('pfx')",
+		"uniqid()",
 	),
 ),
 'array' => array(

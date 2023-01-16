@@ -334,6 +334,18 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre maximum de lettres visibles du contenu des champs en affichage par liste. La valeur par défaut est (40). Si la valeur est (0), le nom entier du champ sera affiché.',
 ),
+'Application_ListView_Mass_Edit_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the mass edit button',
+),
+'Application_ListView_Mass_Delete_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the mass delete button',
+),
 'Application_ListView_PageSize' => array(
 	'valuetype' => 'Entier',
 	'category' => 'Application',

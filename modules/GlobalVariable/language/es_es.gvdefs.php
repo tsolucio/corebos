@@ -334,6 +334,18 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número máximo de letras de un campo que se muestran en una columna de la vista de lista. El valor por defecto es 40 y 0 muestra el valor entero.',
 ),
+'Application_ListView_Mass_Edit_Show' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'esconder o mostrar el botón de edición masiva',
+),
+'Application_ListView_Mass_Delete_Show' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'esconder o mostrar el botón de eliminado masivo',
+),
 'Application_ListView_PageSize' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Aplicación',

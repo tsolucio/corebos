@@ -661,6 +661,10 @@ function __cb_euvatvalidation($arr) {
 	return false;
 }
 
+function __cb_uniqid($arr) {
+	return uniqid(empty($arr[0]) ? '' : $arr[0]);
+}
+
 function __cb_array($arr) {
 	return $arr;
 }
