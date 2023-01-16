@@ -262,11 +262,20 @@ class WizardComponent {
 			currentIdx = this.ActiveStep+1;
 		}
 		if (this.WizardFilterBy[currentIdx] != '' && this.WizardInstance[`wzgrid${currentIdx}`] !== undefined) {
+			let ctx = {};
+			if (filterFromContext != '') {
+				const ContextObj = JSON.parse(filterFromContext);
+				for (let i in ContextObj) {
+					if (this.Context[ContextObj[i].find] != undefined) {
+						ctx[ContextObj[i].find] = this.Context[ContextObj[i].find];
+					}
+				}
+			}
 			const module = this.WizardCurrentModule[currentIdx];
 			this.WizardInstance[`wzgrid${currentIdx}`].setRequestParams({
 				formodule: module,
 				query: this.WizardFilterBy[currentIdx],
-				context: filterFromContext == '' ? '' : this.Context,
+				context: ctx,
 				filterFromContext: filterFromContext,
 				showdata: true,
 			});
