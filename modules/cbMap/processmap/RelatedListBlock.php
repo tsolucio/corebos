@@ -167,6 +167,9 @@ class RelatedListBlock extends processcbMap {
 							break;
 					}
 				}
+				if (empty($fieldinfo)) {
+					continue;
+				}
 				if ($mode == 'editview') {
 					$fldsInfo[] = $fieldinfo['fieldid'];
 				} else {
@@ -198,6 +201,9 @@ class RelatedListBlock extends processcbMap {
 			}
 		}
 		$ret = array_search($fieldname, array_column($this->fieldsinfo[$this->detailModule], 'name'));
+		if (!$ret) {
+			return array();
+		}
 		if (isset($this->fieldsinfo[$this->detailModule][$ret]['uitype']) && $this->fieldsinfo[$this->detailModule][$ret]['uitype']==10) {
 			$refmod = $this->fieldsinfo[$this->detailModule][$ret]['type']['refersTo'][0];
 			$rmod = CRMEntity::getInstance($refmod);
