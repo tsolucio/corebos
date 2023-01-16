@@ -176,6 +176,7 @@ class WizardActions extends WizardCustomFunctions {
 		$page = vtlib_purify($_REQUEST['page']);
 		$perPage = vtlib_purify($_REQUEST['perPage']);
 		$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
+		$showdata = isset($_REQUEST['showdata']) ? vtlib_purify($_REQUEST['showdata']) : false;
 		$step = isset($_REQUEST['step']) ? intval($_REQUEST['step']) : '';
 		$filtergrid = isset($_REQUEST['filtergrid']) ? vtlib_purify($_REQUEST['filtergrid']) : false;
 		$conditionquery = isset($_REQUEST['conditionquery']) ? vtlib_purify($_REQUEST['conditionquery']) : false;
@@ -184,6 +185,18 @@ class WizardActions extends WizardCustomFunctions {
 		$required_action = isset($_REQUEST['required_action']) ? intval($_REQUEST['required_action']) : '';
 		$context = isset($_REQUEST['context']) ? $_REQUEST['context'] : '';
 		$filterFromContext = isset($_REQUEST['filterFromContext']) ? json_decode($_REQUEST['filterFromContext'], true) : '';
+		if ($step > 1 && !$showdata) {
+			return json_encode(array(
+				'data' => array(
+					'contents' =>  array(),
+					'pagination' => array(
+						'page' => 1,
+						'totalCount' => 0,
+					),
+				),
+				'result' => false
+			));
+		}
 		if (isset($_REQUEST['query']) && !empty($_REQUEST['query']) && !$filtergrid) {
 			$sql = vtlib_purify($_REQUEST['query']);
 			$ctxConds = '';

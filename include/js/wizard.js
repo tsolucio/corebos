@@ -86,11 +86,9 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	Next(ev) {
+		this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep+1]);
 		switch (this.Operation) {
 			case 'CREATEPRODUCTCOMPONENTS':
-				if (this.WizardFilterFromContext[this.ActiveStep+1] != '') {
-					this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep+1]);
-				}
 				if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
 					if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
 						return false;
@@ -269,7 +267,8 @@ class WizardComponent {
 				formodule: module,
 				query: this.WizardFilterBy[currentIdx],
 				context: filterFromContext == '' ? '' : this.Context,
-				filterFromContext: filterFromContext
+				filterFromContext: filterFromContext,
+				showdata: true,
 			});
 			this.WizardInstance[`wzgrid${currentIdx}`].setPerPage(parseInt(20));
 		}
