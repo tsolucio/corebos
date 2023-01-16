@@ -14,6 +14,7 @@
 class VTTaskManager {
 
 	public static $reevaluateTasks = array('VTEmailTask');
+	public $adb;
 
 	public function __construct($adb) {
 		$this->adb = $adb;
@@ -195,6 +196,10 @@ class VTTaskManager {
 }
 
 abstract class VTTask {
+	public $test;
+	public $workflowId;
+	public $summary;
+	public $active;
 	abstract public function doTask(&$data);
 	abstract public function getFieldNames();
 

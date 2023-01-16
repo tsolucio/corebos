@@ -84,6 +84,7 @@ class Campaigns extends CRMEntity {
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('campaignname','createdtime' ,'modifiedtime');
+	public $campaignrelstatus;
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {

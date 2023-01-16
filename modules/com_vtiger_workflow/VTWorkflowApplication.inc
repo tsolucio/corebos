@@ -9,6 +9,11 @@
  ************************************************************************************/
 
 class VTWorkflowApplication {
+	public $name;
+	public $label;
+	public $action;
+	public $returnUrl;
+
 	public function __construct($action, $returnUrl = false) {
 		global $_REQUEST;
 		$this->name = 'com_vtiger_workflow';
