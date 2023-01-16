@@ -93,6 +93,12 @@ class WizardView {
 		$smarty->assign('formodule', $this->module);
 		$smarty->assign('GroupBy', $this->groupby);
 		if ($smarty->getTemplateVars('wizardOperation') == 'FORMTEMPLATE') {
+			$Rows = array();
+			if ($this->mapid != 0) {
+				$cbMap = cbMap::getMapByID($this->mapid);
+				$Rows = $cbMap->WizardForms();
+			}
+			$smarty->assign('Rows', isset($Rows['rows']) ? $Rows['rows'] : array());
 			return $smarty->fetch('Smarty/templates/Components/Wizard/WizardFormTemplate.tpl');
 		}
 		if ($this->mapid != 0) {
