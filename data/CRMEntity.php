@@ -1658,8 +1658,8 @@ class CRMEntity {
 	 */
 	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
 		global $adb;
-		$relatedModule = vtlib_purify($_REQUEST['module']);
-		$bmapname = $module.'_ListColumns';
+		$thisModule = get_class($this);
+		$bmapname = $thisModule.'_ListColumns';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
@@ -1668,14 +1668,14 @@ class CRMEntity {
 			if (!empty($conditions[$fieldname]) && json_decode($conditions[$fieldname]) == null) {
 				return $conditions[$fieldname];
 			}
-			if (!empty($conditions[$fieldname]) || !empty($conditions[$module.'::'.$relatedModule])) {
+			if (!empty($conditions[$fieldname]) || !empty($conditions[$module.'::'.$thisModule])) {
 				$fields = $cbMapLC->getSearchFieldsName();
 				$wherepos = stripos($query, ' where ');
 				$query_body = substr($query, 0, $wherepos);
 				$workflowScheduler = new WorkFlowScheduler($adb);
 				$workflow = new Workflow();
-				$wfvals['module_name'] = $relatedModule;
-				$wfvals['test'] = isset($conditions[$fieldname]) ? $conditions[$fieldname] : $conditions[$module.'::'.$relatedModule];
+				$wfvals['module_name'] = $thisModule;
+				$wfvals['test'] = isset($conditions[$fieldname]) ? $conditions[$fieldname] : $conditions[$module.'::'.$thisModule];
 				$wfvals['workflow_id'] = 0;
 				$wfvals['defaultworkflow'] = 0;
 				$wfvals['summary'] = '';

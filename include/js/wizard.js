@@ -49,6 +49,7 @@ class WizardComponent {
 
 	Init() {
 		this.Events();
+		this.CleanWizard();
 		if (this.isModal && this.ProceedToNextStep) {
 			this.el('global-modal-container__title').innerHTML = this.el('wizard-title').innerHTML;
 			this.el('wizard-title').innerHTML = '';
@@ -95,7 +96,7 @@ class WizardComponent {
 					}
 					if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined && ev.target.dataset.type == 'next') {
 						if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
-							this.WizardCustomFunction[0] = 'GetCustodiaPrd';
+							//this.WizardCustomFunction[0] = 'GetCustodiaPrd';
 							this.DuplicateProduct(ev);
 							return false;
 						}
@@ -254,7 +255,10 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	FilterRows(ev, filterFromContext = '', currentIdx = '') {
-		const type = ev.target.dataset.type;
+		let type = 'next';
+		if (ev != '') {
+			type = ev.target.dataset.type;
+		}
 		if (type == 'back') {
 			return true;
 		}
@@ -297,7 +301,8 @@ class WizardComponent {
 			wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams({
 				formodule: module,
 				filterrows: true,
-				step: wizard.ActiveStep
+				step: wizard.ActiveStep,
+				showdata: true,
 			});
 			setTimeout(function() {
 				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
@@ -336,7 +341,8 @@ class WizardComponent {
 		this.WizardInstance[`wzgrid${step}`].clear();
 		this.WizardInstance[`wzgrid${step}`].setRequestParams({
 			formodule: wizard.WizardCurrentModule[step],
-			step: step
+			step: step,
+			showdata: true
 		});
 		this.WizardInstance[`wzgrid${step}`].setPerPage(parseInt(20));
 	}
@@ -989,6 +995,17 @@ class WizardComponent {
 			},
 			contextMenu: null
 		});
+	}
+
+	CleanWizard() {
+		const btnswitch = document.querySelectorAll('#codewithhbtnswitch');
+		if (btnswitch.length > 0) {
+			for (let i in btnswitch) {
+				if (typeof btnswitch[i] == 'object') {
+					btnswitch[i].remove();
+				}
+			}
+		}
 	}
 }
 

@@ -191,7 +191,7 @@ class WizardActions extends WizardCustomFunctions {
 		$required_action = isset($_REQUEST['required_action']) ? intval($_REQUEST['required_action']) : '';
 		$context = isset($_REQUEST['context']) ? $_REQUEST['context'] : '';
 		$filterFromContext = isset($_REQUEST['filterFromContext']) ? json_decode($_REQUEST['filterFromContext'], true) : '';
-		if ($step > 1 && !$showdata) {
+		if ($step > 0 && !$showdata && !$filtergrid) {
 			return json_encode(array(
 				'data' => array(
 					'contents' =>  array(),
@@ -212,7 +212,36 @@ class WizardActions extends WizardCustomFunctions {
 					if (!isset($context[$condX['find']])) {
 						continue;
 					}
-					$ctxConds .= $adb->convert2Sql(' and '.$condX['match'].' =? ', array($context[$condX['find']]));
+					$value = $context[$condX['find']];
+					if (isset($condX['function'])) {
+						$function = $condX['function'];
+						if (strpos($condX['function'], ':') !== false) {
+							list($function, $delimiter, $elem) = explode(':', $condX['function']);
+						}
+						switch ($function) {
+							case 'explode':
+								if (strpos($condX['function'], ':') !== false) {
+									$value = explode($delimiter, $context[$condX['find']]);
+									$value = $value[$elem];
+								}
+								break;
+							default:
+								break;
+						}
+					}
+					$op = ' = ';
+					$val = $value;
+					if (isset($condX['operator'])) {
+						switch ($condX['operator']) {
+							case 'c':
+								$op = ' LIKE ';
+								$val = '%'.$value.'%';
+								break;
+							default:
+								break;
+						}
+					}
+					$ctxConds .= $adb->convert2Sql(' and '.$condX['match'].' '.$op.' ? ', array($val));
 				}
 			}
 			$sql .= $ctxConds;
@@ -255,6 +284,10 @@ class WizardActions extends WizardCustomFunctions {
 				$value = vtlib_purify($_REQUEST['value']);
 				$operator = vtlib_purify($_REQUEST['operator']);
 				$qg->addCondition($forColumn, $value, $operator);
+				$q = isset($_REQUEST['query']) ? $_REQUEST['query'] : '';
+				if (!empty($q)) {
+					$wc = explode('WHERE', $q);
+				}
 			} else {
 				if (!empty($forids)) {
 					if (!is_array($forfield) && strpos($forfield, '.') !== false) {
@@ -282,6 +315,9 @@ class WizardActions extends WizardCustomFunctions {
 				}
 			}
 			$sql = $qg->getQuery();
+			if (!empty($wc)) {
+				$sql .= ' and '.end($wc);
+			}
 			if ($parentid > 0 && !empty($conditionquery)) {
 				$sql = $adb->convert2Sql($sql.' '.$conditionquery, array($parentid));
 			}
