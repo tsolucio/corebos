@@ -126,9 +126,10 @@ class CBLaunchWorkFlowTask extends VTTask {
 								$context['record_id'] = $crmid;
 							}
 							$return = coreBOS_Rule::evaluate($this->recordsetmapid, $context);
+							$crmids = array();
 							if (is_string($return)) {
 								$crmids[] = $return;
-							} else {
+							} elseif (is_array($return)) {
 								foreach ($return as $ids) {
 									$crmids[] = reset($ids);
 								}
