@@ -7619,7 +7619,7 @@ function openWizard(mapid) {
 			grid: mapid,
 			recordid: 0,
 			isModal: true
-		}).then(function(response) {
+		}).then(function (response) {
 			ldsModal.close();
 			ldsModal.show('Wizard', response, 'large', '', '', false);
 			let wizardTitle = document.getElementById('wizard-title').innerHTML;
