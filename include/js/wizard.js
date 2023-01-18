@@ -49,6 +49,7 @@ class WizardComponent {
 
 	Init() {
 		this.Events();
+		this.CleanWizard();
 		if (this.isModal && this.ProceedToNextStep) {
 			this.el('global-modal-container__title').innerHTML = this.el('wizard-title').innerHTML;
 			this.el('wizard-title').innerHTML = '';
@@ -991,6 +992,17 @@ class WizardComponent {
 			},
 			contextMenu: null
 		});
+	}
+
+	CleanWizard() {
+		const btnswitch = document.querySelectorAll('#codewithhbtnswitch');
+		if (btnswitch.length > 0) {
+			for (let i in btnswitch) {
+				if (typeof btnswitch[i] == 'object') {
+					btnswitch[i].remove();
+				}
+			}
+		}
 	}
 }
 

@@ -86,6 +86,10 @@
 			-webkit-transform: rotate(-360deg);
 		}
 	}
+	.slds-modal__container {
+		width: 96% !important;
+		height: 100% !important;
+	}
 	</style>
 	<div id="loader" class="loading style-2">
 		<div class="loading-wheel"></div>
