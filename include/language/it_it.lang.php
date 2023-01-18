@@ -1316,6 +1316,7 @@ $app_strings = array (
 'LBL_UITYPE10_NOTALLOWED' => 'The related module has a mandatory related field.',
 'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 'Slider' => 'Slider',
+'LBL_WIZARD' => 'Wizard',
 );
 
 // Translation for currency names

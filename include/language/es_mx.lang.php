@@ -1402,6 +1402,7 @@ $app_strings = array (
 	'LBL_UITYPE10_NOTALLOWED' => 'El módulo relacionado tiene un campo relacional obligatorio.',
 	'LBL_PAINT2DOCUMENT' => 'Dibujo a Documento',
 	'Slider' => 'Slider',
+	'LBL_WIZARD' => 'Wizard',
 );
 
 // Translation for currency names

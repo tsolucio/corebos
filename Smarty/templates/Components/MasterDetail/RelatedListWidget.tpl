@@ -26,7 +26,7 @@
 						<div class="slds-button-group" role="group">
 							{if !empty($WizardArray[$currentModule])}
 							<button type="button" class="slds-button slds-button_neutral" onclick="relatedlistgrid.Wizard('{$functionName}', {$CurrentRecord}, {$WizardArray[$currentModule]}, '{$currentModule}')">
-								Wizard
+								{$APP.LBL_WIZARD}
 							</button>
 							{/if}
 							<button type="button" class="slds-button slds-button_neutral" onclick="relatedlistgrid.upsert('{$functionName}', '{$MainModule}', '', {$CurrentRecord}, '{$MainRelateField}')">
