@@ -8,17 +8,22 @@
 function cbAddressCapture(recordid, value, target_fieldname) {
 	vtlib_setvalue_from_popup(recordid, value, target_fieldname);
 	var module = document.getElementById('srcmodule').value;
-	switch (module) {
-	case 'Accounts':
-	case 'SalesOrder':
-	case 'Quotes':
-	case 'PurchaseOrder':
-	case 'Invoice':
-		InventorysetValueFromCapture(recordid, target_fieldname);
-		break;
-	case 'Contacts':
-		ContactSetValueFromCapture(recordid, target_fieldname);
-		break;
+	if (module) {
+		switch (module) {
+			case 'Accounts':
+			case 'SalesOrder':
+			case 'Quotes':
+			case 'PurchaseOrder':
+			case 'Invoice':
+				InventorysetValueFromCapture(recordid, target_fieldname);
+				break;
+			case 'Contacts':
+				ContactSetValueFromCapture(recordid, target_fieldname);
+				break;
+		}
+	} else {
+		window.close();
+		return;
 	}
 }
 
