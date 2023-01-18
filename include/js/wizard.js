@@ -255,7 +255,10 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	FilterRows(ev, filterFromContext = '', currentIdx = '') {
-		const type = ev.target.dataset.type;
+		let type = 'next';
+		if (ev != '') {
+			type = ev.target.dataset.type;
+		}
 		if (type == 'back') {
 			return true;
 		}
