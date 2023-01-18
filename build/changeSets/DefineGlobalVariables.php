@@ -320,6 +320,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Security_ImageCheck',
 				'MasterDetail_ReloadScreenAfterEdit',
 				'MasterDetail_Pagination',
+				'MasterDetail_OpenRecordNewTab',
 				'Import_ForceDuplicateRecord_Handling',
 				'Apache_Tika_URL',
 				'Application_MassAction_Multipage',

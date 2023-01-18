@@ -1660,6 +1660,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Number of rows to show per page in the master detail list view grid.',
 ),
+'MasterDetail_MasterDetail_OpenRecordNewTab' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Open the entry in a new tab or redirect',
+),
 'Import_ForceDuplicateRecord_Handling' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
