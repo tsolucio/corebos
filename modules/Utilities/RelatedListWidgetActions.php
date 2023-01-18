@@ -14,6 +14,40 @@ switch ($_REQUEST['rlaction']) {
 		$rs = gridUnrelate($adb, $_REQUEST);
 		echo json_encode($rs);
 		break;
+	case 'PopupAction':
+		$data = json_decode($_REQUEST['data'], true);
+		$res = true;
+		if (!empty($data)) {
+			if (!empty($data['relatedfield']) && !empty($data['relatedmodule'])) {
+				$focus = CRMEntity::getInstance($data['module']);
+				$focus->retrieve_entity_info($data['recordid'], $data['module']);
+				$relatedvalue = $focus->column_fields[$data['relatedfield']];
+				if (!empty($relatedvalue)) {
+					$relfocus = CRMEntity::getInstance($data['relatedmodule']);
+					$relfocus->retrieve_entity_info($relatedvalue, $data['relatedmodule']);
+					$values = array_values($data['values']);
+					if (is_string($values[0])) {
+						$values[0] = (array)$values[0];
+					}
+					$res = false;
+					if (!empty($values) && in_array($relfocus->column_fields[$data['fieldname']], $values[0])) {
+						$res = true;
+					}
+				}
+			}
+		}
+		echo json_encode($res);
+		break;
+	case 'Wizard':
+		$cbMap = cbMap::getMapByID($_REQUEST['mapid']);
+		if (!empty($cbMap)) {
+			$fields = $cbMap->column_fields;
+			$_REQUEST['bmapname'] = $fields['mapname'];
+		}
+		require_once 'modules/Vtiger/WizardView.php';
+		$smarty->assign('isWigdet', true);
+		echo $smarty->fetch('Smarty/templates/WizardView.tpl');
+		break;
 	case 'list':
 	default:
 		if (empty($_REQUEST['mapname'])) {

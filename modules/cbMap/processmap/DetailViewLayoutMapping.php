@@ -18,28 +18,41 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************
  * The accepted format is:
- <map>
-   <originmodule>
-	 <originname></originname>
-   </originmodule>
-   <blocks>
-	 <block>
-	   <label></label>
-	   <sequence></sequence>
-	   <type></type> ApplicationFields | FieldList | RelatedList | Widget | CodeWithHeader | CodeWithoutHeader
-	   <blockid></blockid>
-	   <layout>
-		 <row>
-		   <column>fieldname</column>
-		 </row>
-	   </layout>
-	   <loadfrom></loadfrom> related list label or id | file to load | widget reference
-	   <handler_class></handler_class>
-	   <handler></handler>
-	 </block>
-	 .....
-   </blocks>
- </map>
+<map>
+	<originmodule>
+		<originname></originname>
+	</originmodule>
+	<blocks>
+		<block>
+			<label></label>
+			<sequence></sequence>
+			<type></type> ApplicationFields | FieldList | RelatedList | Widget | CodeWithHeader | CodeWithoutHeader
+		<blockid></blockid>
+		<layout>
+			<row>
+				<column>fieldname</column>
+			</row>
+		</layout>
+		<loadfrom></loadfrom> related list label or id | file to load | widget reference
+			<handler_class></handler_class>
+			<handler></handler>
+		<parameters>
+			<parameter>
+				<name>module</name>
+				<value>Accounts</value>
+				<valuetype>CONST | EXPRESSION</valuetype>
+			</parameter>
+			...
+		</parameters>
+		<conditions>
+			<module></module>
+			<condition>[{"fieldname":"productcategory","operation":"contains","value":"Test","valuetype":"rawtext","joincondition":"or","groupid":"0"}]</condition>
+			<query></query> direct query condition
+		</conditions>
+	</block>
+	.....
+	</blocks>
+</map>
  *************************************************************************************************/
 include_once 'vtlib/Vtiger/Link.php';
 
@@ -219,6 +232,40 @@ class DetailViewLayoutMapping extends processcbMap {
 				if (!empty($block['loadfrom']) && file_exists($block['loadfrom']) && isInsideApplication($block['loadfrom'])) {
 					$block['handler_class'] = (isset($value->handler_class) ? (string)$value->handler_class : '');
 					$block['handler'] = (isset($value->handler) ? (string)$value->handler : '');
+					$block['parameters'] = array();
+					if (isset($value->parameters)) {
+						$entity = new VTWorkflowEntity($current_user, 0, true);
+						foreach ($value->parameters->parameter as $key) {
+							if (strtolower($key->valuetype) == 'expression') {
+								$testexpression = (string)$key->value;
+								$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
+								$expression = $parser->expression();
+								$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+								$key->value = $exprEvaluater->evaluate($entity);
+							}
+							$block['parameters'][] = array(
+								'name' => (string)$key->name,
+								'value' => (string)$key->value
+							);
+						}
+					}
+					$block['conditions'] = array();
+					if (isset($value->conditions) && !empty($value->conditions->module)) {
+						$block['conditions']['module'] = (string)$value->conditions->module;
+						$workflowScheduler = new WorkFlowScheduler($adb);
+						$workflow = new Workflow();
+						$wfvals['summary'] = '';
+						$wfvals['workflow_id'] = '';
+						$wfvals['defaultworkflow'] = '';
+						$wfvals['execution_condition'] = '';
+						$wfvals['module_name'] = $block['conditions']['module'];
+						$wfvals['test'] = (string)$value->conditions->condition;
+						$workflow->setup($wfvals);
+						$block['conditions']['condition'] = $workflowScheduler->getWorkflowQuery($workflow, array('*'));
+					}
+					if (isset($value->conditions->query)) {
+						$block['conditions']['query'] = (string)$value->conditions->query;
+					}
 				} else {
 					$block['loadfrom'] = '';
 				}

@@ -7,6 +7,10 @@ var relatedlistgrid = {
 	RelatedFields: [],
 	Tooltips: [],
 	MapName: [],
+	Wizard: [],
+	WizardWorkflows: [],
+	NextStep: [],
+	PopupAction: [],
 
 	delete: (Grid, module, recordid, fieldname) => {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
@@ -152,9 +156,89 @@ var relatedlistgrid = {
 
 	loadedTooltips: [],
 
+	Wizard: (grid, id, mapid, module) => {
+		let getWizardActive = localStorage.getItem(`currentWizardActive`);
+		let modalContainer = document.getElementById('global-modal-container');
+		if (getWizardActive == null) {
+			localStorage.setItem(`currentWizardActive`, id);
+			if (modalContainer) {
+				ldsModal.close();
+			}
+		} else {
+			if (getWizardActive == id) {
+				if (modalContainer) {
+					modalContainer.style.display = '';
+					return false;
+				}
+			} else {
+				localStorage.setItem(`currentWizardActive`, id);
+				if (modalContainer) {
+					ldsModal.close();
+				}
+			}
+		}
+		let workflows = JSON.parse(relatedlistgrid.WizardWorkflows[grid]);
+		let waitTime = 0;
+		for (let i in workflows) {
+			ExecuteFunctions('execwf', 'wfid='+workflows[i]+'&ids='+id);
+			waitTime = 1000;
+		}
+		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+mapid;
+		ldsModal.show('Wizard', '<div id="cbds-loader" style="height: 200px"></div>', 'large');
+		loadJS('include/js/wizard.js');
+		relatedlistgrid.loader('show');
+		setTimeout(function () {
+			relatedlistgrid.Request(url, 'post', {
+				grid: grid,
+				recordid: id,
+				isModal: true
+			}).then(function(response) {
+				ldsModal.close();
+				ldsModal.show('Wizard', response, 'large', '', '', false);
+				let wizardTitle = document.getElementById('wizard-title').innerHTML;
+				document.getElementById('global-modal-container__title').innerHTML = wizardTitle;
+				document.getElementById('wizard-title').innerHTML = '';
+				let ProceedToNextStep = JSON.parse(relatedlistgrid.NextStep[grid]);
+				const event = new CustomEvent('onWizardModal', {detail: {
+					'ProceedToNextStep': ProceedToNextStep[module]
+				}});
+				window.dispatchEvent(event);
+			});
+		}, waitTime);
+	},
+
+ 	Request: async (url, method, body = {}) => {
+		const options = {
+			method: method,
+			credentials: 'same-origin',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			}
+		};
+		if (method == 'post') {
+			options.body = '&'+csrfMagicName+'='+csrfMagicToken+'&data='+JSON.stringify(body);
+		}
+		const response = await fetch(url, options);
+		return response.text();
+	},
+
 	findRelatedField: (module, grid) => {
 		const modules = JSON.parse(relatedlistgrid.RelatedFields[grid]);
 		return modules[module];
+	},
+
+	loader: (type) => {
+		const loaderid = document.getElementById('cbds-loader');
+		if (type == 'show') {
+			const loader = document.createElement('div');
+			loader.classList.add('cbds-loader');
+			loader.id = 'cbds-loader';
+			loaderid.appendChild(loader);
+		} else if (type == 'hide') {
+			if (loaderid) {
+				loaderid.remove();
+			}
+		}
 	},
 };
 
@@ -244,6 +328,15 @@ class RLActionRender {
 		}
 		el = document.createElement('span');
 		let actions = '<div class="slds-button-group" role="group">';
+		let wizard = JSON.parse(relatedlistgrid.Wizard[`${props.grid.el.id}`]);
+		if (wizard[parent_module] !== undefined && wizard[parent_module] != '') {
+			actions += `
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="relatedlistgrid.Wizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module]}, '${parent_module}');">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+				</svg>
+			</button>`;
+		}
 		if (parent_module != '') {
 			actions += `
 			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Create']}">
@@ -296,7 +389,64 @@ class RLActionRender {
 				</svg>
 			</button>`;
 		}
-		actions += '</div>';
+		let popupactions = JSON.parse(relatedlistgrid.PopupAction[`${props.grid.el.id}`]);
+		if (parent_module == '' && popupactions[related_child] !== undefined) {
+			if (popupactions[related_child].conditions.fieldname != '') {
+				let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=PopupAction';
+				if (popupactions[related_child].conditions.fieldname.indexOf('.') !== -1) {
+					//get the value in a related module
+					let minfo = popupactions[related_child].conditions.fieldname.split('.');
+					relatedlistgrid.Request(url, 'post', {
+						recordid: recordid,
+						module: related_child,
+						relatedmodule: minfo[0],
+						fieldname: minfo[1],
+						relatedfield: popupactions[related_child].conditions.relatedfield,
+						values: popupactions[related_child].conditions.values,
+					}).then(function (response) {
+						if (response == 'true') {
+							actions += `
+							<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+								</svg>
+							</button>`;
+							actions += '</div>';
+							el.innerHTML = actions;
+						}
+					});
+				} else {
+					//access direct record values
+					let fieldname = popupactions[related_child].conditions.fieldname;
+					let values = popupactions[related_child].conditions.values;
+					let fldvalue = props.grid.getValue(rowKey, `${fieldname}`);
+					let fldvalue_raw = props.grid.getValue(rowKey, `${fieldname}_raw`);
+					if (fldvalue != null) {
+						if (typeof values.value == 'string') {
+							values.value = [values.value];
+						}
+						if (values.value.includes(fldvalue) || values.value.includes(fldvalue_raw)) {
+							actions += `
+							<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+								</svg>
+							</button>`;
+							actions += '</div>';
+						}
+					}
+				}
+			} else {
+				//no conditions: show action in evey row
+				actions += `
+				<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+					</svg>
+				</button>`;
+				actions += '</div>';
+			}
+		}
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);

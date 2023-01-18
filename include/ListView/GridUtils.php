@@ -237,7 +237,7 @@ function getDataGridResponse($mdmap) {
 	);
 }
 
-function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
+function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue, $mode = '') {
 	global $current_user, $adb;
 	static $ownerNameList = array();
 	$fieldAttrs = array();
@@ -472,6 +472,9 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 					'mdUitype' => Field_Metadata::UITYPE_TEXT
 				));
 				$return = $fieldValue;
+				if ($mode == 'Wizard') {
+					$return = '<a href="index.php?module='.$module.'&action=DetailView&record='.$recordID.'" target="_blank">'.$fieldValue.'</a>';
+				}
 			} else {
 				$return = $fieldValue;
 			}
@@ -671,7 +674,7 @@ function TreeView($element, $modules, $map, $i = 0) {
 		if (empty($relatedfield)) {
 			return $tree;
 		}
-		$sql = generateRelationQuery($relatedmodule, $current, $relatedfield, $element['id'], array());
+		$sql = generateRelationQuery($relatedmodule, $current, $relatedfield, $element['id'], $map);
 		$rs = $adb->query($sql);
 		$lv = end($map['modules']);
 		if ($adb->num_rows($rs) > 0) {
@@ -694,6 +697,9 @@ function TreeView($element, $modules, $map, $i = 0) {
 						}
 						$row[$finfo['fieldinfo']['name']] = $gridValue[0];
 						$row[$finfo['fieldinfo']['name'].'_attributes'] = $gridValue[1];
+						if (!empty($gridValue[1])) {
+							$row[$finfo['fieldinfo']['name'].'_raw'] = $gridValue[1][0]['mdValue'];
+						}
 					}
 					$row['typeof_row'] = 'children';
 					$row['child_id'] = $id;
@@ -713,6 +719,9 @@ function TreeView($element, $modules, $map, $i = 0) {
 						$row['_children'] = $findAllChildrens;
 					}
 				} else {
+					if (is_array($entity['fieldname']) && count($entity['fieldname']) > 1) {
+						$entity['fieldname'] = $entity['fieldname'][0];
+					}
 					$row['parentaction'] = $row[$entity['fieldname']];
 					$row['parentaction_attributes'] = [];
 					$row['typeof_row'] = 'parent';
@@ -724,6 +733,9 @@ function TreeView($element, $modules, $map, $i = 0) {
 					$row['related_child'] = $modules[$i]['relatedwith'];
 					$row['record_permissions'] = array(
 						'parent_edit' => isPermitted($relatedmodule, 'EditView', $id)
+					);
+					$row['_attributes'] = array(
+						'expanded' => true
 					);
 				}
 				$tree[] = array_filter($row, 'is_string', ARRAY_FILTER_USE_KEY);
@@ -798,7 +810,19 @@ function generateRelationQuery($module, $relatedmodule, $fieldname, $value, $map
 	} else {
 		$qg->setFields(array('*'));
 	}
-	$qg->addReferenceModuleFieldCondition($relatedmodule, $fieldname, 'id', $value, 'e');
+	$conditions = '';
+	foreach ($map['modules'] as $mod) {
+		if ($mod['name'] == $module) {
+			$conditions = json_decode(trim($mod['listview']['conditions']), true);
+			break;
+		}
+	}
+	if (!empty($conditions)) {
+		foreach ($conditions as $cond) {
+			$qg->addReferenceModuleFieldCondition($cond['relatedmodule'], $cond['relatedfieldname'], $cond['fieldname'], $cond['value'], $cond['operation'], $cond['glue']);
+		}
+	}
+	$qg->addReferenceModuleFieldCondition($relatedmodule, $fieldname, 'id', $value, 'e', 'and');
 	return $qg->getQuery();
 }
 

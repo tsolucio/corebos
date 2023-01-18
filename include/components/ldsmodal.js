@@ -1,6 +1,6 @@
 const ldsModalClosing = new Event('closemodal');
 const ldsModal = {
-	show : (headText, content, size = 'medium', saveAction = '', cancelButtonText = '') => {
+	show : (headText, content, size = 'medium', saveAction = '', cancelButtonText = '', destroy = true) => {
 		cancelButtonText = cancelButtonText === '' ? alert_arr.JSLBL_CANCEL : cancelButtonText;
 		let sact = (saveAction!==false && saveAction!='') ? `<button class="slds-button slds-button_brand" onclick="${saveAction}">${alert_arr.JSLBL_SAVE}</button>` : '';
 		let modal = `<section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_${size}" aria-modal="true">
@@ -8,7 +8,7 @@ const ldsModal = {
 				<header class="slds-modal__header">
 					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
 							title="${alert_arr.LBL_CLOSE_TITLE}"
-							onClick="javascript:ldsModal.close()"
+							onClick="javascript:ldsModal.close(${destroy})"
 						>
 						<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
 							<use xlink: href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
@@ -24,7 +24,7 @@ const ldsModal = {
 					${content}
 				</div>
 				<footer class="slds-modal__footer" style="width: 100%;">
-					<button class="slds-button slds-button_neutral" onClick="javascript:ldsModal.close()">${cancelButtonText}</button>
+					<button class="slds-button slds-button_neutral" onClick="javascript:ldsModal.close(${destroy})">${cancelButtonText}</button>
 					${sact}
 				</footer>
 			</div>
@@ -44,11 +44,15 @@ const ldsModal = {
 			vtlib_executeJavascriptInElement(document.getElementById('global-modal-container'));
 		}
 	},
-	close : () => {
+	close : (destroy = true) => {
 		let modalContainer = document.getElementById('global-modal-container');
 		modalContainer.dispatchEvent(ldsModalClosing);
-		document.body.removeChild(modalContainer);
 		ldsModal.active = false;
+		if (destroy) {
+			document.body.removeChild(modalContainer);
+		} else {
+			modalContainer.style.display = 'none';
+		}
 	},
 	updateTitle : (title) => {
 		document.getElementById('global-modal-container__title').innerHTML = title;
