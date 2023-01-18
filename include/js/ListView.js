@@ -997,7 +997,7 @@ function emptyCvList(type, id) {
 	if (confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)) {
 		document.getElementById('status').style.display='inline';
 		var relidsselected = get_cookie(type+'_all');
-		if (relidsselected == '' || document.getElementById('Campaigns_'+type+'_selectallActivate').value == 'true') {
+		if (relidsselected == null || relidsselected == '' || document.getElementById('Campaigns_'+type+'_selectallActivate').value == 'true') {
 			var idlist = 'All';
 		} else {
 			var idlist = relidsselected;

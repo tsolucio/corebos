@@ -7,8 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 global $currentModule;
-require_once __DIR__ ."/BasicSettings.php";
-
+require_once __DIR__ .'/BasicSettings.php';
 ?>

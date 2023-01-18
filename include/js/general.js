@@ -1592,6 +1592,9 @@ function getProcessInfo(edit_type, formName, action, callback, parameters) {
 	let forrecord = ps.shift();
 	let fparams = encodeURIComponent(ps.join('|'));
 	let params='&minfo='+minfo+'&bpmmodule='+module+'&pflowid=0&bpmrecord='+forrecord+'&params='+fparams+'&formName='+formName+'&actionName='+action;
+	if (callback!='') {
+		params = params + '&savefn=' + callback;
+	}
 	window.open('index.php?action=cbProcessInfoAjax&file=bpmpopup&module=cbProcessInfo'+params, null, cbPopupWindowSettings + ',dependent=yes');
 }
 
@@ -3257,6 +3260,14 @@ function toggleSelect_ListView(state, relCheckName, groupParentElementId) {
 
 function gotourl(url) {
 	document.location.href=url;
+}
+
+function backtourl(storagename = '') {
+	if (storagename != '') {
+		document.location.href = localStorage.getItem(storagename);
+	} else {
+		document.location.href = localStorage.getItem(`${gVTModule}_${gVTUserID}_LastClickedURL`);
+	}
 }
 
 // Function to display the element with id given by showid and hide the element with id given by hideid
@@ -5708,7 +5719,11 @@ AutocompleteRelationPills.prototype.addPill = function () {
 		this.newValue = this.value;
 		this.field = this.field.replace('_display', '');
 	}
-	let fId = document.getElementById(this.field).value.split(' |##| ');
+	let fId = document.getElementById(this.field);
+	if (fId===null) {
+		fId = document.getElementById('jscal_field_'+this.field); // for date/time fields
+	}
+	fId = fId.value.split(' |##| ');
 	if (fId.length > 0) {
 		this.value = fId[fId.length-1];
 	}

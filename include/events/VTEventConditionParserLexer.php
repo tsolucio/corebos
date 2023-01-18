@@ -86,6 +86,8 @@ class VTEventConditionParserLexer extends AntlrLexer {
 	public static $EOF=-1;
 	public static $ELEMENT_ID=11;
 	public static $STRING=6;
+	public $state;
+	public $dfa9;
 
 	public function reportError($e) {
 		global $log;

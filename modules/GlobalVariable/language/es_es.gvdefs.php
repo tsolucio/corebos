@@ -108,9 +108,15 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_Menu_Direction' => array(
 	'valuetype' => 'Cadena',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => 'Horizontal | Vertical',
 	'definition' => 'Dirección del menú de la aplicación.',
+),
+'Application_Menu_Show' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Applicación',
+	'values' => '0 | 1',
+	'definition' => 'mostrar o esconder el menú principal',
 ),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Booleano',
@@ -327,6 +333,18 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '',
 	'definition' => 'Número máximo de letras de un campo que se muestran en una columna de la vista de lista. El valor por defecto es 40 y 0 muestra el valor entero.',
+),
+'Application_ListView_Mass_Edit_Show' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'esconder o mostrar el botón de edición masiva',
+),
+'Application_ListView_Mass_Delete_Show' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'esconder o mostrar el botón de eliminado masivo',
 ),
 'Application_ListView_PageSize' => array(
 	'valuetype' => 'Entero',
@@ -882,7 +900,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_MultipleUserLogins' => array(
 	'valuetype' => 'Entero',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => '1 (predeterminado) permite que el mismo usuario inicie sesión varias veces desde diferentes sesiones de navegador.',
 ),
@@ -900,7 +918,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_Session_LockUserAgent' => array(
 	'valuetype' => 'Entero',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => '1 (predeterminado) restringe el acceso al mismo navegador desde el que se inició sesión',
 ),
@@ -918,7 +936,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_Session_LockIP' => array(
 	'valuetype' => 'Entero',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => '1 restringe el acceso a la misma IP desde la que se realizó el inicio de sesión. 0 es el valor predeterminado',
 ),
@@ -1110,7 +1128,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Calendar_Show_Only_My_Events' => array(
 	'valuetype' => 'Booleano',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => 'Mostrar solo los eventos asignados a mi, compartidos conmigo y en los que esté invitado.',
 ),
@@ -1752,7 +1770,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Webservice_WriteRunWS_Logs' => array(
 	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => 'Write logs in the RunWebserviceWorkflow task. Default is 1',
 ),
@@ -1786,11 +1804,23 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ID HTML',
 	'definition' => 'ID de elemento HTML que se enfocará cuando se cargue la página',
 ),
+'Application_Toolbar_Show' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'mostrar o esconder los botones de ayuda en la vista de detalle',
+),
 'Application_TitleInformation' => array(
 	'valuetype' => 'Texto|Entero',
 	'category' => 'Aplicación',
 	'values' => 'MapID o texto',
 	'definition' => 'Título de la pestaña del navegador. Puede ser un ID de mapa de expresión',
+),
+'Application_Header_Buttons_Position' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => 'porcentaje',
+	'definition' => 'Porcentaje de espacio de encabezado que se deja para el título antes de colocar los botones. Por defecto, los botones estarán alineados a la derecha.',
 ),
 );
 

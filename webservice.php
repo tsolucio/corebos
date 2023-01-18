@@ -74,7 +74,14 @@ $operation = vtws_getParameter($_REQUEST, 'operation');
 $operation = strtolower($operation);
 $format = vtws_getParameter($_REQUEST, 'format', 'json');
 $headers = array_change_key_case(getallheaders(), CASE_LOWER); // https://github.com/ralouphie/getallheaders
-$sessionId = empty($headers['corebos_authorization']) ? vtws_getParameter($_REQUEST, 'sessionName') : $headers['corebos_authorization'];
+if (empty($headers['corebos_authorization']) && empty($headers['corebos-authorization'])) {
+	$sessionId = vtws_getParameter($_REQUEST, 'sessionName');
+} else {
+	$sessionId = empty($headers['corebos_authorization']) ? $headers['corebos-authorization'] : $headers['corebos_authorization'];
+	if (!coreBOS_Session::sessionExists($sessionId, 'cbws,')) {
+		$sessionId = vtws_convertToken2Session($sessionId);
+	}
+}
 $mode = vtws_getParameter($_REQUEST, 'mode', '');
 
 $sessionManager = new coreBOS_Session();

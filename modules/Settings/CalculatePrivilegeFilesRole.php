@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * (C) Copyright 2018 David Fernandez Gonzalez.
  *
  * All rights reserved. This program and the accompanying materials

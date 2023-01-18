@@ -325,6 +325,14 @@ a:hover {
     background-color:#fafafa;
 }
 
+#Push\ Along\ Flow .rightMailMergeContent {
+    padding:0 !important;
+}
+
+#Push\ Along\ Flow .slds-p-around_xx-small {
+    padding:0 !important;
+}
+
 .detailedViewHeader{
     border-bottom:2px solid #dadada;
     padding:5px;
@@ -2825,4 +2833,9 @@ a.allMnu:Hover{
 /* Currency modal LDS width override */
 .custom-width-350 {
 	width: 350px !important;
+}
+
+.imageDetailViewFields {
+	border-bottom: 1px solid #dedede;
+	border-right: 1px solid #dedede;
 }

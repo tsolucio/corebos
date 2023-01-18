@@ -483,4 +483,7 @@ var alert_arr = {
 	'LBL_EXPAND': 'Expandir',
 	'currentuser': 'Usuario Actual',
 	'wfmodule': 'Módulo Flujo Trabajo',
+	'RelatedList': 'Lista Relacionada',
+	'SelectField': 'Selecciona campo',
+	'MoveFile': 'Mover fichero',
 };

@@ -27,9 +27,27 @@ class VTEmailTask extends VTTask {
 	private $entityid = 0;
 	private $entitymodule = '';
 	private $entityinfo = '';
+	public $fromname;
+	public $fromemail;
+	public $replyto;
+	public $subject;
+	public $content;
+	public $recepient;
+	public $emailcc;
+	public $emailbcc;
+	public $attfieldnames;
+	public $attachmentids;
+	public $attach_icalendar;
+	public $cbmsgtemplate;
+	public $cbmsgtemplate_display;
+	public $sgmsgtemplate;
+	public $linktemplate;
 
 	public function getFieldNames() {
-		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar', 'cbmsgtemplate', 'cbmsgtemplate_display', 'sgmsgtemplate', 'linktemplate');
+		return array(
+			'fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames',
+			'attachmentids', 'attach_icalendar', 'cbmsgtemplate', 'cbmsgtemplate_display', 'sgmsgtemplate', 'linktemplate'
+		);
 	}
 	public function after_retrieve() {
 		global $adb, $current_user;

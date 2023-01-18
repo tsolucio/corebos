@@ -23,6 +23,10 @@ class GridListView {
 	public $currentPage = 1;
 	public $searchUrl = '';
 	public $searchtype = 'Basic';
+	public $module;
+	public $entityidfield;
+	public $currentModule;
+	public $DocumentSearch;
 
 	public function __construct($module) {
 		$this->module = $module;

@@ -79,17 +79,21 @@ function fieldDep_GetField(change_field, action_field, new_value, old_value, par
 	});
 }
 
+var holdParameterValue = Array();
 function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_value, parameters) {
 	let searchValue = (parameters[3]=='new value' ? new_value : parameters[3]);
 	let searchFields = parameters[2];
 	if (Array.isArray(parameters[2])) {
 		let conds = [...parameters[2]];
 		conds.forEach((element, index) => {
-			if (parameters[2][index][1]=='new value') {
+			if (holdParameterValue[index] === undefined) {
+				holdParameterValue[index] = parameters[2][index][1];
+			}
+			if (holdParameterValue[index]=='new value') {
 				conds[index][1] = new_value;
 			} else {
-				if (document.getElementById(element[1])) {
-					conds[index][1] = document.getElementById(element[1]).value;
+				if (document.getElementById(holdParameterValue[index])) {
+					conds[index][1] = document.getElementById(holdParameterValue[index]).value;
 				} else {
 					conds[index][1] = element[1];
 				}

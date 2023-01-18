@@ -562,14 +562,13 @@
 						</div>
 					</li>`;
 			});
-			content += `
-						</ul>
+			content += `</ul>
 					</div>
 				</div>
 			</div>
 			<div style="height: 13rem;"></div>`;
 
-			ldsModal.show('Select field', content, 'medium', 'AdvancedFilter.onComparisonModalClose()');
+			ldsModal.show(alert_arr.SelectField, content, 'medium', 'AdvancedFilter.onComparisonModalClose()');
 			this.comparisonModalCombo = new ldsCombobox(document.getElementById('cbds-advfilt__fieldcomp-combo'), {'isMulti': true});
 
 			this.currentComparisonInput = function () {

@@ -89,7 +89,10 @@ if (!empty($idlist)) {
 			$recname = getEntityName($currentModule, $recordid);
 			$recname = $reclink.$recordid.'">'.$recname[$recordid].'</a>';
 			if (!$saveerror) { // if there is an error we ignore this record
-				$validation = executefunctionsvalidate('ValidationLoad', $currentModule, vtlib_purify($_REQUEST['params']));
+				$structure = json_decode($_REQUEST['params'], true);
+				$structure = vtlib_purify(Validations::flattenMultipicklistArrays($structure));
+				$structure = Validations::addFilesFields($structure);
+				$validation = executefunctionsvalidate('ValidationLoad', $currentModule, json_encode($structure));
 				if ($validation == '%%%OK%%%') {
 					$msg = $app_strings['record'].' '.$recname.' '.$app_strings['saved'];
 					$focus->save($currentModule);

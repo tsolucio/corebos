@@ -26,7 +26,7 @@ class VTQL_ParseryyToken implements ArrayAccess {
 	}
 
 	public function __toString() {
-		return $this->_string;
+		return $this->string;
 	}
 
 	public function offsetExists($offset) {
@@ -143,6 +143,7 @@ Array (
 	private $error_msg;
 	private $syntax_error;
 	private $user;
+	private $value;
 
 	public function __construct($user, $lex, $out) {
 		if (!is_array($out)) {

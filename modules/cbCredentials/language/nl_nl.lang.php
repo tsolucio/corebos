@@ -19,5 +19,10 @@ $mod_strings = array(
 	'LBL_GOOGLE_INFORMATION' => 'Google Information',
 	'LBL_FTP_INFORMATION' => 'FTP Information',
 	'LBL_OPENCLOUD_INFORMATION' => 'OpenCloud Information',
+	'LBL_CBWSAUTH_SETTINGS' => 'coreBOS Web Service Token',
+	'cbauthtoken' => 'Web Service Token',
+	'cbauthstart' => 'Token Valid Start',
+	'cbauthend' => 'Token Valid End',
+	'coreBOSWSAuthToken' => 'coreBOS Web Service Token',
 );
 ?>

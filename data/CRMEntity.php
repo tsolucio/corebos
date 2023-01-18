@@ -20,6 +20,23 @@ class CRMEntity {
 	public $ownedby;
 	public $mode;
 	public $id;
+	public $column_fields;
+	public $tab_name;
+	public $tab_name_index;
+	public $table_name;
+	public $table_index;
+	public $fetched_records;
+	public $customFieldTable;
+	public $special_functions;
+	public $importable_fields;
+	public $required_fields;
+	public $sortby_fields;
+	public $list_fields;
+	public $search_fields;
+	public $default_sort_order;
+	public $default_order_by;
+	public $list_link_field;
+	public $list_fields_name;
 	public $linkmodeid = 0;
 	public $linkmodemodule = '';
 	public $DirectImageFieldValues = array();
@@ -1641,8 +1658,8 @@ class CRMEntity {
 	 */
 	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
 		global $adb;
-		$relatedModule = vtlib_purify($_REQUEST['module']);
-		$bmapname = $module.'_ListColumns';
+		$thisModule = get_class($this);
+		$bmapname = $thisModule.'_ListColumns';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
@@ -1651,14 +1668,14 @@ class CRMEntity {
 			if (!empty($conditions[$fieldname]) && json_decode($conditions[$fieldname]) == null) {
 				return $conditions[$fieldname];
 			}
-			if (!empty($conditions[$fieldname]) || !empty($conditions[$module.'::'.$relatedModule])) {
+			if (!empty($conditions[$fieldname]) || !empty($conditions[$module.'::'.$thisModule])) {
 				$fields = $cbMapLC->getSearchFieldsName();
 				$wherepos = stripos($query, ' where ');
 				$query_body = substr($query, 0, $wherepos);
 				$workflowScheduler = new WorkFlowScheduler($adb);
 				$workflow = new Workflow();
-				$wfvals['module_name'] = $relatedModule;
-				$wfvals['test'] = isset($conditions[$fieldname]) ? $conditions[$fieldname] : $conditions[$module.'::'.$relatedModule];
+				$wfvals['module_name'] = $thisModule;
+				$wfvals['test'] = isset($conditions[$fieldname]) ? $conditions[$fieldname] : $conditions[$module.'::'.$thisModule];
 				$wfvals['workflow_id'] = 0;
 				$wfvals['defaultworkflow'] = 0;
 				$wfvals['summary'] = '';
@@ -2678,7 +2695,7 @@ class CRMEntity {
 	 * For eg: A trouble ticket can be related to an Account or a Contact.
 	 * From a given Contact/Account if we need to fetch all such dependent trouble tickets, get_dependents_list function can be used.
 	 */
-	public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+	public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions = false, $customactions = '') {
 		global $currentModule, $singlepane_view, $current_user, $adb;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -2725,6 +2742,7 @@ class CRMEntity {
 				$button .= '<input type="hidden" name="' . $dependentField . '_type" id="' . $dependentColumn . '_type" value="' . $currentModule . '">';
 			}
 			$relationconditions = '('.implode(' or ', $relconds).')';
+			$button .= $customactions;
 			if ($actions) {
 				if (is_string($actions)) {
 					$actions = explode(',', strtoupper($actions));
@@ -2736,9 +2754,9 @@ class CRMEntity {
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 					if (!$racbr || $racbr->hasRelatedListPermissionTo('create', $related_module)) {
 						$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
-							" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
+						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW').' '.$singular_modname."' class='crmbutton small create'"
+							." onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'"
+							." value='".getTranslatedString('LBL_ADD_NEW').' '.$singular_modname."'>&nbsp;";
 					}
 				}
 			}

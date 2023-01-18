@@ -11,6 +11,10 @@ require_once 'include/events/SqlResultIterator.inc';
 
 class VTEntityType {
 
+	public $moduleName;
+	public $tabId;
+	public $adb;
+
 	public function __construct($adb, $setype) {
 		$this->moduleName=$setype;
 		require_once 'modules/'.$setype.'/'.$setype.'.php';
@@ -63,6 +67,8 @@ class VTEntityType {
 }
 
 class VTFieldType {
+
+	public $type = '';
 
 	public function toArray() {
 		$ro = new ReflectionObject($this);

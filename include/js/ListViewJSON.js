@@ -1382,10 +1382,9 @@ const DocumentsView = {
 				content = `
 				<ul class="slds-has-dividers_top slds-has-block-links_space">
 					${list}
-				</ul>
-				`;
+				</ul>`;
 			}
-			ldsModal.show('Move file', content, 'small');
+			ldsModal.show(alert_arr.MoveFile, content, 'small');
 		});
 	},
 

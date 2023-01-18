@@ -98,8 +98,8 @@ function getAutocomplete($data, $limit, $fltr) {
 	}
 
 	$limit = vtlib_purify($limit);
-	$filter = vtlib_purify($fltr);
-	if (is_array($filter)) {
+	if (is_array($fltr)) {
+		$filter = vtlib_purify($fltr['filters']);
 		// Filter array format looks like this:
 		/**************************************
 		[filter] => Array(
@@ -114,11 +114,11 @@ function getAutocomplete($data, $limit, $fltr) {
 			)
 		)
 		***************************************/
-		$term = $filter['filters'][0]['value'];
-		$op = isset($filter['filters'][0]['operator']) ? $filter['filters'][0]['operator'] : 'startswith';
+		$term = $filter[0]['value'];
+		$op = isset($filter[0]['operator']) ? $filter[0]['operator'] : 'startswith';
 	} else {
 		$term = vtlib_purify($_REQUEST['term']);
-		$op = empty($filter) ? 'startswith' : $filter;
+		$op = empty($fltr) ? 'startswith' : vtlib_purify($fltr);
 	}
 	$retvals = getFieldAutocomplete($term, $op, $searchinmodule, $fields, $returnfields, $limit, $current_user);
 	$ret = array();

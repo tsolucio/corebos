@@ -35,6 +35,7 @@ class QueryGenerator {
 	private $fields;
 	private $addJoinFields;
 	private $referenceModuleMetaInfo;
+	private $referenceModuleField;
 	private $moduleNameFields;
 	private $referenceFieldInfoList;
 	private $referenceFieldList;
@@ -1022,7 +1023,7 @@ class QueryGenerator {
 						}
 
 						$fieldSql .= "$fieldGlue trim($columnSql) $valueSql";
-						if ($conditionInfo['operator'] == 'e' && (empty($conditionInfo['value']) || $conditionInfo['value'] == 'null') && $field->getFieldDataType() == 'reference') {
+						if ($conditionInfo['operator']=='e' && (empty($conditionInfo['value']) || $conditionInfo['value']=='null') && $field->getFieldDataType()=='reference') {
 							$fieldGlue = ' AND';
 						} else {
 							$fieldGlue = ' OR';

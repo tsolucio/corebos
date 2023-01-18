@@ -112,6 +112,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Horizontal | Vertical',
 	'definition' => 'Application menu direction.',
 ),
+'Application_Menu_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the main menu',
+),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Module Functionality',
@@ -327,6 +333,18 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'The maximum number of letters of a field to show in a list view column. The default value is 40 and 0 shows the full string.',
+),
+'Application_ListView_Mass_Edit_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the mass edit button',
+),
+'Application_ListView_Mass_Delete_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the mass delete button',
 ),
 'Application_ListView_PageSize' => array(
 	'valuetype' => 'Integer',
@@ -1786,11 +1804,23 @@ $GlobalVariableDefinitons = array(
 	'values' => 'HTML ID',
 	'definition' => 'Element ID that will be focused when the page loads',
 ),
+'Application_Toolbar_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the Toolbar menu',
+),
 'Application_TitleInformation' => array(
 	'valuetype' => 'String|Integer',
 	'category' => 'Application',
 	'values' => 'MapID or string',
 	'definition' => 'Browser tab title. Can be an expression business map ID',
+),
+'Application_Header_Buttons_Position' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => 'percentage',
+	'definition' => 'Percentage of header space to leave for title before placing the buttons. By default buttons will be aligned to the right.',
 ),
 );
 
