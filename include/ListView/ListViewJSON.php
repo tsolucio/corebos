@@ -54,7 +54,7 @@ class GridListView {
 		}
 		if (!empty($gvOrderField) && $gvDefaultSorting) {
 			$order_by = $gvOrderField;
-		} else if ($this->sortColumn != '') {
+		} elseif ($this->sortColumn != '') {
 			$order_by = $this->sortColumn;
 		} else {
 			$order_by = $focus->getOrderBy();
