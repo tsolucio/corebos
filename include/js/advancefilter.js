@@ -136,7 +136,7 @@
 					if (jparse) {
 						existing = jparse;
 					}
-				} catch(e) {
+				} catch (e) {
 				}
 			}
 			const groups = [];
@@ -176,7 +176,7 @@
 						comparator: condition['operator'],
 						value: '',
 						column_condition: condition['join'],
-					})
+					});
 				}
 			}
 			return result;
@@ -999,7 +999,7 @@
 		setVals: function () {
 			var curVal  = this.fieldCombo.getVal(),
 			curType = Field.getType(curVal),
-			curOp   = this.op.combo.getVal();
+			curOp = this.op.combo.getVal();
 
 			for (var i = 0; i < this.parent.vals.length; i++) {
 				if (this.parent.vals[i].cond === this) {

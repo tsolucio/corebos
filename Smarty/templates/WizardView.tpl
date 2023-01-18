@@ -123,10 +123,10 @@
 										<div class="slds-media">
 											<div class="slds-setup-assistant__step-summary-content slds-media__body">
 												{if $step.filter}
-												<button class="slds-button slds-button_neutral" onclick="wizard.ClearFilter({$smarty.foreach.stepwizard.index})" style="float: right;">{$APP.LBL_CLEAR}</button>
+												<button class="slds-button slds-button_neutral" onclick="wizard.ClearFilter({$smarty.foreach.stepwizard.index})" style="float: right;">{'LBL_CLEAR'|@getTranslatedString}</button>
 												{/if}
 												{if in_array('delete', $step.actions)}
-												<button class="slds-button slds-button_neutral" onclick="wizard.DeleteRowFromGrid({$smarty.foreach.stepwizard.index})" style="float: right;">{$APP.LNK_REMOVE}</button>
+												<button class="slds-button slds-button_neutral" onclick="wizard.DeleteRowFromGrid({$smarty.foreach.stepwizard.index})" style="float: right;">{'LNK_REMOVE'|@getTranslatedString}</button>
 												{/if}
 												{if $step.description neq ''}
 												<div class="slds-text-heading_small">
@@ -163,18 +163,18 @@
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
 			</svg>
-			{$APP.LBL_GOBACK_BUTTON_LABEL}
+			{'LBL_GOBACK_BUTTON_LABEL'|@getTranslatedString}
 		</button>
 		{if !$isModal}
 		<button type="button" class="slds-button slds-button_outline-brand slds-path__mark-complete" id="btn-reset" data-type="reset" onclick="location.reload(true)">
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#skip_back"></use>
 			</svg>
-			{$APP.LBL_RESET} {$APP.LBL_WIZARD}
+			{'LBL_RESET'|@getTranslatedString} {'LBL_WIZARD'|@getTranslatedString}
 		</button>
 		{/if}
 		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete slds-float_right" id="btn-next" data-type="next">
-			{$APP.LBL_NEXT_BUTTON_LABEL}
+			{'LBL_NEXT_BUTTON_LABEL'|@getTranslatedString}
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
 			</svg>

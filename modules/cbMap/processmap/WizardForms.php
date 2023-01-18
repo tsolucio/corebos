@@ -20,18 +20,18 @@
 <map>
 <module>cbBCase</module>
 <rows>
-  <row>
-    <field>businesscase_name</field>
-    <field>businesscase_from</field>
-  </row>
-  <row>
-    <field>businesscasestatus</field>
-    <field>businesscase_to</field>
-    <field>cf_2191</field>
-  </row>
-  <row>
-    <field>budgetcost</field>
-  </row>
+	<row>
+		<field>businesscase_name</field>
+		<field>businesscase_from</field>
+	</row>
+	<row>
+		<field>businesscasestatus</field>
+		<field>businesscase_to</field>
+		<field>cf_2191</field>
+	</row>
+	<row>
+		<field>budgetcost</field>
+	</row>
 </rows>
 </map>
 *************************************************************************************************/
