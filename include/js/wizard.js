@@ -500,9 +500,9 @@ class WizardComponent {
 		}
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_FINISH;
-			//setTimeout(function () {
-				//wizard.el(`btn-next`).setAttribute('onclick', 'wizard.Finish()');
-			//}, 200);
+			setTimeout(function () {
+				wizard.el(`btn-next`).setAttribute('onclick', 'wizard.Finish()');
+			}, 200);
 			return false;
 		} else {
 			this.el(`btn-next`).innerHTML = alert_arr.JSLBL_NEXT;
@@ -736,16 +736,16 @@ class WizardComponent {
 				if (response) {
 					ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 					wizard.FilterDataForStep();
-					if (wizard.steps == wizard.ActiveStep+1) {
-						wizard.Finish();
-					}
+					//if (wizard.steps == wizard.ActiveStep+1) {
+					//	wizard.Finish();
+					//}
 				} else {
 					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 				}
 			} else {
-				if (wizard.steps == wizard.ActiveStep+1) {
-					wizard.Finish();
-				}
+				//if (wizard.steps == wizard.ActiveStep+1) {
+				//	wizard.Finish();
+				//}
 			}
 			wizard.loader('hide');
 		});
