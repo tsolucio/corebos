@@ -93,10 +93,18 @@ class CBAddNotification extends VTTask {
 				'massaction' => true,
 				'description' => 'HELP_CBAddNotification_Related',
 			),
+			'AddNotification_NotificationID' => array(
+				'type' => '1',
+				'values' => '',
+				'modules' => '',
+				'massaction' => false,
+				'description' => 'HELP_CBAddNotification_NotificationID',
+			),
 		);
 	}
 
 	public function doTask(&$entity) {
+		global $adb;
 		if (empty($entity->WorkflowContext['AddNotification_Module'])) {
 			if (empty($this->cbmodule) || $this->cbmodule=='wfmodule') {
 				$cbmodule = $entity->getModuleName();
@@ -170,7 +178,15 @@ class CBAddNotification extends VTTask {
 		} else {
 			$relwith = vtws_getCRMID($entity->WorkflowContext['AddNotification_Related']);
 		}
-		cbCalendar::addNotificationReminder($cbmodule, $cbrecord, $datetime, $ownerid, $relwith, $moreaction, $moreinfo);
+		$remid = cbCalendar::addNotificationReminder($cbmodule, $cbrecord, $datetime, $ownerid, $relwith, $moreaction, $moreinfo);
+		$minfo = json_decode($moreinfo, true);
+		if (empty($minfo['id'])) {
+			$minfo['id'] = $remid;
+			$adb->pquery('UPDATE vtiger_activity_reminder_popup set moreinfo=? WHERE reminderid=?', [json_encode($minfo), $remid]);
+		} else {
+			$remid = $minfo['id'];
+		}
+		$entity->WorkflowContext['AddNotification_NotificationID'] = $remid;
 	}
 }
 ?>

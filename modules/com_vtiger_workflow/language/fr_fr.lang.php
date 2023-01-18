@@ -298,8 +298,9 @@ $mod_strings = array(
 	'HELP_CBAddNotification_Date' => 'Date of the notification in ISO format. By default will be the date time of the workflow trigger',
 	'HELP_CBAddNotification_Time' => 'Time of the notification. By default will be the date time of the workflow trigger',
 	'HELP_CBAddNotification_MoreAction' => 'More Action JSON. This link is an additional action to show on the notification.<br>{"label":"some label", "link":"some link", "type":"link or click"}',
-	'HELP_CBAddNotification_MoreInfo' => 'More Information JSON. For events not related to records we can use this JSON to set the values to use:<br>{"icon":["standard","account"], "subject":"subject", "subtitle":"sub title"}',
+	'HELP_CBAddNotification_MoreInfo' => 'More Information JSON. For events not related to records we can use this JSON to set the values to use:<br>{"id":"unique ID", "icon":["standard","account"], "subject":"subject", "subtitle":"sub title"}',
 	'HELP_CBAddNotification_Owner' => 'User owner of the notification. By default will be the current user when the workflow triggers',
 	'HELP_CBAddNotification_Related' => 'Notification is additionally related to this record. If empty and "Record" is set, the account/contact related to Record will be used.',
+	'HELP_CBAddNotification_NotificationID' => 'Contains the unique ID of the notification. If not set in more information it will be automatically generated and added also to the more information object. This variable is set in the context so it can be used in subsequent tasks.',
 );
 ?>

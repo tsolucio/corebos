@@ -123,10 +123,10 @@
 										<div class="slds-media">
 											<div class="slds-setup-assistant__step-summary-content slds-media__body">
 												{if $step.filter}
-												<button class="slds-button slds-button_neutral" onclick="wizard.ClearFilter({$smarty.foreach.stepwizard.index})" style="float: right;">Clear Filter</button>
+												<button class="slds-button slds-button_neutral" onclick="wizard.ClearFilter({$smarty.foreach.stepwizard.index})" style="float: right;">{$APP.LBL_CLEAR}</button>
 												{/if}
 												{if in_array('delete', $step.actions)}
-												<button class="slds-button slds-button_neutral" onclick="wizard.DeleteRowFromGrid({$smarty.foreach.stepwizard.index})" style="float: right;">Remove</button>
+												<button class="slds-button slds-button_neutral" onclick="wizard.DeleteRowFromGrid({$smarty.foreach.stepwizard.index})" style="float: right;">{$APP.LNK_REMOVE}</button>
 												{/if}
 												{if $step.description neq ''}
 												<div class="slds-text-heading_small">
@@ -163,18 +163,18 @@
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
 			</svg>
-			Back
+			{$APP.LBL_GOBACK_BUTTON_LABEL}
 		</button>
 		{if !$isModal}
 		<button type="button" class="slds-button slds-button_outline-brand slds-path__mark-complete" id="btn-reset" data-type="reset" onclick="location.reload(true)">
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#skip_back"></use>
 			</svg>
-			Reset Wizard
+			{$APP.LBL_RESET} {$APP.LBL_WIZARD}
 		</button>
 		{/if}
 		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete slds-float_right" id="btn-next" data-type="next">
-			Next
+			{$APP.LBL_NEXT_BUTTON_LABEL}
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
 			</svg>
