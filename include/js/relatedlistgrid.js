@@ -157,10 +157,10 @@ var relatedlistgrid = {
 	loadedTooltips: [],
 
 	Wizard: (grid, id, mapid, module) => {
-		let getWizardActive = localStorage.getItem(`currentWizardActive`);
+		let getWizardActive = localStorage.getItem('currentWizardActive');
 		let modalContainer = document.getElementById('global-modal-container');
 		if (getWizardActive == null) {
-			localStorage.setItem(`currentWizardActive`, id);
+			localStorage.setItem('currentWizardActive', id);
 			if (modalContainer) {
 				ldsModal.close();
 			}
@@ -171,7 +171,7 @@ var relatedlistgrid = {
 					return false;
 				}
 			} else {
-				localStorage.setItem(`currentWizardActive`, id);
+				localStorage.setItem('currentWizardActive', id);
 				if (modalContainer) {
 					ldsModal.close();
 				}
@@ -192,7 +192,7 @@ var relatedlistgrid = {
 				grid: grid,
 				recordid: id,
 				isModal: true
-			}).then(function(response) {
+			}).then(function (response) {
 				ldsModal.close();
 				ldsModal.show('Wizard', response, 'large', '', '', false);
 				let wizardTitle = document.getElementById('wizard-title').innerHTML;
@@ -207,7 +207,7 @@ var relatedlistgrid = {
 		}, waitTime);
 	},
 
- 	Request: async (url, method, body = {}) => {
+	Request: async (url, method, body = {}) => {
 		const options = {
 			method: method,
 			credentials: 'same-origin',
@@ -259,11 +259,11 @@ class RLinkRender {
 				}
 				el.innerHTML = String(fieldValue[0].mdValue);
 			} else if (columnName == 'parentaction') {
-				let parent_id = props.grid.getValue(rowKey, `parent_id`);
-				let parent_module = props.grid.getValue(rowKey, `parent_module`);
+				let parent_id = props.grid.getValue(rowKey, 'parent_id');
+				let parent_module = props.grid.getValue(rowKey, 'parent_module');
 				el = document.createElement('a');
 				el.href = `index.php?module=${parent_module}&action=DetailView&record=${parent_id}`;
-				el.target = `_blank`;
+				el.target = '_blank';
 				if (tooltip[parent_module] !== undefined) {
 					props.value = `<span>${props.value}</span>
 					<span class="slds-icon_container slds-float_right slds-m-right_small cbds-tooltip__trigger slds-p-left_xx-small"
