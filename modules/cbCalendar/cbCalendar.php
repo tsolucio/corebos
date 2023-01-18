@@ -322,7 +322,9 @@ class cbCalendar extends CRMEntity {
 			}
 
 			$adb->pquery($callback_query, $callback_params);
+			return isset($reminderid) ? $reminderid : $adb->getLastInsertID();
 		}
+		return 0;
 	}
 
 	public static function getActionElement($reminderid, $cbmodule, $cbrecord, $moreinfo, $cbdate, $cbtime, $cbaction, $cbreaded) {
