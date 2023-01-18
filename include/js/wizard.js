@@ -345,6 +345,7 @@ class WizardComponent {
 			showdata: true
 		});
 		this.WizardInstance[`wzgrid${step}`].setPerPage(parseInt(20));
+		this.CheckRows(this.WizardInstance[`wzgrid${step}`].getPagination()._options);
 	}
 
 	InlineEdit(ev) {
@@ -586,6 +587,7 @@ class WizardComponent {
 					page: page._currentPage
 				}, true);
 			}
+			wizard.CheckRows(page._options);
 		}, 1000);
 	}
 
