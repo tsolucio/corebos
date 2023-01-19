@@ -135,7 +135,7 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 								<select name ="search_field" class="txtBox">
 									{html_options options=$SEARCHLISTHEADER }
 								</select>
-								<input type="hidden" name="searchtype" value="{$searchtype}">
+								<input type="hidden" name="searchtype" value="{$searchtype|@urlencode}">
 								<input type="hidden" name="module" id="module" value="{$MODULE}">
 								<input type="hidden" name="action" value="Popup">
 								<input type="hidden" name="query" value="true">
@@ -215,8 +215,8 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 				<table cellpadding="2" cellspacing="0" width="100%" align="center" class="searchUIAdv2 small" border=0>
 					<tr>
 						<td align="center" class="small" width=90%>
-							<input type="hidden" name="advft_criteria" id="advft_criteria" value='{$advft_criteria}'>
-							<input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value='{$advft_criteria_groups}'>
+							<input type="hidden" name="advft_criteria" id="advft_criteria" value='{$advft_criteria|@urlencode}'>
+							<input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value='{$advft_criteria_groups|@urlencode}'>
 							<div class="slds-grid slds-m-top_small cbds-advanced-search--inactive" id="cbds-advanced-search">
 								<div class="slds-col">
 									<div class="slds-expression slds-p-bottom_xx-large">
