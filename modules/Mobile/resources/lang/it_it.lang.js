@@ -9,46 +9,46 @@
  ********************************************************************************/
 //added for List menu
 var mobiscroll_arr = {
-	ALERT_POSTS:'No More Records!',
-	ALERT_SCROLL:'Scroll for more or click here.',
-	ALERT_CLICK:'Click for more.',
-	ALERT_LOADING:'Loading...',
-	ALERT_SELECT_AN_EXISITNG_ENTRY: 'Please enter an existing entry stored at the CRM.',
-	ERROR_SEARCH_FAILED: 'Search failed - please contact your CRM Administrator.'
+	ALERT_POSTS:'Niente più record!',
+	ALERT_SCROLL:'Scorri o clicca qui.',
+	ALERT_CLICK:'Clicca per ulteriori informazioni.',
+	ALERT_LOADING:'Caricamento in corso...',
+	ALERT_SELECT_AN_EXISITNG_ENTRY: 'Inserisci una voce esistente memorizzata nel CRM.',
+	ERROR_SEARCH_FAILED: 'Ricerca fallita - contatta il tuo amministratore.'
 };
 var cal_error_arr = {
-	ERROR_STARTDATETIME:'You can only plan activities for the future.',
-	ERROR_DUEDATE:'The due date has to be after the start date.',
-	ERROR_WRONG_FORMAT:'Wrong input format.',
-	ERROR_DUEDATE_FORMAT:'Wrong date format for end date.',
-	ERROR_STARTDATE_FORMAT:'Wrong date format for start date.',
-	ERROR_STARTTIME_FORMAT:'Wrong time format for start date.',
-	ERROR_DUETIME_FORMAT:'Wrong time format for end time.'
+	ERROR_STARTDATETIME:'Puoi solo pianificare le attività per il futuro.',
+	ERROR_DUEDATE:'La data di scadenza deve essere successiva alla data di inizio.',
+	ERROR_WRONG_FORMAT:'Formato di input errato.',
+	ERROR_DUEDATE_FORMAT:'Formato della data errato per la data di fine.',
+	ERROR_STARTDATE_FORMAT:'Formato della data errato per la data di fine.',
+	ERROR_STARTTIME_FORMAT:'Formato dell\'ora errato per la data di inizio.',
+	ERROR_DUETIME_FORMAT:'Formato dell\'ora errato per l\'ora di fine.'
 };
 var cal_config_arr = {
-	monthNames: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
-	dayNames: [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ],
-	dayNamesShort: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
-	txt_noEvents: 'There are no events in this period',
+	monthNames: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+	dayNames: [ 'Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato' ,'Domenica'],
+	dayNamesShort: [ 'Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab' ],
+	txt_noEvents: 'Non ci sono eventi in questo periodo',
 	txt_SpecificEvents_prev: '',
-	txt_SpecificEvents_after: 'events:',
-	txt_next: 'next',
-	txt_prev: 'prev',
-	txt_NextEvents: 'Next events:',
-	txt_GoToEventUrl: 'See the event',
+	txt_SpecificEvents_after: 'eventi:',
+	txt_next: 'prossimo',
+	txt_prev: 'precedente',
+	txt_NextEvents: 'Prossimi eventi:',
+	txt_GoToEventUrl: 'Guarda l\'evento',
 	txt_NumAbbrevTh: 'th',
 	txt_NumAbbrevSt: 'st',
 	txt_NumAbbrevNd: 'nd',
 	txt_NumAbbrevRd: 'rd',
-	txt_loading: 'loading...',
+	txt_loading: 'caricamento in corso...',
 };
 var cbMobile_arr = {
-	status_offline : 'You are offline',
+	status_offline : 'Sei offline',
 };
 var alert_arr = {
-	'LBL_FILENAME_LENGTH_EXCEED_ERR': 'Filename cannot exceed 255 characters',
-	'LBL_SIZE_SHOULDNOTBE_GREATER':'File size should not be greater than ', //added for upload error message
-	'LBL_MAX_SIZE':'Maximum upload size is', //added for display file size limit
+	'LBL_FILENAME_LENGTH_EXCEED_ERR': 'Il nome del file non può superare i 255 caratteri',
+	'LBL_SIZE_SHOULDNOTBE_GREATER':'La dimensione del file non deve essere maggiore di', //added for upload error message
+	'LBL_MAX_SIZE':'La dimensione massima di caricamento è', //added for display file size limit
 	'LBL_FILESIZEIN_MB':'MB', // added to show filesize limit in MB
 	'LBL_FILESIZEIN_KB':'KB', // added to show filesize limit in KB
 	'LBL_FILESIZEIN_B':'B', // added to show filesize limit in B
