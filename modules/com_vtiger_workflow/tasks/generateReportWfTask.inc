@@ -31,6 +31,7 @@ class generateReportWfTask extends VTTask {
 		$path = '';
 		$name = '';
 		$hascontent = 1;
+		$returnContent = (empty($entity->WorkflowContext['wfgenerated_returncontent']) ? 0 : 1);
 		if ($this->case_type == 'report') {
 			$reportdata = explode('$$', $this->report_name);
 			$reportId = (int)$reportdata[0];
@@ -55,6 +56,7 @@ class generateReportWfTask extends VTTask {
 			$path = 'cache/';
 			$oReportRun = new ReportRun($reportId);
 			if ($this->file_type == 'pdf') {
+				$returnContent = 0;
 				$fileName = $path.$baseFileName.'.pdf';
 				$filePath = $root_directory.$fileName;
 				$pdf = $oReportRun->getReportPDF(null);
@@ -62,12 +64,17 @@ class generateReportWfTask extends VTTask {
 				$name = $baseFileName.'.pdf';
 			}
 			if ($this->file_type == 'csv') {
-				$fileName = $path.$baseFileName.'.csv';
-				$filePath = $root_directory.$fileName;
-				$oReportRun->writeReportToCSVFile($filePath, null);
-				$name = $baseFileName.'.csv';
+				if ($returnContent) {
+					$res = $oReportRun->writeReportToCSVVariable();
+				} else {
+					$fileName = $path.$baseFileName.'.csv';
+					$filePath = $root_directory.$fileName;
+					$oReportRun->writeReportToCSVFile($filePath, null);
+					$name = $baseFileName.'.csv';
+				}
 			}
 			if ($this->file_type  == 'excel') {
+				$returnContent = 0;
 				$fileName = $path.$baseFileName.'.xls';
 				$filePath = $root_directory.$fileName;
 				$oReportRun->writeReportToExcelFile($filePath, null, $entity->getModuleName());
@@ -85,8 +92,14 @@ class generateReportWfTask extends VTTask {
 					$this->qnfield = $adb->query_result($res, 0, 'cbquestionid');
 				}
 			}
+			$res = $adb->pquery('SELECT qtype FROM vtiger_cbquestion WHERE cbquestionid=?', array($this->qnfield));
+			if ($res && $adb->num_rows($res) > 0) {
+				$qtype = $adb->query_result($res, 0, 'qtype');
+			} else {
+				$qtype = 'File';
+			}
 			$res = cbQuestion::getFormattedAnswer((int)$this->qnfield, $entity->WorkflowContext);
-			if ($res) {
+			if ($res && $qtype=='File') {
 				$lines = file($res);
 				if (count($lines) < 2) {
 					$hascontent = 0;
@@ -94,7 +107,8 @@ class generateReportWfTask extends VTTask {
 				$path_parts = pathinfo($res);
 				$name = $path_parts['basename'];
 				$path =str_replace($root_directory, '', $path_parts['dirname']).'/';
-				if ($this->file_type  == 'excel') {
+				if ($this->file_type == 'excel') {
+					$returnContent = 0;
 					$csvpath = $path.$name;
 					$xelpath = $path.$name.'.xls';
 					require_once 'include/PhpSpreadsheet/autoload.php';
@@ -110,13 +124,27 @@ class generateReportWfTask extends VTTask {
 					} catch (Exception $e) {
 						$logbg->debug('generateReportWfTask > '. $e->getMessage());
 					}
+				} elseif ($this->file_type  == 'pdf') {
+					$returnContent = 0;
+				} else { // CSV
+					$returnContent = 1;
+					$res = file_get_contents($res);
 				}
+			} elseif (!empty($res)) {
+				$hascontent = 1;
+				$returnContent = 1;
+			} else {
+				$hascontent = 0;
 			}
 		}
 		if (empty($entity->WorkflowContext['wfgenerated_file'])) {
 			$entity->WorkflowContext['wfgenerated_file'] = array();
 		}
-		$entity->WorkflowContext['wfgenerated_file'][] = array('path'=>$path, 'name'=>$name, 'hascontent' => $hascontent);
+		if ($returnContent) {
+			$entity->WorkflowContext['wfgenerated_file'][] = array('path'=>$path, 'name'=>$name, 'hascontent' => $hascontent, 'content' => $res);
+		} else {
+			$entity->WorkflowContext['wfgenerated_file'][] = array('path'=>$path, 'name'=>$name, 'hascontent' => $hascontent);
+		}
 	}
 }
 ?>
