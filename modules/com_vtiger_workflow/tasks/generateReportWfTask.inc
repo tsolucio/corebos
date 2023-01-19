@@ -26,6 +26,39 @@ class generateReportWfTask extends VTTask {
 		return array('case_type', 'file_type', 'report_name', 'qnfield', 'qnfield_display');
 	}
 
+	public function getContextVariables() {
+		return array(
+			'wfgenerated_returncontent' => array(
+				'type' => '56',
+				'values' => '',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_wfgenerated_returncontent',
+			),
+			'GenerateReportName' => array(
+				'type' => '1',
+				'values' => '',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_GenerateReportName',
+			),
+			'GenerateQuestionName' => array(
+				'type' => 1,
+				'values' => '',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_GenerateQuestionName',
+			),
+			'wfgenerated_file' => array(
+				'type' => 'array',
+				'values' => '',
+				'modules' => '',
+				'massaction' => false,
+				'description' => 'HELP_wfgenerated_file',
+			),
+		);
+	}
+
 	public function doTask(&$entity) {
 		global $adb, $logbg, $root_directory;
 		$path = '';
