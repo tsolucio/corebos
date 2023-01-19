@@ -261,7 +261,6 @@
             sldsBackdropOpen.classList.toggle("slds-backdrop_open");
         }
         
-
         var signaturePosition = {
             coordXPercentage: 0,
             coordYPercentage: 0
@@ -274,14 +273,14 @@
         window.onmessage = function(e) {
             let width = "{$width}";
             let height = "{$height}";
-            if(!width){
+            if (!width) {
                width = '100%';
             } else {
                 width = width+'px';
             }
-            if(!height){
-               height = e?.data?.height;
-                if(height){
+            if (!height) {
+                height = e?.data?.height;
+                if (height) {
                     height = Number(height.split('px')[0]);
                     height = height + 80;
                     height = height+'px';
@@ -289,7 +288,7 @@
             } else {
                 height = height+'px';
             }
-			pdfIframeContainer.style.width = width;
+            pdfIframeContainer.style.width = width;
             pdfIframeContainer.style.height = height;
         };
     </script>

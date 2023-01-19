@@ -6,7 +6,6 @@
 
     <link rel="stylesheet" href="all.min.css">
     <link rel="stylesheet" href="viewer.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <!-- This snippet is used in production (included from viewer.html) -->
     <link rel="resource" type="application/l10n" href="locale.properties">
 
@@ -36,18 +35,15 @@
       }
       #dragSignatureCtrBtn {
         position: relative;
-        top: -8px;
+        top: 6px;
       }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
-    
   </head>
 
   <body tabindex="1">
     <div id="messageSection" class="alert alert-danger alert-dismissible fade hidden" role="alert">
       <span id="messageText"></span>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" data-l10n-id="document_properties_close" aria-label="Close"></button>
     </div>
 
     <div id="outerContainer">
@@ -275,7 +271,7 @@
               </div>
               <div id="toolbarViewerRight">
                 <button type="button" id="dragSignatureCtrBtn" class="btn btn-link" title="Signature" onclick="toggleSignatureDrag();">
-                  <i class="fa-solid fa-signature fa-2x"></i>
+                  <i class="fa-solid fa-signature"></i>
                 </button>
                 <button id="openFile" class="toolbarButton hidden" disabled title="Open File" tabindex="31" data-l10n-id="open_file">
                   <span data-l10n-id="open_file_label">Open</span>
@@ -448,16 +444,13 @@
 
     <input type="file" id="fileInput" class="hidden">
 
-    
-
     <script type='text/javascript' src="../../../../include/Webservices/WSClientp.js"></script>
     <script src="./pdf.worker.js?v=0.1"></script>
     <script src="./pdf.js?v=0.1"></script>
     <script src="./viewer.js?v=0.1"></script>
-    <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
+    <script src="./interact.min.js"></script>
 
     <script>
-
       let currentPdfPage = null;
       let coordXPosition = 0;
       let coordYPosition = 0;
@@ -481,7 +474,6 @@
         coordXPosition = x;
         coordYPosition = y;
       }
-
 
       interact('.page').dropzone({
         // only accept elements matching this CSS selector
@@ -522,7 +514,6 @@
         }
       })
 
-
       interact('.siginaturePositioning')
         .draggable({
           inertia: true,
@@ -537,8 +528,6 @@
           listeners: { move: dragMoveListener }
         })
 
-
-
       window.dragMoveListener = dragMoveListener
 
       window.onload = () => {
@@ -547,7 +536,7 @@
           scrollPageBtn.click();
           const page = document.getElementsByClassName("page")[0];
           window.top.postMessage({width: page?.style.width, height: page?.style.height}, '*');
-        }, 2000);
+        }, 1000);
       }
     </script>
   </body>
