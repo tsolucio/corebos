@@ -16,6 +16,11 @@ require_once 'modules/cbQuestion/cbQuestion.php';
 class generateReportWfTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $case_type;
+	public $file_type;
+	public $report_name;
+	public $qnfield;
+	public $qnfield_display;
 
 	public function getFieldNames() {
 		return array('case_type', 'file_type', 'report_name', 'qnfield', 'qnfield_display');
