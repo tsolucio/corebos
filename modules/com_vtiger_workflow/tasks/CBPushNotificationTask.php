@@ -21,6 +21,7 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 class CBPushNotificationTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $url_query;
 
 	public function getFieldNames() {
 		return array('url_query');

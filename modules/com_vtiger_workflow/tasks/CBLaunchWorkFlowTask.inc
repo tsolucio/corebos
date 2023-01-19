@@ -24,6 +24,15 @@ include_once 'include/Webservices/ExecuteWorkflow.php';
 class CBLaunchWorkFlowTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $workflowid;
+	public $workflowid_display;
+	public $record_filter_opt;
+	public $relModlist;
+	public $conditionexpressionmapid;
+	public $conditionexpressionmapid_display;
+	public $recordsetmapid;
+	public $recordsetmapid_display;
+	public $crmids_list;
 
 	public function getFieldNames() {
 		return array(
