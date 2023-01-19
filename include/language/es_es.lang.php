@@ -1408,8 +1408,8 @@ $app_strings = array (
 	'Paste the link here' => 'Pega el enlace aquí',
 	'LBL_UITYPE10_NOTALLOWED' => 'El módulo relacionado tiene un campo relacional obligatorio.',
 	'LBL_PAINT2DOCUMENT' => 'Dibujo a Documento',
-	'Slider' => 'Slider',
-	'LBL_WIZARD' => 'Wizard',
+	'Slider' => 'Carrusel',
+	'LBL_WIZARD' => 'Asistente',
 );
 
 // Translation for currency names

@@ -23,6 +23,7 @@ class CBGMPTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
 	private $gmp_url = 'https://www.google-analytics.com/collect?';
+	public $url_query;
 
 	public function getFieldNames() {
 		return array('url_query');

@@ -373,7 +373,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 			} elseif ($table_name == 'vtiger_crmentity' && $column_name == 'smownerid') {
 				$where = get_usersid($table_name, $column_name, $search_string);
 			} elseif ($table_name == 'vtiger_crmentity' && $column_name == 'modifiedby') {
-				$where = "(trim(vtiger_users2.ename) like '". formatForSqlLike($search_string) . "' or vtiger_groups2.groupname like '". formatForSqlLike($search_string) ."')";
+				$where ="(trim(vtiger_users2.ename) like '".formatForSqlLike($search_string)."' or vtiger_groups2.groupname like '".formatForSqlLike($search_string)."')";
 			} elseif (in_array($column_name, $column_array)) {
 				$where = getValuesforColumns($column_name, $search_string, 'cts', $input);
 			} elseif (isset($input['type']) && $input['type'] == 'entchar') {

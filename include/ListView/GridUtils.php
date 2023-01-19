@@ -464,11 +464,16 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue, $mode = '
 			$columnnameVal = $lv->getFieldNameByColumn($nameFields['fieldname']);
 			$referenceFields = array($nameFields['fieldname'], $columnnameVal);
 			if (in_array($fieldName, $referenceFields)) {
+				if (GlobalVariable::getVariable('MasterDetail_OpenRecordNewTab', 1)) {
+					$mdTarget = '_blank';
+				} else {
+					$mdTarget = '';
+				}
 				array_push($fieldAttrs, array(
 					'mdField' => $fieldName,
 					'mdValue' => $fieldValue,
 					'mdLink' => "index.php?module=$module&action=DetailView&record=$recordID",
-					'mdTarget' => '_blank',
+					'mdTarget' => $mdTarget,
 					'mdUitype' => Field_Metadata::UITYPE_TEXT
 				));
 				$return = $fieldValue;

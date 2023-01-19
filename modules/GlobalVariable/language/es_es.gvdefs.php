@@ -1672,6 +1672,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número de filas para mostrar por página en la lista de filas maestro-detalle.',
 ),
+'MasterDetail_MasterDetail_OpenRecordNewTab' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Abrir el registro en una nueva pestaña o en la actual.',
+),
 'Import_ForceDuplicateRecord_Handling' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',

@@ -431,14 +431,14 @@
 			const group = this.el.querySelector(`li[data-group-no="${no}"]`);
 			if (obj.group !== undefined) {
 				if (condCount - 1 == 1) {
-					let btn = group.querySelectorAll(`button[data-onclick="delete-cond"]`);
+					let btn = group.querySelectorAll('button[data-onclick="delete-cond"]');
 					for (let i = 0; i < btn.length; i++) {
-						group.querySelectorAll(`button[data-onclick="delete-cond"]`)[i].setAttribute('disabled', 'disabled');
+						group.querySelectorAll('button[data-onclick="delete-cond"]')[i].setAttribute('disabled', 'disabled');
 					}
 				}
 			} else {
 				if (condCount >= 1) {
-					group.querySelectorAll(`button[data-onclick="delete-cond"]`)[0].removeAttribute('disabled');
+					group.querySelectorAll('button[data-onclick="delete-cond"]')[0].removeAttribute('disabled');
 				}
 			}
 		},
@@ -998,8 +998,8 @@
 		*/
 		setVals: function () {
 			var curVal  = this.fieldCombo.getVal(),
-			curType = Field.getType(curVal),
-			curOp = this.op.combo.getVal();
+				curType = Field.getType(curVal),
+				curOp = this.op.combo.getVal();
 
 			for (var i = 0; i < this.parent.vals.length; i++) {
 				if (this.parent.vals[i].cond === this) {

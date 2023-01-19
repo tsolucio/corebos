@@ -491,7 +491,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 					} elseif (stripos($col_fields['filetype'], 'video') !== false) {
 						$custfldval .= '<br/><video width="300px" height="300px" controls><source src="' . $imgpath . '" type="' . $col_fields['filetype'] . '"></video>';
 					} elseif (stripos($col_fields['filetype'], 'pdf') !== false) {
-						$url = $site_URL . '/Smarty/templates/modules/Documents/pdfViewer.html?file=' . $site_URL . '/' . $imgpath .'">'. getTranslatedString('View PDF', 'Documents');
+						$url=$site_URL.'/Smarty/templates/modules/Documents/pdfViewer.html?file='.$site_URL.'/'.$imgpath.'">'.getTranslatedString('View PDF', 'Documents');
 						$custfldval .= '<br/><br/><a target="__blank" href="'. $url .'</a>';
 					}
 				} else {
@@ -1224,7 +1224,7 @@ function getDetailAssociatedProducts($module, $focus) {
 	$grandTotal = ($hdnGrandTotal != '') ? $hdnGrandTotal : '0.00';
 	$output .= '<tr id="detailview_inventory_grandtotrow">';
 	$output .= '<td align="right" class="crmTableRow small lineOnTop"><b>' . $app_strings['LBL_GRAND_TOTAL'] . '</b></td>';
-	$output .= '<td align="right" class="crmTableRow small lineOnTop" data-qagrandtotal="'.$grandTotal.'">' . CurrencyField::convertToUserFormat($grandTotal, null, true) . '</td>';
+	$output .= '<td align="right" class="crmTableRow small lineOnTop" data-qagrandtotal="'.$grandTotal.'">'.CurrencyField::convertToUserFormat($grandTotal, null, true).'</td>';
 	$output .= '</tr>';
 	$output .= '</table>';
 

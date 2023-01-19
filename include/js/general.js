@@ -7555,14 +7555,14 @@ function findUpModuleInMenu() {
 	const modulename = document.querySelectorAll(`[data-name="${gVTModule}"]`);
 	if (modulename.length > 0) {
 		const parent = document.getElementById(`menu${modulename[0].dataset.level}`);
-		const childs = parent.querySelectorAll(`li span`);
+		const childs = parent.querySelectorAll('li span');
 		modulename[0].parentElement.style.display = 'block';
 		modulename[0].style.background = '#c5d7e3';
 		let parents = findParents(modulename[0]);
 		for (let i = 0; i < parents.length; i++) {
 			if (parents[i].dataset.type !== undefined && parents[i].dataset.type == 'parent') {
 				const submenu = parents[i].getElementsByClassName('submenu');
-				const childs1 = submenu[0].querySelectorAll(`li span`);
+				const childs1 = submenu[0].querySelectorAll('li span');
 				for (let j = 0; j < submenu.length; j++) {
 					submenu[j].style.display = 'block';
 					for (let k = 0; k < childs1.length; k++) {
@@ -7591,10 +7591,10 @@ function onBodyClickActions(e) {
 }
 
 function openWizard(mapid) {
-	let getWizardActive = localStorage.getItem(`currentWizardActive`);
+	let getWizardActive = localStorage.getItem('currentWizardActive');
 	let modalContainer = document.getElementById('global-modal-container');
 	if (getWizardActive == null) {
-		localStorage.setItem(`currentWizardActive`, mapid);
+		localStorage.setItem('currentWizardActive', mapid);
 		if (modalContainer) {
 			ldsModal.close();
 		}
@@ -7605,7 +7605,7 @@ function openWizard(mapid) {
 				return false;
 			}
 		} else {
-			localStorage.setItem(`currentWizardActive`, mapid);
+			localStorage.setItem('currentWizardActive', mapid);
 			if (modalContainer) {
 				ldsModal.close();
 			}

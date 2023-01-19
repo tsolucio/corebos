@@ -24,6 +24,15 @@ include_once 'include/Webservices/ExecuteWorkflow.php';
 class CBLaunchWorkFlowTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $workflowid;
+	public $workflowid_display;
+	public $record_filter_opt;
+	public $relModlist;
+	public $conditionexpressionmapid;
+	public $conditionexpressionmapid_display;
+	public $recordsetmapid;
+	public $recordsetmapid_display;
+	public $crmids_list;
 
 	public function getFieldNames() {
 		return array(
@@ -126,9 +135,10 @@ class CBLaunchWorkFlowTask extends VTTask {
 								$context['record_id'] = $crmid;
 							}
 							$return = coreBOS_Rule::evaluate($this->recordsetmapid, $context);
+							$crmids = array();
 							if (is_string($return)) {
 								$crmids[] = $return;
-							} else {
+							} elseif (is_array($return)) {
 								foreach ($return as $ids) {
 									$crmids[] = reset($ids);
 								}
