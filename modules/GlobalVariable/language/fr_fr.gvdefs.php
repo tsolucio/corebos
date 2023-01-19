@@ -1828,6 +1828,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'percentage',
 	'definition' => 'Percentage of header space to leave for title before placing the buttons. By default buttons will be aligned to the right.',
 ),
+'Application_Hide_Related_List' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the related list',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {

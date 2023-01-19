@@ -1828,6 +1828,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'porcentaje',
 	'definition' => 'Porcentaje de espacio de encabezado que se deja para el título antes de colocar los botones. Por defecto, los botones estarán alineados a la derecha.',
 ),
+'Application_Hide_Related_List' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the related list',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

@@ -34,7 +34,9 @@
 							{if isset($HASRELATEDPANES) && $HASRELATEDPANES eq 'true'}
 								{include file='RelatedPanes.tpl' tabposition='top'}
 							{else}
-								<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
+								{if (GlobalVariable::getVariable('Application_Hide_Related_List', 1))}
+									<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
+								{/if}
 							{/if}
 						</div>
 						<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
