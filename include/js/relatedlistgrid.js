@@ -156,7 +156,7 @@ var relatedlistgrid = {
 
 	loadedTooltips: [],
 
-	Wizard: (grid, id, mapid, module) => {
+	openWizard: (grid, id, mapid, module) => {
 		let getWizardActive = localStorage.getItem('currentWizardActive');
 		let modalContainer = document.getElementById('global-modal-container');
 		if (getWizardActive == null) {
@@ -331,7 +331,7 @@ class RLActionRender {
 		let wizard = JSON.parse(relatedlistgrid.Wizard[`${props.grid.el.id}`]);
 		if (wizard[parent_module] !== undefined && wizard[parent_module] != '') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="relatedlistgrid.Wizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module]}, '${parent_module}');">
+			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="relatedlistgrid.openWizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module]}, '${parent_module}');">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
 				</svg>
