@@ -94,7 +94,7 @@ function loadRLGrid{$functionName}() {
 			}
 		},
 		useClientSort: false,
-		rowHeight: 'auto',
+		rowHeight: 60,
 		bodyHeight: 'auto',
 		scrollX: false,
 		scrollY: false,
