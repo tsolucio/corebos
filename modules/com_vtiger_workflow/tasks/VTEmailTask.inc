@@ -460,21 +460,22 @@ class VTEmailTask extends VTTask {
 
 		$focus->column_fields['messagename'] = $to_name;
 		$focus->column_fields['messagesrelatedto'] = $to_id;
-		$no_message = false;
 		switch ($to_module) {
 			case 'Accounts':
 				$focus->column_fields['account_message'] = $to_id;
 				break;
 			case 'Contacts':
 				$focus->column_fields['contact_message'] = $to_id;
+				$focus->column_fields['account_message'] = getRelatedAccountContact($to_id, 'Accounts');
 				break;
 			case 'Leads':
 				$focus->column_fields['lead_message'] = $to_id;
 				break;
 			case 'Potentials':
-				$result = $adb->pquery('SELECT potential_no,related_to FROM vtiger_potential WHERE potentialid=?', array($to_id));
+				$result = $adb->pquery('SELECT potential_no,related_to,campaignid FROM vtiger_potential WHERE potentialid=?', array($to_id));
 				$related_to = $adb->query_result($result, 0, 'related_to');
 				$potential_no = $adb->query_result($result, 0, 'potential_no');
+				$focus->column_fields['campaign_message'] = $adb->query_result($result, 0, 'campaignid');
 				$desc_name .= ' '.getTranslatedString('LBL_FROM', 'MailManager').' '.getTranslatedString('SINGLE_Potentials', 'Potentials').' '.$potential_no;
 				if (getSalesEntityType($related_to) == 'Accounts') {
 					$focus->column_fields['account_message'] = $related_to;
@@ -483,26 +484,22 @@ class VTEmailTask extends VTTask {
 				}
 				break;
 			default:
-				$no_message = true;
+				$focus->column_fields['account_message'] = getRelatedAccountContact($to_id, 'Accounts');
+				$focus->column_fields['contact_message'] = getRelatedAccountContact($to_id, 'Contacts');
 				break;
 		}
-		if (!$no_message) {
-			$focus->column_fields['messagetype'] = 'email';
-			if ($templateid != 0) {
-				$focus->column_fields['email_tplid'] = $templateid;
-				$etinfo = getEntityName('MsgTemplate', array($templateid));
-				$focus->column_fields['description'] = $etinfo[$templateid];
-			} else {
-				$focus->column_fields['description'] = "\n".getTranslatedString('Workflow', 'com_vtiger_workflow').' '.getTranslatedString('Task').': '.$desc_name."\n\n";
-			}
-			$focus->column_fields['assigned_user_id'] = $current_user->id;
-			$focus->mode = '';
-			$focus->save('Messages');
-			$message_id = $focus->id;
+		$focus->column_fields['messagetype'] = 'email';
+		if ($templateid != 0) {
+			$focus->column_fields['email_tplid'] = $templateid;
+			$etinfo = getEntityName('MsgTemplate', array($templateid));
+			$focus->column_fields['description'] = $etinfo[$templateid];
 		} else {
-			$message_id = '';
+			$focus->column_fields['description'] = "\n".getTranslatedString('Workflow', 'com_vtiger_workflow').' '.getTranslatedString('Task').': '.$desc_name."\n\n";
 		}
-		return $message_id;
+		$focus->column_fields['assigned_user_id'] = $current_user->id;
+		$focus->mode = '';
+		$focus->save('Messages');
+		return $focus->id;
 	}
 
 	private function getAttachmentName($docid) {
