@@ -118,6 +118,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'hide or show the main menu',
 ),
+'Application_Menu_Search_Active' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the main menu',
+),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Booléen',
 	'category' => 'Fonctionnalité Module',
