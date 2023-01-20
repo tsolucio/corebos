@@ -119,10 +119,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'mostrar o esconder el menú principal',
 ),
 'Application_Menu_Search_Active' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
-	'definition' => 'hide or show the type search menu',
+	'definition' => 'mostrar o esconder el menú de búsqueda por teclado',
 ),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Booleano',
@@ -1835,10 +1835,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Porcentaje de espacio de encabezado que se deja para el título antes de colocar los botones. Por defecto, los botones estarán alineados a la derecha.',
 ),
 'Application_Hide_Related_List' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'hide or show the related list',
+	'definition' => 'mostrar o esconder la pestaña de más información',
 ),
 );
 

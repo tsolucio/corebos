@@ -1838,7 +1838,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'hide or show the related list',
+	'definition' => 'hide or show the more information tab in detail view',
 ),
 );
 
