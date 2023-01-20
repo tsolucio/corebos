@@ -68,6 +68,7 @@ class WizardCustomFunctions {
 	}
 
 	public function Create_ProductComponent() {
+		require_once 'include/Webservices/MassCreate.php';
 		global $current_user;
 		$UsersTabid = vtws_getEntityId('Users');
 		$ProductsTabid = vtws_getEntityId('Products');
@@ -75,14 +76,18 @@ class WizardCustomFunctions {
 		if (is_array($_REQUEST['data'])) {
 			$data = $_REQUEST['data'];
 		}
-		$fromProduct = $data[0][0];
-		unset($data[0]);
+		if (isset($_REQUEST['rid'])) {
+			$fromProduct = vtlib_purify($_REQUEST['rid']);
+		} else {
+			$fromProduct = $data[0][0];
+			unset($data[0]);
+		}
 		$target = array();
 		if (isset($data)) {
 			foreach ($data as $ids) {
 				foreach ($ids as $id) {
 					$target[] = array(
-						'elementType' => $this->module,
+						'elementType' => 'ProductComponent',
 						'referenceId' => '',
 						'searchon' => '',
 						'element' => array(
@@ -93,6 +98,23 @@ class WizardCustomFunctions {
 					);
 				}
 			}
+		}
+		if (isset($_REQUEST['rid'])) {
+			$response = MassCreate($target, $current_user);
+			if (isset($response['wssuccess']) && !$response['wssuccess']) {
+				return false;
+			}
+			$res = array();
+			foreach ($response['success_creates'] as $key) {
+				$id = explode('x', $key['id'])[1];
+				if (isset($_REQUEST['step'])) {
+					$step = vtlib_purify($_REQUEST['step']);
+					coreBOS_Session::set('DuplicatedRecords^'.$step.'^'.$id, $id);
+				}
+				$res[] = $id;
+			}
+			return $res;
+			
 		}
 		return $target;
 	}
