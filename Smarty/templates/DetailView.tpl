@@ -80,17 +80,19 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 												{if $HASRELATEDPANES eq 'true'}
 													{include file='RelatedPanes.tpl' tabposition='top' RETURN_RELATEDPANE=''}
 												{else}
-												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');">
-													<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
-													<div onmouseover="fnShowDrop('More_Information_Modules_List')" onmouseout="fnHideDrop('More_Information_Modules_List')"
-														 id="More_Information_Modules_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
-														<table border="0" cellpadding="0" cellspacing="0" width="100%">
-															{foreach key=_RELATION_ID item=_RELATED_MODULE from=$IS_REL_LIST}
-																<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}#tbl_{$MODULE}_{$_RELATED_MODULE}">{$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}</a></td></tr>
-															{/foreach}
-														</table>
+													{if !(GlobalVariable::getVariable('Application_Hide_Related_List', 0))}
+													<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');">
+														<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
+														<div onmouseover="fnShowDrop('More_Information_Modules_List')" onmouseout="fnHideDrop('More_Information_Modules_List')"
+															id="More_Information_Modules_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
+															<table border="0" cellpadding="0" cellspacing="0" width="100%">
+																{foreach key=_RELATION_ID item=_RELATED_MODULE from=$IS_REL_LIST}
+																	<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}#tbl_{$MODULE}_{$_RELATED_MODULE}">{$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}</a></td></tr>
+																{/foreach}
+															</table>
+														</div>
 													</div>
-												</div>
+													{/if}
 												{/if}
 											{/if}
 										</div>
@@ -490,7 +492,9 @@ clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 												{if $HASRELATEDPANES eq 'true'}
 													{include file='RelatedPanes.tpl' tabposition='bottom' RETURN_RELATEDPANE=''}
 												{else}
-												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></div>
+													{if !(GlobalVariable::getVariable('Application_Hide_Related_List', 0))}
+														<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></div>
+													{/if}
 												{/if}
 											{/if}
 										</div>
