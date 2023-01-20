@@ -2523,8 +2523,8 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'exists' => array(
-	'name' => 'exists(fieldname, value)',
-	'desc' => 'This function checks if a record with the given value in the given field exists or not.',
+	'name' => 'exists(fieldname, value, exclude_current)',
+	'desc' => 'This function checks if a record with the given value in the given field exists or not. Optionally excluding the current record.',
 	'params' => array(
 		array(
 			'name' => 'fieldname',
@@ -2538,10 +2538,18 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'value the field must have',
 		),
+		array(
+			'name' => 'exclude_current',
+			'type' => 'Boolean',
+			'optional' => true,
+			'desc' => 'true, the default value, will exclude the current record from the search, false will include it',
+		),
 	),
 	'categories' => array('Logical'),
 	'examples' => array(
 		"exists('accountname', 'Chemex Labs Ltd')",
+		"exists('accountname', 'Chemex Labs Ltd', 1)",
+		"exists('accountname', 'Chemex Labs Ltd', 'false')",
 	),
 ),
 'existsrelated' => array(
