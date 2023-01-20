@@ -12,7 +12,7 @@ $(document).ready(function () {
 			$value = reportName.split('$$');
 			$htmloptions += '<option value="'+reportName+'">'+$value[1]+'</option>';
 		} else {
-			$htmloptions += '<option value="">'+mod_alert_arr.selectReport+'</option>';
+			$htmloptions += '<option value="">'+mod_wftask_arr.selectReport+'</option>';
 		}
 		$.each($reportsdata, function (index, data) {
 			$htmloptions += '<option value="'+data.reptid+'$$'+data.reptname+'">'+data.reptname+'</option>';

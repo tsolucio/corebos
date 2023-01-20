@@ -25,7 +25,7 @@
 						<div class="slds-page-header__control">
 						<div class="slds-button-group" role="group">
 							{if !empty($WizardArray[$currentModule])}
-							<button type="button" class="slds-button slds-button_neutral" onclick="relatedlistgrid.Wizard('{$functionName}', {$CurrentRecord}, {$WizardArray[$currentModule]}, '{$currentModule}')">
+							<button type="button" class="slds-button slds-button_neutral" onclick="relatedlistgrid.openWizard('{$functionName}', {$CurrentRecord}, {$WizardArray[$currentModule]}, '{$currentModule}')">
 								{$APP.LBL_WIZARD}
 							</button>
 							{/if}

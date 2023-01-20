@@ -3131,7 +3131,6 @@ class ReportRun extends CRMEntity {
 		$fp = fopen($fileName, 'w+');
 		if (isset($arr_val)) {
 			$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', $this->primarymodule);
-			$csv_values = array();
 			// Header
 			$csv_values = array_keys($arr_val[0]);
 			fputcsv($fp, $csv_values, $CSV_Separator);
@@ -3141,6 +3140,20 @@ class ReportRun extends CRMEntity {
 			}
 		}
 		fclose($fp);
+	}
+
+	public function writeReportToCSVVariable($filterlist = '') {
+		$report = '';
+		$arr_val = $this->GenerateReport('PDF', $filterlist);
+		if (isset($arr_val)) {
+			$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol', ',', $this->primarymodule);
+			// Header
+			$report = implode($CSV_Separator, array_keys($arr_val[0])).PHP_EOL;
+			foreach ($arr_val as $array_value) {
+				$report .= implode($CSV_Separator, array_map('decode_html', array_values($array_value))).PHP_EOL;
+			}
+		}
+		return $report;
 	}
 
 	public function getGroupByTimeList($reportId) {
