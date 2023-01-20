@@ -69,7 +69,7 @@ class WizardCustomFunctions {
 
 	public function Create_ProductComponent() {
 		require_once 'include/Webservices/MassCreate.php';
-		global $current_user;
+		global $current_user, $adb;
 		$UsersTabid = vtws_getEntityId('Users');
 		$ProductsTabid = vtws_getEntityId('Products');
 		$data = json_decode($_REQUEST['data'], true);
@@ -78,6 +78,11 @@ class WizardCustomFunctions {
 		}
 		if (isset($_REQUEST['rid'])) {
 			$fromProduct = vtlib_purify($_REQUEST['rid']);
+			$rs = $adb->pquery('select productcategory from vtiger_products inner join vtiger_crmentity on crmid=productid where deleted=0 and productid=?', array($fromProduct));
+			$productcategory = $adb->query_result($rs, 0, 'productcategory');
+			if ($productcategory == 'Morsettiera') {
+				$fromProduct = vtlib_purify($_REQUEST['mainid']);
+			}
 		} else {
 			$fromProduct = $data[0][0];
 			unset($data[0]);
@@ -114,7 +119,6 @@ class WizardCustomFunctions {
 				$res[] = $id;
 			}
 			return $res;
-			
 		}
 		return $target;
 	}
