@@ -813,10 +813,6 @@ class WizardComponent {
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
 		}
 		if (operation == 'MASSCREATE' && this.steps-2 == this.ActiveStep) {
-			if (this.IdVal(this.ActiveStep).length == 0) {
-				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
-				return false;
-			}
 			this.Mapping(0, 1);
 			return true;
 		}
