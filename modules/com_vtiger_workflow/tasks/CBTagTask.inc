@@ -21,6 +21,9 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 class CBTagTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $listoftags;
+	public $addrel;
+	public $forallusers;
 
 	public function getFieldNames() {
 		return array('listoftags', 'addrel', 'forallusers');

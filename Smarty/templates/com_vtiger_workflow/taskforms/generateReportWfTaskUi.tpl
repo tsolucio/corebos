@@ -18,10 +18,10 @@
 -->*}
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/generateReportWfTask.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">var moduleName = '{$entityName}';</script>
 <script type="text/javascript" charset="utf-8">
+	var moduleName = '{$entityName}';
 	var reportName = {$task->report_name|json_encode};
-	var mod_alert_arr = {
+	var mod_wftask_arr = {
 		'selectReport': '{'Select Report'|@getTranslatedString:'Reports'}',
 	};
 </script>
