@@ -438,9 +438,9 @@ if ($Mapid) {
 
 // sending json condition data to the frontEnd
 // this fixes pagination issue when using advanced search in Popup
-$smarty->assign('searchtype', $_REQUEST['searchtype'] ? $_REQUEST['searchtype'] : 'BasicSearch');
-$smarty->assign('advft_criteria', $_REQUEST['advft_criteria']);
-$smarty->assign('advft_criteria_groups', $_REQUEST['advft_criteria_groups']);
+$smarty->assign('searchtype', !empty($_REQUEST['searchtype']) ? $_REQUEST['searchtype'] : 'BasicSearch');
+$smarty->assign('advft_criteria', !empty($_REQUEST['advft_criteria']) ? $_REQUEST['advft_criteria'] : '');
+$smarty->assign('advft_criteria_groups', !empty($_REQUEST['advft_criteria_groups']) ? $_REQUEST['advft_criteria_groups'] : '');
 
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 	$smarty->display('PopupContents.tpl');
