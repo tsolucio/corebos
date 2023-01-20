@@ -273,7 +273,8 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 	global $dateGD, $repeticionGD, $lineGD;
 	$module = trim(preg_replace('/\*(\w|\s)+\*/', '', $module));
 	OpenDocument::debugmsg("retrieve_from_db: $marcador with $module($id)");
-	$token_pair = explode('.', $marcador);
+	$tokeninfo = explode(':', $marcador);
+	$token_pair = explode('.', $tokeninfo[0]);
 	if (count($token_pair) == 1) {
 		if (module_exists($token_pair[0]) || (!empty($special_modules[$token_pair[0]])) && module_exists($special_modules[$token_pair[0]])) {
 			if (module_exists($module)) {
@@ -297,8 +298,8 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 			}
 		} else {
 			$date_format = 'd-m-Y';
-			if (substr($token_pair[0], 0, strlen($dateGD)+1)==$dateGD.':') {
-				list($token_pair[0],$date_format) = explode(':', $token_pair[0]);
+			if (substr($marcador, 0, strlen($dateGD)+1)==$dateGD.':') {
+				$date_format = $tokeninfo[1];
 			}
 			switch ($token_pair[0]) {
 				case $dateGD: // fecha
@@ -364,10 +365,16 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 				$cadena = $focus->column_fields[$token_pair[1]];
 				if ($applyformat) {
 					if (is_date($token_pair[1], $module) && !empty($cadena)) {
-						$date = new DateTimeField($cadena);
-						$cadena = $date->getDisplayDate($current_user);
-						if (strpos($cadena, '0000')!==false || $cadena=='--') {
-							$cadena='';
+						if (strpos($marcador, ':')) {
+							$cadena = substr($cadena, 0, 19);
+							$dt = DateTime::createFromFormat((strpos($cadena, ' ') ? 'Y-m-d H:i:s' : 'Y-m-d'), $cadena);
+							$cadena = date($tokeninfo[1], $dt->getTimestamp());
+						} else {
+							$date = new DateTimeField($cadena);
+							$cadena = $date->getDisplayDate($current_user);
+							if (strpos($cadena, '0000')!==false || $cadena=='--') {
+								$cadena='';
+							}
 						}
 					}
 					switch (getTypeOfDataByFieldName($module, $token_pair[1])) {
