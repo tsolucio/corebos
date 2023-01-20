@@ -122,7 +122,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'hide or show the main menu',
+	'definition' => 'hide or show the type search menu',
 ),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Booléen',
