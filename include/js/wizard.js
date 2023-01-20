@@ -357,7 +357,7 @@ class WizardComponent {
 		let fieldValue = ev.value;
 		let recordid = ev.instance.getValue(rowkey, 'id');
 		let modulename = ev.instance.getValue(rowkey, '__modulename');
-		if (modulename != '') {
+		if (modulename != '' && recordid != null) {
 			let fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=inline_edit&recordid='+recordid+'&rec_module='+modulename+'&fldName='+fieldName+'&fieldValue='+encodeURIComponent(fieldValue);
 			if (recordid != '') {
 				GridValidation(recordid, modulename, fieldName, fieldValue).then(function (msg) {
@@ -813,10 +813,6 @@ class WizardComponent {
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
 		}
 		if (operation == 'MASSCREATE' && this.steps-2 == this.ActiveStep) {
-			if (this.IdVal(this.ActiveStep).length == 0) {
-				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
-				return false;
-			}
 			this.Mapping(0, 1);
 			return true;
 		}

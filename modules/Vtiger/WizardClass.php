@@ -426,7 +426,7 @@ class WizardActions extends WizardCustomFunctions {
 		}
 		return array(
 			'data' => array(
-				'contents' => $mapping,
+				'contents' => $this->FormatValues($mapping, $data[0]['module']),
 				'pagination' => array(
 					'page' => 1,
 					'totalCount' => count($data[1]['id']),
@@ -434,6 +434,45 @@ class WizardActions extends WizardCustomFunctions {
 			),
 			'result' => true,
 		);
+	}
+
+	private function FormatValues($data, $module) {
+		$arr = array();
+		$formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
+		if (!empty($formodule)) {
+			$lv = new GridListView($formodule);
+			$lv->tabid = getTabid($formodule);
+		}
+		foreach ($data as $values) {
+			$tmparr = $values;
+			foreach ($values as $fld => $val) {
+				if ($val == 0) {
+					continue;
+				}
+				$uitype = getUItypeByFieldName($module, $fld);
+				if ($uitype != Field_Metadata::UITYPE_RECORD_RELATION) {
+					//check for uitype 10 in related modules
+					if (isset($lv)) {
+						$relmod = $lv->findRelatedModule($fld);
+						if (empty($relmod)) {
+							continue;
+						}
+					} else {
+						continue;
+					}
+				}
+				if (!isset($relmod[0])) {
+					$setype = getSalesEntityType($val);
+				} else {
+					$setype = $relmod[0];
+				}
+				$displayValue = getEntityName($setype, $val);
+				$tmparr[$fld.'_raw'] = $tmparr[$fld];
+				$tmparr[$fld] = $displayValue[$val];
+			}
+			$arr[] = $tmparr;
+		}
+		return $arr;
 	}
 
 	public function MassCreate($target = array()) {
