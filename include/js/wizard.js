@@ -897,6 +897,9 @@ class WizardComponent {
 				let row = {};
 				for (let i in wizardcolumns) {
 					row[wizardcolumns[i].name] = checkedRows[j][wizardcolumns[i].name];
+					if (checkedRows[j][`${wizardcolumns[i].name}_raw`] !== undefined) {
+						row[wizardcolumns[i].name] = checkedRows[j][`${wizardcolumns[i].name}_raw`];
+					}
 				}
 				data.push(row);
 			}
