@@ -15,6 +15,7 @@ class Vtiger_PDF_HeaderViewer extends Vtiger_PDF_Viewer {
 
 	protected $onEveryPage = true;
 	protected $onFirstPage = false;
+	protected $onLastPage = false;
 
 	public function setOnEveryPage() {
 		$this->onEveryPage = true;
