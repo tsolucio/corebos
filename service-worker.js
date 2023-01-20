@@ -4774,6 +4774,12 @@ precacheAndRoute([{
   "url": "modules/Mobile/resources/lang/fr_fr.lang.js",
   "revision": "6b620d239f6e3a12a9484b33213ee4f1"
 }, {
+  "url": "modules/Mobile/resources/lang/hu_hu.lang.js",
+  "revision": "ae989aa845cd40bce24cadefa3363b52"
+}, {
+  "url": "modules/Mobile/resources/lang/it_it.lang.js",
+  "revision": "1fb2c217459b7266527b10c547d2cec1"
+}, {
   "url": "modules/Mobile/resources/lang/nl_nl.lang.js",
   "revision": "113dffdaddb2cf254d0879d0402349aa"
 }, {
@@ -11432,7 +11438,7 @@ precacheAndRoute([{
   "revision": "321798c3a4f90cafc07df60d8a8f0f2f"
 }, {
   "url": "include/js/advancefilter.js",
-  "revision": "7b40b2c58202ea230bb871f8573f819a"
+  "revision": "66ee67952db748140ca21a5f1f5803a0"
 }, {
   "url": "include/js/asterisk.js",
   "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
@@ -11546,7 +11552,7 @@ precacheAndRoute([{
   "revision": "89ad8ae2e8972f6085b6728624061ac2"
 }, {
   "url": "include/js/relatedlistgrid.js",
-  "revision": "71c82cb941828b94eabdf99961be9d4d"
+  "revision": "6d6cbc4ae71a33fbec5367e2efa51e44"
 }, {
   "url": "include/js/relatedlists.js",
   "revision": "a8cdd7881bfe429adf56b26da96cd63b"
@@ -11768,7 +11774,7 @@ precacheAndRoute([{
   "revision": "a0ee36da94058a469df96cba89b1910b"
 }, {
   "url": "include/style.css",
-  "revision": "6a56e8dd2c262ac6f78f2633b268e6e4"
+  "revision": "576cde16864da219b6286cec51035987"
 }, {
   "url": "include/print.css",
   "revision": "6b1e0c714dd4c389fb51b840e4cf01d2"
@@ -11822,7 +11828,7 @@ precacheAndRoute([{
   "revision": "5e5ab3e366035fbf7da2e20ca4edb606"
 }, {
   "url": "modules/com_vtiger_workflow/resources/generateReportWfTask.js",
-  "revision": "8c30d1f6f296735bb822882e9016d03b"
+  "revision": "90e2b042243651fac7b94f921e5101ed"
 }, {
   "url": "modules/com_vtiger_workflow/resources/ico-workflow.png",
   "revision": "851ca4caa867fa005174afec1fea762f"
