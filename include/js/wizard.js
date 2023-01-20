@@ -35,9 +35,10 @@ class WizardComponent {
 		this.WizardGoBack = [];
 		this.WizardRequiredAction = [];
 		this.WizardCustomFunction = [];
-		this.IsDuplicatedFromProduct = [];
+		this.IsDuplicatedFrom = [];
 		this.ApplyFilter = [];
 		this.WizardSaveAction = [];
+		this.WizardSaveActive = [];
 		this.WizardSaveIsActive = [];
 		this.WizardFilterFromContext = [];
 		this.Context = {};
@@ -88,26 +89,28 @@ class WizardComponent {
 	 */
 	Next(ev) {
 		this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep+1]);
+		if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFrom[this.ActiveStep] == undefined && ev.target.dataset.type == 'next') {
+			if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
+				this.DuplicateProduct(ev);
+				return false;
+			}
+		} else {
+			delete this.IsDuplicatedFrom[this.ActiveStep-1];
+		}
+		if (this.WizardSaveIsActive[this.ActiveStep] !== undefined && this.WizardSaveIsActive[this.ActiveStep] == true) {
+			return true;
+		}
+		let WizardSaveAction = this.WizardSaveIsActive[this.ActiveStep] === undefined ? false : this.WizardSaveIsActive[this.ActiveStep];
+		if (this.WizardCustomFunction[this.ActiveStep] != '' && !WizardSaveAction) {
+			if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
+				this.CallCustomFunction(ev);
+			}
+		}
 		switch (this.Operation) {
 		case 'CREATEPRODUCTCOMPONENTS':
 			if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
 				if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
 					return false;
-				}
-				if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFromProduct[this.ActiveStep] == undefined && ev.target.dataset.type == 'next') {
-					if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
-						//this.WizardCustomFunction[0] = 'GetCustodiaPrd';
-						this.DuplicateProduct(ev);
-						return false;
-					}
-				} else {
-					let WizardSaveAction = this.WizardSaveIsActive[this.ActiveStep] === undefined ? false : this.WizardSaveIsActive[this.ActiveStep];
-					if (this.WizardCustomFunction[this.ActiveStep] != '' && !WizardSaveAction) {
-						if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
-							this.CallCustomFunction(ev);
-						}
-					}
-					delete this.IsDuplicatedFromProduct[this.ActiveStep-1];
 				}
 				this.CheckedRows[this.ActiveStep-1] = [];
 				this.CheckedRows[this.ActiveStep] = [];
@@ -138,6 +141,7 @@ class WizardComponent {
 				this.WizardInstance[`wzgrid${this.ActiveStep+1}`].clear();
 				this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setRequestParams({
 					parentid: 0,
+					showdata: true,
 					currentid: document.getElementById('parent_id').value,
 					conditionquery: this.WizardConditionQuery[`${this.ActiveStep+1}`],
 				});
@@ -174,7 +178,7 @@ class WizardComponent {
 							if (resetWizard) {
 								ldsModal.close();
 								wizard.ActiveStep = 0;
-								wizard.IsDuplicatedFromProduct = [];
+								wizard.IsDuplicatedFrom = [];
 								wizard.ProceedToNextStep = true;
 								wizard.CheckedRows = [];
 								wizard.GridData = [];
@@ -211,7 +215,7 @@ class WizardComponent {
 	CloseModal() {
 		ldsModal.close();
 		this.ActiveStep = 0;
-		this.IsDuplicatedFromProduct = [];
+		this.IsDuplicatedFrom = [];
 		this.ProceedToNextStep = true;
 		this.CheckedRows = [];
 		this.GridData = [];
@@ -396,7 +400,7 @@ class WizardComponent {
 				if (wizard.WizardCustomFunction[wizard.ActiveStep] != '') {
 					wizard.CallCustomFunction();
 				}
-				wizard.IsDuplicatedFromProduct[wizard.ActiveStep] = 1;
+				wizard.IsDuplicatedFrom[wizard.ActiveStep] = 1;
 				wizard.MoveToStep('');
 				wizard.CheckedRows[wizard.ActiveStep-1][1]= [response];
 				if (wizard.WizardFilterFromContext[wizard.ActiveStep] != '') {
@@ -497,6 +501,7 @@ class WizardComponent {
 			btn.classList.add('slds-button');
 			btn.classList.add('slds-button_neutral');
 			el.appendChild(btn);
+			this.WizardSaveIsActive[this.ActiveStep] = true;
 		}
 		if (this.ActiveStep + 1 == this.steps && type == 'next') {
 			this.el('btn-next').innerHTML = alert_arr.JSLBL_FINISH;
@@ -559,7 +564,7 @@ class WizardComponent {
 
 	save(step, action = 'edit') {
 		if (action == 'duplicate' && this.WizardRequiredAction[this.ActiveStep] == 'duplicate') {
-			this.IsDuplicatedFromProduct[this.ActiveStep] = 1;
+			this.IsDuplicatedFrom[this.ActiveStep] = 1;
 		}
 		let page = this.WizardInstance[`wzgrid${step}`].getPagination();
 		const totalCount = this.WizardInstance[`wzgrid${step}`].getPaginationTotalCount();
@@ -575,7 +580,7 @@ class WizardComponent {
 					step: wizard.ActiveStep,
 					mode: wizard.WizardMode[wizard.ActiveStep]
 				};
-				if (wizard.IsDuplicatedFromProduct[wizard.ActiveStep] == 1) {
+				if (wizard.IsDuplicatedFrom[wizard.ActiveStep] == 1) {
 					reqParams.query = '';
 					reqParams.required_action = 'duplicate';
 				}
@@ -679,7 +684,7 @@ class WizardComponent {
 			type = ev.target.dataset.type;
 		}
 		if (type == 'back') {
-			delete this.IsDuplicatedFromProduct[this.ActiveStep-1];
+			delete this.IsDuplicatedFrom[this.ActiveStep-1];
 			return true;
 		}
 		const url = `${this.url}&wizardaction=CustomCreate&subaction=${this.WizardCustomFunction[this.ActiveStep]}&step=${this.ActiveStep}&rid=${this.Context.id}`;
@@ -802,6 +807,7 @@ class WizardComponent {
 				forfield: findColName,
 				parentid: this.RecordID,
 				currentid: 0,
+				showdata: true,
 				conditionquery: this.WizardConditionQuery[`${this.ActiveStep+1}`]
 			});
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));

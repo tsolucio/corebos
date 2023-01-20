@@ -191,7 +191,7 @@ class WizardActions extends WizardCustomFunctions {
 		$required_action = isset($_REQUEST['required_action']) ? intval($_REQUEST['required_action']) : '';
 		$context = isset($_REQUEST['context']) ? $_REQUEST['context'] : '';
 		$filterFromContext = isset($_REQUEST['filterFromContext']) ? json_decode($_REQUEST['filterFromContext'], true) : '';
-		if ($step > 0 && !$showdata && !$filtergrid) {
+		if ($step > 1 && !$showdata && !$filtergrid) {
 			return json_encode(array(
 				'data' => array(
 					'contents' =>  array(),
