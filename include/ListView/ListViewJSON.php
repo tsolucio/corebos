@@ -541,6 +541,11 @@ class GridListView {
 						$rows[$fieldName] = isset($usersList[$fieldValue]) ? $usersList[$fieldValue] : getUserFullName($fieldValue);
 				} elseif ($fieldType == Field_Metadata::UITYPE_URL) {
 					$rows[$fieldName] = textlength_check($fieldValue);
+					$matchPattern = "^[\w]+:\/\/^";
+					preg_match($matchPattern, $fieldValue, $matches);
+					if (empty($matches[0])) {
+						$fieldValue = 'https://'.$fieldValue;
+					}
 					$rows['url_raw_'.$fieldName] = $fieldValue;
 				} elseif ($fieldType == '1024') {
 					if (!empty($fieldValue)) {
