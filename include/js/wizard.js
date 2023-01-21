@@ -508,7 +508,7 @@ class WizardComponent {
 			//create a save button
 			let btn = document.createElement('button');
 			btn.setAttribute('onclick', 'wizard.Finish(false)');
-			btn.innerHTML = 'Save';
+			btn.innerHTML = alert_arr.JSLBL_SAVE;
 			btn.style.float = 'right';
 			btn.style.marginLeft = '5px';
 			btn.classList.add('slds-button');
