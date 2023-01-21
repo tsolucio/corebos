@@ -138,7 +138,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Focus_Element',
 				'Application_Toolbar_Show',
 				'Application_Header_Buttons_Position',
-				'Application_Hide_Related_List'
+				'Application_Hide_Related_List',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',

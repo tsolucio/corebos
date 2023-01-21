@@ -128,11 +128,12 @@ class LinkRender {
 				edit_query_string = ListView.encodeQueryData(edit_query);
 				el.href = `index.php?${edit_query_string}`;
 			} else {
+				let urlRaw = props.grid.getValue(rowKey, 'url_raw_' + columnName);
 				let fieldType = props.grid.getValue(rowKey, 'uitype_' + columnName);
 				let fieldValue = props.grid.getValue(rowKey, columnName);
 				if (fieldType == '17') {
 					el = document.createElement('a');
-					el.href = fieldValue;
+					el.href = urlRaw;
 					el.target = '_blank';
 				} else {
 					el = document.createElement('span');

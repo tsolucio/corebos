@@ -10,7 +10,7 @@
 require_once 'include/logging.php';
 require_once 'include/ListView/ListView.php';
 require_once 'include/database/PearDatabase.php';
-require_once 'include/ListView/ListViewJSON.php';
+require_once 'include/ListView/ListViewGrid.php';
 
 /** This class is used to store and display the login history of all the Users.
  * An Admin User can view his login history details  and of all the other users as well.

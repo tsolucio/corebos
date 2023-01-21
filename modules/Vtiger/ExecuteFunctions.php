@@ -17,7 +17,7 @@
  *************************************************************************************************/
 require_once 'include/utils/utils.php';
 include_once 'vtlib/Vtiger/Link.php';
-require_once 'include/ListView/ListViewJSON.php';
+require_once 'include/ListView/ListViewGrid.php';
 global $adb, $log, $current_user;
 
 $functiontocall = vtlib_purify($_REQUEST['functiontocall']);
@@ -498,14 +498,14 @@ switch ($functiontocall) {
 		$ret = Button_Check($mod);
 		break;
 	case 'getRecordActions':
-		include_once 'include/ListView/ListViewJSON.php';
+		include_once 'include/ListView/ListViewGrid.php';
 		$mod = vtlib_purify($_REQUEST['formodule']);
 		$recordid = vtlib_purify($_REQUEST['recordid']);
 		$grid = new GridListView($mod);
 		$ret = $grid->Actions($recordid);
 		break;
 	case 'listViewJSON':
-		include_once 'include/ListView/ListViewJSON.php';
+		include_once 'include/ListView/ListViewGrid.php';
 		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateDataListView') {
 			$grid = new GridListView($_REQUEST['modulename']);
 			$grid->Update();
