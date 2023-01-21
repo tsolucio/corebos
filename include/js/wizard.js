@@ -50,11 +50,15 @@ class WizardComponent {
 	}
 
 	Init() {
+		this.ActionButtons();
 		this.Events();
 		this.CleanWizard();
+		if (this.isModal) {
+			this.el('global-modal-container__title').classList.remove('slds-text-heading_medium', 'slds-modal__title');
+			this.el('global-modal-container__title').innerHTML = this.el('wizard-steps').innerHTML;
+			this.el('wizard-steps').remove();
+		}
 		if (this.isModal && this.ProceedToNextStep) {
-			this.el('global-modal-container__title').innerHTML = this.el('wizard-title').innerHTML;
-			this.el('wizard-title').innerHTML = '';
 			const prc = this.Next('');
 			if (prc) {
 				this.MoveToStep('');
@@ -390,6 +394,10 @@ class WizardComponent {
 		if (type == 'back') {
 			return true;
 		}
+		if (this.IdVal().length == 0) {
+			this.MoveToStep('');
+			return true;
+		}
 		let url = `${this.url}&wizardaction=Duplicate&subaction=Duplicate`;
 		this.Request(url, 'post', {
 			step: this.ActiveStep,
@@ -502,6 +510,7 @@ class WizardComponent {
 			btn.setAttribute('onclick', 'wizard.Finish(false)');
 			btn.innerHTML = 'Save';
 			btn.style.float = 'right';
+			btn.style.marginLeft = '5px';
 			btn.classList.add('slds-button');
 			btn.classList.add('slds-button_neutral');
 			el.appendChild(btn);
@@ -1022,6 +1031,25 @@ class WizardComponent {
 				}
 			}
 		}
+	}
+
+	ActionButtons() {
+		const footer = document.getElementsByClassName('slds-modal__footer')[0];
+		let buttons = `
+		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete" disabled id="btn-back" data-type="back" style="float:left">
+			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
+			</svg>
+			${alert_arr.JSLBL_BACK}
+		</button>
+		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete slds-float_right" id="btn-next" data-type="next">
+			${alert_arr.JSLBL_NEXT}
+			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+			</svg>
+		</button>
+		<div id="save-btn" class="slds-float_right"></div>`;
+		footer.innerHTML = buttons;
 	}
 }
 

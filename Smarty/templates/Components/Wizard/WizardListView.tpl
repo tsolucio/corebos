@@ -1,4 +1,4 @@
-<div id="grid-{$step}"></div>
+<div id="grid-{$step}" style="margin-top: -2%;"></div>
 <script type="text/javascript">
 wizard.WizardRelModules[{$step}] = '{$relatedmodules|json_encode}';
 wizard.WizardEntityNames[{$step}] = '{$entitynames|json_encode}';

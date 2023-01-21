@@ -102,21 +102,23 @@
 			<div class="slds-grid slds-path__scroller-container">
 				<div class="slds-path__scroller">
 					<div class="slds-path__scroller_inner">
-						<ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
-							{foreach from=$wizardSteps item=step name=stepwizard}
-							{assign var="slds_active" value=""}
-							{if $smarty.foreach.stepwizard.index eq 0}
-								{assign var="slds_active" value="slds-is-active"}
-							{/if}
-							<li class="slds-path__item slds-is-incomplete {$slds_active}" role="presentation" id="header-{$smarty.foreach.stepwizard.index}">
-								<a aria-selected="false" class="slds-path__link" href="#" id="path-11" role="option" tabindex="-1">
-									<span class="slds-path__title">{$step.title}</span>
-								</a>
-							</li>
-							{/foreach}
-						</ul>
+						<div id="wizard-steps">
+							<ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+								{foreach from=$wizardSteps item=step name=stepwizard}
+								{assign var="slds_active" value=""}
+								{if $smarty.foreach.stepwizard.index eq 0}
+									{assign var="slds_active" value="slds-is-active"}
+								{/if}
+								<li class="slds-path__item slds-is-incomplete {$slds_active}" role="presentation" id="header-{$smarty.foreach.stepwizard.index}">
+									<a aria-selected="false" class="slds-path__link" href="#" id="path-11" role="option" tabindex="-1">
+										<span class="slds-path__title">{$step.title}</span>
+									</a>
+								</li>
+								{/foreach}
+							</ul>
+						</div>
 						{foreach from=$wizardSteps item=step name=stepwizard}
-						<article class="slds-setup-assistant__step slds-m-around_medium" id="seq-{$smarty.foreach.stepwizard.index}">
+						<article class="slds-setup-assistant__step slds-m-around_medium" id="seq-{$smarty.foreach.stepwizard.index}" style="margin-top: 0% !important">
 							<div class="slds-setup-assistant__step-summary">
 								<div class="slds-media">
 									<div class="slds-media__body slds-m-top_x-small">
@@ -154,31 +156,29 @@
 			</div>
 		</div>
 	</div>
-	{if isset($isWigdet)}
+	{if !isset($isWigdet)}
 	<div class="slds-path__action">
-	{else}
-	<div class="slds-grid slds-path__action" style="position: fixed;bottom: 0;background: #f3f3f3;padding: 15px;width: 100%;margin-left: -25px;z-index: 900;border-top: 1px solid #1b96ff">
-	{/if}
-		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete" disabled id="btn-back" data-type="back">
-			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
-			</svg>
-			{'LBL_GOBACK_BUTTON_LABEL'|@getTranslatedString}
-		</button>
-		{if !$isModal}
-		<button type="button" class="slds-button slds-button_outline-brand slds-path__mark-complete" id="btn-reset" data-type="reset" onclick="location.reload(true)">
-			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#skip_back"></use>
-			</svg>
-			{'LBL_RESET'|@getTranslatedString} {'LBL_WIZARD'|@getTranslatedString}
-		</button>
-		{/if}
-		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete slds-float_right" id="btn-next" data-type="next">
-			{'LBL_NEXT_BUTTON_LABEL'|@getTranslatedString}
-			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-			</svg>
-		</button>
-		<div id="save-btn" class="slds-float_right"></div>
+		<div class="slds-grid slds-path__action" style="position: fixed;bottom: 0;background: #f3f3f3;padding: 15px;width: 100%;margin-left: -25px;z-index: 900;border-top: 1px solid #1b96ff">
+			<button type="button" class="slds-button slds-button_brand slds-path__mark-complete" disabled id="btn-back" data-type="back">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
+				</svg>
+				{'LBL_GOBACK_BUTTON_LABEL'|@getTranslatedString}
+			</button>
+			<button type="button" class="slds-button slds-button_outline-brand slds-path__mark-complete" id="btn-reset" data-type="reset" onclick="location.reload(true)">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#skip_back"></use>
+				</svg>
+				{'LBL_RESET'|@getTranslatedString} {'LBL_WIZARD'|@getTranslatedString}
+			</button>
+			<button type="button" class="slds-button slds-button_brand slds-path__mark-complete slds-float_right" id="btn-next" data-type="next">
+				{'LBL_NEXT_BUTTON_LABEL'|@getTranslatedString}
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+				</svg>
+			</button>
+			<div id="save-btn" class="slds-float_right"></div>
+		</div>
 	</div>
+	{/if}
 {/if}
