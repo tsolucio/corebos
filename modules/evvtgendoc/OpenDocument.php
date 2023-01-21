@@ -2339,7 +2339,7 @@ class OpenDocument {
 	 * @param name
 	 * @return int documentid
 	 */
-	public static function saveAsDocument($record, $module, $format, $mergeTemplateName, $fullfilename, $name) {
+	public static function saveAsDocument($record, $module, $format, $mergeTemplateName, $fullfilename, $name, $addtemplatename = true) {
 		global $adb, $current_user;
 		$holdRequest = $_REQUEST;
 		if (substr($mergeTemplateName, -4)=='.odt' || substr($mergeTemplateName, -4)=='.pdf') {
@@ -2371,7 +2371,9 @@ class OpenDocument {
 		if (substr($name, -4)=='.odt' || substr($name, -4)=='.pdf') {
 			$name = substr($name, 0, strlen($name)-4);
 		}
-		$name .= '_'.str_replace(' ', '_', $mergeTemplateName);
+		if ($addtemplatename) {
+			$name .= '_'.str_replace(' ', '_', $mergeTemplateName);
+		}
 		$f=array(
 			'name'=>$name.($format=='pdf' ? '.pdf' : '.odt'),
 			'type'=> ($format=='pdf' ? 'application/pdf' : 'application/vnd.oasis.opendocument.text'),
