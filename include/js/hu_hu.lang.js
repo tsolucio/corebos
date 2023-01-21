@@ -461,4 +461,5 @@ var alert_arr = {
 	'LBL_EXPAND': 'Kibont',
 	'currentuser': 'Current User',
 	'wfmodule': 'Workflow Module',
+	'JSLBL_BACK': 'Back',
 };
