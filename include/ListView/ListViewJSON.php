@@ -539,6 +539,9 @@ class GridListView {
 					}
 				} elseif ($fieldName == 'modifiedby') {
 						$rows[$fieldName] = isset($usersList[$fieldValue]) ? $usersList[$fieldValue] : getUserFullName($fieldValue);
+				} elseif ($fieldType == Field_Metadata::UITYPE_URL) {
+					$rows[$fieldName] = textlength_check($fieldValue);
+					$rows['url_raw_'.$fieldName] = $fieldValue;
 				} elseif ($fieldType == '1024') {
 					if (!empty($fieldValue)) {
 						$fieldValue = implode(', ', array_map('getRoleName', explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue)));
