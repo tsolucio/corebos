@@ -103,7 +103,8 @@ if ($mergetemplate=='1') {
 			$odtout->convert($filename, $pdfname);
 		}
 		$einfo = getEntityName($module, $record);
-		$name = str_replace(' ', '_', $modulei18n.'_'.$einfo[$record]);
+		$einfo[$record] = $modulei18n.'_'.$einfo[$record];
+		$name = OpenDocument::getConvertedName($record, $module, $einfo, GlobalVariable::getVariable('GenDoc_Attachment_Name', 'Name', $module));
 		switch ($action) {
 			case 'export':
 				header('Pragma: public');

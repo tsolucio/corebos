@@ -2308,6 +2308,28 @@ class OpenDocument {
 		}
 	}
 
+	public static function getConvertedName($record, $module, $entityinfo = [], $calculation = 'Name') {
+		global $current_user, $adb;
+		if (empty($entityinfo)) {
+			$entityinfo = getEntityName($module, $record);
+		}
+		$name = str_replace(' ', '_', $entityinfo[$record]);
+		if ($calculation=='Number') {
+			$numfld = getModuleSequenceField($module);
+			if (!is_null($numfld)) {
+				$queryGenerator = new QueryGenerator($module, $current_user);
+				$queryGenerator->setFields(array($numfld['name']));
+				$queryGenerator->addCondition('id', $record, 'e');
+				$nfq = $queryGenerator->getQuery();
+				$rsnf = $adb->query($nfq);
+				$name = str_replace(' ', '_', $rsnf->fields[$numfld['name']]);
+			}
+		} elseif (is_numeric($calculation) && getSalesEntityType($calculation)=='cbMap') {
+			$name = coreBOS_Rule::evaluate($calculation, ['record_id' => $record]);
+		}
+		return $name;
+	}
+
 	/**
 	 * @param record
 	 * @param module

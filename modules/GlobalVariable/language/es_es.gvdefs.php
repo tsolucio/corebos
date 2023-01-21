@@ -1309,8 +1309,8 @@ $GlobalVariableDefinitons = array(
 'Workflow_Email_GenDoc_Attachment_Name' => array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
-	'values' => 'Name|Number',
-	'definition' => 'Al fusionar una plantilla GenDoc adjunto a un correo electrónico de flujo de trabajo, el nombre utilizado para el archivo adjunto será el campo Nombre de la entidad (Name) o el campo Número de entidad (Number) concatenados con el nombre de la plantilla.',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'Al fusionar una plantilla GenDoc adjunto a un correo electrónico de flujo de trabajo, el nombre utilizado para el archivo adjunto será el campo Nombre de la entidad (Name) o el campo Número de entidad (Number) concatenados con el nombre de la plantilla. Si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado.',
 ),
 'Workflow_GeoDistance_Country_Default' => array(
 	'valuetype' => 'Texto',
@@ -1521,6 +1521,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'Cualquier Clave API válida de Zero Bounce',
 	'definition' => 'Una clave válida para el API de Zero Bounce para poder validar cuentas de correo.',
+),
+'GenDoc_Attachment_Name' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'Al fusionar una plantilla GenDoc, el nombre utilizado para la descarga será el nombre del módulo concatenado con el campo Nombre de la entidad (Name), o el número de la entidad (Number), o, si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado.',
 ),
 'GenDoc_CopyLabelToClipboard' => array(
 	'valuetype' => 'Booleano',

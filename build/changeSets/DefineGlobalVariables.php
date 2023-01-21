@@ -286,6 +286,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'GenDoc_CopyLabelToClipboard',
 				'GenDoc_Convert_URL',
 				'GenDoc_PDFConversion_Retries',
+				'GenDoc_Attachment_Name',
 				'CobroPago_Invoice_Status_OnPaid',
 				'CobroPago_PurchaseOrder_Status_OnPaid',
 				'CobroPago_SalesOrder_Status_OnPaid',

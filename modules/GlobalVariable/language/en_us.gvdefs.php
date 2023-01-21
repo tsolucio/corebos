@@ -1309,8 +1309,8 @@ $GlobalVariableDefinitons = array(
 'Workflow_Email_GenDoc_Attachment_Name' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => 'Name|Number',
-	'definition' => 'When merging a GenDoc workflow email attachment, the name used for the attachment will be the Entity Name field (Name) or the Entity Number field (Number) concatenated with the template name.',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'When merging a GenDoc workflow email attachment, the name used for the attachment will be the Entity Name field (Name) or the Entity Number field (Number) concatenated with the template name. If set to Expression, the result of the related business map will be used.',
 ),
 'Workflow_GeoDistance_Country_Default' => array(
 	'valuetype' => 'String',
@@ -1521,6 +1521,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'Any valid Zero Bounce API KEY',
 	'definition' => 'The valid Zero Bounce API KEY',
+),
+'GenDoc_Attachment_Name' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'When merging a GenDoc template, the name used for the download will be the module name concatenated with the Entity Name field (Name), or the Entity Number field (Number), or, if set to Expression, the result of the related business map will be used.',
 ),
 'GenDoc_CopyLabelToClipboard' => array(
 	'valuetype' => 'Boolean',

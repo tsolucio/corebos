@@ -26,7 +26,7 @@ class VTEmailTask extends VTTask {
 	private $entityrecord = 0;
 	private $entityid = 0;
 	private $entitymodule = '';
-	private $entityinfo = '';
+	private $entityinfo = [];
 	public $fromname;
 	public $fromemail;
 	public $replyto;
@@ -50,7 +50,7 @@ class VTEmailTask extends VTTask {
 		);
 	}
 	public function after_retrieve() {
-		global $adb, $current_user;
+		global $adb;
 		$this->attachmentsinfo = array();
 		$this->dzattinfo = array();
 		if (!empty($this->attachmentids)) {
@@ -65,6 +65,7 @@ class VTEmailTask extends VTTask {
 				INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
 				INNER JOIN vtiger_notes ON vtiger_notes.notesid=vtiger_seattachmentsrel.crmid
 				WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
+			$calculation = GlobalVariable::getVariable('Workflow_Email_GenDoc_Attachment_Name', 'Name', $this->entitymodule);
 			foreach ($aids as $docid) {
 				$docrs = $adb->pquery($query, array($docid));
 				if ($docrs && $adb->num_rows($docrs)==1) {
@@ -75,21 +76,7 @@ class VTEmailTask extends VTTask {
 						$format = ($GenDocPDF ? 'pdf' : 'odt');
 						$docfname = OpenDocument::doGenDocMerge($this->entityid, $docid, $format);
 						$mergeTemplateName = $adb->query_result($docrs, 0, 'filename');
-						if (GlobalVariable::getVariable('Workflow_Email_GenDoc_Attachment_Name', 'Name', $this->entitymodule)=='Number') {
-							$numfld = getModuleSequenceField($this->entitymodule);
-							if (is_null($numfld)) {
-								$name = str_replace(' ', '_', $this->entityinfo[$this->entityid]);
-							} else {
-								$queryGenerator = new QueryGenerator($this->entitymodule, $current_user);
-								$queryGenerator->setFields(array($numfld['name']));
-								$queryGenerator->addCondition('id', $this->entityid, 'e');
-								$nfq = $queryGenerator->getQuery();
-								$rsnf = $adb->query($nfq);
-								$name = str_replace(' ', '_', $rsnf->fields[$numfld['name']]);
-							}
-						} else {
-							$name = str_replace(' ', '_', $this->entityinfo[$this->entityid]);
-						}
+						$name = OpenDocument::getConvertedName($this->entityid, $this->entitymodule, $this->entityinfo, $calculation);
 						$docid = OpenDocument::saveAsDocument($this->entityid, $this->entitymodule, $format, $mergeTemplateName, $docfname, $name);
 						$docrs = $adb->pquery($query, array($docid));
 						$this->attachmentids = str_replace($prevdocid, $docid, $this->attachmentids);
