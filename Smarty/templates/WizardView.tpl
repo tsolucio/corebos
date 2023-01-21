@@ -11,6 +11,7 @@
 	{assign var='DESERTInfo' value='LBL_NO_DATA'|@getTranslatedString:$MODULE}
 	{include file='Components/Desert.tpl'}
 {else}
+	<link rel="stylesheet" type="text/css" href="Smarty/templates/Components/Wizard/wizard.css">
 	{if !$isModal}
 	<script src="include/js/wizard.js"></script>
 	{/if}
@@ -50,47 +51,6 @@
 			}
 		});
 	</script>
-	<style type="text/css">
-	.loading {
-		width: 100%;
-		height: 100%;
-		position: fixed;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		background-color: rgb(0 0 0 / 22%);
-		z-index: 1000
-	}
-	.loading-wheel {
-		width: 20px;
-		height: 20px;
-		margin-top: -40px;
-		margin-left: -40px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		border-width: 30px;
-		border-radius: 50%;
-		-webkit-animation: spin 1s linear infinite;
-	}
-	.style-2 .loading-wheel {
-		border-style: dashed;
-		border-color: #fff transparent;
-	}
-	@-webkit-keyframes spin {
-		0% {
-			-webkit-transform: rotate(0);
-		}
-		100% {
-			-webkit-transform: rotate(-360deg);
-		}
-	}
-	.slds-modal__container {
-		width: 96% !important;
-		height: 100% !important;
-	}
-	</style>
 	<div id="loader" class="loading style-2">
 		<div class="loading-wheel"></div>
 	</div>
@@ -158,7 +118,7 @@
 	</div>
 	{if !isset($isWigdet)}
 	<div class="slds-path__action">
-		<div class="slds-grid slds-path__action" style="position: fixed;bottom: 0;background: #f3f3f3;padding: 15px;width: 100%;margin-left: -25px;z-index: 900;border-top: 1px solid #1b96ff">
+		<div class="slds-grid slds-path__action wizard-action">
 			<button type="button" class="slds-button slds-button_brand slds-path__mark-complete" disabled id="btn-back" data-type="back">
 				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
