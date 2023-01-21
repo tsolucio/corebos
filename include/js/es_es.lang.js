@@ -486,4 +486,5 @@ var alert_arr = {
 	'RelatedList': 'Lista Relacionada',
 	'SelectField': 'Selecciona campo',
 	'MoveFile': 'Mover fichero',
+	'JSLBL_BACK': 'Back',
 };

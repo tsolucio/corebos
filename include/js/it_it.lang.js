@@ -471,4 +471,5 @@ var alert_arr = {
 	'RelatedList': 'Related List',
 	'SelectField': 'Select field',
 	'MoveFile': 'Move file',
+	'JSLBL_BACK': 'Back',
 };
