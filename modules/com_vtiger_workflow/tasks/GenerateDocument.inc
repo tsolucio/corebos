@@ -23,6 +23,10 @@ require_once 'modules/Documents/ShareDocLinkWidgetDetailViewBlock.php';
 class GenerateDocument extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $gdformat;
+	public $gendoctemplate;
+	public $updateOnChange;
+	public $shareOnCreate;
 
 	public function getFieldNames() {
 		return array('gdformat', 'gendoctemplate', 'updateOnChange', 'shareOnCreate');

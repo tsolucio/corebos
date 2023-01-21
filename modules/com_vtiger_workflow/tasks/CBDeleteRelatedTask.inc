@@ -22,6 +22,9 @@ require_once 'modules/cbMap/cbMap.php';
 class CBDeleteRelatedTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $relmodule;
+	public $bmapid;
+	public $bmapid_display;
 
 	public function getFieldNames() {
 		return array('relmodule', 'bmapid', 'bmapid_display');

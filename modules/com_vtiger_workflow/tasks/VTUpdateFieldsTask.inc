@@ -13,6 +13,9 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 class VTUpdateFieldsTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $field_value_mapping;
+	public $launchwf;
+	public $launchrelwf;
 
 	public function getFieldNames() {
 		return array('field_value_mapping', 'launchwf', 'launchrelwf');

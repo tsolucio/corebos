@@ -21,6 +21,8 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 class CBAssignRelatedTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $relmodule;
+	public $username;
 
 	public function getFieldNames() {
 		return array('relmodule', 'username');
