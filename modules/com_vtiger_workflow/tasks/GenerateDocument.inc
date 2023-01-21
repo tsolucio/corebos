@@ -51,7 +51,7 @@ class GenerateDocument extends VTTask {
 		$record = preg_replace('/[^0-9]/', '', substr($entity->data['id'], strpos($entity->data['id'], 'x')));
 		$module = $entity->getModuleName();
 		$einfo = getEntityName($module, $record);
-		$fullfilename = $root_directory .  OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.odt';
+		$fullfilename = $root_directory . OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.odt';
 		$fullpdfname = $root_directory . OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.pdf';
 		$filename = OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.odt';
 		$pdfname = OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.pdf';

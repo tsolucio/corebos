@@ -52,12 +52,15 @@ class CBSignPDFDocument extends VTTask {
 			$height = (int)$this->coordY;
 
 			// Fetching PDF
-			$sql = "select vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime, vtiger_seattachmentsrel.attachmentsid attachmentsid, vtiger_crmentity.smownerid smownerid, vtiger_notes.notesid crmid,vtiger_notes.notecontent description,vtiger_notes.* from vtiger_notes
+			$sql = 'select vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,crm2.modifiedtime lastmodified,
+					vtiger_crmentity.modifiedtime, vtiger_seattachmentsrel.attachmentsid attachmentsid, vtiger_crmentity.smownerid smownerid,
+					vtiger_notes.notesid crmid, vtiger_notes.notecontent description, vtiger_notes.*
+				from vtiger_notes
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
 				inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
 				inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid
 				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
-				left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid";
+				left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid';
 			$sql .= getNonAdminAccessControlQuery($moduleName, $current_user);
 			$sql .= ' WHERE vtiger_crmentity.deleted = 0 and crm2.crmid=? order by vtiger_attachments.attachmentsid desc LIMIT 1';
 			$rs = $adb->pquery($sql, array($recordId));
@@ -78,9 +81,9 @@ class CBSignPDFDocument extends VTTask {
 					// Getting image
 					$signature_path = '';
 					$sql = "select vtiger_attachments.*
-					from vtiger_attachments
-					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-					where vtiger_crmentity.setype='Users Attachment' and vtiger_attachments.name = ?";
+						from vtiger_attachments
+						inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
+						where vtiger_crmentity.setype='Users Attachment' and vtiger_attachments.name=?";
 					$image_res = $adb->pquery($sql, array(str_replace(' ', '_', decode_html($current_user->$image_field))));
 					if ($adb->num_rows($image_res)>0) {
 						$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
@@ -101,7 +104,6 @@ class CBSignPDFDocument extends VTTask {
 								$pdf->Image($signature_path, $width, $height, '', '', '', '', '', false, 300);
 							}
 						}
-
 						$pdf->Output($file_storage_path, 'F');
 					}
 				}

@@ -62,7 +62,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$hold_user = $current_user;
 			$util->loggedInUser();
 			if (is_null($current_user)) {
-				$current_user = $hold_user;  // make sure current_user is defined
+				$current_user = $hold_user; // make sure current_user is defined
 			}
 			$relmodule=array();
 			$handlerMetarel[]=array();

@@ -107,8 +107,8 @@ class ConvertInventoryModule extends VTTask {
 				require_once 'modules/Accounts/Accounts.php';
 				$acct_focus = new Accounts();
 				$acct_focus->retrieve_entity_info($data['account_id'], 'Accounts');
-				$data['bill_city'] =  isset($acct_focus->column_fields['bill_city']) ? $acct_focus->column_fields['bill_city'] : '';
-				$data['ship_city'] =  isset($acct_focus->column_fields['ship_city']) ? $acct_focus->column_fields['ship_city'] : '';
+				$data['bill_city'] = isset($acct_focus->column_fields['bill_city']) ? $acct_focus->column_fields['bill_city'] : '';
+				$data['ship_city'] = isset($acct_focus->column_fields['ship_city']) ? $acct_focus->column_fields['ship_city'] : '';
 				$data['bill_street'] = isset($acct_focus->column_fields['bill_street']) ? $acct_focus->column_fields['bill_street'] : '';
 				$data['ship_street'] = isset($acct_focus->column_fields['ship_street']) ? $acct_focus->column_fields['ship_street'] : '';
 				$data['bill_state'] = isset($acct_focus->column_fields['bill_state']) ? $acct_focus->column_fields['bill_state'] : '';

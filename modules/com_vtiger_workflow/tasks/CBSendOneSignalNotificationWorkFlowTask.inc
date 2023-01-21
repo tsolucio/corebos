@@ -44,7 +44,7 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 			$externalUser = new VTSimpleTemplate($this->external_user_id);
 			$users_list = $externalUser->render($entityCache, $ws_id, [], $entityData->WorkflowContext);
 
-			$users_ws_id_list =  explode(',', $users_list);
+			$users_ws_id_list = explode(',', $users_list);
 			$idsList = array();
 			if (count($users_ws_id_list) > 1) {
 				foreach ($users_ws_id_list as $wsid) {

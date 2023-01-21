@@ -106,7 +106,7 @@ class generateReportWfTask extends VTTask {
 					$name = $baseFileName.'.csv';
 				}
 			}
-			if ($this->file_type  == 'excel') {
+			if ($this->file_type == 'excel') {
 				$returnContent = 0;
 				$fileName = $path.$baseFileName.'.xls';
 				$filePath = $root_directory.$fileName;
@@ -157,7 +157,7 @@ class generateReportWfTask extends VTTask {
 					} catch (Exception $e) {
 						$logbg->debug('generateReportWfTask > '. $e->getMessage());
 					}
-				} elseif ($this->file_type  == 'pdf') {
+				} elseif ($this->file_type == 'pdf') {
 					$returnContent = 0;
 				} else { // CSV
 					$returnContent = 1;
