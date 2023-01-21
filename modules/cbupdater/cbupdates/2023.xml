@@ -21,4 +21,11 @@
 	<classname>addcoreBOSAuthWSToken</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set database default values for lead lastname and company</description>
+	<filename>build/changeSets/2023/leadDefaultValues.php</filename>
+	<classname>leadDefaultValues</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
