@@ -273,7 +273,8 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 	global $dateGD, $repeticionGD, $lineGD;
 	$module = trim(preg_replace('/\*(\w|\s)+\*/', '', $module));
 	OpenDocument::debugmsg("retrieve_from_db: $marcador with $module($id)");
-	$token_pair = explode('.', $marcador);
+	$tokeninfo = explode(':', $marcador);
+	$token_pair = explode('.', $tokeninfo[0]);
 	if (count($token_pair) == 1) {
 		if (module_exists($token_pair[0]) || (!empty($special_modules[$token_pair[0]])) && module_exists($special_modules[$token_pair[0]])) {
 			if (module_exists($module)) {
@@ -297,8 +298,8 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 			}
 		} else {
 			$date_format = 'd-m-Y';
-			if (substr($token_pair[0], 0, strlen($dateGD)+1)==$dateGD.':') {
-				list($token_pair[0],$date_format) = explode(':', $token_pair[0]);
+			if (substr($marcador, 0, strlen($dateGD)+1)==$dateGD.':') {
+				$date_format = $tokeninfo[1];
 			}
 			switch ($token_pair[0]) {
 				case $dateGD: // fecha
@@ -364,10 +365,16 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 				$cadena = $focus->column_fields[$token_pair[1]];
 				if ($applyformat) {
 					if (is_date($token_pair[1], $module) && !empty($cadena)) {
-						$date = new DateTimeField($cadena);
-						$cadena = $date->getDisplayDate($current_user);
-						if (strpos($cadena, '0000')!==false || $cadena=='--') {
-							$cadena='';
+						if (strpos($marcador, ':')) {
+							$cadena = substr($cadena, 0, 19);
+							$dt = DateTime::createFromFormat((strpos($cadena, ' ') ? 'Y-m-d H:i:s' : 'Y-m-d'), $cadena);
+							$cadena = date($tokeninfo[1], $dt->getTimestamp());
+						} else {
+							$date = new DateTimeField($cadena);
+							$cadena = $date->getDisplayDate($current_user);
+							if (strpos($cadena, '0000')!==false || $cadena=='--') {
+								$cadena='';
+							}
 						}
 					}
 					switch (getTypeOfDataByFieldName($module, $token_pair[1])) {
@@ -1448,11 +1455,11 @@ function getQuestionList($module, $id) {
 	global $adb;
 
 	if ($module == 'Revision') {
-		$query="select pr.*, p.description, p.estadopregunta, p.nivel_pregunta" .
-			" FROM vtiger_revision r LEFT JOIN vtiger_cuestiones cu ON cu.cuestionarioid=r.cuestionarioid ".
-			" LEFT JOIN pregunta_revision pr ON pr.preguntasid=cu.preguntasid AND pr.revisionid=r.revisionid " .
-			" LEFT JOIN vtiger_preguntas p ON pr.preguntasid=p.preguntasid ".
-			" WHERE r.revisionid=? ORDER BY cu.cuestionesid";
+		$query='select pr.*, p.description, p.estadopregunta, p.nivel_pregunta'
+			.' FROM vtiger_revision r LEFT JOIN vtiger_cuestiones cu ON cu.cuestionarioid=r.cuestionarioid'
+			.' LEFT JOIN pregunta_revision pr ON pr.preguntasid=cu.preguntasid AND pr.revisionid=r.revisionid'
+			.' LEFT JOIN vtiger_preguntas p ON pr.preguntasid=p.preguntasid'
+			.' WHERE r.revisionid=? ORDER BY cu.cuestionesid';
 	}
 
 	$result = $adb->pquery($query, array($id));
@@ -1468,22 +1475,20 @@ function getQuestionListCat($module, $id) {
 	global $adb;
 
 	if ($module == 'Revision') {
-		$query="select DISTINCT(pr.subcategoriapregunta)" .
-			" FROM vtiger_revision r LEFT JOIN pregunta_revision pr ON pr.revisionid=r.revisionid ".
-			" WHERE r.revisionid=? AND NOT pr.subcategoriapregunta IS NULL ORDER BY pr.subcategoriapregunta";
+		$query='select DISTINCT(pr.subcategoriapregunta)'
+			.' FROM vtiger_revision r LEFT JOIN pregunta_revision pr ON pr.revisionid=r.revisionid'
+			.' WHERE r.revisionid=? AND NOT pr.subcategoriapregunta IS NULL ORDER BY pr.subcategoriapregunta';
 	}
 
 	$result = $adb->pquery($query, array($id));
 	$num_rows=$adb->num_rows($result);
 	for ($i=0; $i<$num_rows; $i++) {
 		$row = $adb->fetchByAssoc($result, $i);
-		$selcountSI = "SELECT COUNT(preguntasid) "
-			. "FROM pregunta_revision "
-			. "WHERE revisionid=$id AND subcategoriapregunta='{$row['subcategoriapregunta']}' AND respuestaid='Si'";
+		$selcountSI = 'SELECT COUNT(preguntasid) FROM pregunta_revision '
+			."WHERE revisionid=$id AND subcategoriapregunta='{$row['subcategoriapregunta']}' AND respuestaid='Si'";
 		$resSI = $adb->getone($selcountSI);
-		$selcountNO = "SELECT COUNT(preguntasid) "
-			. "FROM pregunta_revision "
-			. "WHERE revisionid=$id AND subcategoriapregunta='{$row['subcategoriapregunta']}' AND respuestaid='No'";
+		$selcountNO = 'SELECT COUNT(preguntasid) FROM pregunta_revision '
+			."WHERE revisionid=$id AND subcategoriapregunta='{$row['subcategoriapregunta']}' AND respuestaid='No'";
 		$resNO = $adb->getone($selcountNO);
 		$row['subcategoriapregunta'] = html_entity_decode($row['subcategoriapregunta'], ENT_NOQUOTES, 'UTF-8');
 		$row['cuentaSI'] = $resSI;
@@ -1650,7 +1655,7 @@ if (!function_exists('elimina_puntuacion')) {
 		);
 		// elimina espacios
 		$cadena = str_replace(' ', '_', $cadena);
-		return mb_convert_encoding(strtr(utf8_decode($cadena), $replac), "UTF-8", "ISO-8859-1");
+		return mb_convert_encoding(strtr(mb_convert_encoding($cadena, 'ISO-8859-1', 'UTF-8'), $replac), 'UTF-8', 'ISO-8859-1');
 	}
 }
 
@@ -1685,13 +1690,10 @@ function is_related_list($module, $related) {
 
 function is_date($field, $module) {
 	global $adb;
-
 	$tabid = getTabid($module);
 	$ui_date = array(5,6,23,64,70);
-	$SQL = "SELECT uitype FROM vtiger_field WHERE fieldname=? AND tabid=?";
-	$res = $adb->pquery($SQL, array($field,$tabid));
+	$res = $adb->pquery('SELECT uitype FROM vtiger_field WHERE fieldname=? AND tabid=?', array($field, $tabid));
 	$uitype = $adb->query_result($res, 0, 'uitype');
-
 	return in_array($uitype, $ui_date);
 }
 

@@ -306,8 +306,10 @@
 		updateHiddenFields: function () {
 			var criteria = this.getCriteria(),
 				groups = this.getGroups();
-			this.searchForm.advft_criteria.value = JSON.stringify(criteria);
-			this.searchForm.advft_criteria_groups.value = JSON.stringify(groups);
+			if (criteria) {
+				this.searchForm.advft_criteria.value = JSON.stringify(criteria);
+				this.searchForm.advft_criteria_groups.value = JSON.stringify(groups);
+			}
 			return true;
 		},
 

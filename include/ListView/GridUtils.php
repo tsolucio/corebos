@@ -12,7 +12,7 @@ require_once 'modules/PickList/PickListUtils.php';
 require_once 'data/CRMEntity.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/utils/utils.php';
-require_once 'include/ListView/ListViewJSON.php';
+require_once 'include/ListView/ListViewGrid.php';
 
 function gridGetEditor($module, $fieldname, $uitype) {
 	global $current_user, $adb, $noof_group_rows;

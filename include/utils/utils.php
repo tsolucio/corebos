@@ -2581,9 +2581,9 @@ function get_on_clause($field_list, $uitype_arr, $module) {
 }
 
 function elimina_acentos($cadena) {
-	$tofind = utf8_decode('ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊẼËèéêẽëÌÍĨÎÏìíîĩïÙÚÛŨÜúùûũüÿçÇºªñÑ');
+	$tofind = mb_convert_encoding('ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊẼËèéêẽëÌÍĨÎÏìíîĩïÙÚÛŨÜúùûũüÿçÇºªñÑ', 'ISO-8859-1', 'UTF-8');
 	$replac = 'AAAAAAaaaaaaOOOOOOooooooEEEEEeeeeeIIIIIiiiiiUUUUUuuuuuycCoanN';
-	return mb_convert_encoding(strtr(utf8_decode($cadena), $tofind, $replac), "UTF-8", "ISO-8859-1");
+	return mb_convert_encoding(strtr(mb_convert_encoding($cadena, 'ISO-8859-1', 'UTF-8'), $tofind, $replac), 'UTF-8', 'ISO-8859-1');
 }
 
 /** call back function to change the array values in to lower case */

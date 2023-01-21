@@ -17,7 +17,7 @@ require_once 'Smarty_setup.php';
 require_once 'include/Webservices/MassCreate.php';
 require_once 'include/Webservices/Update.php';
 require_once 'include/Webservices/Create.php';
-require_once 'include/ListView/ListViewJSON.php';
+require_once 'include/ListView/ListViewGrid.php';
 global $current_user;
 Vtiger_Request::validateRequest();
 $op = vtlib_purify($_REQUEST['method']);

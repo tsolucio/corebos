@@ -84,5 +84,7 @@ $mod_strings = array(
 	'Clear content' => 'Clear content',
 	'Content Holder' => 'Content Holder',
 	'AdvancedSearch' => 'Advanced Search',
+	'Wizard' => 'Wizard',
+	'RelatedListBlock' => 'Related List Tree View',
 );
 ?>

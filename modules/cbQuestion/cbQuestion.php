@@ -576,7 +576,7 @@ class cbQuestion extends CRMEntity {
 		if (!empty($ans)) {
 			$properties = json_decode($ans['properties']);
 			if (!empty($properties->filename)) {
-				$fname = utf8_decode($properties->filename);
+				$fname = mb_convert_encoding($properties->filename, 'ISO-8859-1', 'UTF-8');
 				if (!empty($params) && is_array($params)) {
 					$strtemplate = new Vtiger_StringTemplate();
 					foreach ($params as $key => $value) {

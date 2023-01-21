@@ -203,6 +203,15 @@ class ListViewController {
 			}
 		}
 
+		$bmapname = $module.'_FieldInfo';
+		$cbMapFI = array();
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapFI = $cbMap->FieldInfo();
+			$cbMapFI = $cbMapFI['fields'];
+		}
+
 		$useAsterisk = get_use_asterisk($this->user->id);
 		$wfs = new VTWorkflowManager($adb);
 		$totals = array();
@@ -370,6 +379,13 @@ class ListViewController {
 						$value = CurrencyField::convertToUserFormat($value, $current_user, true);
 					}
 				} elseif ($field->getFieldDataType() == 'url') {
+					if (isset($cbMapFI[$fieldName])) {
+						$key = array_keys($cbMapFI[$fieldName]);
+						if ($key[0] == 'url_label') {
+							$fieldToShow = $cbMapFI[$fieldName][$key[0]];
+							$value = $adb->query_result($result, $i, $fieldToShow);
+						}
+					}
 					$matchPattern = "^[\w]+:\/\/^";
 					preg_match($matchPattern, $rawValue, $matches);
 					if (!empty($matches[0])) {
