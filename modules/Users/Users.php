@@ -123,8 +123,19 @@ class Users extends CRMEntity {
 
 	public $record_id;
 
-	public $DEFAULT_PASSWORD_CRYPT_TYPE;
-	// BLOWFISH before PHP5.3 MD5
+	public $DEFAULT_PASSWORD_CRYPT_TYPE; // BLOWFISH before PHP5.3 MD5
+	public $theme;
+	public $language;
+	public $reports_to_name;
+	public $time_zone;
+	public $currency_name;
+	public $currency_code;
+	public $currency_symbol;
+	public $currency_grouping_pattern;
+	public $currency_decimal_separator;
+	public $currency_grouping_separator;
+	public $currency_symbol_placement;
+	public $conv_rate;
 
 	/**
 	 * @var UserPrivileges

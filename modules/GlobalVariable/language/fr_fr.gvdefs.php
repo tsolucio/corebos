@@ -118,6 +118,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'hide or show the main menu',
 ),
+'Application_Menu_Search_Active' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the type search menu',
+),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Booléen',
 	'category' => 'Fonctionnalité Module',
@@ -1827,6 +1833,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'percentage',
 	'definition' => 'Percentage of header space to leave for title before placing the buttons. By default buttons will be aligned to the right.',
+),
+'Application_Hide_Related_List' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the more information tab in detail view',
 ),
 );
 

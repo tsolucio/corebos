@@ -441,6 +441,14 @@ class GridListView {
 		$noValue = getTranslatedString('no', $this->module);
 		$group_array = get_group_array();
 		$usersList = $this->UsersList();
+		$bmapname = $this->module.'_FieldInfo';
+		$cbMapFI = array();
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapFI = $cbMap->FieldInfo();
+			$cbMapFI = $cbMapFI['fields'];
+		}
 		for ($i=0; $i < $rowCount; $i++) {
 			$rows = array();
 			$colorizer_row = array();
@@ -539,6 +547,22 @@ class GridListView {
 					}
 				} elseif ($fieldName == 'modifiedby') {
 						$rows[$fieldName] = isset($usersList[$fieldValue]) ? $usersList[$fieldValue] : getUserFullName($fieldValue);
+				} elseif ($fieldType == Field_Metadata::UITYPE_URL) {
+					$value = $fieldValue;
+					if (isset($cbMapFI[$fieldName])) {
+						$key = array_keys($cbMapFI[$fieldName]);
+						if ($key[0] == 'url_label') {
+							$fieldToShow = $cbMapFI[$fieldName][$key[0]];
+							$value = $adb->query_result($result, $i, $fieldToShow);
+						}
+					}
+					$rows[$fieldName] = textlength_check($value);
+					$matchPattern = "^[\w]+:\/\/^";
+					preg_match($matchPattern, $fieldValue, $matches);
+					if (empty($matches[0])) {
+						$fieldValue = 'https://'.$fieldValue;
+					}
+					$rows['url_raw_'.$fieldName] = $fieldValue;
 				} elseif ($fieldType == '1024') {
 					if (!empty($fieldValue)) {
 						$fieldValue = implode(', ', array_map('getRoleName', explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue)));

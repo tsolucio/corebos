@@ -2520,8 +2520,8 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'exists' => array(
-	'name' => 'exists(fieldname, value)',
-	'desc' => 'Esta función verifica si existe o no un registro con el valor dado en el campo dado.',
+	'name' => 'exists(fieldname, value, exclude_current)',
+	'desc' => 'Esta función verifica si existe o no un registro con el valor dado en el campo dado. Opcionalmente excluyendo el registro actual.',
 	'params' => array(
 		array(
 			'name' => 'fieldname',
@@ -2535,10 +2535,18 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'valor que debe tener el campo',
 		),
+		array(
+			'name' => 'exclude_current',
+			'type' => 'Booleano',
+			'optional' => true,
+			'desc' => 'verdadero, el valor predeterminado, excluirá el registro actual de la búsqueda, falso lo incluirá',
+		),
 	),
 	'categories' => array('Logical'),
 	'examples' => array(
 		"exists('accountname', 'Chemex Labs Ltd')",
+		"exists('accountname', 'Chemex Labs Ltd', 1)",
+		"exists('accountname', 'Chemex Labs Ltd', 'false')",
 	),
 ),
 'existsrelated' => array(

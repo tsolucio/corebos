@@ -17,7 +17,7 @@
 // javascript:window.open('index.php?module=Utilities&action=UtilitiesAjax&file=Paint2Document&formodule=$MODULE$&forrecord=$RECORD$&inwindow=1','photo2doc','width=800,height=860');
 
 require_once 'modules/cbtranslation/cbtranslation.php';
-require_once 'include/ListView/ListViewJSON.php';
+require_once 'include/ListView/ListViewGrid.php';
 require_once 'modules/Vtiger/DeveloperWidget.php';
 global $currentModule;
 

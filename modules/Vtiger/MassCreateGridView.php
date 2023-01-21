@@ -13,7 +13,7 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-require_once 'include/ListView/ListViewJSON.php';
+require_once 'include/ListView/ListViewGrid.php';
 global $currentModule;
 if (isset($_REQUEST['bmapname'])) {
 	$bmapname = vtlib_purify($_REQUEST['bmapname']);

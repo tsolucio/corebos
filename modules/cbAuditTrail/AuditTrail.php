@@ -107,7 +107,7 @@ class AuditTrail {
 
 	public function getAuditJSON($userid, $page, $order_by = 'actiondate', $sorder = 'DESC', $action_search = '') {
 		global $log, $adb;
-		require_once 'include/ListView/ListViewJSON.php';
+		require_once 'include/ListView/ListViewGrid.php';
 		$log->debug('> getAuditJSON');
 		$where = '';
 		if (!empty($userid)) {

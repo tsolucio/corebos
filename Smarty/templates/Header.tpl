@@ -633,7 +633,7 @@
 </div>
 <!-- divs for asterisk integration :: end-->
 {/if}
-
+{if GlobalVariable::getVariable('Application_Menu_Search_Active', 1)}
 <div id="searchmenu" class="slds-form-element slds-align_absolute-center" style="display: none;width:36%;position:fixed;top:25%;z-index:2;left: 50%;transform: translate(-50%, -50%);">
 	<div class="slds-form-element__control">
 		<div class="slds-combobox_container">
@@ -670,3 +670,4 @@
 		</div>
 	</div>
 </div>
+{/if}

@@ -51,7 +51,7 @@
  *************************************************************************************************/
 require_once 'modules/cbMap/cbMap.php';
 require_once 'modules/cbMap/processmap/processMap.php';
-require_once 'include/ListView/ListViewJSON.php';
+require_once 'include/ListView/ListViewGrid.php';
 
 class MassUpsertGridView extends processcbMap {
 	private $mapping = array();
