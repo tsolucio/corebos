@@ -24,8 +24,13 @@ function _vt_processtoken_symbol($token) {
 
 class VTExpressionTokenizer {
 
-	public function __construct($expr) {
+	public function __construct($expr, $entity = null) {
 		global $default_charset;
+
+		if ($entity) {
+			$expr = $this->recursiveExpressionHandler($expr, $entity);
+		}
+
 		$tokenTypes = array(
 			"SPACE" => array('\s+', '_vt_processtoken_id'),
 			"SYMBOL" => array('[a-zA-Z][\w]*', '_vt_processtoken_symbol'),
@@ -90,6 +95,33 @@ class VTExpressionTokenizer {
 			$token->value = $this->tokenTypes[$tokenName][1]($match[$i]);
 			return $token;
 		}
+	}
+
+	public function recursiveExpressionHandler($expr, $entity) {
+		$from = 0;
+		$to = 0;
+		$level = 0;
+		for ($i=0; $i < strlen($expr); $i++) {
+			if ($expr[$i] == "{") {
+				$level++;
+				if ($level == 1) {
+					$from = $i;
+				}
+			} elseif ($expr[$i] == "}") {
+				if ($level == 1) {
+					$to = $i;
+					$internalExpression = substr($expr, $from + 1, $to - $from - 1);
+					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($internalExpression, $entity)));
+					$expression = $parser->expression();
+					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+					$value = $exprEvaluater->evaluate($entity);
+					$expr = substr_replace($expr, $value, $from, ($to - $from) + 1);
+					$i = $from;
+				}
+				$level--;
+			}
+		}
+		return $expr;
 	}
 }
 
