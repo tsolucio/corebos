@@ -22,6 +22,8 @@ require_once 'data/CRMEntity.php';
 class CBSelectcbMap extends VTTask {
 	public $executeImmediately = true;
 	public $queable = false;
+	public $bmapid;
+	public $bmapid_display;
 
 	public function getFieldNames() {
 		return array('bmapid', 'bmapid_display');

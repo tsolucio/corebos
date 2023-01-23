@@ -34,9 +34,19 @@ class CBSignPDFDocument extends VTTask {
 	public $taskSavedData = array();
 	public $executeImmediately = true;
 	public $queable = false;
+	public $image_field;
+	public $coordX;
+	public $coordY;
 
 	public function getFieldNames() {
 		return array('image_field', 'coordX', 'coordY');
+	}
+
+	public function after_retrieve() {
+		$this->taskSavedData = array(
+			'image_field' => $this->image_field,
+			'coordX' => $this->coordX,
+			'coordY' => $this->coordY );
 	}
 
 	public function doTask(&$entity) {
@@ -110,13 +120,6 @@ class CBSignPDFDocument extends VTTask {
 				$util->revertUser();
 			}
 		}
-	}
-
-	public function after_retrieve() {
-		$this->taskSavedData = array(
-			'image_field' => $this->image_field,
-			'coordX' => $this->coordX,
-			'coordY' => $this->coordY );
 	}
 }
 ?>
