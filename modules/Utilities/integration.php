@@ -126,6 +126,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigcache':
 		include_once 'include/integrations/cache/settings.php';
 		break;
+	case 'getconfigredis':
+	case 'setconfigredis':
+		include_once 'include/integrations/redis/settings.php';
+		break;
 	case 'getconfigwc':
 	case 'setconfigwc':
 		include_once 'include/integrations/woocommerce/settings.php';
@@ -225,6 +229,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('Cache Activation', 'Utilities'),
 				'desc' => getTranslatedString('Cache Activation_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigcache',
+			),
+			array(
+				'abbr' => 'RD',
+				'title' => getTranslatedString('Redis Activation', 'Utilities'),
+				'desc' => getTranslatedString('Redis Activation_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigredis',
 			),
 			array(
 				'abbr' => 'WC',

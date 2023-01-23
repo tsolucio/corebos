@@ -8,6 +8,8 @@
  * All Rights Reserved.
  *************************************************************************************/
 require_once 'vendor/autoload.php';
+require_once 'include/integrations/redis/redis.php';
+use coreBOS_Settings;
 
 $loggerConfigHandlers = array(
 	'ErrorLogHandler' => [
@@ -15,5 +17,17 @@ $loggerConfigHandlers = array(
 		'Params' => [
 			0, \Monolog\Logger::DEBUG, true, false
 		]
-	]
+	],
 );
+
+$cbRedis = new corebos_redis();
+// $redisSettings = $cbRedis->getSettings();
+// $redis = $cbRedis->getRedisClient();
+// if ($redis) {
+// 	$loggerConfigHandlers['RedisHandler'] = [
+// 		'Enabled' => true,
+// 		'Params' => [
+// 			$redis, 'corebosLogs', \Monolog\Logger::DEBUG, true, 0
+// 		]
+// 	];
+// }
