@@ -28,4 +28,11 @@
 	<classname>leadDefaultValues</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Load Filter option to Potentials related list in campaigns</description>
+	<filename>build/changeSets/2023/chgCampaignPotentialRL.php</filename>
+	<classname>chgCampaignPotentialRL</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

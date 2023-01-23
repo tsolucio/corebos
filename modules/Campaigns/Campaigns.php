@@ -192,6 +192,22 @@ class Campaigns extends CRMEntity {
 		return $return_value;
 	}
 
+	public function get_potentials($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+		require_once 'modules/CustomView/CustomView.php';
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
+		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One').' --</option>';
+		$oCustomView = new CustomView($related_module);
+		$viewid = $oCustomView->getViewId($related_module);
+		$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid, false);
+		$lhtml .= $customviewcombo_html;
+		$lhtml .= '</select>';
+
+		$button = $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
+		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
+		return parent::get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions, $button);
+	}
+
 	/**
 	 * Function to get Campaign related Contacts
 	 * @param integer campaignid
