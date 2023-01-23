@@ -47,3 +47,6 @@
 	z-index: 900;
 	border-top: 1px solid #1b96ff;
 }
+.slds-modal__container {
+	padding: 3rem 0 .5rem 0 !important;
+}
