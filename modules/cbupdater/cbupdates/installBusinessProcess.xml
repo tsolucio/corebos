@@ -1,0 +1,9 @@
+<updatesChangeLog>
+	<changeSet>
+		<author>radiola.dervishaj</author>
+		<description>Business Process module</description>
+		<filename>modules/BusinessProcess/installBusinessProcess.php</filename>
+		<classname>installBusinessProcess</classname>
+		<systemupdate>true</systemupdate>
+	</changeSet>
+</updatesChangeLog>
