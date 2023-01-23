@@ -93,8 +93,18 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	Next(ev) {
+		if (this.WizardValidate[this.ActiveStep]) {
+			if (!this.CheckSelection(ev)) {
+				return false;
+			}
+		}
 		this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep+1]);
 		if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFrom[this.ActiveStep] == undefined && ev.target.dataset.type == 'next') {
+			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
+			if (checkedRows.length != 1 && this.WizardValidate[this.ActiveStep]) {
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
+				return false;
+			}
 			if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
 				this.DuplicateProduct(ev);
 				return false;
@@ -114,9 +124,6 @@ class WizardComponent {
 		switch (this.Operation) {
 		case 'CREATEPRODUCTCOMPONENTS':
 			if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
-				if (!this.CheckSelection(ev, 'SELECTPRODUCT')) {
-					return false;
-				}
 				this.CheckedRows[this.ActiveStep-1] = [];
 				this.CheckedRows[this.ActiveStep] = [];
 				this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
@@ -126,11 +133,6 @@ class WizardComponent {
 				return this.FilterRows(ev);
 			}
 			if (this.WizardMode[this.ActiveStep] == 'CREATEPRODUCTCOMPONENT') {
-				if (this.WizardValidate[this.ActiveStep]) {
-					if (!this.CheckSelection(ev)) {
-						return false;
-					}
-				}
 				return this.Create_ProductComponent(ev);
 			}
 			const type = ev.target.dataset.type;
@@ -248,10 +250,6 @@ class WizardComponent {
 			}
 			if (checkedRows.length == 0) {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
-				return false;
-			}
-			if (action == 'SELECTPRODUCT' && checkedRows.length != 1 && this.WizardRequiredAction[this.ActiveStep] == 'duplicate') {
-				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
 				return false;
 			}
 		}
@@ -1031,6 +1029,7 @@ class WizardComponent {
 				}
 			}
 		}
+		document.getElementsByClassName('slds-modal__header')[0].style.background = '#dfdfdf';
 	}
 
 	ActionButtons() {
