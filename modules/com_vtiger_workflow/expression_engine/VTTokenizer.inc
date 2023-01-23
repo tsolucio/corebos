@@ -102,12 +102,12 @@ class VTExpressionTokenizer {
 		$to = 0;
 		$level = 0;
 		for ($i=0; $i < strlen($expr); $i++) {
-			if ($expr[$i] == "{") {
+			if ($expr[$i] == "{" && $expr[$i + 1] == "{") {
 				$level++;
 				if ($level == 1) {
 					$from = $i;
 				}
-			} elseif ($expr[$i] == "}") {
+			} elseif ($expr[$i] == "}" && $expr[$i + 1] == "}") {
 				if ($level == 1) {
 					$to = $i;
 					$internalExpression = substr($expr, $from + 1, $to - $from - 1);
@@ -115,7 +115,7 @@ class VTExpressionTokenizer {
 					$expression = $parser->expression();
 					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 					$value = $exprEvaluater->evaluate($entity);
-					$expr = substr_replace($expr, $value, $from, ($to - $from) + 1);
+					$expr = substr_replace($expr, $value, $from, ($to - $from) + 2);
 					$i = $from;
 				}
 				$level--;
