@@ -51,6 +51,7 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 				'RelatedListBlock',
 				'AdvancedSearch',
 				'PopupFilter',
+				'MasterGrid',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');
 			$field = Vtiger_Field::getInstance('maptype', $moduleInstance);
