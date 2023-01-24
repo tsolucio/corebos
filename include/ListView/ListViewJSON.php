@@ -49,13 +49,15 @@ class GridListView {
 		$gvOrderField = GlobalVariable::getVariable('Application_ListView_Default_OrderField', '');
 		$gvSortOrder = GlobalVariable::getVariable('Application_ListView_Default_Sort_Order', '');
 		$gvDefaultSorting = GlobalVariable::getVariable('Application_ListView_Default_Sorting', false);
-		if (!empty($gvSortOrder) && $gvDefaultSorting) {
+		if (isset($_REQUEST['sortAscending'])) {
+			$this->orderBy = $_REQUEST['sortAscending'] == 'true' ? 'ASC' : 'DESC';
+		} elseif (!empty($gvSortOrder) && $gvDefaultSorting) {
 			$this->orderBy = $gvSortOrder;
 		}
-		if (!empty($gvOrderField) && $gvDefaultSorting) {
-			$order_by = $gvOrderField;
-		} elseif ($this->sortColumn != '') {
+		if ($this->sortColumn != '') {
 			$order_by = $this->sortColumn;
+		} elseif (!empty($gvOrderField) && $gvDefaultSorting) {
+			$order_by = $gvOrderField;
 		} else {
 			$order_by = $focus->getOrderBy();
 		}
