@@ -4,6 +4,8 @@ var MasterDetail_Pagination = 0;
 if (MasterDetail_TargetField === undefined) {
 	var MasterDetail_TargetField = Array();
 }
+masterdetailwork.MasterMapID['{$MasterDetailLayoutMap.mapname}'] = '{$MasterMapID}';
+masterdetailwork.MasterButtons['{$MasterDetailLayoutMap.mapname}'] = '{$MasterButtons|json_encode}';
 MasterDetail_TargetField['mdgrid{$MasterDetailLayoutMap.mapname}'] = '{$MasterTargetField}';
 var pageOptions = false;
 if ({$MasterDetail_Pagination} > 0) {

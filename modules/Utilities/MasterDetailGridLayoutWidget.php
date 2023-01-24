@@ -54,6 +54,9 @@ class MasterDetailGridLayout_DetailViewBlock extends DeveloperBlock {
 			$targetfield = $mdmap['linkfields']['targetfield'];
 		}
 		$smarty->assign('MasterTargetField', $targetfield);
+		$mdbuttons = Vtiger_Link::getAllByType($tabid, array('MASTERDETAILBUTTON'));
+		$smarty->assign('MasterButtons', $mdbuttons['MASTERDETAILBUTTON']);
+		$smarty->assign('MasterMapID', $cbMap->column_fields['record_id']);
 		return $smarty->fetch('Components/MasterDetail/Grid.tpl');
 	}
 }
