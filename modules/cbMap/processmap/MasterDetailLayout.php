@@ -28,6 +28,7 @@
   </linkfields>
   <sortfield>designquotesid</sortfield>
   <defaultorder>DESC</defaultorder>
+  <hide>0|1</hide>//default 0
   <toolbar>
 	<title></title>
 	<expandall>1</expandall>
@@ -114,6 +115,7 @@ class MasterDetailLayout extends processcbMap {
 		$mapping_arr['originmodule'] = (string)$xml->originmodule;
 		$mapping_arr['targetmodule'] = (string)$xml->targetmodule;
 		$mapping_arr['condition'] = (string)$xml->condition;
+		$mapping_arr['hide'] = boolval((string)$xml->hide);
 		$this->detailModule = $mapping_arr['targetmodule'];
 		$dmf = CRMEntity::getInstance($this->detailModule);
 		$mapping_arr['targetmoduleidfield'] = $dmf->table_index;

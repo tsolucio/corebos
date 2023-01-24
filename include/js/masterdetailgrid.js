@@ -9,6 +9,7 @@ var masterdetailwork = {
 
 	MasterMapID: [],
 	MasterButtons: [],
+	MasterHide: [],
 
 	moveup: (MDGrid, recordid, module, rowkey) => {
 		if (rowkey == 0) {
@@ -207,6 +208,12 @@ var masterdetailwork = {
 			document.getElementById(id).style.display = masterdetailwork.ToggleStatus[id];
 			document.getElementById(`btn-${id}`).innerHTML = label;
 			window.dispatchEvent(new Event('resize'));
+		}
+	},
+
+	GridMounted: (ev) => {
+		if (masterdetailwork.MasterHide[ev.instance.el.id]) {
+			document.getElementById(`masterdetail__${ev.instance.el.id}`).style.display = 'none';
 		}
 	},
 
