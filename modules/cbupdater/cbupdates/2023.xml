@@ -35,4 +35,11 @@
 	<classname>chgCampaignPotentialRL</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>add Business Actions type for MasterDetail Button</description>
+	<filename>build/changeSets/2023/addBAforMasterDetail.php</filename>
+	<classname>addBAforMasterDetail</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
