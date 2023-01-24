@@ -1,0 +1,384 @@
+<?xml version='1.0'?>
+<module>
+<name>DiscountLine</name>
+<label>DiscountLine</label>
+<parent>Inventory</parent>
+<version>5.4.0</version>
+<dependencies>
+<vtiger_version>5.4.0</vtiger_version>
+</dependencies>
+<license>
+<inline><![CDATA[
+ ********************************************************************************
+ * Copyright 2012 JPL TSolucio, S.L.  --  This file is a part of vtMktDashboard.
+ * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
+ * Vizsage Public License (the "License"). You may not use this file except in compliance with the
+ * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
+ * and share improvements. However, for proper details please read the full License, available at
+ * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
+ * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
+ * applicable law or agreed to in writing, any software distributed under the License is distributed
+ * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
+ ********************************************************************************
+ *  Module       : DiscountLine
+ *  Version      : 5.4.0
+ *  Author       : JPL TSolucio, S. L.   Joe Bordes
+ *  Licensed to  : TSolucio
+ ********************************************************************************
+]]></inline>
+</license>
+<tables>
+<table>
+<name>vtiger_discountline</name>
+<sql><![CDATA[CREATE TABLE `vtiger_discountline` (
+  `discountlineid` int(11) NOT NULL DEFAULT '0',
+  `discountline_no` varchar(100) DEFAULT NULL,
+  `dlcategory` varchar(255) DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
+  `activestatus` varchar(3) DEFAULT 0,
+  `returnvalue` varchar(50), 
+  `cbmapid` int(11),
+  PRIMARY KEY (`discountlineid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_discountlinecf</name>
+<sql><![CDATA[CREATE TABLE `vtiger_discountlinecf` (
+  `discountlineid` int(11) NOT NULL,
+  PRIMARY KEY (`discountlineid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<blocks>
+<block>
+<label>LBL_DISCOUNTLINE_INFORMATION</label>
+<fields>
+<field>
+<fieldname>discountline_no</fieldname>
+<uitype>4</uitype>
+<columnname>discountline_no</columnname>
+<tablename>vtiger_discountline</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>discountline_no</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<entityidentifier>
+<entityidfield>discountlineid</entityidfield>
+<entityidcolumn>discountlineid</entityidcolumn>
+</entityidentifier>
+</field>
+<field>
+<fieldname>cbmapid</fieldname>
+<uitype>10</uitype>
+<columnname>cbmapid</columnname>
+<tablename>vtiger_discountline</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Map</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>2</sequence>
+<maximumlength>250</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+<relatedmodules>
+<relatedmodule>cbMap</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>productcategory</fieldname>
+<uitype>15</uitype>
+<columnname>dlcategory</columnname>
+<tablename>vtiger_discountline</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Line</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>3</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>2</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<picklistvalues>
+<picklistvalue>--None--</picklistvalue>
+<picklistvalue>Hardware</picklistvalue>
+<picklistvalue>Software</picklistvalue>
+<picklistvalue>CRM Applications</picklistvalue>
+</picklistvalues>
+</field>
+<field>
+<fieldname>discount</fieldname>
+<uitype>7</uitype>
+<columnname>discount</columnname>
+<tablename>vtiger_discountline</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Discount</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>4</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>I~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>returnvalue</fieldname>
+<uitype>15</uitype>
+<columnname>returnvalue</columnname>
+<tablename>vtiger_discountline</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Return Value</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>5</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>2</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<picklistvalues>
+<picklistvalue>Unit+Discount</picklistvalue>
+<picklistvalue>Cost+Margin</picklistvalue>
+</picklistvalues>
+</field>
+<field>
+<fieldname>activestatus</fieldname>
+<uitype>56</uitype>
+<columnname>activestatus</columnname>
+<tablename>vtiger_discountline</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Active</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>6</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>createdtime</fieldname>
+<uitype>70</uitype>
+<columnname>createdtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>7</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>modifiedtime</fieldname>
+<uitype>70</uitype>
+<columnname>modifiedtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Modified Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>8</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assigned To</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>9</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_CUSTOM_INFORMATION</label>
+</block>
+<block>
+<label>LBL_DESCRIPTION_INFORMATION</label>
+<fields>
+<field>
+<fieldname>description</fieldname>
+<uitype>19</uitype>
+<columnname>description</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Description</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+</blocks>
+<customviews>
+<customview>
+<viewname>All</viewname>
+<setdefault>true</setdefault>
+<setmetrics>false</setmetrics>
+<fields>
+<field>
+<fieldname>discountline_no</fieldname>
+<columnindex>0</columnindex>
+</field>
+<field>
+<fieldname>returnvalue</fieldname>
+<columnindex>1</columnindex>
+</field>
+<field>
+<fieldname>productcategory</fieldname>
+<columnindex>2</columnindex>
+</field>
+<field>
+<fieldname>discount</fieldname>
+<columnindex>3</columnindex>
+</field>
+<field>
+<fieldname>activestatus</fieldname>
+<columnindex>4</columnindex>
+</field>
+</fields>
+</customview>
+</customviews>
+<sharingaccess>
+<default>public_readwritedelete</default>
+</sharingaccess>
+<actions>
+<action>
+<name><![CDATA[Merge]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Import]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Export]]></name>
+<status>enabled</status>
+</action>
+</actions>
+<relatedlists>
+<relatedlist>
+<function>get_related_list</function>
+<label>Products</label>
+<sequence>1</sequence>
+<presence>0</presence>
+<actions>
+<action>ADD</action>
+<action>SELECT</action>
+</actions>
+<relatedmodule>Products</relatedmodule>
+</relatedlist>
+<relatedlist>
+<function>get_related_list</function>
+<label>Services</label>
+<sequence>2</sequence>
+<presence>0</presence>
+<actions>
+<action>ADD</action>
+<action>SELECT</action>
+</actions>
+<relatedmodule>Services</relatedmodule>
+</relatedlist>
+<relatedlist>
+<function>get_related_list</function>
+<label>Contacts</label>
+<sequence>3</sequence>
+<presence>0</presence>
+<actions>
+<action>ADD</action>
+<action>SELECT</action>
+</actions>
+<relatedmodule>Contacts</relatedmodule>
+</relatedlist>
+<relatedlist>
+<function>get_related_list</function>
+<label>Accounts</label>
+<sequence>4</sequence>
+<presence>0</presence>
+<actions>
+<action>ADD</action>
+<action>SELECT</action>
+</actions>
+<relatedmodule>Accounts</relatedmodule>
+</relatedlist>
+</relatedlists>
+<events>
+</events>
+<customlinks>
+</customlinks>
+<crons>
+</crons>
+</module>

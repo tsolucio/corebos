@@ -1,0 +1,9 @@
+<updatesChangeLog>
+	<changeSet>
+		<author>mocodertz</author>
+		<description>Update Discount Line</description>
+		<filename>modules/DiscountLine/changeset/updateDtoLine.php</filename>
+		<classname>updateDtoLine</classname>
+		<systemupdate>false</systemupdate>
+	</changeSet>
+</updatesChangeLog>

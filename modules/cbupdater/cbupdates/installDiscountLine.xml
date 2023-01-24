@@ -1,0 +1,9 @@
+<updatesChangeLog>
+	<changeSet>
+		<author>radiola_dervishaj</author>
+		<description>DiscountLine module</description>
+		<filename>modules/DiscountLine/installDiscountLine.php</filename>
+		<classname>installDiscountLine</classname>
+		<systemupdate>true</systemupdate>
+	</changeSet>
+</updatesChangeLog>
