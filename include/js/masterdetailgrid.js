@@ -231,53 +231,86 @@ class mdActionRender {
 		let recordid = props.grid.getValue(rowKey, 'record_id') || '';
 		let module = props.grid.getValue(rowKey, 'record_module');
 		el = document.createElement('span');
-		let actions = '<div class="slds-button-group" role="group">';
-		if (props.columnInfo.renderer.options.moveup) {
-			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.moveup('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveUp']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#up"></use>
-				</svg>
-			</button>`;
-		}
-		if (props.columnInfo.renderer.options.movedown) {
-			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.movedown('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveDown']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-				</svg>
-			</button>`;
-		}
+		let actions = '<ul class="slds-button-group-row">';
 		if (props.columnInfo.renderer.options.edit && permissions.edit == 'yes') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.MDUpsert('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-				</svg>
-			</button>`;
+			<li class="slds-button-group-item">
+				<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.MDUpsert('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+					</svg>
+				</button>
+			</li>`;
+		}
+		let dropdownActions = `
+			<li class="slds-button-group-item">
+				<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
+					<button
+						class="slds-button slds-button_icon slds-button_icon-border-filled listview-actions-opener"
+						aria-haspopup="true"
+						title="${alert_arr.LBL_SHOW_MORE}"
+					>
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
+						</svg>
+						<span class="slds-assistive-text">${alert_arr.LBL_SHOW_MORE}</span>
+					</button>
+					<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions">
+						<ul class="slds-dropdown__list" role="menu">`;
+
+		if (props.columnInfo.renderer.options.moveup) {
+			dropdownActions += `
+			<li class="slds-dropdown__item" role="presentation">
+				<button type="button" class="slds-button" onclick="masterdetailwork.moveup('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveUp']}">
+					<svg class="slds-button__icon slds-button__icon_left slds-button__icon_x-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#up"></use>
+					</svg>
+					${alert_arr['MoveDown']}
+				</button>
+			</li>`;
+		}
+		if (props.columnInfo.renderer.options.movedown) {
+			dropdownActions += `
+			<li class="slds-dropdown__item" role="presentation">
+				<button type="button" class="slds-button" onclick="masterdetailwork.movedown('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveDown']}">
+					<svg class="slds-button__icon slds-button__icon_left slds-button__icon_x-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+					</svg>
+					${alert_arr['MoveDown']}
+				</button>
+			</li>`;
 		}
 		if (props.columnInfo.renderer.options.delete && permissions.delete == 'yes') {
-			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Delete']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-				</svg>
-			</button>`;
+			dropdownActions += `
+			<li class="slds-dropdown__item" role="presentation">
+				<button type="button" class="slds-button" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Delete']}">
+					<svg class="slds-button__icon slds-button__icon_left slds-button__icon_x-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					${alert_arr['JSLBL_Delete']}
+				</button>
+			</li>`;
 		}
 		const MDButtons = JSON.parse(masterdetailwork.MasterButtons[props.grid.el.id]);
 		if (MDButtons.length > 0) {
 			for (let i in MDButtons) {
 				if (MDButtons[i].linklabel == `MasterDetailButton_${masterdetailwork.MasterMapID[props.grid.el.id]}`) {
-					actions += `
-					<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="${MDButtons[i].linkurl.replace('$RECORD$', recordid)}" title="${MDButtons[i].linklabel}">
-						<svg class="slds-button__icon" aria-hidden="true">
+					dropdownActions += `
+					<li class="slds-dropdown__item" role="presentation">
+						<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="${MDButtons[i].linkurl.replace('$RECORD$', recordid)}" title="${MDButtons[i].linklabel}">
+						<svg class="slds-button__icon slds-button__icon_x-small" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#touch_action"></use>
 						</svg>
-					</button>`;
+						</button>
+					</li>`;
 				}
 			}
 		}
-		actions += '</div>';
+		dropdownActions += '</ul>';
+		dropdownActions += '</div>';
+		dropdownActions += '</li>';
+		actions += dropdownActions;
+		actions += '</ul>';
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);
