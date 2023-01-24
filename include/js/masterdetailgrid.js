@@ -118,6 +118,8 @@ var masterdetailwork = {
 			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&'+targetfield+'='+CurrentRecord;
 		} else if (document.getElementById('record')) {
 			CurrentRecord = '&MDCurrentRecord='+document.getElementById('record').value+'&'+targetfield+'='+document.getElementById('record').value;
+		} else if (document.getElementById('parent_id')) {
+			CurrentRecord = '&MDCurrentRecord='+document.getElementById('parent_id').value+'&'+targetfield+'='+document.getElementById('parent_id').value;
 		}
 		let mapname = document.getElementById(MDGrid.substring(6)).dataset.mapname;
 		let mdgridinfo = JSON.stringify({
