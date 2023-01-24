@@ -287,13 +287,13 @@ class mdActionRender {
 			for (let i in MDButtons) {
 				if (MDButtons[i].linklabel == `MasterDetailButton_${masterdetailwork.MasterMapID[props.grid.el.id]}`) {
 					dropdownActions += `
-          <li class="slds-dropdown__item" role="presentation">
-            <button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="${MDButtons[i].linkurl.replace('$RECORD$', recordid)}" title="${MDButtons[i].linklabel}">
-              <svg class="slds-button__icon slds-button__icon_x-small" aria-hidden="true">
-                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#touch_action"></use>
-              </svg>
-            </button>
-          </li>`;
+					<li class="slds-dropdown__item" role="presentation">
+						<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="${MDButtons[i].linkurl.replace('$RECORD$', recordid)}" title="${MDButtons[i].linklabel}">
+						<svg class="slds-button__icon slds-button__icon_x-small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#touch_action"></use>
+						</svg>
+						</button>
+					</li>`;
 				}
 			}
 		}
