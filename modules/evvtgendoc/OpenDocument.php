@@ -1690,7 +1690,7 @@ class OpenDocument {
 	 */
 	public function addStyles($node, $elem, $elemtype, $keepname = false) {
 		$style_name = $this->getStyleName($node);
-		$reservedstyl=implode('|', OpenDocument::$reservedstyl);
+		$reservedstyl=implode('|', OpenDocument::$ReservedStyles);
 		if (preg_match("[$reservedstyl]", $style_name)) {
 			$elem->getNode()->setAttributeNS(OpenDocument::NS_TEXT, 'style-name', $style_name);
 			return 0;
@@ -2459,7 +2459,7 @@ class OpenDocument {
 		/*
 		 * Create a new file-entry element ...
 		 */
-		$node = $this->manifestDOM->createElement('manifest:file-entry', null);
+		$node = $this->manifestDOM->createElement('manifest:file-entry', '');
 		/*
 		 * ... add the fullpath of the file to full-path attribute, ...
 		 */
