@@ -62,7 +62,7 @@
         "php-http/guzzle6-adapter": "2.0.2",
         "php-http/discovery": "1.14.2",
         "php-http/curl-client": "2.2",
-        "mautic/api-library": "3.0",
+        "mautic/api-library": "3.1",
         "vaites/php-apache-tika": "1.2.4",
         "smi2/phpclickhouse": "1.4.4",
         "fzaninotto/faker": "1.9.2",
