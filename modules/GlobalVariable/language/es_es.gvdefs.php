@@ -1526,7 +1526,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
 	'values' => 'Name|Number|Expression',
-	'definition' => 'Al fusionar una plantilla GenDoc, el nombre utilizado para la descarga será el nombre del módulo concatenado con el campo Nombre de la entidad (Name), o el número de la entidad (Number), o, si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado.',
+	'definition' => 'Al fusionar una plantilla GenDoc, el nombre utilizado para la descarga será el nombre del módulo concatenado con el campo Nombre de la entidad (Name), o el número de la entidad (Number), o, si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado. En el mapa de negocios, puedes usar tres variables de contexto especiales para determinar el resultado: GDTemplateID, GDTemplateName, GDTemplateNumber',
 ),
 'GenDoc_CopyLabelToClipboard' => array(
 	'valuetype' => 'Booleano',

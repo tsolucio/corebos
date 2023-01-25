@@ -2311,7 +2311,7 @@ class OpenDocument {
 		}
 	}
 
-	public static function getConvertedName($record, $module, $entityinfo = [], $calculation = 'Name') {
+	public static function getConvertedName($record, $module, $entityinfo = [], $calculation = 'Name', $context = []) {
 		global $current_user, $adb;
 		if (empty($entityinfo)) {
 			$entityinfo = getEntityName($module, $record);
@@ -2328,7 +2328,8 @@ class OpenDocument {
 				$name = str_replace(' ', '_', $rsnf->fields[$numfld['name']]);
 			}
 		} elseif (is_numeric($calculation) && getSalesEntityType($calculation)=='cbMap') {
-			$name = coreBOS_Rule::evaluate($calculation, ['record_id' => $record]);
+			$context['record_id'] = $record;
+			$name = coreBOS_Rule::evaluate($calculation, $context);
 		}
 		return $name;
 	}

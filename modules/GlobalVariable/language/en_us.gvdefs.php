@@ -1526,7 +1526,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => 'Name|Number|Expression',
-	'definition' => 'When merging a GenDoc template, the name used for the download will be the module name concatenated with the Entity Name field (Name), or the Entity Number field (Number), or, if set to Expression, the result of the related business map will be used.',
+	'definition' => 'When merging a GenDoc template, the name used for the download will be the module name concatenated with the Entity Name field (Name), or the Entity Number field (Number), or, if set to Expression, the result of the related business map will be used. In the business map, you can use three special context variables to determine the result: GDTemplateID, GDTemplateName, GDTemplateNumber',
 ),
 'GenDoc_CopyLabelToClipboard' => array(
 	'valuetype' => 'Boolean',

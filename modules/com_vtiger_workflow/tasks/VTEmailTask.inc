@@ -59,7 +59,7 @@ class VTEmailTask extends VTTask {
 			$GenDocPDF = ($GenDocActive && OpenDocument::PDFConversionActive());
 			$aids = explode(',', trim($this->attachmentids, ','));
 			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_notes.filename, vtiger_notes.filesize,
-					vtiger_notes.template, vtiger_notes.template_for
+					vtiger_notes.template, vtiger_notes.template_for, vtiger_notes.title, vtiger_notes.note_no
 				FROM vtiger_attachments
 				INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 				INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
@@ -76,7 +76,12 @@ class VTEmailTask extends VTTask {
 						$format = ($GenDocPDF ? 'pdf' : 'odt');
 						$docfname = OpenDocument::doGenDocMerge($this->entityid, $docid, $format);
 						$mergeTemplateName = $adb->query_result($docrs, 0, 'filename');
-						$name = OpenDocument::getConvertedName($this->entityid, $this->entitymodule, $this->entityinfo, $calculation);
+						$context = [
+							'GDTemplateID' => $docid,
+							'GDTemplateName' => $adb->query_result($docrs, 0, 'title'),
+							'GDTemplateNumber' => $adb->query_result($docrs, 0, 'note_no'),
+						];
+						$name = OpenDocument::getConvertedName($this->entityid, $this->entitymodule, $this->entityinfo, $calculation, $context);
 						$docid = OpenDocument::saveAsDocument($this->entityid, $this->entitymodule, $format, $mergeTemplateName, $docfname, $name);
 						$docrs = $adb->pquery($query, array($docid));
 						$this->attachmentids = str_replace($prevdocid, $docid, $this->attachmentids);
