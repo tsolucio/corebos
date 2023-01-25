@@ -1536,6 +1536,9 @@ class OpenDocument {
 	public function createFrame($text, $anchortype, $width, $height, $zindex, $framename, $x, $y, $anchorpagenumber) {
 		return OpenDocument_Frame::instance($this, $text, $anchortype, $width, $height, $zindex, $framename, $x, $y, $anchorpagenumber);
 	}
+	public function createDrawCustomShape() {
+		return OpenDocument_DrawCustomShape::instance($this);
+	}
 
 	/**
 	 * Create Open_document_Heading
