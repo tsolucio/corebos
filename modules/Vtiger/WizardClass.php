@@ -482,6 +482,9 @@ class WizardActions extends WizardCustomFunctions {
 		if (!empty($subaction)) {
 			$target = $this->$subaction();
 		}
+		if ($target == '__MassCreateSuccess__') {
+			return true;
+		}
 		if (!empty($target)) {
 			$response = MassCreate($target, $current_user);
 			if (isset($response['wssuccess']) && !$response['wssuccess']) {
@@ -524,6 +527,7 @@ class WizardActions extends WizardCustomFunctions {
 	}
 
 	public function CreateRecords() {
+		require_once 'include/Webservices/Create.php';
 		global $current_user, $adb;
 		$UsersTabid = vtws_getEntityId('Users');
 		$data = json_decode($_REQUEST['data'], true);
@@ -553,14 +557,9 @@ class WizardActions extends WizardCustomFunctions {
 							$row[$fieldname] = $relid;
 						}
 					}
-					$target[] = array(
-						'elementType' => $createmodule,
-						'referenceId' => '',
-						'searchon' => '',
-						'element' => $row
-					);
+					vtws_create($createmodule, $row, $current_user);
 				}
-				return $target;
+				return '__MassCreateSuccess__';
 			}
 		}
 		return false;
