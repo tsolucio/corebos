@@ -66,10 +66,11 @@ class GenerateDocument extends VTTask {
 		} else {
 			include 'modules/evvtgendoc/commands_en.php';
 		}
+		$calculation = GlobalVariable::getVariable('Workflow_Email_GenDoc_Attachment_Name', 'Name', $module);
 		$templates = explode(';', $this->gendoctemplate);
 		foreach ($templates as $fileid) {
 			$orgfile = $adb->pquery(
-				"Select CONCAT(a.path,'',a.attachmentsid,'_',a.name) as filepath, a.name
+				"Select CONCAT(a.path,'',a.attachmentsid,'_',a.name) as filepath, a.name, n.title, n.note_no
 					from vtiger_notes n
 					join vtiger_seattachmentsrel sa on sa.crmid=n.notesid
 					join vtiger_attachments a on a.attachmentsid=sa.attachmentsid
@@ -78,7 +79,13 @@ class GenerateDocument extends VTTask {
 			);
 			$mergeTemplatePath=html_entity_decode($adb->query_result($orgfile, 0, 'filepath'), ENT_QUOTES, $default_charset);
 			$mergeTemplateName=basename(html_entity_decode($adb->query_result($orgfile, 0, 'name'), ENT_QUOTES, $default_charset), '.odt');
-			$name = str_replace(' ', '_', $mergeTemplateName).'_'.str_replace(' ', '_', $einfo[$record]);
+			$einfo[$record] = $mergeTemplateName.'_'.$einfo[$record];
+			$context = [
+				'GDTemplateID' => $fileid,
+				'GDTemplateName' => $adb->query_result($orgfile, 0, 'title'),
+				'GDTemplateNumber' => $adb->query_result($orgfile, 0, 'note_no'),
+			];
+			$name = OpenDocument::getConvertedName($record, $module, $einfo, $calculation, $context);
 			if (file_exists($fullfilename)) {
 				unlink($fullfilename);
 			}
