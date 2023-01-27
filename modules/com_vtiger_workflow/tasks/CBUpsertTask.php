@@ -39,7 +39,6 @@ class CBUpsertTask extends VTTask {
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
-		$logbg->debug('field mapping', $fieldValueMapping);
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			$util = new VTWorkflowUtils();
 			$util->adminUser();
@@ -51,7 +50,7 @@ class CBUpsertTask extends VTTask {
 			$recordId = vtws_getIdComponents($entityId);
 			$recordId = $recordId[1];
 			$bmapid = $this->bmapid;
-			$logbg->debug("Module: $moduleName, Record: $entityId");
+			$logbg->debug("(CBUpsertTask) Module: $moduleName, Record: $entityId");
 			$moduleHandler = vtws_getModuleHandlerFromName($moduleName, Users::getActiveAdminUser());
 			$handlerMeta = $moduleHandler->getMeta();
 			include_once 'data/CRMEntity.php';
@@ -102,12 +101,17 @@ class CBUpsertTask extends VTTask {
 					$fieldValue['linkmodeid'] = $entity->WorkflowContext['linkmodeid'];
 				}
 				if (empty($crmid)) {
+					$logbg->debug("(CBUpsertTask) upseart data");
 					$crmid = $this->upsertData($fieldValue, $relmodule, 'doCreate');
+					$logbg->debug("(CBUpsertTask) id is: " . $crmid);
 				} else {
 					if ($crmid < 0) {
+						$logbg->debug("(CBUpsertTask) not called: crmid less than 0");
 						continue;
 					}
-					$this->upsertData($fieldValue, $relmodule, 'doUpdate', $crmid);
+					$logbg->debug("(CBUpsertTask) upseart data");
+					$results = $this->upsertData($fieldValue, $relmodule, 'doUpdate', $crmid);
+					$logbg->debug("(CBUpsertTask) id is: " . $results);
 				}
 				$loopContext['upserted_crmids'][]= $crmid;
 			}
@@ -121,11 +125,11 @@ class CBUpsertTask extends VTTask {
 
 	public function upsertData($data, $relmodule, $action, $crmid = 0) {
 		global $logbg, $current_user, $currentModule;
+		$logbg->debug('(CBUpsertTask) > upsertData()');
 		if (strpos($crmid, 'x')>0) {
 			list($void, $crmid) = explode('x', $crmid); // suppport WS ID
 		}
-		$logbg->debug('> upsertData: '.$relmodule.' - '.$action);
-		$logbg->debug('data', $data);
+		$logbg->debug('(CBUpsertTask) relmodule-action: '.$relmodule.' - '.$action);
 		$moduleHandler = vtws_getModuleHandlerFromName($relmodule, $current_user);
 		$handlerMeta = $moduleHandler->getMeta();
 		$focusrel = CRMEntity::getInstance($relmodule);
@@ -161,7 +165,7 @@ class CBUpsertTask extends VTTask {
 				@unlink($file);
 			}
 		}
-		$logbg->debug('< upsertData');
+		$logbg->debug('(CBUpsertTask) < upsertData()');
 		return $focusrel->id;
 	}
 }

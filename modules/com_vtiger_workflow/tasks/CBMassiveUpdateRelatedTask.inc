@@ -26,8 +26,8 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user, $logbg, $from_wf, $currentModule;
-		$from_wf = true;
 		$logbg->debug('> CBMassiveUpdateRelatedTask');
+		$from_wf = true;
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 		$isqueue=$entity->isqueue;
@@ -40,7 +40,6 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
 		$bmapid = $this->bmapid;
-		$logbg->debug("Module: $moduleName, Record: $entityId");
 		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, Users::getActiveAdminUser());
 		$handlerMeta = $moduleHandler->getMeta();
 		$moduleFields = $handlerMeta->getModuleFields();
@@ -58,7 +57,6 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
-		$logbg->debug('field mapping', $fieldValueMapping);
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			include_once 'data/CRMEntity.php';
 			$focus = CRMEntity::getInstance($moduleName);
@@ -128,7 +126,6 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				);
 				$relationInfo = $adb->fetch_array($relationResult);
 				$params = array($recordId, $rectabid, $relatedModuleId);
-				$logbg->debug(['rel func' => $relationInfo['name'], 'params' => $params]);
 				if (empty($holdCM)) {
 					$holdCM = $currentModule;
 				}
@@ -155,8 +152,8 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 								$focusrel[$fldmod]->column_fields[$key]=$value;
 							}
 							$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
-							$logbg->debug("Saving: $relmodule", $focusrel[$fldmod]->column_fields);
 							if ($this->launchrelwf) {
+								$logbg->debug('(CBMassiveUpdateRelatedTask) updating related');
 								$focusrel[$fldmod]->save($relmodule);
 							} else {
 								// Initialize Event trigger cache
@@ -164,16 +161,25 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 								$em->initTriggerCache();
 								$entityData = VTEntityData::fromCRMEntity($focusrel[$fldmod]);
 								$em->triggerEvent('corebos.beforesave.workflow', $entityData);
+								$logbg->debug('(CBMassiveUpdateRelatedTask) updating related');
 								$focusrel[$fldmod]->saveentity($relmodule);
 								$em->triggerEvent('corebos.aftersave.workflow', $entityData);
 								$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
 							}
+						} else {
+							$logbg->debug('(CBMassiveUpdateRelatedTask) not called: business map may be empty or not equal to Condition Expression or the ConditionExpression returned false');
 						}
 					}
+				} else {
+					$logbg->debug('(CBMassiveUpdateRelatedTask) not called: relationData query is empty');
 				}
+			} else {
+				$logbg->debug('(CBMassiveUpdateRelatedTask) not called: fldmod is empty');
 			}
 			$util->revertUser();
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
+		} else {
+			$logbg->debug('(CBMassiveUpdateRelatedTask) not called: fieldValueMapping is empty or fieldValueMapping\'s count equals 0');
 		}
 		$util->revertUser();
 		$from_wf = false;

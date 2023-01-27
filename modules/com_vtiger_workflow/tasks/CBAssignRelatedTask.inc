@@ -29,7 +29,8 @@ class CBAssignRelatedTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $log, $current_user;
+		global $adb, $log, $current_user, $logbg;
+		$logbg->debug('> CBAssignRelatedTask');
 		list($cto,$cto_id) = explode('x', $entity->getId());
 		if (!empty($cto_id) && !empty($this->relmodule) && !empty($this->username)) {
 			$module = getSalesEntityType($cto_id);
@@ -62,6 +63,7 @@ class CBAssignRelatedTask extends VTTask {
 				$updobject = 'UPDATE vtiger_crmobject set smownerid=? where crmid=?';
 				$upddenorm = 'UPDATE '.$crmEntityTable.' set smownerid=? where crmid=?';
 				$relrecs = $adb->query($query);
+				$logbg->debug('(CBAssignRelatedTask) going to update all these CRMIDs  in this table');
 				for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 					// direct assignment to avoid relaunching workflows > I am not sure this is correct (!)
 					if ($denormed) {
@@ -71,8 +73,13 @@ class CBAssignRelatedTask extends VTTask {
 					}
 					$adb->pquery($updobject, array($usr, $adb->query_result($relrecs, $relrec, 0)));
 				}
+			} else {
+				$logbg->debug('(CBAssignRelatedTask) not called: reffield is empty');
 			}
+		} else {
+			$logbg->debug('(CBAssignRelatedTask) not called: some or all of these values are empty: cto_id, relmodule and username');
 		}
+		$logbg->debug('< CBAssignRelatedTask');
 	}
 }
 ?>

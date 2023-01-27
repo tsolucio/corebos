@@ -55,6 +55,7 @@ class WhatsappWorkflowTask extends VTTask {
 	}
 	public function doTask(&$entityData) {
 		global $current_user, $site_URL, $logbg;
+		$logbg->debug('> WhatsappWorkflowTask');
 		$clientclass = new corebos_whatsapp();
 		$client = $clientclass->whatsappclient;
 		$isactive = $clientclass->isActive();
@@ -150,11 +151,16 @@ class WhatsappWorkflowTask extends VTTask {
 							));
 						}
 					}
+				} else {
+					$logbg->debug('(WhatsappWorkflowTask) not called: sender or phones are empty');
 				}
 			} catch (Exception $e) {
-				$logbg->debug('Error on Whatsapp Task: '. $e->getMessage());
+				$logbg->debug('(WhatsappWorkflowTask) not called: Error on Whatsapp Task: '. $e->getMessage());
 			}
+		} else {
+			$logbg->debug('(WhatsappWorkflowTask) not called: client class is not active');
 		}
+		$logbg->debug('< WhatsappWorkflowTask');
 	}
 
 	private function sendWhatsappMessage($phone, $what, $client) {

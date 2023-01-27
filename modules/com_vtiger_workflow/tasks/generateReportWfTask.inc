@@ -61,6 +61,7 @@ class generateReportWfTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $logbg, $root_directory;
+		$logbg->debug('> generateReportWfTask');
 		$path = '';
 		$name = '';
 		$hascontent = 1;
@@ -178,6 +179,7 @@ class generateReportWfTask extends VTTask {
 		} else {
 			$entity->WorkflowContext['wfgenerated_file'][] = array('path'=>$path, 'name'=>$name, 'hascontent' => $hascontent);
 		}
+		$logbg->debug('< generateReportWfTask');
 	}
 }
 ?>
