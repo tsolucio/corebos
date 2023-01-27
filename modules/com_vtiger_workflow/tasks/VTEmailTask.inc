@@ -101,7 +101,7 @@ class VTEmailTask extends VTTask {
 	}
 	public function doTask(&$entity) {
 		global $logbg,$adb;
-		$logbg->debug('> VTEmailTask');
+		$logbg->debug('> EmailTask');
 		$util = new VTWorkflowUtils();
 
 		$admin = $util->adminUser();
@@ -379,7 +379,7 @@ class VTEmailTask extends VTTask {
 			try {
 				$res = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $entity->moduleName, $to_email, $subject, $this->attachmentsinfo, $from_name, $from_email, $cc, $bcc, $replyto);
 				$logbg->debug(
-					'(VTEmailTask) SG template mail was sent',
+					'(EmailTask) SG template mail was sent',
 					[
 						'To' => $to_email,
 						'FromName' => $from_name,
@@ -391,15 +391,13 @@ class VTEmailTask extends VTTask {
 					]
 				);
 			} catch (Exception $e) {
-				$logbg->debug('(VTEmailTask) SG template mail failed: '. $e->getMessage());
+				$logbg->debug('(EmailTask) SG template mail failed: '. $e->getMessage());
 			}
 			return;
-		} else {
-			$logbg->debug('(VTEmailTask) not called: linktemplate or sgmsgtemplate are empty');
 		}
 		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
 		$logbg->debug(
-			'(VTEmailTask) EmailWFTask',
+			'(EmailTask) EmailWFTask',
 			[
 				'To' => $to_email,
 				'FromName' => $from_name,
@@ -411,7 +409,7 @@ class VTEmailTask extends VTTask {
 			]
 		);
 		$util->revertUser();
-		$logbg->debug('< VTEmailTask');
+		$logbg->debug('< EmailTask');
 	}
 
 	private function createEmailRecord($element) {

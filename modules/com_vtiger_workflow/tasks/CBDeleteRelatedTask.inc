@@ -32,12 +32,12 @@ class CBDeleteRelatedTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $logbg;
-		$logbg->debug('> CBDeleteRelatedTask');
+		$logbg->debug('> DeleteRelatedTask');
 		list($wsid,$crmid) = explode('x', $entity->getId());
 		if (!empty($crmid) && !empty($this->relmodule)) {
 			self::deleteRelatedRecords($crmid, $this->relmodule, $this->bmapid);
 		}
-		$logbg->debug('< CBDeleteRelatedTask');
+		$logbg->debug('< DeleteRelatedTask');
 	}
 
 	public static function deleteRelatedRecords($masterRecord, $relatedModule, $bmapid) {
@@ -50,11 +50,15 @@ class CBDeleteRelatedTask extends VTTask {
 			$focus->mode = '';
 			$focus->retrieve_entity_info($bmapid, 'cbMap');
 			$businessMap = $focus->column_fields['maptype'];
+			if ($businessMap == 'Condition Query') {
+				$logbg->debug('(DeleteRelatedTask) called ConditionQuery');
+				$ids = $focus->ConditionQuery($masterRecord);
+			} else {
+				$logbg->debug('(DeleteRelatedTask) called ConditionExpression');
+			}
 		} else {
+			$logbg->debug('(DeleteRelatedTask) called with no businessMap');
 			$businessMap = '';
-		}
-		if ($businessMap == 'Condition Query') {
-			$ids = $focus->ConditionQuery($masterRecord);
 		}
 
 		// Checking relation
@@ -69,6 +73,7 @@ class CBDeleteRelatedTask extends VTTask {
 
 		if ($result && $adb->num_rows($result) > 0) {
 			$relation_result_row = $adb->fetch_array($result);
+			$logbg->debug('(DeleteRelatedTask) type of relation: '.$relation_result_row['name']);
 			switch ($relation_result_row['name']) {
 				case 'get_related_list':
 					if ($businessMap == 'Condition Query') {
@@ -92,13 +97,11 @@ class CBDeleteRelatedTask extends VTTask {
 						if ($result && $adb->num_rows($result) > 0) {
 							while ($related = $adb->fetch_array($result)) {
 								if ($focus->ConditionExpression($entityId.'x'.$related['id'])) {
-									$logbg->debug('(CBDeleteRelatedTask) called ConditionExpression');
 									deleteFromCrmEntityRel($masterRecord, $related['id']);
 								}
 							}
 						}
 					} else {
-						$logbg->debug('(CBDeleteRelatedTask) not called: businessMap is empty');
 						$adb->pquery(
 							'delete from vtiger_crmentityrel where (crmid = ? and relmodule = ?) or (relcrmid = ? and module = ?)',
 							array($masterRecord, $relatedModule, $masterRecord, $relatedModule)
@@ -119,15 +122,13 @@ class CBDeleteRelatedTask extends VTTask {
 						if ($result && $adb->num_rows($result) > 0) {
 							while ($related = $adb->fetch_array($result)) {
 								if ($focus->ConditionExpression($entityId.'x'.$related['notesid'])) {
-									$logbg->debug('(CBDeleteRelatedTask) called ConditionExpression');
 									$adb->pquery('delete from vtiger_senotesrel where notesid = ?', array($related['notesid']));
 								}
 							}
 						} else {
-							$logbg->debug('(CBDeleteRelatedTask) not called: no related Documents');
+							$logbg->debug('(DeleteRelatedTask) not called: no related Documents');
 						}
 					} else {
-						$logbg->debug('(CBDeleteRelatedTask) not called: businessMap is not Condition Query or Condition Expression');
 						$adb->pquery('delete from vtiger_senotesrel where crmid = ?', array($masterRecord));
 					}
 					break;
@@ -141,13 +142,11 @@ class CBDeleteRelatedTask extends VTTask {
 						if ($result && $adb->num_rows($result) > 0) {
 							while ($related = $adb->fetch_array($result)) {
 								if ($focus->ConditionExpression($entityId.'x'.$related['activityid'])) {
-									$logbg->debug('(CBDeleteRelatedTask) called ConditionExpression');
 									$adb->pquery('delete from vtiger_seactivityrel where activityid = ?', array($related['activityid']));
 								}
 							}
 						}
 					} else {
-						$logbg->debug('(CBDeleteRelatedTask) not called: businessMap is not Condition Query or Condition Expression');
 						$adb->pquery('delete from vtiger_seactivityrel where crmid = ?', array($masterRecord));
 					}
 					break;
@@ -157,6 +156,7 @@ class CBDeleteRelatedTask extends VTTask {
 					break;
 			}
 		} else {
+			$logbg->debug('(DeleteRelatedTask) type of relation: web service search');
 			$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
 			$handlerClass = $webserviceObject->getHandlerClass();
 			$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
@@ -173,14 +173,13 @@ class CBDeleteRelatedTask extends VTTask {
 			$queryGenerator->setFields(array('id'));
 			$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $masterRecord, 'e');
 			$query = $queryGenerator->getQuery();
-
+			$logbg->debug('(DeleteRelatedTask) deleting these: '.$query);
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias($relatedModule, true);
 			$denormed = ($crmEntityTable!='vtiger_crmentity');
 			$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
 			$updobject = 'UPDATE vtiger_crmobject set deleted=1 where crmid=?';
 			$upddenorm = 'UPDATE '.$crmEntityTable.' set deleted=1 where crmid=?';
 			$relrecs = $adb->query($query);
-
 			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 				$focus = CRMEntity::getInstance($relatedModule);
 				$focus->id = $adb->query_result($relrecs, $relrec, 0);
@@ -203,7 +202,6 @@ class CBDeleteRelatedTask extends VTTask {
 					}
 				} elseif ($businessMap == 'Condition Expression') {
 					if ($focus->ConditionExpression($webserviceObject->getEntityId().'x'.$adb->query_result($relrecs, $relrec, 0))) {
-						$logbg->debug('(CBDeleteRelatedTask) called ConditionExpression');
 						$em->triggerEvent('corebos.beforedelete.workflow', $entityData);
 						if ($denormed) {
 							$adb->pquery($upddenorm, array($adb->query_result($relrecs, $relrec, 0)));
@@ -213,7 +211,6 @@ class CBDeleteRelatedTask extends VTTask {
 						$adb->pquery($updobject, array($adb->query_result($relrecs, $relrec, 0)));
 					}
 				} else {
-					$logbg->debug('(CBDeleteRelatedTask) businessMap is not Condition Query or Condition Expression');
 					$em->triggerEvent('corebos.beforedelete.workflow', $entityData);
 					if ($denormed) {
 						$adb->pquery($upddenorm, array($adb->query_result($relrecs, $relrec, 0)));

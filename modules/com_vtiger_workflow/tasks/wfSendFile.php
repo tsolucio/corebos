@@ -80,23 +80,21 @@ class wfSendFile extends VTTask {
 			require_once 'modules/Emails/Emails.php';
 			return send_mail('Email', 'sendfile@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $adapter, print_r($workflow_context, true));
 		}
+		$logbg->debug('(wfSendFile)', [$this->exptype, $this->credentialid, $adapter, $filename]);
 		if ($adapter == 'FTP') {
 			require_once 'modules/com_vtiger_workflow/actions/FTP.php';
 			$ftp = new FTPAdapter($data, $workflow_context);
 			$ftp->setUp();
-			$logbg->debug('(wfSendFile) writing file for FTP');
 			$ftp->writeFile();
 		} elseif ($adapter == 'AzureBlobStorage') {
 			require_once 'modules/com_vtiger_workflow/actions/AzureBlobStorage.php';
 			$azure = new AzureAdapter($data, $workflow_context);
 			$azure->setUp();
-			$logbg->debug('(wfSendFile) writing file for Azure Blob Storage');
 			$azure->writeFile();
 		} elseif ($adapter == 'OpenCloud') {
 			require_once 'modules/com_vtiger_workflow/actions/OpenCloud.php';
 			$cloud = new OpenCloudAdapter($data, $workflow_context);
 			$cloud->setUp();
-			$logbg->debug('(wfSendFile) writing file for Open Cloud');
 			$cloud->writeFile();
 		} elseif ($adapter == 'GoogleCloudStorage') {
 			require_once 'modules/com_vtiger_workflow/actions/GoogleStorage.php';
@@ -141,10 +139,9 @@ class wfSendFile extends VTTask {
 			}
 			$storage = new GoogleStorageAdapter($data, $client, $workflow_context);
 			$storage->setUp();
-			$logbg->debug('(wfSendFile) writing file for Google Cloud Storage');
 			$storage->writeFile();
 		} else {
-			$logbg->debug('(wfSendFile) not called: adapter is not one of these values: FTP, AzureBlobStorage, OpenCloud, GoogleCloudStorage');
+			$logbg->debug('(wfSendFile) not called: adapter is not supported');
 		}
 		$logbg->debug('< wfSendFile');
 	}

@@ -31,7 +31,7 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 
 	public function doTask(&$entityData) {
 		global $current_user, $logbg;
-		$logbg->debug('> CBSendOneSignalNotificationWorkFlowTask');
+		$logbg->debug('> SendOneSignalNotificationTask');
 
 		if (coreBOS_Settings::getSetting('onesignal_isactive', '') == '1') {
 			$entityCache = new VTEntityCache($current_user);
@@ -79,10 +79,10 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 				if (!empty($inBucketServeUrl)) {
 					require_once 'modules/Emails/mail.php';
 					require_once 'modules/Emails/Emails.php';
-					$logbg->debug('(CBSendOneSignalNotificationWorkFlowTask) sending mail');
+					$logbg->debug('(SendOneSignalNotificationTask) sending mail to inbucket');
 					return send_mail('Email', 'desktop@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $headings.' '.$subtitle, $contents);
 				} else {
-					$logbg->debug('(CBSendOneSignalNotificationWorkFlowTask) sending Desktop Notification');
+					$logbg->debug('(SendOneSignalNotificationTask) sending Desktop Notification');
 					$result = corebos_onesignal::sendDesktopNotification(
 						$contents,
 						$headings,
@@ -93,18 +93,18 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 						$web_buttons
 					);
 					if ($result) {
-						$logbg->debug('(CBSendOneSignalNotificationWorkFlowTask) Desktop Notification sent successfully');
+						$logbg->debug('(SendOneSignalNotificationTask) Desktop Notification sent successfully');
 					} else {
-						$logbg->debug('(CBSendOneSignalNotificationWorkFlowTask) not called: failed to send Desktop Notification');
+						$logbg->debug('(SendOneSignalNotificationTask) not called: failed to send Desktop Notification');
 					}
 				}
 			} catch (Exception $e) {
-				$logbg->debug('(CBSendOneSignalNotificationWorkFlowTask) not called: Error on Send OneSignal Notification Task');
+				$logbg->debug('(SendOneSignalNotificationTask) not called: Error on Send OneSignal Notification Task: '.$e->getMessage());
 			}
 		} else {
-			$logbg->debug('(CBSendOneSignalNotificationWorkFlowTask) not called: one signal is not active');
+			$logbg->debug('(SendOneSignalNotificationTask) not called: one signal is not active');
 		}
-		$logbgbg->debug('< CBSendOneSignalNotificationWorkFlowTask');
+		$logbgbg->debug('< SendOneSignalNotificationTask');
 	}
 }
 ?>

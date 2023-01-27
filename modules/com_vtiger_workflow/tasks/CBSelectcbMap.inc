@@ -31,7 +31,7 @@ class CBSelectcbMap extends VTTask {
 
 	public function doTask(&$recordid) {
 		global $adb, $logbg;
-		$logbg->debug('> CBSelectcbMap');
+		$logbg->debug('> SelectcbMap');
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
 		$maprs = $adb->pquery(
 			'select 1 from vtiger_cbmap inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid where vtiger_crmentity.deleted=0 and cbmapid=?',
@@ -44,21 +44,21 @@ class CBSelectcbMap extends VTTask {
 			$focus->id = $this->bmapid;
 			$focus->mode = '';
 			$focus->retrieve_entity_info($this->bmapid, 'cbMap');
-			$logbg->debug('(CBSelectcbMap) cbMapid: ' . $this->bmapid);
+			$logbg->debug('(SelectcbMap) cbMapid: ' . $this->bmapid);
 			$contentok = processcbMap::isXML(htmlspecialchars_decode($focus->column_fields['content']));
 			if ($contentok !== true) {
 				return false;
 			}
 			$return = $focus->RecordAccessControl();
 			list($mod,$rec) = explode('x', $recordid);
-			$logbg->debug('(CBSelectcbMap) $recordid: ' . $recordid);
+			$logbg->debug('(SelectcbMap) $recordid: ' . $recordid);
 			$return->setRelatedRecordID($rec);
 			return $return;
 		} else {
-			$logbg->debug('(CBSelectcbMap) not called: maprs is empty');
+			$logbg->debug('(SelectcbMap) not called: maprs is empty');
 			return false;
 		}
-		$logbg->debug('< CBSelectcbMap');
+		$logbg->debug('< SelectcbMap');
 	}
 }
 ?>

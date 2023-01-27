@@ -32,7 +32,7 @@ class CBRelateSales extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $logbg;
-		$logbg->debug('> CBRelateSales');
+		$logbg->debug('> RelateSales');
 		$invinfo = array(
 			'Quotes' => array('id'=>'quoteid','account'=>'accountid','contact'=>'contactid'),
 			'SalesOrder' => array('id'=>'salesorderid','account'=>'accountid','contact'=>'contactid'),
@@ -40,8 +40,8 @@ class CBRelateSales extends VTTask {
 			'PurchaseOrder' => array('id'=>'purchaseorderid','account'=>'vendorid','contact'=>'contactid'),
 		);
 		list($inv,$inv_id) = explode('x', $entity->getId());
-		$logbg->debug('(CBRelateSales) $inv_id: ' . $inv_id);
 		if (!empty($inv_id)) {
+			$logbg->debug('(RelateSales) inv_id: ' . $inv_id);
 			$setype = getSalesEntityType($inv_id);
 			$query = 'select productid from vtiger_inventoryproductrel inner join vtiger_crmobject on crmid=productid where deleted=0 and id=?';
 			$srvs = $adb->pquery($query, array($inv_id));
@@ -73,9 +73,9 @@ class CBRelateSales extends VTTask {
 				}
 			}
 		} else {
-			$logbg->debug('(CBRelateSales) not called: inv_id is empty');
+			$logbg->debug('(RelateSales) not called: inv_id is empty');
 		}
-		$logbg->debug('< CBPushNotificationTask');
+		$logbg->debug('< RelateSales');
 	}
 }
 ?>

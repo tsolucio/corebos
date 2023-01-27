@@ -85,7 +85,7 @@ class ConvertInventoryModule extends VTTask {
 			if (empty($associated_prod[1]['entityType1'])) {
 				$from_wf = false;
 				$util->revertUser();
-				$logbg->debug('(ConvertInventoryModule) not called: converting from {$cbfrommodule} to {$this->convertto} failed because there is no related products');
+				$logbg->debug("(ConvertInventoryModule) not called: converting from $cbfrommodule to {$this->convertto} failed because there is no related products");
 				return;
 			}
 
@@ -175,11 +175,7 @@ class ConvertInventoryModule extends VTTask {
 		$holdajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 		$_REQUEST['action'] = '';
 		$_REQUEST['ajxaction'] = '';
-
-
-		$logbg->debug('(ConvertInventoryModule) Creating');
 		$invmod = vtws_create($this->convertto, $data, $current_user);
-
 		$_REQUEST['action'] = $holdaction;
 		$_REQUEST['ajxaction'] = $holdajxaction;
 		$from_wf = false;

@@ -40,11 +40,10 @@ class wfExecExpression extends VTTask {
 					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($exp['exp'])));
 					$expression = $parser->expression();
 					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-					$logbg->debug('(wfExecExpression) evaluating the expression');
 					$exprEvaluation = $exprEvaluater->evaluate($entity);
-					$logbg->debug('(wfExecExpression) expression evaluation is: ', $exprEvaluation);
 				}
 				if (!empty($exp['var'])) {
+					$logbg->debug('(wfExecExpression)', [$exp, $exprEvaluation]);
 					$entity->WorkflowContext[$exp['var']] = $exprEvaluation;
 				}
 			}

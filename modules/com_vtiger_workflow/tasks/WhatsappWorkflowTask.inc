@@ -158,7 +158,7 @@ class WhatsappWorkflowTask extends VTTask {
 				$logbg->debug('(WhatsappWorkflowTask) not called: Error on Whatsapp Task: '. $e->getMessage());
 			}
 		} else {
-			$logbg->debug('(WhatsappWorkflowTask) not called: client class is not active');
+			$logbg->debug('(WhatsappWorkflowTask) not called: Whatsapp is not active');
 		}
 		$logbg->debug('< WhatsappWorkflowTask');
 	}

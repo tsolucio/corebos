@@ -33,7 +33,7 @@ class setManyToManyRelationwf extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user, $logbg;
-		$logbg->debug('> setManyToManyRelationwf');
+		$logbg->debug('> setManyToManyRelation');
 		if (empty($entity->WorkflowContext['SetManyToManyRelation_Records'])) {
 			$idlistArr = explode(',', $this->idlist);
 		} else {
@@ -50,7 +50,7 @@ class setManyToManyRelationwf extends VTTask {
 			$recid = vtws_getCRMID($entity->WorkflowContext['SetManyToManyRelation_Record']);
 			$recmod = getSalesEntityType($recid);
 		}
-		$logbg->debug("(setManyToManyRelationwf) " . $this->relAction.' '.$recid.' with '.print_r($idlistArr, true));
+		$logbg->debug('(setManyToManyRelation) '.$this->relAction.' '.$recid.'/'.$recmod.' with', $idlistArr);
 		if ($this->relAction == 'addrel') {
 			$idlistNewArr = array();
 			foreach ($idlistArr as $recId) {
@@ -99,16 +99,12 @@ class setManyToManyRelationwf extends VTTask {
 							$modobj->trackUnLinkedInfo($mod2unrelate, $row['crmid'], $recmod, $recid);
 						}
 					} else {
-						$logbg->debug('(setManyToManyRelationwf) not called: $relationData query is not set');
+						$logbg->debug('(setManyToManyRelation) not called: $relationData query is not set');
 					}
-				} else {
-					$logbg->debug('(setManyToManyRelationwf) not called: done array does not have a mod2unrelate element');
 				}
 			}
-		} else {
-			$logbg->debug('(setManyToManyRelationwf) not called: relAction does not equal one of these: addrel, delrel, delAllrel');
 		}
-		$logbg->debug('< setManyToManyRelationwf');
+		$logbg->debug('< setManyToManyRelation');
 	}
 }
 ?>

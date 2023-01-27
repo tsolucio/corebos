@@ -96,13 +96,12 @@ class GenerateDocument extends VTTask {
 			if ($this->updateOnChange) {
 				$rdocs = $adb->pquery($relatedDocsSQLNotDeleted, array($fileid, $record));
 				if ($rdocs && $adb->num_rows($rdocs)>0) {
+					$logbg->debug('(GenerateDocument) update Share');
 					while ($rdoc = $adb->fetch_array($rdocs)) {
 						if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
 							$smq->createShareLink($rdoc['notesid']);
 						}
-						$logbg->debug('(GenerateDocument) swap Document');
 						$smq->swapDocument($rdoc['notesid'], $docid);
-						$logbg->debug('(GenerateDocument) swap Document smq: ' . $smq);
 						$skey = $smq->getShareCode($docid);
 					}
 					$adb->pquery(
@@ -114,20 +113,20 @@ class GenerateDocument extends VTTask {
 						array($fileid, $record)
 					);
 				} else { // creating for the first time
-					$logbg->debug('(GenerateDocument) create share link');
+					$logbg->debug('(GenerateDocument) create Share on update');
 					$skey = $smq->createShareLink($docid);
-					$logbg->debug('(GenerateDocument) create share link skey: ' . $skey);
 				}
 				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
 				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
 			} elseif ($this->shareOnCreate && !$smq->isShared($docid)) {
+				$logbg->debug('(GenerateDocument) create Share');
 				$skey = $smq->createShareLink($docid);
 				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
 				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
 			} else {
 				$logbg->debug('(GenerateDocument) not called:  updateOnChange is false or shareOnCreate and isShared are false');
 			}
-			$logbg->debug('(GenerateDocument) updating vtiger_notes');
+			$logbg->debug('(GenerateDocument) updating Document template ID', [$fileid, $docid]);
 			$adb->pquery('update vtiger_notes set gendoctplid=? where notesid=?', array($fileid, $docid));
 		}
 		$logbg->debug('< GenerateDocument');

@@ -66,7 +66,7 @@ class CBWatermark extends VTTask {
 
 	public function doTask(&$entity) {
 		global $logbg, $from_wf, $currentModule, $root_directory;
-		$logbg->debug('> CBWatermark');
+		$logbg->debug('> Watermark');
 
 		// setting workflow variables
 		$wmImageValue = null;
@@ -143,35 +143,35 @@ class CBWatermark extends VTTask {
 			if ($waterMarkType == 'png') {
 				$waterMarkImg = imagecreatefrompng($waterMarkUrl);
 				if (!$waterMarkImg) {
-					$logbg->debug('(CBWatermark) The watermark image was not created');
+					$logbg->debug('(Watermark) The watermark image was not created');
 					$invalidImage = true;
 				}
 			} elseif ($waterMarkType == 'jpg' || $waterMarkType == 'jpeg') {
 				$waterMarkImg = imagecreatefromjpeg($waterMarkUrl);
 				if (!$waterMarkImg) {
-					$logbg->debug('(CBWatermark) The watermark image was not created ');
+					$logbg->debug('(Watermark) The watermark image was not created ');
 					$invalidImage = true;
 				}
 			} else {
-				$logbg->debug('(CBWatermark) can\'t create the watermark image because extension is not supported');
+				$logbg->debug('(Watermark) cannot create the watermark image because extension is not supported');
 				$invalidImage = true;
 			}
 			if ($mainImageFileType == 'png') {
 				$mainImage = imagecreatefrompng($mainImagePath);
 				if (!$mainImage) {
-					$logbg->debug('(CBWatermark) The main image was not created');
+					$logbg->debug('(Watermark) The main image was not created');
 					$invalidImage = true;
 				}
 				$mainImageOriginal = imagecreatefrompng($mainImagePath);
 			} elseif ($mainImageFileType == 'jpg' || $mainImageFileType == 'jpeg') {
 				$mainImage = imagecreatefromjpeg($mainImagePath);
 				if (!$mainImage) {
-					$logbg->debug('(CBWatermark) The main image was not created');
+					$logbg->debug('(Watermark) The main image was not created');
 					$invalidImage = true;
 				}
 				$mainImageOriginal = imagecreatefromjpeg($mainImagePath);
 			} else {
-				$logbg->debug('(CBWatermark) can\'t create the main image because extension is not supported');
+				$logbg->debug('(Watermark) cannot create the main image because extension is not supported');
 				$invalidImage = true;
 			}
 
@@ -244,14 +244,14 @@ class CBWatermark extends VTTask {
 						$wmpy = $misy - $wmnsy;
 						break;
 					default:
-						$logbg->debug('(CBWatermark) the watermark position you specified is not supported. we use bottom right');
+						$logbg->debug('(Watermark) the watermark position you specified is not supported. we use bottom right');
 						$wmpx = $misx - $wmnsx;
 						$wmpy = $misy - $wmnsy;
 						break;
 				}
 
 				// resize the watermark image
-				$logbg->debug('(CBWatermark) adding the watermark to the image');
+				$logbg->debug('(Watermark) adding the watermark to the image');
 				$waterMarkImgAfterResize = imagecreatetruecolor($wmnsx, $wmnsy);
 				imagesavealpha($waterMarkImgAfterResize, true);
 				$color = imagecolorallocatealpha($waterMarkImgAfterResize, 0, 0, 0, 127);
@@ -261,7 +261,7 @@ class CBWatermark extends VTTask {
 				// add the watermark to the image
 				$res = imagecopy($mainImage, $waterMarkImgAfterResize, $wmpx, $wmpy, 0, 0, $wmnsx, $wmnsy);
 				if (!$res) {
-					$logbg->debug('(CBWatermark) could not add the watermark on the image');
+					$logbg->debug('(Watermark) could not add the watermark on the image');
 				}
 
 				// Save image
@@ -273,7 +273,7 @@ class CBWatermark extends VTTask {
 					imagejpeg($mainImage, $mainImagePath);
 					imagejpeg($mainImageOriginal, $mainOriginalImagePath);
 				} else {
-					$logbg->debug('(CBWatermark) can\'t save the main image because the extension is not supported');
+					$logbg->debug('(Watermark) cannot save the main image because the extension is not supported');
 				}
 
 				// free the images
@@ -285,7 +285,7 @@ class CBWatermark extends VTTask {
 		}
 		$_REQUEST['ajxaction'] = $hold_ajxaction;
 		$from_wf = false;
-		$logbg->debug('< CBWatermark');
+		$logbg->debug('< Watermark');
 	}
 }
 ?>

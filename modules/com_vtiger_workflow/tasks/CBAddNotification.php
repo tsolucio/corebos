@@ -104,7 +104,8 @@ class CBAddNotification extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb;
+		global $adb, $logbg;
+		$logbg->debug('> AddNotification');
 		if (empty($entity->WorkflowContext['AddNotification_Module'])) {
 			if (empty($this->cbmodule) || $this->cbmodule=='wfmodule') {
 				$cbmodule = $entity->getModuleName();
@@ -187,6 +188,7 @@ class CBAddNotification extends VTTask {
 			$remid = $minfo['id'];
 		}
 		$entity->WorkflowContext['AddNotification_NotificationID'] = $remid;
+		$logbg->debug('< AddNotification', [$cbmodule, $cbrecord, $datetime, $ownerid, $relwith, $moreaction, $moreinfo, $remid]);
 	}
 }
 ?>

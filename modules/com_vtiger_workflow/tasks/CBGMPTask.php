@@ -31,7 +31,7 @@ class CBGMPTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $logbg;
-		$logbg->debug('> CBGMPTask');
+		$logbg->debug('> GMPTask');
 		$gmp = new corebos_gmp();
 		list($ent, $ent_id) = explode('x', $entity->getId());
 		$entype = getSalesEntityType($ent_id);
@@ -47,19 +47,19 @@ class CBGMPTask extends VTTask {
 				$url = getMergedDescription($conn, $ent_id, $entype);
 				$url = getMergedDescription($url, $acc_id, 'Accounts');
 				$url = vtlib_purify($url);
-				$logbg->debug('(CBGMPTask) GMP url: ' . $url);
+				$logbg->debug('(GMPTask) GMP url: ' . $url);
 				$curl = curl_init($url);
 				curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 				$curl_result = curl_exec($curl);
-				$logbg->debug('(CBGMPTask) curl result: ' . $curl_result);
+				$logbg->debug('(GMPTask) curl result: ' . $curl_result);
 			} else {
-				$logbg->debug('(CBGMPTask) not called: empty GID');
+				$logbg->debug('(GMPTask) not called: empty GID');
 			}
 		} else {
-			$logbg->debug('(CBGMPTask) not called: the acc_id and url_query may be empty or the GMP is not active');
+			$logbg->debug('(GMPTask) not called: the acc_id and url_query may be empty or the GMP is not active');
 		}
-		$logbg->debug('< CBGMPTask');
+		$logbg->debug('< GMPTask');
 	}
 }
 ?>

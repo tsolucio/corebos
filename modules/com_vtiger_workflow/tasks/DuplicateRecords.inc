@@ -42,15 +42,12 @@ class DuplicateRecords extends VTTask {
 				if (strpos($duplicatedfrom, 'x')>0) {
 					list($wsdup, $duplicatedfrom) = explode('x', $duplicatedfrom);
 				}
-				$logbg->debug('(DuplicateRecords) duplicating record relations');
 				$new_record_id = duplicateRecordRelations($module, $cto_id, $duplicatedfrom, $this->bmapid);
-				$logbg->debug('(DuplicateRecords) new record id: ', $new_record_id);
+				$logbg->debug('(DuplicateRecords) duplicating from', [$module, $cto_id, $duplicatedfrom, $this->bmapid, $new_record_id]);
 			} else {
-				$logbg->debug('(DuplicateRecords) duplicating record');
 				$new_record_id = duplicaterec($module, $cto_id, $this->bmapid);
-				$logbg->debug('(DuplicateRecords) new record id: ', $new_record_id);
-				$logbg->debug('(DuplicateRecords) update Revision Fields');
 				dq_updateRevisionFields($module, $cto_id, $new_record_id);
+				$logbg->debug('(DuplicateRecords) duplicating', [$module, $cto_id, $this->bmapid, $new_record_id]);
 			}
 		} else {
 			$logbg->debug('(DuplicateRecords) not called: cto_id is empty or map does not exist');

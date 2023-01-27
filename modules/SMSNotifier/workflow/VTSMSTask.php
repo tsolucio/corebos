@@ -24,7 +24,7 @@ class VTSMSTask extends VTTask {
 	public function doTask(&$entity) {
 		global $logbg;
 
-		$logbg->debug('> VTSMSTask');
+		$logbg->debug('> SMSTask');
 		if (SMSNotifier::checkServer()) {
 			global $current_user;
 			$util = new VTWorkflowUtils();
@@ -50,20 +50,20 @@ class VTSMSTask extends VTTask {
 				if (!empty($inBucketServeUrl)) {
 					require_once 'modules/Emails/mail.php';
 					require_once 'modules/Emails/Emails.php';
-					$logbg->debug('(VTSMSTask) sending an email to inbucket');
+					$logbg->debug('(SMSTask) sending email to inbucket');
 					return send_mail('Email', 'sms@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $tonumbers, $content);
 				} else {
-					$logbg->debug('(VTSMSTask) sending an sms');
+					$logbg->debug('(SMSTask) sending sms');
 					SMSNotifier::sendsms($content, $tonumbers, $current_user->id, $relatedCRMid, $relatedModule);
 				}
 			} else {
-				$logbg->debug('(VTSMSTask) not called: there are not tone numbers');
+				$logbg->debug('(SMSTask) not called: there are no phone numbers');
 			}
 			$util->revertUser();
 		} else {
-			$logbg->debug('(VTSMSTask) not called: the server is not active');
+			$logbg->debug('(SMSTask) not called: no service is active');
 		}
-		$logbg->debug('< VTSMSTask');
+		$logbg->debug('< SMSTask');
 	}
 }
 ?>
