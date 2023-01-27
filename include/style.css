@@ -96,62 +96,12 @@
 }
 
 .detailview_wrapper_table .tui-grid-table,
-#RLContents  .tui-grid-table {
-  border: 1px solid #ddd;
+#RLContents .tui-grid-table {
+  border: 1px solid #e3e3e3;
 }
 
-.detailview_wrapper_table .tui-grid-header-area,
-#RLContents  .tui-grid-header-area {
-  height: auto !important;
-}
-
-.detailview_wrapper_table .tui-grid-table .tui-grid-cell,
-#RLContents .tui-grid-table .tui-grid-cell {
-  border: 1px solid #ddd;
-  padding: 0 2px;
-  white-space: normal;
-}
-.detailview_wrapper_table .tui-grid-table .tui-grid-cell span, 
-.detailview_wrapper_table .tui-grid-table .tui-grid-cell p, 
-.detailview_wrapper_table .tui-grid-table .tui-grid-cell a, 
-.detailview_wrapper_table .tui-grid-table .tui-grid-cell button, 
-#RLContents .tui-grid-table .tui-grid-cell span,
-#RLContents .tui-grid-table .tui-grid-cell p,
-#RLContents .tui-grid-table .tui-grid-cell a,
-#RLContents .tui-grid-table .tui-grid-cell button{
-  font-size: 11px;
-  position: relative;
-  left: 5px;
-  white-space: normal;
-}
-
-.detailview_wrapper_table .tui-grid-table [data-column-name="description"],
-.detailview_wrapper_table .tui-grid-table [data-column-name="productcomponent_description"],
-.detailview_wrapper_table .tui-grid-table .tui-grid-cell-header,
-#RLContents .tui-grid-table [data-column-name="productcomponent_description"],
-#RLContents  .tui-grid-table .tui-grid-cell-header{
-  vertical-align: middle !important;
-}
-.detailview_wrapper_table .tui-grid-table .tui-grid-cell-header,
-#RLContents .tui-grid-table .tui-grid-cell-header{
-  position: relative;
-  left: 5px;
-}
-
-.detailview_wrapper_table .tui-grid-table [data-column-name="cblvactioncolumn"] *,
-#RLContents .tui-grid-table [data-column-name="cblvactioncolumn"] *{
-	box-sizing: border-box;
-}
-.detailview_wrapper_table .tui-grid-table [data-column-name="cblvactioncolumn"] .slds-button-group,
-#RLContents .tui-grid-table [data-column-name="cblvactioncolumn"] .slds-button-group{
-	position: relative;
-  left: -6px;
-}
-
-.detailview_wrapper_table .detailview_wrapper_cell .slds-card__body,
-#RLContents .slds-card__body{
-  padding-bottom: 20px !important;
-  margin-bottom: 80px;
+.tui-grid-cell {
+  padding-left: 5px;
 }
 
 .cbds-bg-compl-red--faint {
