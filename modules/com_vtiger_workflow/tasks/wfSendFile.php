@@ -48,7 +48,7 @@ class wfSendFile extends VTTask {
 		if ($this->exptype == 'rawtext') {
 			if ($filename != '') {
 				for ($y=0; $y < count($reportfile_context); $y++) {
-					$workflow_context['wfgenerated_file'][$y]['dest_name'] = empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
+					$workflow_context['wfgenerated_file'][$y]['dest_name']=empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
 				}
 			}
 		} elseif ($this->exptype == 'fieldname') {
@@ -59,7 +59,7 @@ class wfSendFile extends VTTask {
 				$fn = new VTSimpleTemplate(trim($filename));
 				$filename = $fn->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 				for ($y=0; $y < count($reportfile_context); $y++) {
-					$workflow_context['wfgenerated_file'][$y]['dest_name'] = empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
+					$workflow_context['wfgenerated_file'][$y]['dest_name']=empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
 				}
 			}
 		} else {
@@ -69,7 +69,7 @@ class wfSendFile extends VTTask {
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 				$filename = $exprEvaluater->evaluate($entity);
 				for ($y=0; $y < count($reportfile_context); $y++) {
-					$workflow_context['wfgenerated_file'][$y]['dest_name'] = empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
+					$workflow_context['wfgenerated_file'][$y]['dest_name']=empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
 				}
 			}
 		}

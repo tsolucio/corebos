@@ -62,6 +62,13 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 		);
 	}
 
+	public function after_retrieve() {
+		$this->taskSavedData = array(
+			'save_encoded_value' => $this->save_encoded_value,
+			'field_to_encode' => $this->field_to_encode,
+			'encoding_type' => $this->encoding_type );
+	}
+
 	public function doTask(&$entity) {
 		global $from_wf, $root_directory;
 		$from_wf = true;
@@ -121,13 +128,6 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 			unlink($filepath);
 		}
 		$util->revertUser();
-	}
-
-	public function after_retrieve() {
-		$this->taskSavedData = array(
-			'save_encoded_value' => $this->save_encoded_value,
-			'field_to_encode' => $this->field_to_encode,
-			'encoding_type' => $this->encoding_type );
 	}
 }
 ?>
