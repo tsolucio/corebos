@@ -13,6 +13,9 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 class VTCreateEntityTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $entity_type;
+	public $reference_field;
+	public $field_value_mapping;
 
 	public function getFieldNames() {
 		return array('entity_type', 'reference_field', 'field_value_mapping');

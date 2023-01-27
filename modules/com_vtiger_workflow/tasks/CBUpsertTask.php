@@ -23,6 +23,10 @@ require_once 'include/events/include.inc';
 class CBUpsertTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $field_value_mapping;
+	public $bmapid;
+	public $bmapid_display;
+	public $upsert_module;
 
 	public function getFieldNames() {
 		return array('field_value_mapping', 'bmapid', 'bmapid_display', 'upsert_module');

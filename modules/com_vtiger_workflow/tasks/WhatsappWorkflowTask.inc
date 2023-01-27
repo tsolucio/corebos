@@ -18,6 +18,9 @@ class WhatsappWorkflowTask extends VTTask {
 	public $queable = true;
 	public $attachmentsinfo = array();
 	public $dzattinfo = array();
+	public $messageBody;
+	public $attachmentids;
+	public $phone;
 
 	public function getFieldNames() {
 		return array('messageBody', 'attachmentids', 'phone');

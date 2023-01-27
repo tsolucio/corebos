@@ -23,8 +23,10 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = false;
 	public $tcpdf1dEncodingTypes = array('EAN8' => 'EAN8','EAN13' => 'EAN13');
-
 	public $tcpdf2dEncodingTypes = array('QRCODE,L' => 'QRCODE,L','QRCODE,M' => 'QRCODE M','QRCODE,Q' => 'QRCODE,Q','QRCODE,H' => 'QRCODE,H');
+	public $save_encoded_value;
+	public $field_to_encode;
+	public $encoding_type;
 
 	public function getFieldNames() {
 		return array('save_encoded_value', 'field_to_encode', 'encoding_type');

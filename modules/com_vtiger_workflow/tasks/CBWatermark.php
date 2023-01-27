@@ -22,6 +22,10 @@ require_once 'include/events/include.inc';
 class CBWatermark extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $wmImageValue;
+	public $imagefieldName;
+	public $wmSize;
+	public $wmPosition;
 
 	public function getFieldNames() {
 		return array('wmImageValue', 'imagefieldName', 'wmSize', 'wmPosition');

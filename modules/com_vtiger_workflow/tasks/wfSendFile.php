@@ -24,6 +24,10 @@ class wfSendFile extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
 	public $_accessToken = array();
+	public $credentialid;
+	public $credentialid_display;
+	public $filename;
+	public $exptype;
 
 	public function getFieldNames() {
 		return array('credentialid', 'credentialid_display', 'filename', 'exptype');

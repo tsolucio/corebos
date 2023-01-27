@@ -14,6 +14,8 @@ require_once 'modules/SMSNotifier/SMSNotifier.php';
 
 class VTSMSTask extends VTTask {
 	public $executeImmediately = true;
+	public $content;
+	public $sms_recepient;
 
 	public function getFieldNames() {
 		return array('content', 'sms_recepient');

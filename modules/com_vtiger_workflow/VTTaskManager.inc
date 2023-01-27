@@ -202,6 +202,7 @@ abstract class VTTask {
 	public $active;
 	public $id;
 	public $executionorder;
+	public $reevaluate;
 
 	abstract public function doTask(&$data);
 	abstract public function getFieldNames();

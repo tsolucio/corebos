@@ -16,6 +16,8 @@ require_once 'modules/com_vtiger_workflow/expression_functions/application.php';
 class RunWebserviceWorkflowTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $bmapid;
+	public $bmapid_display;
 
 	public function getFieldNames() {
 		return array('bmapid', 'bmapid_display');
