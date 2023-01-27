@@ -111,6 +111,8 @@ function gridGetEditor($module, $fieldname, $uitype) {
 		case Field_Metadata::UITYPE_TEXT:
 		case Field_Metadata::UITYPE_TIME:
 		case Field_Metadata::UITYPE_URL:
+		case Field_Metadata::UITYPE_FULL_WIDTH_TEXT_AREA:
+		case Field_Metadata::UITYPE_HALF_WIDTH_TEXT_AREA:
 			return 'text';
 			break;
 		case Field_Metadata::UITYPE_CURRENCY_AMOUNT:
