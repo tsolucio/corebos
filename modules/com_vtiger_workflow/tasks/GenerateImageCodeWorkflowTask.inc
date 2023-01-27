@@ -116,7 +116,7 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 				'type' => 'image/png',
 				'tmp_name' => $filepath,
 				'error' => 0,
-				'size' => strlen($data)
+				'size' => filesize($filepath)
 			);
 
 			$moduleInstance = CRMEntity::getInstance($moduleName);
