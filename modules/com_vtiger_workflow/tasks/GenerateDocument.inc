@@ -33,7 +33,8 @@ class GenerateDocument extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $root_directory, $current_language, $default_charset;
+		global $adb, $logbg, $root_directory, $current_language, $default_charset;
+		$logbg->debug('> GenerateDocument');
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
 		$crmEntityTableAlias = CRMEntity::getcrmEntityTableAlias('Documents', false);
 		$relatedDocsSQL = 'SELECT vtiger_senotesrel.notesid
@@ -95,6 +96,7 @@ class GenerateDocument extends VTTask {
 			if ($this->updateOnChange) {
 				$rdocs = $adb->pquery($relatedDocsSQLNotDeleted, array($fileid, $record));
 				if ($rdocs && $adb->num_rows($rdocs)>0) {
+					$logbg->debug('(GenerateDocument) update Share');
 					while ($rdoc = $adb->fetch_array($rdocs)) {
 						if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
 							$smq->createShareLink($rdoc['notesid']);
@@ -111,17 +113,23 @@ class GenerateDocument extends VTTask {
 						array($fileid, $record)
 					);
 				} else { // creating for the first time
+					$logbg->debug('(GenerateDocument) create Share on update');
 					$skey = $smq->createShareLink($docid);
 				}
 				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
 				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
 			} elseif ($this->shareOnCreate && !$smq->isShared($docid)) {
+				$logbg->debug('(GenerateDocument) create Share');
 				$skey = $smq->createShareLink($docid);
 				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
 				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
+			} else {
+				$logbg->debug('(GenerateDocument) not called:  updateOnChange is false or shareOnCreate and isShared are false');
 			}
+			$logbg->debug('(GenerateDocument) updating Document template ID', [$fileid, $docid]);
 			$adb->pquery('update vtiger_notes set gendoctplid=? where notesid=?', array($fileid, $docid));
 		}
+		$logbg->debug('< GenerateDocument');
 	}
 
 	private function addGenDocTplColumn() {

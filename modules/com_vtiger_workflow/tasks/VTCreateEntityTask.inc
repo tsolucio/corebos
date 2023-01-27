@@ -23,6 +23,7 @@ class VTCreateEntityTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user, $from_wf, $logbg;
+		$logbg->debug('> CreateEntityTask '.$this->entity_type);
 		if (!vtlib_isModuleActive($this->entity_type)) {
 			return;
 		}
@@ -41,7 +42,6 @@ class VTCreateEntityTask extends VTTask {
 		}
 
 		if (!empty($entityType) && !empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
-			$logbg->debug('CreateEntityTask: create '.$entityType);
 			require_once 'data/CRMEntity.php';
 			require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 
@@ -71,8 +71,8 @@ class VTCreateEntityTask extends VTTask {
 				$datetimeFields[] = $webserviceField->getFieldName();
 			}
 			unset($dtFields);
-			$logbg->debug($focus->column_fields);
-			$logbg->debug($fieldValueMapping);
+			$logbg->debug('(CreateEntityTask) column_fields', $focus->column_fields);
+			$logbg->debug('(CreateEntityTask) fieldValueMapping', $fieldValueMapping);
 			$files_set = false;
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
@@ -160,17 +160,17 @@ class VTCreateEntityTask extends VTTask {
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
 			$newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields, $handlerMeta);
-			$logbg->debug($newEntity->column_fields);
+			$logbg->debug('(CreateEntityTask) newEntity', $newEntity->column_fields);
 			$newEntity->save($entityType);
 			relateEntities($focus, $moduleName, $recordId, $entityType, $newEntity->id);
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 		} else {
-			$logbg->debug('CreateEntityTask: cannot create entity due to missing information');
-			$logbg->debug($entityType);
-			$logbg->debug($fieldValueMapping);
+			$logbg->debug('(CreateEntityTask) cannot create entity due to missing information');
+			$logbg->debug('(CreateEntityTask) fieldValueMapping', $fieldValueMapping);
 		}
 		$from_wf = false;
 		$util->revertUser();
+		$logbg->debug('< CreateEntityTask');
 	}
 }
 ?>

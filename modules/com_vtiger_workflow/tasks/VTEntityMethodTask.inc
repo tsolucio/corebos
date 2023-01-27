@@ -19,9 +19,11 @@ class VTEntityMethodTask extends VTTask {
 	}
 
 	public function doTask(&$entityData) {
-		global $adb;
+		global $adb, $logbg;
+		$logbg->debug('> VTEntityMethodTask '.$this->methodName);
 		$emm = new VTEntityMethodManager($adb);
 		$emm->executeMethod($entityData, $this->methodName);
+		$logbg->debug('< VTEntityMethodTask');
 	}
 }
 ?>

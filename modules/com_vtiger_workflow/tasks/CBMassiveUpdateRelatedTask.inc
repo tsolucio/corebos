@@ -26,8 +26,8 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user, $logbg, $from_wf, $currentModule;
+		$logbg->debug('> MassiveUpdateRelatedTask');
 		$from_wf = true;
-		$logbg->debug('> CBMassiveUpdateRelatedTask');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 		$isqueue=$entity->isqueue;
@@ -58,7 +58,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
-		$logbg->debug('field mapping', $fieldValueMapping);
+		$logbg->debug('field mapping', (array)$fieldValueMapping);
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			include_once 'data/CRMEntity.php';
 			$focus = CRMEntity::getInstance($moduleName);
@@ -155,7 +155,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 								$focusrel[$fldmod]->column_fields[$key]=$value;
 							}
 							$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
-							$logbg->debug("Saving: $relmodule", $focusrel[$fldmod]->column_fields);
+							$logbg->debug("Saving: $relmodule, trigger WF: ".($this->launchrelwf ? 'T' : 'F'), $focusrel[$fldmod]->column_fields);
 							if ($this->launchrelwf) {
 								$focusrel[$fldmod]->save($relmodule);
 							} else {
@@ -168,16 +168,24 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 								$em->triggerEvent('corebos.aftersave.workflow', $entityData);
 								$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
 							}
+						} else {
+							$logbg->debug('(MassiveUpdateRelatedTask) not called: business map is empty or of a non supported type');
 						}
 					}
+				} else {
+					$logbg->debug('(MassiveUpdateRelatedTask) not called: relationData query is empty');
 				}
+			} else {
+				$logbg->debug('(MassiveUpdateRelatedTask) not called: relation field (fldmod) is empty');
 			}
 			$util->revertUser();
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
+		} else {
+			$logbg->debug('(MassiveUpdateRelatedTask) not called: fieldValueMapping is empty');
 		}
 		$util->revertUser();
 		$from_wf = false;
-		$logbg->debug('< CBMassiveUpdateRelatedTask');
+		$logbg->debug('< MassiveUpdateRelatedTask');
 	}
 }
 ?>

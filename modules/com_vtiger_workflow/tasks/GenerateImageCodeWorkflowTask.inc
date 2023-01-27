@@ -66,11 +66,13 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 		$this->taskSavedData = array(
 			'save_encoded_value' => $this->save_encoded_value,
 			'field_to_encode' => $this->field_to_encode,
-			'encoding_type' => $this->encoding_type );
+			'encoding_type' => $this->encoding_type,
+		);
 	}
 
 	public function doTask(&$entity) {
-		global $from_wf, $root_directory;
+		global $from_wf, $logbg, $root_directory;
+		$logbg->debug('> GenerateImageCodeTask');
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 		if (empty($entity->WorkflowContext['GenerateImageCode_ValueToEncode'])) {
@@ -106,6 +108,7 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 			$height = 3;
 		}
 		if ($barcodeobj) {
+			$logbg->debug('(GenerateImageCodeTask)', [$fieldValueToEncode, $encoding_type, $width, $height]);
 			$data = $barcodeobj->getBarcodePngData($width, $height, array(0,0,0));
 
 			$attachment_name = 'BARCODEname.png';
@@ -126,8 +129,11 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 			$moduleInstance->retrieve_entity_info($recordId, $moduleName);
 			$moduleInstance->insertIntoAttachment($recordId, $moduleName);
 			unlink($filepath);
+		} else {
+			$logbg->debug('(GenerateImageCodeTask) not called: barcode object is empty');
 		}
 		$util->revertUser();
+		$logbg->debug('< GenerateImageCodeTask');
 	}
 }
 ?>
