@@ -52,6 +52,6 @@ var alert_arr = {
 	'LBL_FILESIZEIN_MB':'MB', // added to show filesize limit in MB
 	'LBL_FILESIZEIN_KB':'KB', // added to show filesize limit in KB
 	'LBL_FILESIZEIN_B':'B', // added to show filesize limit in B
-	'LBL_SUCCESS':'Operation completed successfully !', // added to indicate success feedback message
-	'LBL_FAILURE':'Operation failed !', // added to indicate failure feedback message
+	'LBL_SUCCESS':'Operación completada correctamente !', // added to indicate success feedback message
+	'LBL_FAILURE':'Operación ha fallado !', // added to indicate failure feedback message
 };

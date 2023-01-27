@@ -98,5 +98,6 @@ $mod_strings = array (
 	'LBL_SIGNATURE'=>'Firma',
 	'LBL_DUPLICATE'=>'Duplicare',
 	'LBL_FORMAT' => 'Formato',
+	'LBL_MAIL' => 'Mail',
 );
 ?>
