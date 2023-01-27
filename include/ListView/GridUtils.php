@@ -494,7 +494,6 @@ function gridGetActionColumn($renderer, $actions) {
 			'header' => getTranslatedString('LBL_ACTION'),
 			'sortable' => false,
 			'whiteSpace' => 'normal',
-			'width' => 140,
 			'renderer' => [
 				'type' => $renderer, // 'ActionRender', 'mdActionRender',
 				'options' => [
