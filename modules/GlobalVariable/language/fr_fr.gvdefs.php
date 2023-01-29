@@ -1550,7 +1550,13 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Extension',
 	'values' => 'URL',
-	'definition' => 'URL to the conversion server: https://github.com/sfoxdev/docker-unoconv',
+	'definition' => 'URL to the UNOCONV conversion server: https://github.com/sfoxdev/docker-unoconv',
+),
+'GenDoc_Convert_URL_UnoServer' => array(
+	'valuetype' => 'String',
+	'category' => 'Extension',
+	'values' => 'URL',
+	'definition' => 'URL to the UNOSERVER conversion server: https://github.com/lynxtaa/unoserver-web',
 ),
 'GenDoc_PDFConversion_Retries' => array(
 	'valuetype' => 'Integer',

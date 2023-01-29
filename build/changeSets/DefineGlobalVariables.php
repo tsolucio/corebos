@@ -285,6 +285,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Zero_Bounce_API_KEY',
 				'GenDoc_CopyLabelToClipboard',
 				'GenDoc_Convert_URL',
+				'GenDoc_Convert_URL_UnoServer',
 				'GenDoc_PDFConversion_Retries',
 				'GenDoc_Attachment_Name',
 				'CobroPago_Invoice_Status_OnPaid',
