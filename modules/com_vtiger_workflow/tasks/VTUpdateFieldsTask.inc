@@ -66,13 +66,13 @@ class VTUpdateFieldsTask extends VTTask {
 			}
 			$relmodule=array();
 			$handlerMetarel[]=array();
+			$focusrel[]=array();
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
 				$fieldmodule='';
 				$fldrelname='';
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue = trim($fieldInfo['value']);
-				$focusrel[]=array();
 				if (array_key_exists('fldmodule', $fieldInfo)) {
 					$fieldmodule = trim($fieldInfo['fldmodule']);
 				}
@@ -115,7 +115,17 @@ class VTUpdateFieldsTask extends VTTask {
 					$focus->column_fields[$fieldName] = $fieldValue;
 					$entity->data[$fieldName] = $fieldValue;
 				} else {
-					$focusrel[$fieldmodule]->column_fields[$fldrelname]=$fieldValue;
+					if (empty($focusrel[$fieldmodule]) && $relId!='' && $relId!=0 && !in_array($fieldmodule, $relmodule)) {
+						$relmodule[]=$fieldmodule;
+						$focusrel[$fieldmodule] = CRMEntity::getInstance($fieldmodule);
+						$focusrel[$fieldmodule]->id = $relId;
+						$focusrel[$fieldmodule]->mode = 'edit';
+						$focusrel[$fieldmodule]->retrieve_entity_info($relId, $fieldmodule, false, $from_wf);
+						$focusrel[$fieldmodule]->clearSingletonSaveFields();
+					}
+					if (!empty($focusrel[$fieldmodule])) {
+						$focusrel[$fieldmodule]->column_fields[$fldrelname]=$fieldValue;
+					}
 				}
 			}
 			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
