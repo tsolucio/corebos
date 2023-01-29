@@ -95,7 +95,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
 			if ($fldmod!='') {
-				$focusrel[] = array();
+				$focusrel = array();
 				$fieldmodule = explode('__', $fldmod);
 				$relmodule = $fieldmodule[0];
 				$relfield = $fieldmodule[1];
@@ -141,10 +141,11 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 					preg_match('/[\t ]from /i', $query, $matches, PREG_OFFSET_CAPTURE);
 					$query = 'select vtiger_crmentity.crmid'.substr($query, $matches[0][1]).$condition;
 					$rs = $adb->query($query);
+					$relwsid = vtws_getEntityId($relmodule).'x';
 					while ($row = $adb->fetch_array($rs)) {
 						$relId = $row['crmid'];
 						if ($businessMap == '' || $businessMap == 'Condition Query'
-							|| ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression(vtws_getEntityId($relmodule).'x'.$relId))
+							|| ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression($relwsid.$relId))
 						) {
 							$focusrel[$fldmod]->id = $relId;
 							$focusrel[$fldmod]->mode = 'edit';
