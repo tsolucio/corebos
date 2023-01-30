@@ -70,6 +70,26 @@ class WizardComponent {
 		this.ClickEv();
 	}
 
+	GoTo(step) {
+		this.ActiveStep = step-1;
+		for (let i = 0; i < this.steps; i++) {
+			if (step >= i) {
+				this.el(`header-${i}`).classList.add('slds-is-active');
+			} else {
+				this.el(`header-${i}`).classList.remove('slds-is-active');
+			}
+			if (i == step) {
+				this.el(`seq-${i}`).style.display = 'block';
+				const prc = this.Next('');
+				if (prc) {
+					this.MoveToStep('');
+				}
+			} else {
+				this.el(`seq-${i}`).style.display = 'none';
+			}
+		}
+	}
+
 	/**
 	 * Register all click events in Wizard
 	 */
@@ -93,13 +113,17 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	Next(ev) {
+		let type = 'next';
+		if (ev != '') {
+			type = ev.target.dataset.type;
+		}
 		if (this.WizardValidate[this.ActiveStep]) {
 			if (!this.CheckSelection(ev)) {
 				return false;
 			}
 		}
 		this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep+1]);
-		if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFrom[this.ActiveStep] == undefined && ev.target.dataset.type == 'next') {
+		if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFrom[this.ActiveStep] == undefined && type == 'next') {
 			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
 			if (checkedRows.length != 1 && this.WizardValidate[this.ActiveStep]) {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_ROW, 'error');
@@ -135,7 +159,6 @@ class WizardComponent {
 			if (this.WizardMode[this.ActiveStep] == 'CREATEPRODUCTCOMPONENT') {
 				return this.Create_ProductComponent(ev);
 			}
-			const type = ev.target.dataset.type;
 			if (this.WizardMode[this.ActiveStep] == 'ListView' && this.WizardCurrentModule[this.ActiveStep] == 'ProductComponent' && type == 'back') {
 				this.CheckedRows[this.ActiveStep-1] = [];
 				this.WizardInstance[`wzgrid${this.ActiveStep-1}`].uncheckAll();
@@ -469,36 +492,42 @@ class WizardComponent {
 	 * Move in each step in Wizard
 	 * @param {Object} event
 	 */
-	MoveToStep(ev) {
+	MoveToStep(ev, instantShow = false) {
 		let type = 'next';
 		if (ev != '') {
 			type = ev.target.dataset.type;
 		}
-		switch (type) {
-		case 'next':
-			if (this.ActiveStep + 1 != this.steps) {
-				this.ActiveStep++;
+		if (!instantShow) {
+			switch (type) {
+			case 'next':
+				if (this.ActiveStep + 1 != this.steps) {
+					this.ActiveStep++;
+					this.el(`seq-${this.ActiveStep}`).style.display = 'block';
+					if (this.el(`seq-${this.ActiveStep - 1}`)) {
+						this.el(`seq-${this.ActiveStep - 1}`).style.display = 'none';
+					}
+					this.el(`header-${this.ActiveStep}`).classList.add('slds-is-active');
+				}
+				break;
+			case 'back':
+				this.ActiveStep--;
 				this.el(`seq-${this.ActiveStep}`).style.display = 'block';
-				this.el(`seq-${this.ActiveStep - 1}`).style.display = 'none';
-				this.el(`header-${this.ActiveStep}`).classList.add('slds-is-active');
+				this.el(`seq-${this.ActiveStep + 1}`).style.display = 'none';
+				this.el(`header-${this.ActiveStep + 1}`).classList.remove('slds-is-active');
+				break;
+			default:
+			//
 			}
-			break;
-		case 'back':
-			this.ActiveStep--;
-			this.el(`seq-${this.ActiveStep}`).style.display = 'block';
-			this.el(`seq-${this.ActiveStep + 1}`).style.display = 'none';
-			this.el(`header-${this.ActiveStep + 1}`).classList.remove('slds-is-active');
-			break;
-		default:
-		//
 		}
-		if (this.ActiveStep >= 1) {
-			this.el('btn-back').removeAttribute('disabled');
-		} else {
-			this.el('btn-back').setAttribute('disabled', '');
-		}
-		if (this.WizardGoBack[this.ActiveStep-1] == 0) {
-			this.el('btn-back').setAttribute('disabled', '');
+		if (this.el('btn-back')) {
+			if (this.ActiveStep >= 1) {
+				this.el('btn-back').removeAttribute('disabled');
+			} else {
+				this.el('btn-back').setAttribute('disabled', '');
+			}
+			if (this.WizardGoBack[this.ActiveStep-1] == 0) {
+				this.el('btn-back').setAttribute('disabled', '');
+			}
 		}
 		let el = document.getElementById('save-btn');
 		el.innerHTML = '';
@@ -514,15 +543,17 @@ class WizardComponent {
 			el.appendChild(btn);
 			this.WizardSaveIsActive[this.ActiveStep] = true;
 		}
-		if (this.ActiveStep + 1 == this.steps && type == 'next') {
-			this.el('btn-next').innerHTML = alert_arr.JSLBL_FINISH;
-			setTimeout(function () {
-				wizard.el('btn-next').setAttribute('onclick', 'wizard.Finish()');
-			}, 200);
-			return false;
-		} else {
-			this.el('btn-next').innerHTML = alert_arr.JSLBL_NEXT;
-			this.el('btn-next').removeAttribute('onclick');
+		if (this.el('btn-next')) {
+			if (this.ActiveStep + 1 == this.steps && type == 'next') {
+				this.el('btn-next').innerHTML = alert_arr.JSLBL_FINISH;
+				setTimeout(function () {
+					wizard.el('btn-next').setAttribute('onclick', 'wizard.Finish()');
+				}, 200);
+				return false;
+			} else {
+				this.el('btn-next').innerHTML = alert_arr.JSLBL_NEXT;
+				this.el('btn-next').removeAttribute('onclick');
+			}
 		}
 	}
 
@@ -721,7 +752,10 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	Create_ProductComponent(ev) {
-		const type = ev.target.dataset.type;
+		let type = 'next';
+		if (ev != '') {
+			type = ev.target.dataset.type;
+		}
 		if (type == 'back') {
 			return true;
 		}

@@ -40,6 +40,7 @@ if ($cbMapid) {
 		$smarty->assign('showDesert', false);
 		$smarty->assign('wizardTitle', $cbMapWz['title']);
 		$smarty->assign('wizardOperation', $cbMapWz['operation']);
+		$smarty->assign('wizardInstantShow', $cbMapWz['instantshow']);
 		$smarty->assign('wizardTotal', $cbMapWz['totalsteps']);
 		$smarty->assign('wizardSteps', $cbMapWz['steps']);
 		$views = array();

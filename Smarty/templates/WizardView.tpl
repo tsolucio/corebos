@@ -66,10 +66,15 @@
 							<ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
 								{foreach from=$wizardSteps item=step name=stepwizard}
 								{assign var="slds_active" value=""}
+								{assign var="currentStep" value=$smarty.foreach.stepwizard.index}
 								{if $smarty.foreach.stepwizard.index eq 0}
 									{assign var="slds_active" value="slds-is-active"}
 								{/if}
+								{if $wizardInstantShow}
+								<li class="slds-path__item slds-is-incomplete {$slds_active}" role="presentation" id="header-{$smarty.foreach.stepwizard.index}" onclick="wizard.GoTo({$currentStep})">
+								{else}
 								<li class="slds-path__item slds-is-incomplete {$slds_active}" role="presentation" id="header-{$smarty.foreach.stepwizard.index}">
+								{/if}
 									<a aria-selected="false" class="slds-path__link" href="#" id="path-11" role="option" tabindex="-1">
 										<span class="slds-path__title">{$step.title}</span>
 									</a>
