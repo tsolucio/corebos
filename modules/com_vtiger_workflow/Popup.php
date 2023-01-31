@@ -69,7 +69,6 @@ if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
 }
 $focus = new Workflow();
 $alphabetical = AlphabeticalSearch($currentModule, 'Popup', $focus->def_basicsearch_col, 'true', 'basic', $popuptype, '', '', $url);
-
 if (isset($_REQUEST['select'])) {
 	$smarty->assign('SELECT', 'enable');
 }
@@ -132,9 +131,7 @@ if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 	if ($start == 'last' && $noofrows > 0) {
 		$start = ceil($noofrows/$list_max_entries_per_page);
 	}
-	if (!is_numeric($start)) {
-		$start = 1;
-	} elseif ($start < 1) {
+	if (!is_numeric($start) || $start < 1) {
 		$start = 1;
 	}
 	$start = ceil($start);
@@ -191,6 +188,7 @@ if (isset($_REQUEST['cbcustompopupinfo'])) {
 	$smarty->assign('CBCUSTOMPOPUPINFO_ARRAY', $cbcustompopupinfo);
 	$smarty->assign('CBCUSTOMPOPUPINFO', $_REQUEST['cbcustompopupinfo']);
 }
+$smarty->assign('searchtype', 'BasicSearch');
 
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 	$smarty->display('PopupContents.tpl');
