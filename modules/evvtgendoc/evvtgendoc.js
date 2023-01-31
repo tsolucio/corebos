@@ -11,6 +11,14 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  */
+var GenDoc_CheckForTemplate_PreAction = '';
+GlobalVariable_getVariable('GenDoc_CheckForTemplate_PreAction', '', (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	GenDoc_CheckForTemplate_PreAction = obj.GenDoc_CheckForTemplate_PreAction;
+}, function (error) {
+	GenDoc_CheckForTemplate_PreAction = ''; // set default value on error
+});
+
 function showgendoctemplates(module) {
 	if (document.getElementById('allids').value=='' && document.getElementById('allselectedboxes').value=='') {
 		alert(alert_arr.SELECT);
@@ -39,11 +47,18 @@ function checkOneTplSelected() {
 }
 
 function gendocAction(action, format, module, crmid, i18n) {
+	const gdtemplateid = jQuery('#gendoctemplate').val();
+	if (GenDoc_CheckForTemplate_PreAction != '') {
+		let value = GenDoc_CheckForTemplate_PreAction.split(',');
+		if (value.includes(gdtemplateid) && !confirm(alert_arr.GENDOC_SAVE_PDF)) {
+			return false;
+		}
+	}
 	if (checkOneTplSelected()) {
 		var url = 'index.php?module=evvtgendoc&action=evvtgendocAjax&file=gendocAction';
 		url = url + '&gdaction=' + action;
 		url = url + '&gdformat=' + format;
-		url = url + '&gdtemplate=' + jQuery('#gendoctemplate').val();
+		url = url + '&gdtemplate=' + gdtemplateid;
 		url = url + '&gdmodule=' + module;
 		url = url + '&gdcrmid=' + crmid;
 		switch (action) {
