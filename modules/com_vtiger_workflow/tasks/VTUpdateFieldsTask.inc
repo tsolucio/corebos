@@ -54,7 +54,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus = CRMEntity::getInstance($moduleName);
 			$focus->id = $recordId;
 			$focus->mode = 'edit';
-			$focus->retrieve_entity_info($recordId, $moduleName);
+			$focus->retrieve_entity_info($recordId, $moduleName, false, $from_wf);
 			$focus->clearSingletonSaveFields();
 			$logbg->debug('(UpdateFieldsTask) field values pre', $focus->column_fields);
 			$logbg->debug('(UpdateFieldsTask) update info', $fieldValueMapping);
