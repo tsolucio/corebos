@@ -91,3 +91,24 @@ function cbqexecutescript(tablename, qid, script_path) {
 		document.getElementById('appnotifydiv').style.display='block';
 	});
 }
+
+window.addEventListener("DOMContentLoaded",(e) => {
+	const el = document.getElementById("querytype");
+	el.addEventListener("change",function(e){
+	if(el.value == 'Direct Sql'){
+		console.log("I am here");
+		const txtcolumn = document.getElementById("qcondition");
+		const txtorderby = document.getElementById("orderby");
+		const txtgroupby = document.getElementById("groupby");
+		txtcolumn.disabled = true;
+		txtorderby.disabled = true;
+		txtgroupby.disabled = true;
+		txtcolumn.setAttribute("class", "blury");
+		txtcolumn.style.backgroundColor = "#D3D3D3";
+		txtorderby.setAttribute("class", "blury");
+		txtorderby.style.backgroundColor = "#D3D3D3";
+		txtgroupby.setAttribute("class", "blury");
+		txtgroupby.style.backgroundColor = "#D3D3D3";
+	}
+});
+})
