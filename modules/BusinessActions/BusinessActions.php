@@ -352,7 +352,7 @@ class BusinessActions extends CRMEntity {
 	 * @param string ICON to use on the display
 	 * @param integer Order or sequence of displaying the link
 	 */
-	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false, $brmap = 0) {
+	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false, $brmap = 0, $fields = []) {
 		global $adb;
 		$module_name = getTabModuleName($tabid);
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
@@ -382,6 +382,9 @@ class BusinessActions extends CRMEntity {
 			$newBA->column_fields['active'] = 1;
 			$newBA->column_fields['mandatory'] = 1;
 			$newBA->column_fields['brmap'] = $brmap;
+			foreach ($fields as $field => $value) {
+				$newBA->column_fields[$field] = $value;
+			}
 
 			if (!empty($handlerInfo)) {
 				$newBA->column_fields['handler_path'] = (isset($handlerInfo['path']) ? $handlerInfo['path'] : '');
