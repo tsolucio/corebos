@@ -1558,6 +1558,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Entero positivo',
 	'definition' => 'El número máximo de reintentos al convertir la plantilla a PDF si falla la conversión.',
 ),
+'GenDoc_CheckForTemplate_PreAction' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Example: ID1,ID2,...,IDn',
+	'definition' => 'A comma-separated list of document IDs to check before proceeding with the action.',
+),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Aplicación',

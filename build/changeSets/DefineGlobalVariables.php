@@ -330,6 +330,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Apache_Tika_URL',
 				'Application_MassAction_Multipage',
 				'Document_DefaultFolder',
+				'GenDoc_CheckForTemplate_PreAction',
 			);
 			$delete_these = array(
 				'preload_prototype',
