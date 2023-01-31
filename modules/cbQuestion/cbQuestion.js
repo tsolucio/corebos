@@ -96,7 +96,6 @@ window.addEventListener("DOMContentLoaded",(e) => {
 	const el = document.getElementById("querytype");
 	el.addEventListener("change",function(e){
 	if(el.value == 'Direct Sql'){
-		console.log("I am here");
 		const txtcolumn = document.getElementById("qcondition");
 		const txtorderby = document.getElementById("orderby");
 		const txtgroupby = document.getElementById("groupby");
