@@ -1312,6 +1312,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Name|Number',
 	'definition' => 'Al fusionar una plantilla GenDoc adjunto a un correo electrónico de flujo de trabajo, el nombre utilizado para el archivo adjunto será el campo Nombre de la entidad (Name) o el campo Número de entidad (Number) concatenados con el nombre de la plantilla.',
 ),
+'Workflow_Email_duplicate_GenDoc_document' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'enable or disable creating a new document in storage and Documents module Each time you send an email with a GenDoc template.',
+),
 'Workflow_GeoDistance_Country_Default' => array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',

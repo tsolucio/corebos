@@ -249,6 +249,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'PurchaseOrder_TransferCostPrice',
 				'PurchaseOrder_IgnoreTransferDiscount',
 				'Workflow_Email_GenDoc_Attachment_Name',
+				'Workflow_Email_duplicate_GenDoc_document',
 				'Workflow_Send_Email_ToCCBCC',
 				'Workflow_GeoDistance_Country_Default',
 				'Workflow_GeoDistance_ServerIP',
