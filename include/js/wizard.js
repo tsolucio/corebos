@@ -47,6 +47,10 @@ class WizardComponent {
 		this.ResetWizard = true;
 		this.MainSelectedId = 0; //the record selected/duplicated in first step
 		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI';
+		//formtemplate params
+		this.FormFields = [];
+		this.FormModule = [];
+		this.FormIDS = [];
 	}
 
 	Init() {
@@ -99,8 +103,8 @@ class WizardComponent {
 			'btn-back'
 		];
 		for (let i in ids) {
-			this.el(ids[i]).addEventListener('click', function (event) {
-				const prc = wizard.Next(event);
+			this.el(ids[i]).addEventListener('click', async function (event) {
+				const prc = await wizard.Next(event);
 				if (prc) {
 					wizard.MoveToStep(event);
 				}
@@ -112,7 +116,7 @@ class WizardComponent {
 	 * Move to next step
 	 * @param {Object} event
 	 */
-	Next(ev) {
+	async Next(ev) {
 		let type = 'next';
 		if (ev != '') {
 			type = ev.target.dataset.type;
@@ -178,6 +182,12 @@ class WizardComponent {
 				this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
 			}
 			return this.MassCreateGrid(ev, this.Operation);
+		case 'FORMTEMPLATE':
+			if (type == 'back') {
+				return true;
+			}
+			return await this.SaveForm();
+			break;
 		default:
 		}
 		return true;
@@ -1067,7 +1077,7 @@ class WizardComponent {
 	}
 
 	ActionButtons() {
-		const footer = document.getElementsByClassName('slds-modal__footer')[0];
+		const footer = document.getElementsByClassName('slds-modal__footer');
 		let buttons = `
 		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete" disabled id="btn-back" data-type="back" style="float:left">
 			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
@@ -1082,7 +1092,55 @@ class WizardComponent {
 			</svg>
 		</button>
 		<div id="save-btn" class="slds-float_right"></div>`;
-		footer.innerHTML = buttons;
+		footer[footer.length-1].innerHTML = buttons;
+	}
+
+	async SaveForm() {
+		let mandatoryFields = Array();
+		let data = Array();
+		if (this.FormFields.length > 0) {
+			for (let i in this.FormFields) {
+				let val = this.el(`${this.FormFields[i]}_formtemplate`);
+				let block = this.el(`${this.FormFields[i]}_form_block`);
+				if (val.hasAttribute('required') && val.value == '') {
+					val.classList.add('slds-has-error');
+					mandatoryFields.push(true);
+					if (this.el(`${this.FormFields[i]}_form_error`) == null) {
+						let error = document.createElement('div');
+						error.id = `${this.FormFields[i]}_form_error`;
+						error.innerHTML = 'Complete this field';
+						error.style.color = 'red';
+						block.appendChild(error);
+					}
+				} else {
+					if (this.el(`${this.FormFields[i]}_form_error`) != null) {
+						this.el(`${this.FormFields[i]}_form_error`).remove();
+					}
+					val.classList.remove('slds-has-error');
+					delete mandatoryFields[this.FormFields[i]];
+				}
+				data[this.FormFields[i]] = val.value;
+			}
+		}
+		if (mandatoryFields.length == 0) {
+			let id = await this.CreateFormRow(data);
+			if (id) {
+				this.FormIDS[this.ActiveStep] = id;
+			}
+			return id;
+		}
+		return false;
+	}
+
+	async CreateFormRow(data) {
+		console.log(this.FormModule)
+		const url = `${this.url}&wizardaction=CreateForm&subaction=CreateForm`;
+		const array = Object.entries(data).map(([key, value]) => ({ key, value }));
+		return await this.Request(url, 'post', {
+			data: JSON.stringify(array),
+			recordid: this.FormIDS[this.ActiveStep] !== undefined ? this.FormIDS[this.ActiveStep] : 0,
+			modulename: this.FormModule[this.ActiveStep]
+		});
 	}
 }
 

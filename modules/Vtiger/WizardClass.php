@@ -99,6 +99,7 @@ class WizardView {
 				$Rows = $cbMap->WizardForms();
 			}
 			$smarty->assign('Rows', isset($Rows['rows']) ? $Rows['rows'] : array());
+			$smarty->assign('ModuleName', $Rows['module']);
 			return $smarty->fetch('Smarty/templates/Components/Wizard/WizardFormTemplate.tpl');
 		}
 		if ($this->mapid != 0) {
@@ -594,5 +595,34 @@ class WizardActions extends WizardCustomFunctions {
 				return 0;
 			}
 		}
+	}
+
+	public function CreateForm() {
+		global $current_user;
+		require_once 'modules/Vtiger/ExecuteFunctionsfromphp.php';
+		$data = json_decode($_REQUEST['data'], true);
+		$row = $data['data'];
+		$modulename = $data['modulename'];
+		$recordid = $data['recordid'];
+		$row = json_decode($row, true);
+		$focus = CRMEntity::getInstance($modulename);
+		if ($recordid > 0) {
+			$focus->id = $recordid;
+			$focus->mode = 'edit';
+		} else {
+			$focus->mode = '';
+		}
+		foreach ($row as $k) {
+			$focus->column_fields[$k['key']] = $k['value'];
+		}
+		$vals = executefunctionsvalidate('ValidationLoad', $modulename, json_encode($focus->column_fields));
+		if ($vals != '%%%OK%%%') {
+			return false;
+		}
+		$handler = vtws_getModuleHandlerFromName($modulename, $current_user);
+		$meta = $handler->getMeta();
+		$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+		$focus->saveentity($modulename);
+		return $focus->id;
 	}
 }

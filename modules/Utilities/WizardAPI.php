@@ -30,6 +30,7 @@ switch ($wizardaction) {
 	case 'Session':
 	case 'Duplicate':
 	case 'CustomCreate':
+	case 'CreateForm':
 		echo json_encode($wizard->HandleRequest());
 		break;
 	case 'listview':
