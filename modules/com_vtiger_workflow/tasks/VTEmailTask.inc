@@ -67,14 +67,10 @@ class VTEmailTask extends VTTask {
 				INNER JOIN vtiger_notes ON vtiger_notes.notesid=vtiger_seattachmentsrel.crmid
 				WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
 			// check whether to duplicate or not
-			if (isset($entity->WorkflowContext['duplicateGenDocDocument'])) {
-				if ($entity->WorkflowContext['duplicateGenDocDocument']) {
-					$this->$isDuplicateDocument = true;
-				}
+			if (empty($entity->WorkflowContext['duplicateGenDocDocument'])) {
+				$this->$isDuplicateDocument = filter_var(GlobalVariable::getVariable('Workflow_Email_duplicate_GenDoc_document', 0), FILTER_VALIDATE_BOOLEAN);
 			} else {
-				if (GlobalVariable::getVariable('Workflow_Email_duplicate_GenDoc_document', 0)) {
-					$this->$isDuplicateDocument = true;
-				}
+				$this->$isDuplicateDocument = filter_var($entity->WorkflowContext['duplicateGenDocDocument'], FILTER_VALIDATE_BOOLEAN);
 			}
 			foreach ($aids as $docid) {
 				$docrs = $adb->pquery($query, array($docid));
