@@ -56,12 +56,8 @@ function checkOneTplSelected() {
 function gendocAction(action, format, module, crmid, i18n) {
 	const gdtemplateid = jQuery('#gendoctemplate').val();
 	let value = GenDoc_Confirm_ActionFor.split(',');
-	if (GenDoc_Confirm_Actions == '*') {
-		if (value.includes(gdtemplateid) && !confirm(alert_arr.GENDOC_SAVE_PDF)) {
-			return false;
-		}
-	} else if (GenDoc_Confirm_Actions.split(',').includes(action)) {
-		if (value.includes(gdtemplateid) && !confirm(alert_arr.GENDOC_SAVE_PDF)) {
+	if (GenDoc_Confirm_Actions == '*' || GenDoc_Confirm_Actions.split(',').includes(action)) {
+		if (value.includes(gdtemplateid) && !confirm(alert_arr.GENDOC_CONFIRM_ACTION)) {
 			return false;
 		}
 	}

@@ -287,6 +287,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'GenDoc_Convert_URL',
 				'GenDoc_PDFConversion_Retries',
 				'GenDoc_Attachment_Name',
+				'GenDoc_Confirm_ActionFor',
+				'GenDoc_Confirm_Actions',
 				'CobroPago_Invoice_Status_OnPaid',
 				'CobroPago_PurchaseOrder_Status_OnPaid',
 				'CobroPago_SalesOrder_Status_OnPaid',
@@ -330,8 +332,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Apache_Tika_URL',
 				'Application_MassAction_Multipage',
 				'Document_DefaultFolder',
-				'GenDoc_Confirm_ActionFor',
-				'GenDoc_Confirm_Actions',
 			);
 			$delete_these = array(
 				'preload_prototype',
