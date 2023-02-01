@@ -223,8 +223,7 @@ class cbQuestion extends CRMEntity {
 				$query .= ' LIMIT '.$q->column_fields['qpagesize'];
 			}
 			$query .= ';';
-		} 
-		elseif ($q->column_fields['querytype']=='Direct Sql') {
+		} elseif ($q->column_fields['querytype'] == 'Direct Sql') {
 			$query = decode_html($q->column_fields['qcolumns']);
 		}
 		else {
