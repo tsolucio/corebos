@@ -11,12 +11,19 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  */
-var GenDoc_CheckForTemplate_PreAction = '';
-GlobalVariable_getVariable('GenDoc_CheckForTemplate_PreAction', '', (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
+var GenDoc_Confirm_ActionFor = '';
+var GenDoc_Confirm_Actions = '';
+GlobalVariable_getVariable('GenDoc_Confirm_ActionFor', '', (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
 	var obj = JSON.parse(response);
-	GenDoc_CheckForTemplate_PreAction = obj.GenDoc_CheckForTemplate_PreAction;
+	GenDoc_Confirm_ActionFor = obj.GenDoc_Confirm_ActionFor;
 }, function (error) {
-	GenDoc_CheckForTemplate_PreAction = ''; // set default value on error
+	GenDoc_Confirm_ActionFor = ''; // set default value on error
+});
+GlobalVariable_getVariable('GenDoc_Confirm_Actions', '', (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	GenDoc_Confirm_Actions = obj.GenDoc_Confirm_Actions;
+}, function (error) {
+	GenDoc_Confirm_Actions = ''; // set default value on error
 });
 
 function showgendoctemplates(module) {
@@ -48,8 +55,12 @@ function checkOneTplSelected() {
 
 function gendocAction(action, format, module, crmid, i18n) {
 	const gdtemplateid = jQuery('#gendoctemplate').val();
-	if (GenDoc_CheckForTemplate_PreAction != '') {
-		let value = GenDoc_CheckForTemplate_PreAction.split(',');
+	let value = GenDoc_Confirm_ActionFor.split(',');
+	if (GenDoc_Confirm_Actions == '*') {
+		if (value.includes(gdtemplateid) && !confirm(alert_arr.GENDOC_SAVE_PDF)) {
+			return false;
+		}
+	} else if (GenDoc_Confirm_Actions.split(',').includes(action)) {
 		if (value.includes(gdtemplateid) && !confirm(alert_arr.GENDOC_SAVE_PDF)) {
 			return false;
 		}

@@ -1558,11 +1558,17 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Positive Integer',
 	'definition' => 'The maximum number of retries when PDF conversion fails.',
 ),
-'GenDoc_CheckForTemplate_PreAction' => array(
+'GenDoc_Confirm_ActionFor' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => 'Example: ID1,ID2,...,IDn',
 	'definition' => 'A comma-separated list of document IDs to check before proceeding with the action.',
+),
+'GenDoc_Confirm_Actions' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '* | export,save,email',
+	'definition' => 'A comma-separated list of GenDoc actions.',
 ),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Integer',
