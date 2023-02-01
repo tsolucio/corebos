@@ -1363,7 +1363,7 @@
 </changeSet>
 <changeSet>
 	<author>arditramaj</author>
-	<description>Add field to cbQuestion module for direct sql</description>
+	<description>Add picklist value for direct sql to cbQuestion</description>
 	<filename>build/changeSets/2023/addBQforDirectSql.php</filename>
 	<classname>addBQforDirectSql</classname>
 	<systemupdate>true</systemupdate>
