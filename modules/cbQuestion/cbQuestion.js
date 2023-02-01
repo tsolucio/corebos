@@ -92,23 +92,36 @@ function cbqexecutescript(tablename, qid, script_path) {
 	});
 }
 
-window.addEventListener("DOMContentLoaded",(e) => {
-	const el = document.getElementById("querytype");
-	el.addEventListener("change", function(e){
-	if(el.value == 'Direct Sql'){
-		const txtcolumn = document.getElementById("qcondition");
-		const txtorderby = document.getElementById("orderby");
-		const txtgroupby = document.getElementById("groupby");
+window.addEventListener('DOMContentLoaded', (e) => {
+	const el = document.getElementById('querytype');
+	const txtcolumn = document.getElementById('qcondition');
+	const txtorderby = document.getElementById('orderby');
+	const txtgroupby = document.getElementById('groupby');
+	const originalTxtColumnBgColor = txtcolumn.style.backgroundColor;
+	const originalTxtOrderByBgColor = txtorderby.style.backgroundColor;
+	const originalTxtGroupByBgColor = txtgroupby.style.backgroundColor;
+	el.addEventListener('change', function(e) {
+	if (el.value == 'Direct Sql') {
 		txtcolumn.disabled = true;
 		txtorderby.disabled = true;
 		txtgroupby.disabled = true;
-		txtcolumn.setAttribute("class", "blury");
-		txtcolumn.style.backgroundColor = "#D3D3D3";
-		txtorderby.setAttribute("class", "blury");
-		txtorderby.style.backgroundColor = "#D3D3D3";
-		txtgroupby.setAttribute("class", "blury");
-		txtgroupby.style.backgroundColor = "#D3D3D3";
+		txtcolumn.setAttribute('class', 'blury');
+		txtcolumn.style.backgroundColor = '#D3D3D3';
+		txtorderby.setAttribute('class', 'blury');
+		txtorderby.style.backgroundColor = '#D3D3D3';
+		txtgroupby.setAttribute('class', 'blury');
+		txtgroupby.style.backgroundColor = '#D3D3D3';
+	}
+	else {
+		txtcolumn.disabled = false;
+		txtorderby.disabled = false;
+		txtgroupby.disabled = false;
+		txtcolumn.style.backgroundColor = originalTxtColumnBgColor;
+		txtorderby.style.backgroundColor = originalTxtOrderByBgColor;
+		txtgroupby.style.backgroundColor = originalTxtGroupByBgColor;
+		txtcolumn.removeAttribute('class');
+		txtorderby.removeAttribute('class');
+		txtgroupby.removeAttribute('class');
 	}
 });
 })
-
