@@ -18,5 +18,6 @@ $mod_strings = array(
 	'LBL_DESCRIPTION_INFORMATION' => 'Verkoopkans omschrijving',
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'Direct Sql' => 'Direct Sql',
 );
 ?>
