@@ -486,4 +486,5 @@ var alert_arr = {
 	'RelatedList': 'Lista Relacionada',
 	'SelectField': 'Selecciona campo',
 	'MoveFile': 'Mover fichero',
+	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 };
