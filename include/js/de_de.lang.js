@@ -483,5 +483,5 @@ var alert_arr = {
 	'LBL_EXPAND': 'Mehr',
 	'currentuser': 'Current User',
 	'wfmodule': 'Workflow Module',
-	'GENDOC_SAVE_PDF': 'Are you sure you want to override template?',
+	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 };

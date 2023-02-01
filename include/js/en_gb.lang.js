@@ -452,5 +452,5 @@ var alert_arr = {
 	'RelatedList': 'Related List',
 	'SelectField': 'Select field',
 	'MoveFile': 'Move file',
-	'GENDOC_SAVE_PDF': 'Are you sure you want to override template?',
+	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 };
