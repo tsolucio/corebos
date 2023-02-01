@@ -3905,11 +3905,13 @@ function validateClickHouseSecret($signedvalue, $signedkey, $input) {
 	return ($receivedSignature === $computedSignature);
 }
 
-function convertPathFromAbsoluteToReltive($absoltePath) {
+function convertPathFromAbsoluteToRelative($absolutePath) {
 	global $root_directory;
-	$prefix_pos = strpos($absoltePath, $root_directory);
-	$rel_path = substr($absoltePath, $prefix_pos + strlen($root_directory));
-	return $rel_path;
+	$prefix_pos = strpos($absolutePath, $root_directory);
+	if (!$prefix_pos) {
+		return "";
+	}
+	return substr($absolutePath, $prefix_pos + strlen($root_directory));
 }
 
 ?>

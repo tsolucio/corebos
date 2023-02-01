@@ -111,7 +111,7 @@ class VTEmailTask extends VTTask {
 					if ($this->$isDuplicateDocument) {
 						$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
 					} else {
-						$attname = convertPathFromAbsoluteToReltive($docfname);
+						$attname = convertPathFromAbsoluteToRelative($docfname);
 					}
 					$this->attachmentsinfo[] = $attname;
 					$this->dzattinfo[] = array(
