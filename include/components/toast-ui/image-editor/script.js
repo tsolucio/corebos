@@ -28,40 +28,8 @@ class PaintDocuments {
 		return imageEditor.toDataURL();
 	}
 
-	Create = (docid) => {
-		if (docid) {
-			this.Upsert(docid);
-			return;
-		}
-		if (paint.Title().value == '' || paint.FileName().value == '') {
-			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_REQUIRED_FIELDS, 'error');
-			return false;
-		}
-		cbConn.extendSession(function (result) {
-			let fname = paint.FileName().value;
-			if (fname.substr(fname.length - 4) != '.png') {
-				fname = fname + '.png';
-			}
-			const map = {
-				'assigned_user_id': paint.cbUserID,
-				'notes_title': paint.Title().value,
-				'notecontent': paint.Description().value,
-				'filename': {
-					'name': fname,
-					'size': 0,
-					'type': 'image/png',
-					'content': paint.Canvas()
-				},
-				'filetype': 'image/png',
-				'filesize': 0,
-				'filelocationtype': 'I',
-				'filedownloadcount': 0,
-				'filestatus': 1,
-				'folderid': paint.cbFolderID+paint.FolderID().value,
-				'relations': paint.WSID,
-			};
-			cbConn.doCreate('Documents', map, paint.Message);
-		});
+	Create = () => {
+		this.Upsert(false);
 	}
 
 	Upsert = (docid) => {
@@ -91,9 +59,13 @@ class PaintDocuments {
 				'filestatus': 1,
 				'folderid': paint.cbFolderID+paint.FolderID().value,
 				'relations': paint.WSID,
-				'id': docid
 			};
-			cbConn.doUpdate('Documents', map, paint.Message);
+			if (docid) {
+				map['id'] = docid;
+				cbConn.doUpdate('Documents', map, paint.Message);
+			} else {
+				cbConn.doCreate('Documents', map, paint.Message);
+			}
 		});
 	}
 
