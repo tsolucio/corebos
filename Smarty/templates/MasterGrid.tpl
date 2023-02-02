@@ -15,23 +15,37 @@
  *************************************************************************************************/
 -->*}
 <script>
+	if (MasterGridData === undefined) {
+		var MasterGridData = Array();
+	}
+	if (MasterGridInsances === undefined) {
+		var MasterGridInsances = Array();
+	}
+	MasterGridInsances.push({$linkid});
 	mg[{$linkid}] = new MasterGrid();
 	mg[{$linkid}].id = {$linkid};
 	mg[{$linkid}].module = '{$module}';
-	mg[{$linkid}].fields = '{$GridData|json_encode}';
-	console.log(mg)
+	mg[{$linkid}].relatedfield = '{$relatedfield}';
+	mg[{$linkid}].fields = '{$GridFields|json_encode}';
+	mg[{$linkid}].data = '{$GridData}';
+	window.addEventListener('DOMContentLoaded', (event) => {
+		mg[{$linkid}].Init();
+	});
 </script>
+<form id="fake__form"></form>
+<form id="mastergridform__{$linkid}">
+	<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-m-bottom_xx-small">
+		<thead>
+			<tr class="slds-line-height_reset">
+				{foreach from=$GridFields item=$i}
+				<th data-name="{$i.name}">{$i.label}</th>
+				{/foreach}
+				<th data-name="gridaction" style="width: 40px">Actions</th>
+			</tr>
+		</thead>
+		<tbody id="mastergrid-{$linkid}"></tbody>
+	</table>
+</form>
 <button class="slds-button slds-button_neutral slds-m-top_xx-small slds-m-bottom_xx-small slds-float_right" type="button" data-id="{$linkid}" onclick="mg[{$linkid}].EmptyRow()">
 	Add row
 </button>
-<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-m-bottom_xx-small">
-	<thead>
-		<tr class="slds-line-height_reset">
-			{foreach from=$GridData item=$i}
-			<th data-name="{$i.name}">{$i.label}</th>
-			{/foreach}
-			<th data-name="gridaction" style="width: 40px">Actions</th>
-		</tr>
-	</thead>
-	<tbody id="mastergrid-{$linkid}"></tbody>
-</table>
