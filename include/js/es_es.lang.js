@@ -415,6 +415,7 @@ var alert_arr = {
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'No se ha podido eliminar el adjunto',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Límite de carga excedida!!',
 	'JSLBL_CANCEL': 'Cancelar',
+	'JSBL_DRAW': 'Draw',
 	'JSLBL_SAVEAS': 'Guardar como',
 	'JSLBL_SAVE': 'Guardar',
 	'JSLBL_PREVIOUS': 'Anterior',

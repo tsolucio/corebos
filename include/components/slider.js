@@ -91,7 +91,7 @@ const Slider = {
 				</div>
 			</div>
 		`;
-		ldsModal.show(header, content, 'large');
+		ldsModal.show(header, content, 'large', '', '', '', true, '', encodeURIComponent(id));
 	}
 }
 
