@@ -37,6 +37,7 @@ class CBSignPDFDocument extends VTTask {
 	public $image_field;
 	public $coordX;
 	public $coordY;
+	public $usecontextcoordinates;
 
 	public function getFieldNames() {
 		return array('image_field', 'coordX', 'coordY', 'usecontextcoordinates');
@@ -61,7 +62,7 @@ class CBSignPDFDocument extends VTTask {
 			$image_field = $this->image_field;
 			$width = 0;
 			$height = 0;
-			
+
 			if (isset($this->usecontextcoordinates) && $this->usecontextcoordinates == 'on') {
 				// PDF dimensions == A4 dimensions in Landscape i.e. 297 x 210
 				if (isset($entity->WorkflowContext['coordXPercentage'])) {
