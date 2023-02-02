@@ -693,11 +693,13 @@ class cbQuestion extends CRMEntity {
 			$searchURL = cbQuestion::getSearchUrl($module);
 			$limit = GlobalVariable::getVariable('BusinessQuestion_TableAnswer_Limit', 2000);
 			$table .= '<table>';
-			$table .= '<tr>';
-			foreach ($columnLabels as $columnLabel) {
-				$table .= '<th>'.getTranslatedString($columnLabel, $module).'</th>';
+			if (!isset($properties->ShowHeaderOnEmpty) || filter_var($properties->ShowHeaderOnEmpty, FILTER_VALIDATE_BOOLEAN)) {
+				$table .= '<tr>';
+				foreach ($columnLabels as $columnLabel) {
+					$table .= '<th>'.getTranslatedString($columnLabel, $module).'</th>';
+				}
+				$table .= '</tr>';
 			}
-			$table .= '</tr>';
 			for ($x = 0; $x < $limit; $x++) {
 				if (isset($answer[$x])) {
 					$table .= '<tr>';
