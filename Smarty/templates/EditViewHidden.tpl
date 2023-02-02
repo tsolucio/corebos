@@ -93,3 +93,6 @@
 	{eval var=$evhtml->linkurl}
 {/foreach}
 {/if}
+<input type="text" name="MasterGridValues">
+<input type="text" name="MasterGridModule">
+<input type="text" name="MasterGridRelatedField">

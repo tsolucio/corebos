@@ -4465,9 +4465,31 @@ function submitFormForAction(formName, action) {
 	}
 	form.action.value = action;
 	if (corebosjshook_submitFormForAction(formName, action)) {
+		//check for MasterGridWidget if is available
+		if (typeof MasterGridInsances !== 'undefined') {
+			let data = submitMasterGrid();
+			form.MasterGridValues.value = JSON.stringify(Object.entries(MasterGridData));
+			form.MasterGridModule.value = JSON.stringify(Object.entries(data[0]));
+			form.MasterGridRelatedField.value = JSON.stringify(Object.entries(data[1]));
+		}
 		form.submit();
 	}
 	return true;
+}
+
+function submitMasterGrid() {
+	let modules = [];
+	let relatedfields = [];
+	for (let i in MasterGridInsances) {
+		mg[MasterGridInsances[i]].TableData(MasterGridInsances[i]);
+		modules[MasterGridInsances[i]] = {
+			module: mg[MasterGridInsances[i]].module,
+		};
+		relatedfields[MasterGridInsances[i]] = {
+			relatedfield: mg[MasterGridInsances[i]].relatedfield
+		};
+	}
+	return [modules, relatedfields];
 }
 
 /** Javascript dialog box utility functions **/
