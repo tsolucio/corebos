@@ -59,7 +59,7 @@ class VTEmailTask extends VTTask {
 			$GenDocPDF = ($GenDocActive && OpenDocument::PDFConversionActive());
 			$aids = explode(',', trim($this->attachmentids, ','));
 			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_notes.filename, vtiger_notes.filesize,
-					vtiger_notes.template, vtiger_notes.template_for
+					vtiger_notes.template, vtiger_notes.template_for, vtiger_notes.title, vtiger_notes.note_no
 				FROM vtiger_attachments
 				INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 				INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
@@ -76,7 +76,12 @@ class VTEmailTask extends VTTask {
 						$format = ($GenDocPDF ? 'pdf' : 'odt');
 						$docfname = OpenDocument::doGenDocMerge($this->entityid, $docid, $format);
 						$mergeTemplateName = $adb->query_result($docrs, 0, 'filename');
-						$name = OpenDocument::getConvertedName($this->entityid, $this->entitymodule, $this->entityinfo, $calculation);
+						$context = [
+							'GDTemplateID' => $docid,
+							'GDTemplateName' => $adb->query_result($docrs, 0, 'title'),
+							'GDTemplateNumber' => $adb->query_result($docrs, 0, 'note_no'),
+						];
+						$name = OpenDocument::getConvertedName($this->entityid, $this->entitymodule, $this->entityinfo, $calculation, $context);
 						$docid = OpenDocument::saveAsDocument($this->entityid, $this->entitymodule, $format, $mergeTemplateName, $docfname, $name);
 						$docrs = $adb->pquery($query, array($docid));
 						$this->attachmentids = str_replace($prevdocid, $docid, $this->attachmentids);
@@ -96,6 +101,7 @@ class VTEmailTask extends VTTask {
 	}
 	public function doTask(&$entity) {
 		global $logbg,$adb;
+		$logbg->debug('> EmailTask');
 		$util = new VTWorkflowUtils();
 
 		$admin = $util->adminUser();
@@ -373,7 +379,7 @@ class VTEmailTask extends VTTask {
 			try {
 				$res = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $entity->moduleName, $to_email, $subject, $this->attachmentsinfo, $from_name, $from_email, $cc, $bcc, $replyto);
 				$logbg->debug(
-					'SG template mail was sent',
+					'(EmailTask) SG template mail was sent',
 					[
 						'To' => $to_email,
 						'FromName' => $from_name,
@@ -385,13 +391,13 @@ class VTEmailTask extends VTTask {
 					]
 				);
 			} catch (Exception $e) {
-				$logbg->debug('SG template mail failed: '. $e->getMessage());
+				$logbg->debug('(EmailTask) SG template mail failed: '. $e->getMessage());
 			}
 			return;
 		}
 		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
 		$logbg->debug(
-			'EmailWFTask',
+			'(EmailTask) EmailWFTask',
 			[
 				'To' => $to_email,
 				'FromName' => $from_name,
@@ -403,6 +409,7 @@ class VTEmailTask extends VTTask {
 			]
 		);
 		$util->revertUser();
+		$logbg->debug('< EmailTask');
 	}
 
 	private function createEmailRecord($element) {

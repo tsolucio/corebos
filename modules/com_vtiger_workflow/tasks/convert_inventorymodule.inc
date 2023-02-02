@@ -25,6 +25,7 @@ require_once 'include/utils/EditViewUtils.php';
 class ConvertInventoryModule extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $convertto;
 
 	public function getFieldNames() {
 		return array('convertto');
@@ -32,6 +33,7 @@ class ConvertInventoryModule extends VTTask {
 
 	public function doTask(&$entity) {
 		global $current_user, $logbg, $from_wf;
+		$logbg->debug('> ConvertInventoryModule');
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
@@ -83,7 +85,7 @@ class ConvertInventoryModule extends VTTask {
 			if (empty($associated_prod[1]['entityType1'])) {
 				$from_wf = false;
 				$util->revertUser();
-				$logbg->debug('ConvertInventoryModule: converting from {$cbfrommodule} to {$this->convertto} failed because there is no related products');
+				$logbg->debug("(ConvertInventoryModule) not called: converting from $cbfrommodule to {$this->convertto} failed because there is no related products");
 				return;
 			}
 
@@ -173,17 +175,16 @@ class ConvertInventoryModule extends VTTask {
 		$holdajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 		$_REQUEST['action'] = '';
 		$_REQUEST['ajxaction'] = '';
-
 		$invmod = vtws_create($this->convertto, $data, $current_user);
-
 		$_REQUEST['action'] = $holdaction;
 		$_REQUEST['ajxaction'] = $holdajxaction;
 		$from_wf = false;
 		$util->revertUser();
-		$logbg->debug('ConvertInventoryModule: From '.$cbfrommodule.' '.$entity->getId().' to '.$this->convertto);
-		$logbg->debug('ConvertInventoryModule: From', $wsso);
-		$logbg->debug('ConvertInventoryModule: To', $data);
-		$logbg->debug('ConvertInventoryModule: Result', $invmod);
+		$logbg->debug('(ConvertInventoryModule) From '.$cbfrommodule.' '.$entity->getId().' to '.$this->convertto);
+		$logbg->debug('(ConvertInventoryModule) From', $wsso);
+		$logbg->debug('(ConvertInventoryModule) To', $data);
+		$logbg->debug('(ConvertInventoryModule) Result', $invmod);
+		$logbg->debug('< ConvertInventoryModule');
 	}
 }
 ?>

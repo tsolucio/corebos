@@ -33,7 +33,8 @@ class GenerateDocument extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $root_directory, $current_language, $default_charset;
+		global $adb, $logbg, $root_directory, $current_language, $default_charset;
+		$logbg->debug('> GenerateDocument');
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents', true);
 		$crmEntityTableAlias = CRMEntity::getcrmEntityTableAlias('Documents', false);
 		$relatedDocsSQL = 'SELECT vtiger_senotesrel.notesid
@@ -65,10 +66,11 @@ class GenerateDocument extends VTTask {
 		} else {
 			include 'modules/evvtgendoc/commands_en.php';
 		}
+		$calculation = GlobalVariable::getVariable('Workflow_Email_GenDoc_Attachment_Name', 'Name', $module);
 		$templates = explode(';', $this->gendoctemplate);
 		foreach ($templates as $fileid) {
 			$orgfile = $adb->pquery(
-				"Select CONCAT(a.path,'',a.attachmentsid,'_',a.name) as filepath, a.name
+				"Select CONCAT(a.path,'',a.attachmentsid,'_',a.name) as filepath, a.name, n.title, n.note_no
 					from vtiger_notes n
 					join vtiger_seattachmentsrel sa on sa.crmid=n.notesid
 					join vtiger_attachments a on a.attachmentsid=sa.attachmentsid
@@ -77,7 +79,13 @@ class GenerateDocument extends VTTask {
 			);
 			$mergeTemplatePath=html_entity_decode($adb->query_result($orgfile, 0, 'filepath'), ENT_QUOTES, $default_charset);
 			$mergeTemplateName=basename(html_entity_decode($adb->query_result($orgfile, 0, 'name'), ENT_QUOTES, $default_charset), '.odt');
-			$name = str_replace(' ', '_', $mergeTemplateName).'_'.str_replace(' ', '_', $einfo[$record]);
+			$einfo[$record] = $mergeTemplateName.'_'.$einfo[$record];
+			$context = [
+				'GDTemplateID' => $fileid,
+				'GDTemplateName' => $adb->query_result($orgfile, 0, 'title'),
+				'GDTemplateNumber' => $adb->query_result($orgfile, 0, 'note_no'),
+			];
+			$name = OpenDocument::getConvertedName($record, $module, $einfo, $calculation, $context);
 			if (file_exists($fullfilename)) {
 				unlink($fullfilename);
 			}
@@ -95,6 +103,7 @@ class GenerateDocument extends VTTask {
 			if ($this->updateOnChange) {
 				$rdocs = $adb->pquery($relatedDocsSQLNotDeleted, array($fileid, $record));
 				if ($rdocs && $adb->num_rows($rdocs)>0) {
+					$logbg->debug('(GenerateDocument) update Share');
 					while ($rdoc = $adb->fetch_array($rdocs)) {
 						if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
 							$smq->createShareLink($rdoc['notesid']);
@@ -111,17 +120,23 @@ class GenerateDocument extends VTTask {
 						array($fileid, $record)
 					);
 				} else { // creating for the first time
+					$logbg->debug('(GenerateDocument) create Share on update');
 					$skey = $smq->createShareLink($docid);
 				}
 				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
 				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
 			} elseif ($this->shareOnCreate && !$smq->isShared($docid)) {
+				$logbg->debug('(GenerateDocument) create Share');
 				$skey = $smq->createShareLink($docid);
 				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
 				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
+			} else {
+				$logbg->debug('(GenerateDocument) not called:  updateOnChange is false or shareOnCreate and isShared are false');
 			}
+			$logbg->debug('(GenerateDocument) updating Document template ID', [$fileid, $docid]);
 			$adb->pquery('update vtiger_notes set gendoctplid=? where notesid=?', array($fileid, $docid));
 		}
+		$logbg->debug('< GenerateDocument');
 	}
 
 	private function addGenDocTplColumn() {

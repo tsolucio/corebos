@@ -45,8 +45,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 		$logbg->debug('Duplicating Direct Relations');
 		$invmods = getInventoryModules();
 		foreach ($focus->column_fields as $fieldname => $value) {
-			$sql = 'SELECT * FROM vtiger_field WHERE columnname=? AND uitype=10';
-			$result = $adb->pquery($sql, array($fieldname));
+			$result = $adb->pquery('SELECT * FROM vtiger_field WHERE columnname=? AND uitype=10', array($fieldname));
 			if ($adb->num_rows($result) == 1 && !empty($value)) {
 				$module = getSalesEntityType($value);
 				if (in_array($module, $invmods)) {

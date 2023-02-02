@@ -111,5 +111,6 @@ $mod_strings = array(
 	'Export Results' => 'Exportar Resultados',
 	'Value' => 'Valor',
 	'querytype' => 'Tipo Consulta',
+	'Direct Sql' => 'SQL Directo',
 );
 ?>

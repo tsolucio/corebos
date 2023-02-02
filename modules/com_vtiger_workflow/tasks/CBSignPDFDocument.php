@@ -37,9 +37,10 @@ class CBSignPDFDocument extends VTTask {
 	public $image_field;
 	public $coordX;
 	public $coordY;
+	public $usecontextcoordinates;
 
 	public function getFieldNames() {
-		return array('image_field', 'coordX', 'coordY');
+		return array('image_field', 'coordX', 'coordY', 'usecontextcoordinates');
 	}
 
 	public function after_retrieve() {
@@ -50,7 +51,8 @@ class CBSignPDFDocument extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $site_URL, $current_user;
+		global $adb, $site_URL, $current_user, $logbg;
+		$logbg->debug('> SignPDFDocument');
 		$moduleName = $entity->getModuleName();
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
@@ -58,8 +60,21 @@ class CBSignPDFDocument extends VTTask {
 
 		if ($this->image_field != '') {
 			$image_field = $this->image_field;
-			$width = (int)$this->coordX;
-			$height = (int)$this->coordY;
+			$width = 0;
+			$height = 0;
+
+			if (isset($this->usecontextcoordinates) && $this->usecontextcoordinates == 'on') {
+				// PDF dimensions == A4 dimensions in Landscape i.e. 297 x 210
+				if (isset($entity->WorkflowContext['coordXPercentage'])) {
+					$width = round(297 * (floatval($entity->WorkflowContext['coordXPercentage']) / 100));
+				}
+				if (isset($entity->WorkflowContext['coordYPercentage'])) {
+					$height = round(210 * (floatval($entity->WorkflowContext['coordYPercentage']) / 100));
+				}
+			} else {
+				$width = (int)$this->coordX;
+				$height = (int)$this->coordY;
+			}
 
 			// Fetching PDF
 			$sql = 'select vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,crm2.modifiedtime lastmodified,
@@ -103,6 +118,7 @@ class CBSignPDFDocument extends VTTask {
 					}
 					if ($signature_path != '') {
 						// Adding Image to PDF;
+						$logbg->debug('(SignPDFDocument) signing the PDF', [$signature_path, $width, $height]);
 						$pdf = new FPDI();
 						$pages_count = $pdf->setSourceFile($file_storage_path);
 						for ($i = 1; $i <= $pages_count; $i++) {
@@ -115,11 +131,18 @@ class CBSignPDFDocument extends VTTask {
 							}
 						}
 						$pdf->Output($file_storage_path, 'F');
+					} else {
+						$logbg->debug('(SignPDFDocument) not called: the signature path is empty');
 					}
 				}
 				$util->revertUser();
+			} else {
+				$logbg->debug('(SignPDFDocument) not called: no PDFs where found');
 			}
+		} else {
+			$logbg->debug('(SignPDFDocument) not called: the image_field is empty');
 		}
+		$logbg->debug('< SignPDFDocument');
 	}
 }
 ?>

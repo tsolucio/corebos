@@ -16,6 +16,8 @@ require_once 'modules/com_vtiger_workflow/expression_functions/application.php';
 class RunWebserviceWorkflowTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $bmapid;
+	public $bmapid_display;
 
 	public function getFieldNames() {
 		return array('bmapid', 'bmapid_display');
@@ -23,8 +25,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $logbg, $from_wf, $current_user;
+		$logbg->debug('> RunWebserviceTask');
 		$from_wf = true;
-		$logbg->debug('> RunWebservice');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 
@@ -284,7 +286,6 @@ class RunWebserviceWorkflowTask extends VTTask {
 					);
 					$soapclient = new SoapClient($url, $options);
 				}
-
 				$response = $soapclient->__soapCall($methodname, array('parameters' => $arrconv));
 				$methodResult = $methodname.'Result';
 				if (isset($response->$methodResult)) {

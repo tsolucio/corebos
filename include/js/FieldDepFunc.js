@@ -86,14 +86,15 @@ function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_valu
 	if (Array.isArray(parameters[2])) {
 		let conds = [...parameters[2]];
 		conds.forEach((element, index) => {
-			if (holdParameterValue[index] === undefined) {
-				holdParameterValue[index] = parameters[2][index][1];
+			let idx = `${parameters[1]}${parameters[3]}${conds[index][0]}`;
+			if (holdParameterValue[idx] === undefined) {
+				holdParameterValue[idx] = parameters[2][index][1];
 			}
-			if (holdParameterValue[index]=='new value') {
+			if (holdParameterValue[idx]=='new value') {
 				conds[index][1] = new_value;
 			} else {
-				if (document.getElementById(holdParameterValue[index])) {
-					conds[index][1] = document.getElementById(holdParameterValue[index]).value;
+				if (document.getElementById(holdParameterValue[idx])) {
+					conds[index][1] = document.getElementById(holdParameterValue[idx]).value;
 				} else {
 					conds[index][1] = element[1];
 				}

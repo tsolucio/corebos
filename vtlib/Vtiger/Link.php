@@ -32,6 +32,8 @@ class Vtiger_Link {
 	public $widget_header;
 	public $widget_width;
 	public $widget_height;
+	public $errormsg;
+	public $successmsg;
 
 	// Ignore module while selection
 	const IGNORE_MODULE = -1;

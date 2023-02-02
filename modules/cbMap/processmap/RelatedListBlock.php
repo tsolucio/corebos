@@ -201,7 +201,7 @@ class RelatedListBlock extends processcbMap {
 			}
 		}
 		$ret = array_search($fieldname, array_column($this->fieldsinfo[$this->detailModule], 'name'));
-		if (!$ret) {
+		if ($ret === false) {
 			return array();
 		}
 		if (isset($this->fieldsinfo[$this->detailModule][$ret]['uitype']) && $this->fieldsinfo[$this->detailModule][$ret]['uitype']==10) {

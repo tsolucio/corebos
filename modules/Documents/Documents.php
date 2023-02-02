@@ -532,6 +532,25 @@ class Documents extends CRMEntity {
 	}
 
 	/**
+	 * Return array of folders this document belongs to
+	 */
+	public function getFolders() {
+		global $adb;
+		$result = $adb->pquery(
+			'SELECT documentfoldersid
+				FROM vtiger_documentfolders
+				INNER JOIN vtiger_crmentityreldenorm on relcrmid=documentfoldersid
+				WHERE crmid=?',
+			array($this->id)
+		);
+		$folders = [];
+		while ($fld = $adb->fetch_array($result)) {
+			$folders[] = $fld['documentfoldersid'];
+		}
+		return $folders;
+	}
+
+	/**
 	 * Function to retrieve the physical path of the file attached to the document
 	 */
 	public static function getAttachmentPath($docid) {

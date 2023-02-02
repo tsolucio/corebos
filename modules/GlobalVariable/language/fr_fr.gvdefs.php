@@ -1526,7 +1526,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => 'Name|Number|Expression',
-	'definition' => 'When merging a GenDoc template, the name used for the download will be the module name concatenated with the Entity Name field (Name), or the Entity Number field (Number), or, if set to Expression, the result of the related business map will be used.',
+	'definition' => 'When merging a GenDoc template, the name used for the download will be the module name concatenated with the Entity Name field (Name), or the Entity Number field (Number), or, if set to Expression, the result of the related business map will be used. In the business map, you can use three special context variables to determine the result: GDTemplateID, GDTemplateName, GDTemplateNumber',
 ),
 'GenDoc_CopyLabelToClipboard' => array(
 	'valuetype' => 'Boolean',
@@ -1550,13 +1550,31 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Extension',
 	'values' => 'URL',
-	'definition' => 'URL to the conversion server: https://github.com/sfoxdev/docker-unoconv',
+	'definition' => 'URL to the UNOCONV conversion server: https://github.com/sfoxdev/docker-unoconv',
+),
+'GenDoc_Convert_URL_UnoServer' => array(
+	'valuetype' => 'String',
+	'category' => 'Extension',
+	'values' => 'URL',
+	'definition' => 'URL to the UNOSERVER conversion server: https://github.com/lynxtaa/unoserver-web',
 ),
 'GenDoc_PDFConversion_Retries' => array(
 	'valuetype' => 'Integer',
 	'category' => 'Extension',
 	'values' => 'Positive Integer',
 	'definition' => 'The maximum number of retries when PDF conversion fails.',
+),
+'GenDoc_Confirm_ActionFor' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Example: ID1,ID2,...,IDn',
+	'definition' => 'A comma-separated list of document IDs to check before proceeding with the action.',
+),
+'GenDoc_Confirm_Actions' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '* | export,save,email',
+	'definition' => 'A comma-separated list of GenDoc actions.',
 ),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Integer',

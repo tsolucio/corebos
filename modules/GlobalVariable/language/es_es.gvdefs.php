@@ -1526,7 +1526,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
 	'values' => 'Name|Number|Expression',
-	'definition' => 'Al fusionar una plantilla GenDoc, el nombre utilizado para la descarga será el nombre del módulo concatenado con el campo Nombre de la entidad (Name), o el número de la entidad (Number), o, si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado.',
+	'definition' => 'Al fusionar una plantilla GenDoc, el nombre utilizado para la descarga será el nombre del módulo concatenado con el campo Nombre de la entidad (Name), o el número de la entidad (Number), o, si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado. En el mapa de negocios, puedes usar tres variables de contexto especiales para determinar el resultado: GDTemplateID, GDTemplateName, GDTemplateNumber',
 ),
 'GenDoc_CopyLabelToClipboard' => array(
 	'valuetype' => 'Booleano',
@@ -1550,13 +1550,31 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Cadena',
 	'category' => 'Extensión',
 	'values' => 'URL',
-	'definition' => 'URL al servidor de conversión: https://github.com/sfoxdev/docker-unoconv',
+	'definition' => 'URL al servidor de conversión UNOCONV: https://github.com/sfoxdev/docker-unoconv',
+),
+'GenDoc_Convert_URL_UnoServer' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Extensión',
+	'values' => 'URL',
+	'definition' => 'URL al servidor de conversión UNOSERVER: https://github.com/lynxtaa/unoserver-web',
 ),
 'GenDoc_PDFConversion_Retries' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Extensión',
 	'values' => 'Entero positivo',
 	'definition' => 'El número máximo de reintentos al convertir la plantilla a PDF si falla la conversión.',
+),
+'GenDoc_Confirm_ActionFor' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Example: ID1,ID2,...,IDn',
+	'definition' => 'A comma-separated list of document IDs to check before proceeding with the action.',
+),
+'GenDoc_Confirm_Actions' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '* | export,save,email',
+	'definition' => 'A comma-separated list of GenDoc actions.',
 ),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Entero',

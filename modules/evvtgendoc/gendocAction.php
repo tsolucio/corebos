@@ -34,13 +34,18 @@ $holdUser = $current_user;
 $current_user = Users::getActiveAdminUser();
 
 $orgfile=$adb->pquery(
-	"Select CONCAT(a.path,'',a.attachmentsid,'_',a.name) as filepath, a.name, n.mergetemplate, n.template_for
+	"Select CONCAT(a.path,'',a.attachmentsid,'_',a.name) as filepath, a.name, n.mergetemplate, n.template_for, n.title, n.note_no
 		from vtiger_notes n
 		join vtiger_seattachmentsrel sa on sa.crmid=n.notesid
 		join vtiger_attachments a on a.attachmentsid=sa.attachmentsid
 		where n.notesid=?",
 	array($fileid)
 );
+$context = [
+	'GDTemplateID' => $fileid,
+	'GDTemplateName' => $adb->query_result($orgfile, 0, 'title'),
+	'GDTemplateNumber' => $adb->query_result($orgfile, 0, 'note_no'),
+];
 $mergeTemplatePath=$adb->query_result($orgfile, 0, 'filepath');
 $mergeTemplateName=$adb->query_result($orgfile, 0, 'name');
 $mergetemplate = $adb->query_result($orgfile, 0, 'mergetemplate');
@@ -104,7 +109,7 @@ if ($mergetemplate=='1') {
 		}
 		$einfo = getEntityName($module, $record);
 		$einfo[$record] = $modulei18n.'_'.$einfo[$record];
-		$name = OpenDocument::getConvertedName($record, $module, $einfo, GlobalVariable::getVariable('GenDoc_Attachment_Name', 'Name', $module));
+		$name = OpenDocument::getConvertedName($record, $module, $einfo, GlobalVariable::getVariable('GenDoc_Attachment_Name', 'Name', $module), $context);
 		switch ($action) {
 			case 'export':
 				header('Pragma: public');

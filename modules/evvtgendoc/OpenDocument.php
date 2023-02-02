@@ -1536,6 +1536,9 @@ class OpenDocument {
 	public function createFrame($text, $anchortype, $width, $height, $zindex, $framename, $x, $y, $anchorpagenumber) {
 		return OpenDocument_Frame::instance($this, $text, $anchortype, $width, $height, $zindex, $framename, $x, $y, $anchorpagenumber);
 	}
+	public function createDrawCustomShape() {
+		return OpenDocument_DrawCustomShape::instance($this);
+	}
 
 	/**
 	 * Create Open_document_Heading
@@ -1687,7 +1690,7 @@ class OpenDocument {
 	 */
 	public function addStyles($node, $elem, $elemtype, $keepname = false) {
 		$style_name = $this->getStyleName($node);
-		$reservedstyl=implode('|', OpenDocument::$reservedstyl);
+		$reservedstyl=implode('|', OpenDocument::$ReservedStyles);
 		if (preg_match("[$reservedstyl]", $style_name)) {
 			$elem->getNode()->setAttributeNS(OpenDocument::NS_TEXT, 'style-name', $style_name);
 			return 0;
@@ -2308,7 +2311,7 @@ class OpenDocument {
 		}
 	}
 
-	public static function getConvertedName($record, $module, $entityinfo = [], $calculation = 'Name') {
+	public static function getConvertedName($record, $module, $entityinfo = [], $calculation = 'Name', $context = []) {
 		global $current_user, $adb;
 		if (empty($entityinfo)) {
 			$entityinfo = getEntityName($module, $record);
@@ -2325,7 +2328,8 @@ class OpenDocument {
 				$name = str_replace(' ', '_', $rsnf->fields[$numfld['name']]);
 			}
 		} elseif (is_numeric($calculation) && getSalesEntityType($calculation)=='cbMap') {
-			$name = coreBOS_Rule::evaluate($calculation, ['record_id' => $record]);
+			$context['record_id'] = $record;
+			$name = coreBOS_Rule::evaluate($calculation, $context);
 		}
 		return $name;
 	}
@@ -2456,7 +2460,7 @@ class OpenDocument {
 		/*
 		 * Create a new file-entry element ...
 		 */
-		$node = $this->manifestDOM->createElement('manifest:file-entry', null);
+		$node = $this->manifestDOM->createElement('manifest:file-entry', '');
 		/*
 		 * ... add the fullpath of the file to full-path attribute, ...
 		 */
@@ -2836,7 +2840,11 @@ class OpenDocument {
 	}
 
 	public static function PDFConversionActive() {
-		$GenDocPDF = (coreBOS_Settings::getSetting('cbgendoc_server', '')!='' || GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc')!='');
+		$GenDocPDF = (
+			coreBOS_Settings::getSetting('cbgendoc_server', '')!=''
+			|| GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc')!=''
+			|| GlobalVariable::getVariable('GenDoc_Convert_URL_UnoServer', '', 'evvtgendoc')!=''
+		);
 		if (!$GenDocPDF) {
 			$rdo = shell_exec('which unoconv > /dev/null; echo $?');
 			$GenDocPDF = ($rdo==0);
@@ -2878,6 +2886,18 @@ class OpenDocument {
 		} elseif (GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc')!='') {
 			$client = new Vtiger_Net_Client(GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc').'/unoconv/'.$format);
 			$client->setFileUpload('file', $frompath, 'file');
+			$retries = GlobalVariable::getVariable('GenDoc_PDFConversion_Retries', 1, 'evvtgendoc');
+			for ($x = 1; $x <= $retries; $x++) {
+				$post = $client->doPost(array());
+				$rsp = json_decode($post, true);
+				if (json_last_error() !== JSON_ERROR_NONE) {
+					break;
+				}
+			}
+			file_put_contents($topath, $post);
+		} elseif (GlobalVariable::getVariable('GenDoc_Convert_URL_UnoServer', '', 'evvtgendoc')!='') {
+			$client = new Vtiger_Net_Client(GlobalVariable::getVariable('GenDoc_Convert_URL_UnoServer', '', 'evvtgendoc').'/convert/'.$format);
+			$client->setFileUpload('file', $frompath, 'file.odt');
 			$retries = GlobalVariable::getVariable('GenDoc_PDFConversion_Retries', 1, 'evvtgendoc');
 			for ($x = 1; $x <= $retries; $x++) {
 				$post = $client->doPost(array());

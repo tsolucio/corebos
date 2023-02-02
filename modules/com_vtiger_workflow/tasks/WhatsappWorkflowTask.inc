@@ -18,6 +18,9 @@ class WhatsappWorkflowTask extends VTTask {
 	public $queable = true;
 	public $attachmentsinfo = array();
 	public $dzattinfo = array();
+	public $messageBody;
+	public $attachmentids;
+	public $phone;
 
 	public function getFieldNames() {
 		return array('messageBody', 'attachmentids', 'phone');
@@ -52,6 +55,7 @@ class WhatsappWorkflowTask extends VTTask {
 	}
 	public function doTask(&$entityData) {
 		global $current_user, $site_URL, $logbg;
+		$logbg->debug('> WhatsappWorkflowTask');
 		$clientclass = new corebos_whatsapp();
 		$client = $clientclass->whatsappclient;
 		$isactive = $clientclass->isActive();
@@ -147,11 +151,16 @@ class WhatsappWorkflowTask extends VTTask {
 							));
 						}
 					}
+				} else {
+					$logbg->debug('(WhatsappWorkflowTask) not called: sender or phones are empty');
 				}
 			} catch (Exception $e) {
-				$logbg->debug('Error on Whatsapp Task: '. $e->getMessage());
+				$logbg->debug('(WhatsappWorkflowTask) not called: Error on Whatsapp Task: '. $e->getMessage());
 			}
+		} else {
+			$logbg->debug('(WhatsappWorkflowTask) not called: Whatsapp is not active');
 		}
+		$logbg->debug('< WhatsappWorkflowTask');
 	}
 
 	private function sendWhatsappMessage($phone, $what, $client) {

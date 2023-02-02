@@ -315,5 +315,6 @@ $mod_strings = array(
 'HELP_GenerateReportName' => 'El valor de esta variable establecerá o anulará el nombre del informe seleccionado en la tarea',
 'HELP_GenerateQuestionName' => 'El valor de esta variable establecerá o anulará el nombre de la pregunta seleccionada en la tarea',
 'HELP_wfgenerated_file' => 'Esta es una variable de contexto de salida con el resultado del trabajo realizado. Es una matriz de matrices que contiene:<br>[<br>"path" => ruta del archivo generado,<br>"name" => nombre del archivo,<br>"hascontent" => true/false,<br>"content" => el contenido generado si `wfgenerated_returncontent` se establece en true<br>]<br>Ten en cuenta que aunque esta tarea puede generar solo un archivo, esta variable de contexto puede contener muchos archivos. Si tienes más de una tarea Generar informe en el mismo flujo de trabajo, el resultado de cada tarea se acumula en esta variable de contexto, por lo que puedes enviar efectivamente más de un informe en un correo electrónico (por ejemplo). Eso significa que para obtener el elemento de contenido, debes usar el desplazamiento del orden de la tarea, como este <pre>getFromContext(\'wfgenerated_file.0.content\')</pre>',
+'usecontextcoordinates' => 'Utilizar coordenadas de la aplicación',
 );
 ?>

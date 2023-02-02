@@ -178,19 +178,17 @@ class cbQuestion extends CRMEntity {
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.$mod->table_name.' ';
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
-				$queryparams = 'set ';
-				$paramcount = 1;
-				$qpprefix = '@qp'.time();
 				if (!empty($params)) {
+					$queryparams = 'set ';
+					$paramcount = 1;
+					$qpprefix = '@qp'.time();
 					foreach ($params as $param => $value) {
 						$qp = $qpprefix.$paramcount;
 						$paramcount++;
 						$queryparams.= $adb->convert2Sql(" $qp = ?,", [$value]);
 						$conds = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $conds);
 					}
-				}
-				$queryparams = trim($queryparams, ',');
-				if (!empty($params)) {
+					$queryparams = trim($queryparams, ',');
 					$adb->query($queryparams);
 				}
 				if ($q->column_fields['condfilterformat']=='1') { // filter conditions
@@ -223,6 +221,21 @@ class cbQuestion extends CRMEntity {
 				$query .= ' LIMIT '.$q->column_fields['qpagesize'];
 			}
 			$query .= ';';
+		} elseif ($q->column_fields['querytype'] == 'Direct Sql') {
+			$query = decode_html($q->column_fields['qcolumns']);
+			if (!empty($params)) {
+				$queryparams = 'set ';
+				$paramcount = 1;
+				$qpprefix = '@qp'.time();
+				foreach ($params as $param => $value) {
+					$qp = $qpprefix.$paramcount;
+					$paramcount++;
+					$queryparams.= $adb->convert2Sql(" $qp = ?,", [$value]);
+					$query = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $query);
+				}
+				$queryparams = trim($queryparams, ',');
+				$adb->query($queryparams);
+			}
 		} else {
 			$chkrs = $adb->pquery(
 				'SELECT 1 FROM (select name from `vtiger_ws_entity` UNION select name from vtiger_tab) as tnames where name=?',
@@ -435,7 +448,24 @@ class cbQuestion extends CRMEntity {
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-					'answer' => $handler->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules),
+					'answer' => $handler->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules, false),
+				);
+			} elseif ($q->column_fields['querytype']=='Direct Sql') {
+				$sql_query = cbQuestion::getSQL($qid, $params);
+				$rs = $adb->query($sql_query);
+				$output = array();
+				$noofrows = $adb->num_rows($rs);
+				for ($i=0; $i<$noofrows; $i++) {
+					$output[] = $adb->fetchByAssoc($rs, $i);
+				}
+				return array(
+					'module' => $q->column_fields['qmodule'],
+					'columns' => '',
+					'groupings' => [],
+					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
+					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
+					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
+					'answer' => $output,
 				);
 			} else {
 				require_once 'include/Webservices/GetExtendedQuery.php';
@@ -473,7 +503,7 @@ class cbQuestion extends CRMEntity {
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-					'answer' => $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules),
+					'answer' => $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules, false),
 				);
 			}
 		}
@@ -680,11 +710,13 @@ class cbQuestion extends CRMEntity {
 			$searchURL = cbQuestion::getSearchUrl($module);
 			$limit = GlobalVariable::getVariable('BusinessQuestion_TableAnswer_Limit', 2000);
 			$table .= '<table>';
-			$table .= '<tr>';
-			foreach ($columnLabels as $columnLabel) {
-				$table .= '<th>'.getTranslatedString($columnLabel, $module).'</th>';
+			if (!isset($properties->ShowHeaderOnEmpty) || filter_var($properties->ShowHeaderOnEmpty, FILTER_VALIDATE_BOOLEAN)) {
+				$table .= '<tr>';
+				foreach ($columnLabels as $columnLabel) {
+					$table .= '<th>'.getTranslatedString($columnLabel, $module).'</th>';
+				}
+				$table .= '</tr>';
 			}
-			$table .= '</tr>';
 			for ($x = 0; $x < $limit; $x++) {
 				if (isset($answer[$x])) {
 					$table .= '<tr>';

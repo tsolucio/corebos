@@ -461,4 +461,5 @@ var alert_arr = {
 	'LBL_EXPAND': 'Kibont',
 	'currentuser': 'Current User',
 	'wfmodule': 'Workflow Module',
+	'GENDOC_SAVE_PDF': 'Are you sure you want to override template?',
 };

@@ -11,6 +11,21 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  */
+var GenDoc_Confirm_ActionFor = '';
+var GenDoc_Confirm_Actions = '';
+GlobalVariable_getVariable('GenDoc_Confirm_ActionFor', '', (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	GenDoc_Confirm_ActionFor = obj.GenDoc_Confirm_ActionFor;
+}, function (error) {
+	GenDoc_Confirm_ActionFor = ''; // set default value on error
+});
+GlobalVariable_getVariable('GenDoc_Confirm_Actions', '', (typeof gVTModule=='undefined' ? '' : gVTModule), '').then(function (response) {
+	var obj = JSON.parse(response);
+	GenDoc_Confirm_Actions = obj.GenDoc_Confirm_Actions;
+}, function (error) {
+	GenDoc_Confirm_Actions = ''; // set default value on error
+});
+
 function showgendoctemplates(module) {
 	if (document.getElementById('allids').value=='' && document.getElementById('allselectedboxes').value=='') {
 		alert(alert_arr.SELECT);
@@ -39,11 +54,18 @@ function checkOneTplSelected() {
 }
 
 function gendocAction(action, format, module, crmid, i18n) {
+	const gdtemplateid = jQuery('#gendoctemplate').val();
+	let value = GenDoc_Confirm_ActionFor.split(',');
+	if (GenDoc_Confirm_Actions == '*' || GenDoc_Confirm_Actions.split(',').includes(action)) {
+		if (value.includes(gdtemplateid) && !confirm(alert_arr.GENDOC_CONFIRM_ACTION)) {
+			return false;
+		}
+	}
 	if (checkOneTplSelected()) {
 		var url = 'index.php?module=evvtgendoc&action=evvtgendocAjax&file=gendocAction';
 		url = url + '&gdaction=' + action;
 		url = url + '&gdformat=' + format;
-		url = url + '&gdtemplate=' + jQuery('#gendoctemplate').val();
+		url = url + '&gdtemplate=' + gdtemplateid;
 		url = url + '&gdmodule=' + module;
 		url = url + '&gdcrmid=' + crmid;
 		switch (action) {
