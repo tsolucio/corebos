@@ -450,6 +450,23 @@ class cbQuestion extends CRMEntity {
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
 					'answer' => $handler->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules, false),
 				);
+			} elseif ($q->column_fields['querytype']=='Direct Sql') {
+				$sql_query = cbQuestion::getSQL($qid, $params);
+				$rs = $adb->query($sql_query);
+				$output = array();
+				$noofrows = $adb->num_rows($rs);
+				for ($i=0; $i<$noofrows; $i++) {
+					$output[] = $adb->fetchByAssoc($rs, $i);
+				}
+				return array(
+					'module' => $q->column_fields['qmodule'],
+					'columns' => '',
+					'groupings' => [],
+					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
+					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
+					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
+					'answer' => $output,
+				);
 			} else {
 				require_once 'include/Webservices/GetExtendedQuery.php';
 				$handler = vtws_getModuleHandlerFromName($q->column_fields['qmodule'], $current_user);
