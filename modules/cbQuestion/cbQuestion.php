@@ -223,7 +223,10 @@ class cbQuestion extends CRMEntity {
 				$query .= ' LIMIT '.$q->column_fields['qpagesize'];
 			}
 			$query .= ';';
-		} else {
+		} elseif ($q->column_fields['querytype'] == 'Direct Sql') {
+			$query = decode_html($q->column_fields['qcolumns']);
+		}
+		else {
 			$chkrs = $adb->pquery(
 				'SELECT 1 FROM (select name from `vtiger_ws_entity` UNION select name from vtiger_tab) as tnames where name=?',
 				array($q->column_fields['qmodule'])
