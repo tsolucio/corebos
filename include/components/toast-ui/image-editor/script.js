@@ -29,6 +29,10 @@ class PaintDocuments {
 	}
 
 	Create = () => {
+		this.Upsert(false);
+	}
+
+	Upsert = (docid) => {
 		if (paint.Title().value == '' || paint.FileName().value == '') {
 			ldsPrompt.show(alert_arr.ERROR, alert_arr.LBL_REQUIRED_FIELDS, 'error');
 			return false;
@@ -54,9 +58,14 @@ class PaintDocuments {
 				'filedownloadcount': 0,
 				'filestatus': 1,
 				'folderid': paint.cbFolderID+paint.FolderID().value,
-				'relations': paint.WSID
+				'relations': paint.WSID,
 			};
-			cbConn.doCreate('Documents', map, paint.Message);
+			if (docid) {
+				map['id'] = docid;
+				cbConn.doUpdate('Documents', map, paint.Message);
+			} else {
+				cbConn.doCreate('Documents', map, paint.Message);
+			}
 		});
 	}
 

@@ -553,7 +553,7 @@ class Documents extends CRMEntity {
 	/**
 	 * Function to retrieve the physical path of the file attached to the document
 	 */
-	public static function getAttachmentPath($docid) {
+	public static function getAttachmentPath($docid, $relative = false) {
 		global $adb, $root_directory;
 		$path = '';
 		if (!empty($docid)) {
@@ -567,7 +567,7 @@ class Documents extends CRMEntity {
 				$name = $res_att->fields['name'];
 				$ruta = $res_att->fields['path'];
 				$prefix = $res_att->fields['attachmentsid'].'_';
-				$path = $root_directory.$ruta.$prefix.$name;
+				$path = ($relative ? '' : $root_directory).$ruta.$prefix.$name;
 			}
 		}
 		return $path;
