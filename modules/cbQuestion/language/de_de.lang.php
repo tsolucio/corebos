@@ -18,6 +18,6 @@ $mod_strings = array(
 	'LBL_DESCRIPTION_INFORMATION' => 'Beschreibung',
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
-	'Direct Sql' => 'Direct Sql',
+	'Direct Sql' => 'Direct SQL',
 );
 ?>
