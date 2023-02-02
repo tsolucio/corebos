@@ -149,6 +149,20 @@ if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 	$req->set('return_record', $_REQUEST['return_id']);
 }
 
+if (isset($_REQUEST['MasterGridValues']) && !empty($_REQUEST['MasterGridValues'])) {
+	$MasterGridValues = json_decode($_REQUEST['MasterGridValues'], true);
+	$MasterGridModule = json_decode($_REQUEST['MasterGridModule'], true);
+	$MasterGridRelatedField = json_decode($_REQUEST['MasterGridRelatedField'], true);
+	foreach ($MasterGridValues as $key => $row) {
+		$MasterInstance = $row[0];
+		$MasterModule = $MasterGridModule[$key][1]['module'];
+		$MasterRelatedField = $MasterGridRelatedField[$key][1]['relatedfield'];
+		foreach ($row[1] as $r) {
+			CreateMasterRecord($r, $MasterModule, $MasterRelatedField, $focus->id);
+		}
+	}
+}
+
 if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
 	if (isset($_REQUEST['Module_Popup_Edit']) && $_REQUEST['Module_Popup_Edit']==1) {
 		if (empty($_REQUEST['Module_Popup_Save'])) {

@@ -30,10 +30,11 @@ class cbMasterGrid extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
-		if (empty($xml) || empty($xml->module) || empty($xml->fields)) {
+		if (empty($xml) || empty($xml->module) || empty($xml->fields) || empty($xml->relatedfield)) {
 			return array();
 		}
 		$this->mapping['module'] = (string)$xml->module;
+		$this->mapping['relatedfield'] = (string)$xml->relatedfield;
 		$this->detailModule = $this->mapping['module'];
 		foreach ((array)$xml->fields->name as $fld => $name) {
 			$this->mapping['fields'][] = $this->getFieldInfo($name);

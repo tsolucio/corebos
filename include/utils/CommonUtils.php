@@ -3957,4 +3957,23 @@ function getModuleFieldsInfo($module, $columns = ['*']) {
 	}
 	return false;
 }
+
+function CreateMasterRecord($data, $module, $relatedfield, $related_id) {
+	global $current_user;
+	$masterfocus = CRMEntity::getInstance($module);
+	$masterfocus->mode = '';
+	if ($data['id'] != 0) {
+		$masterfocus->retrieve_entity_info($data['id'], $module);
+		$masterfocus->id = $data['id'];
+		$masterfocus->mode = 'edit';
+	}
+	foreach ($data as $key => $value) {
+		$masterfocus->column_fields[$key] = $value;
+	}
+	$masterfocus->column_fields[$relatedfield] = $related_id;
+	$handler = vtws_getModuleHandlerFromName($module, $current_user);
+	$meta = $handler->getMeta();
+	$masterfocus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($masterfocus->column_fields, $meta);
+	$masterfocus->saveentity($module);
+}
 ?>

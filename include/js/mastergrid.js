@@ -4,13 +4,24 @@ class MasterGrid {
 		this.id = 0;
 		this.idx = 0;
 		this.module = null;
+		this.relatedfield = '';
 		this.fields = [];
+		this.data = [];
+		this.currentRow = {};
+	}
+
+	Init() {
+		let data = JSON.parse(this.data);
+		for (let i in data) {
+			this.currentRow = data[i];
+			this.EmptyRow();
+		}
 	}
 
 	EmptyRow() {
 		const flds = JSON.parse(this.fields);
 		let row = document.createElement('tr');
-		row.id = `grid-id-${this.idx}`;
+		row.id = `grid-id-${this.id}-${this.idx}`;
 		for (let i in flds) {
 			let data = document.createElement('td');
 			data.innerHTML = this.GenerateField(flds[i]);
@@ -19,26 +30,62 @@ class MasterGrid {
 		let actions = document.createElement('td');
 		actions.innerHTML = this.GenerateActions();
 		row.appendChild(actions);
+		let inputid = document.createElement('input');
+		inputid.type = 'hidden';
+		inputid.value = this.currentRow['id'] != undefined ? this.currentRow['id'] : 0;
+		inputid.name = 'mastergrid-rowid';
+		row.appendChild(inputid);
 		document.getElementById(`mastergrid-${this.id}`).appendChild(row);
 		this.idx++;
+	}
+
+	TableData(instance) {
+		let data = new Array();
+		let fields = JSON.parse(mg[instance].fields);
+		for (let j = 0; j < mg[instance].idx; j++) {
+			let cRow = document.getElementById(`grid-id-${instance}-${j}`);
+			if (cRow != null) {
+				let rowdata = {};
+				for (let i in fields) {
+					rowdata[fields[i].name] = cRow.querySelector(`[name=${fields[i].name}]`).value;
+				}
+				rowdata['id'] = cRow.querySelector(`[name=mastergrid-rowid]`).value;
+				data.push(rowdata);
+			}
+		}
+		MasterGridData[instance] = data;
 	}
 
 	GenerateField(field) {
 		let fld = '';
 		let editable = '';
+		let fieldvalue = '';
 		if (!field.editable) {
 			editable = 'readonly';
+		}
+		if (this.currentRow[field.name] !== undefined) {
+			fieldvalue = this.currentRow[field.name];
 		}
 		switch(field.uitype) {
 			case '1':
 			case '2':
 				fld += `
-					<input type="text" data-grid-id="${field.name}" class="slds slds-input" ${editable}>
+					<input type="text" value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
+				`;
+				break;
+			case '5'://date
+				fld += `
+					<input type="date" value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
 				`;
 				break;
 			case '10':
 				fld += `
-					<input type="text" data-grid-id="${field.name}" class="slds slds-input" ${editable}>
+					<input type="text" value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
+				`;
+				break;
+			case '14'://time
+				fld += `
+					<input type="time" value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
 				`;
 				break;
 			case '15':
@@ -47,31 +94,56 @@ class MasterGrid {
 					editable = 'disabled';
 				}
 				fld += `
-					<select class="slds slds-select" data-grid-id=${field.name} ${editable}>
+					<select class="slds slds-select" name="${field.name}" data-grid-name=${field.name} ${editable}>
 				`;
 				for (let i in field.type.picklistValues) {
-					fld += `<option value="${field.type.picklistValues[i].value}">${field.type.picklistValues[i].label}</option>`;
+					let selected = '';
+					if (fieldvalue == field.type.picklistValues[i].value) {
+						selected = 'selected';
+					}
+					fld += `<option ${selected} value="${field.type.picklistValues[i].value}">${field.type.picklistValues[i].label}</option>`;
+				}
+				fld += `</select>`;
+				break;
+			case '50'://datetime
+				fld += `
+					<input type="datetime-local" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
+				`;
+				break;
+			case '53':
+				fld += `
+					<select class="slds slds-select" name="${field.name}" data-grid-name=${field.name} ${editable}>
+				`;
+				for (let i in field.type.assignto.users.options) {
+					let selected = '';
+					if (fieldvalue == field.type.assignto.users.options[i].userid.split('x')[1]) {
+						selected = 'selected';
+					}
+					fld += `<option ${selected} value="${field.type.assignto.users.options[i].userid.split('x')[1]}">${field.type.assignto.users.options[i].username}</option>`;
 				}
 				fld += `</select>`;
 				break;
 			default:
 				fld += `
-					<input type="text" class="slds slds-input" data-grid-id="${field.name}" ${editable}>
+					<input value="${fieldvalue}" type="text" name="${field.name}" class="slds slds-input" data-grid-name="${field.name}" ${editable}>
 				`;
 		}
 		return fld;
-		console.log(fld)
 	}
 
 	DeleteRow(idx) {
-		document.getElementById(`grid-id-${idx}`).remove();
+		document.getElementById(`grid-id-${this.id}-${idx}`).remove();
 	}
 
 	DuplicateRow(idx) {
-		let el = document.getElementById(`grid-id-${idx}`);
+		let el = document.getElementById(`grid-id-${this.id}-${idx}`);
 		let grid = document.getElementById(`mastergrid-${this.id}`);
 		let newrow = el.cloneNode(true);
-		newrow.id = `grid-id-${this.idx}`;
+		newrow.deleteCell(-1);
+		newrow.id = `grid-id-${this.id}-${this.idx}`;
+		let actions = document.createElement('td');
+		actions.innerHTML = this.GenerateActions();
+		newrow.appendChild(actions);
 		grid.appendChild(newrow);
 		this.idx++;
 	}

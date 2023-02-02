@@ -16,6 +16,7 @@
 
 require_once 'modules/Vtiger/DeveloperWidget.php';
 require_once 'modules/cbMap/processmap/cbMasterGrid.php';
+require_once 'include/QueryGenerator/QueryGenerator.php';
 global $currentModule;
 
 class mastergrid {
@@ -34,8 +35,8 @@ class mastergrid_EditViewBlock extends DeveloperBlock {
 		$this->context = $context;
 		$smarty = $this->getViewer();
 		$bmapname = $currentModule.'_MasterGrid';
-		if (isset($_REQUEST['bmapname'])) {
-			$bmapname = vtlib_purify($_REQUEST['bmapname']);
+		if (!empty($this->getFromContext('bmapname'))) {
+			$bmapname = vtlib_purify($this->getFromContext('bmapname'));
 		}
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname), $currentModule);
 		if (!$cbMapid) {
@@ -45,10 +46,36 @@ class mastergrid_EditViewBlock extends DeveloperBlock {
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$MapMG = $cbMap->cbMasterGrid();
 		$ID = $this->getFromContext('RECORDID');
-		//var_dump($BAInfo);
 		$smarty->assign('linkid', $BAInfo['linkid']);
 		$smarty->assign('module', $MapMG['module']);
-		$smarty->assign('GridData', $MapMG['fields']);
+		$smarty->assign('relatedfield', $MapMG['relatedfield']);
+		$smarty->assign('GridFields', $MapMG['fields']);
+		$rows = array();
+		if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'EditView') {
+			$qfields = array('id');
+			foreach ($MapMG['fields'] as $r) {
+				$qfields[] = $r['name'];
+			}
+			$record = $_REQUEST['record'];
+			$qg = new QueryGenerator($MapMG['module'], $current_user);
+			$qg->setFields($qfields);
+			$qg->addReferenceModuleFieldCondition($currentModule, $MapMG['relatedfield'], 'id', $record, 'e', 'and');
+			$sql = $qg->getQuery();
+			$results = $adb->pquery($sql, array());
+			$noOfRows = $adb->num_rows($results);
+			if ($noOfRows > 0) {
+				$entityField = getEntityField($MapMG['module']);
+				while ($row = $adb->fetch_array($results)) {
+					if (isset($row['smownerid'])) {
+						$row['assigned_user_id'] = $row['smownerid'];
+						$row['assigned_user_id_displayValue'] = getUserFullName($row['smownerid']);
+					}
+					$row['id'] = $row[$entityField['entityid']];
+					$rows[] = array_filter($row, 'is_string', ARRAY_FILTER_USE_KEY);
+				}
+			}
+		}
+		$smarty->assign('GridData', json_encode($rows));
 		return $smarty->fetch('MasterGrid.tpl');
 	}
 }
