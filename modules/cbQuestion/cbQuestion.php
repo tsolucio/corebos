@@ -647,7 +647,7 @@ class cbQuestion extends CRMEntity {
 				$alllabels[] = empty($properties->columns[$ls]->label) ? $label : $properties->columns[$ls]->label;
 				$ls++;
 			}
-			if (!empty($alllabels)) {
+			if (!empty($alllabels) && (!isset($properties->ShowHeaderOnEmpty) || filter_var($properties->ShowHeaderOnEmpty, FILTER_VALIDATE_BOOLEAN))) {
 				$line = self::generateCSV($alllabels, $delim, $encls);
 				if (isset($properties->postprocess)) {
 					$line = self::postProcessFileLine($line, $properties->postprocess);
