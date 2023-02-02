@@ -416,6 +416,7 @@ var alert_arr = {
 	'JSLBL_Loading': 'Laden',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Bijlage kon niet verwijderd worden',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Uploadlimiet bereikt!!',
+	'JSLBL_DRAW': 'Draw',
 	'JSLBL_CANCEL': 'Annuleer',
 	'JSLBL_SAVEAS': 'Bewaar als',
 	'JSLBL_SAVE': 'Bewaar',
