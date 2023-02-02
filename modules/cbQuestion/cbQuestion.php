@@ -448,7 +448,7 @@ class cbQuestion extends CRMEntity {
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-					'answer' => $handler->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules),
+					'answer' => $handler->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules, false),
 				);
 			} else {
 				require_once 'include/Webservices/GetExtendedQuery.php';
@@ -486,7 +486,7 @@ class cbQuestion extends CRMEntity {
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-					'answer' => $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules),
+					'answer' => $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules, false),
 				);
 			}
 		}
