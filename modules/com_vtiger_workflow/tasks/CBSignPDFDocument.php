@@ -39,7 +39,7 @@ class CBSignPDFDocument extends VTTask {
 	public $coordY;
 
 	public function getFieldNames() {
-		return array('image_field', 'coordX', 'coordY');
+		return array('image_field', 'coordX', 'coordY', 'usecontextcoordinates');
 	}
 
 	public function after_retrieve() {
@@ -59,8 +59,21 @@ class CBSignPDFDocument extends VTTask {
 
 		if ($this->image_field != '') {
 			$image_field = $this->image_field;
-			$width = (int)$this->coordX;
-			$height = (int)$this->coordY;
+			$width = 0;
+			$height = 0;
+			
+			if (isset($this->usecontextcoordinates) && $this->usecontextcoordinates == 'on') {
+				// PDF dimensions == A4 dimensions in Landscape i.e. 297 x 210
+				if (isset($entity->WorkflowContext['coordXPercentage'])) {
+					$width = round(297 * (floatval($entity->WorkflowContext['coordXPercentage']) / 100));
+				}
+				if (isset($entity->WorkflowContext['coordYPercentage'])) {
+					$height = round(210 * (floatval($entity->WorkflowContext['coordYPercentage']) / 100));
+				}
+			} else {
+				$width = (int)$this->coordX;
+				$height = (int)$this->coordY;
+			}
 
 			// Fetching PDF
 			$sql = 'select vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,crm2.modifiedtime lastmodified,
