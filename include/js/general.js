@@ -1595,6 +1595,10 @@ function getProcessInfo(edit_type, formName, action, callback, parameters) {
 	if (callback!='') {
 		params = params + '&savefn=' + callback;
 	}
+	const reminderId = document.activeElement.dataset.reminderId;
+	if (reminderId !== undefined) {
+		params += '&ProcessReminderID=' + reminderId;
+	}
 	window.open('index.php?action=cbProcessInfoAjax&file=bpmpopup&module=cbProcessInfo'+params, null, cbPopupWindowSettings + ',dependent=yes');
 }
 

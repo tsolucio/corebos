@@ -411,6 +411,7 @@ class cbCalendar extends CRMEntity {
 
 	public static function setToDoListSmarty($ACTIVITY, $smarty) {
 		$smarty->assign('TASKItemID', $ACTIVITY['popupid']);
+		$smarty->assign('TASKReminderID', $ACTIVITY['cbreminderid']);
 		$smarty->assign('TASKItemRead', $ACTIVITY['cbreaded']);
 		$smarty->assign('TASKImage', $ACTIVITY['activityimage']);
 		$smarty->assign('TASKType', $ACTIVITY['activitytype']);
