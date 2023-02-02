@@ -1312,6 +1312,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Name|Number|Expression',
 	'definition' => 'When merging a GenDoc workflow email attachment, the name used for the attachment will be the Entity Name field (Name) or the Entity Number field (Number) concatenated with the template name. If set to Expression, the result of the related business map will be used.',
 ),
+'Workflow_Email_duplicate_GenDoc_document' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'enable or disable creating a new document in storage and Documents module Each time you send an email with a GenDoc template.',
+),
 'Workflow_GeoDistance_Country_Default' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',

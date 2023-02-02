@@ -3904,4 +3904,14 @@ function validateClickHouseSecret($signedvalue, $signedkey, $input) {
 	$computedSignature = base64_encode(hash_hmac('sha256', $input, $signedvalue, true));
 	return ($receivedSignature === $computedSignature);
 }
+
+function convertPathFromAbsoluteToRelative($absolutePath) {
+	global $root_directory;
+	$prefix_pos = strpos($absolutePath, $root_directory);
+	if (!$prefix_pos) {
+		return "";
+	}
+	return substr($absolutePath, $prefix_pos + strlen($root_directory));
+}
+
 ?>
