@@ -223,6 +223,19 @@ class cbQuestion extends CRMEntity {
 			$query .= ';';
 		} elseif ($q->column_fields['querytype'] == 'Direct Sql') {
 			$query = decode_html($q->column_fields['qcolumns']);
+			if (!empty($params)) {
+				$queryparams = 'set ';
+				$paramcount = 1;
+				$qpprefix = '@qp'.time();
+				foreach ($params as $param => $value) {
+					$qp = $qpprefix.$paramcount;
+					$paramcount++;
+					$queryparams.= $adb->convert2Sql(" $qp = ?,", [$value]);
+					$query = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $query);
+				}
+				$queryparams = trim($queryparams, ',');
+				$adb->query($queryparams);
+			}
 		} else {
 			$chkrs = $adb->pquery(
 				'SELECT 1 FROM (select name from `vtiger_ws_entity` UNION select name from vtiger_tab) as tnames where name=?',
