@@ -1,7 +1,9 @@
 const ldsModalClosing = new Event('closemodal');
 const ldsModal = {
-	show : (headText, content, size = 'medium', saveAction = '', cancelButtonText = '', destroy = true) => {
+	show : (headText, content, size = 'medium', saveAction = '', cancelButtonText = '', destroy = true, drawButtonBool = false, drawButtonText = '', doc2edit = '') => {
 		cancelButtonText = cancelButtonText === '' ? alert_arr.JSLBL_CANCEL : cancelButtonText;
+		drawButtonText = drawButtonText === '' ? alert_arr.JSLBL_DRAW : drawButtonText;
+		let drawButton = (drawButtonBool !==false && doc2edit != '') ? `<button class="slds-button slds-button_neutral" id="drawOnImage" onClick="javascript:window.open('index.php?module=Utilities&action=UtilitiesAjax&file=Paint2Document&formodule=Contacts&forrecord=1084&inwindow=1&doc2edit=${doc2edit}','photo2doc','width=800,height=860')">${drawButtonText}</button>`:``;
 		let sact = (saveAction!==false && saveAction!='') ? `<button class="slds-button slds-button_brand" onclick="${saveAction}">${alert_arr.JSLBL_SAVE}</button>` : '';
 		let modal = `<section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_${size}" aria-modal="true">
 			<div class="slds-modal__container">
@@ -24,6 +26,7 @@ const ldsModal = {
 					${content}
 				</div>
 				<footer class="slds-modal__footer" style="width: 100%;">
+					${drawButton}
 					<button class="slds-button slds-button_neutral" onClick="javascript:ldsModal.close(${destroy})">${cancelButtonText}</button>
 					${sact}
 				</footer>

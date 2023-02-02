@@ -40,6 +40,7 @@ class paint2Document_DetailViewBlock extends DeveloperBlock {
 		$inwindow = $this->getFromContext('inwindow');
 		$formodule = $this->getFromContext('formodule');
 		$forrecord = $this->getFromContext('forrecord');
+		$doc2edit = $this->getFromContext('doc2edit');
 		$companyDetails = retrieveCompanyDetails();
 		$smarty->assign('COMPANY_DETAILS', $companyDetails);
 		$smarty->assign('APP', $app_strings);
@@ -54,6 +55,19 @@ class paint2Document_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('FOLDERS', $folders);
 		$smarty->assign('FOLDERID', $this->getFromContext('folderid'));
 		$smarty->assign('USER_LANG', $current_user->language);
+		if ($doc2edit){
+			$d = CRMEntity::getInstance('Documents');
+			$d->retrieve_entity_info($doc2edit, 'Documents');
+			$d->id = $doc2edit;
+			$flds = $d->getFolders();
+			$docPath = $d->getAttachmentPath($doc2edit, true);
+		}
+		$smarty->assign('DOCTITLE', empty($d->column_fields) ? '' : $d->column_fields['notes_title']);
+		$smarty->assign('DOCFNAME', empty($d->column_fields) ? '' : $d->column_fields['filename']);
+		$smarty->assign('DOC2EDITID', empty($doc2edit) ? '' : $doc2edit);
+		$smarty->assign('PATH', empty($docPath) ? 'include/components/toast-ui/image-editor/blank.png' : $docPath);
+		$smarty->assign('DOCFOLDERID', empty($flds) ? '' : $flds[0]);
+		$smarty->assign('DOCDESC', empty($d->column_fields) ? '' : $d->column_fields['notecontent']);
 		return $smarty->fetch('Smarty/templates/Components/Paint/index.tpl');
 	}
 }
