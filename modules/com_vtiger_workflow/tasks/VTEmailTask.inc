@@ -69,9 +69,9 @@ class VTEmailTask extends VTTask {
 			$calculation = GlobalVariable::getVariable('Workflow_Email_GenDoc_Attachment_Name', 'Name', $this->entitymodule);
 			// check whether to duplicate or not
 			if (empty($entity->WorkflowContext['duplicateGenDocDocument'])) {
-				$this->$isDuplicateDocument = filter_var(GlobalVariable::getVariable('Workflow_Email_duplicate_GenDoc_document', 0), FILTER_VALIDATE_BOOLEAN);
+				$this->$isDuplicateDocument = filter_var(GlobalVariable::getVariable('Workflow_Email_GenDoc_Save_Document', 0), FILTER_VALIDATE_BOOLEAN);
 			} else {
-				$this->$isDuplicateDocument = filter_var($entity->WorkflowContext['duplicateGenDocDocument'], FILTER_VALIDATE_BOOLEAN);
+				$this->$isDuplicateDocument = filter_var($entity->WorkflowContext['saveGenDocDocument'], FILTER_VALIDATE_BOOLEAN);
 			}
 			foreach ($aids as $docid) {
 				$docrs = $adb->pquery($query, array($docid));

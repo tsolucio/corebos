@@ -1312,11 +1312,11 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Name|Number|Expression',
 	'definition' => 'Al fusionar una plantilla GenDoc adjunto a un correo electrónico de flujo de trabajo, el nombre utilizado para el archivo adjunto será el campo Nombre de la entidad (Name) o el campo Número de entidad (Number) concatenados con el nombre de la plantilla. Si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado.',
 ),
-'Workflow_Email_duplicate_GenDoc_document' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+'Workflow_Email_GenDoc_Save_Document' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'enable or disable creating a new document in storage and Documents module Each time you send an email with a GenDoc template.',
+	'definition' => 'Habilita o deshabilita la creación de un nuevo documento en el módulo de Documentos y el storage cada vez que se envía un correo electrónico con una plantilla GenDoc.',
 ),
 'Workflow_GeoDistance_Country_Default' => array(
 	'valuetype' => 'Texto',
