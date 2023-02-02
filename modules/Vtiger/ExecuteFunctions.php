@@ -199,7 +199,11 @@ switch ($functiontocall) {
 					);
 					$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, $field);
 					$output = getDetailViewOutputHtml($finfo['uitype'], $finfo['fieldname'], $finfo['fieldlabel'], $row, $finfo['generatedtype'], $orgtabid, $module);
-					$ret[$field]= $output[1];
+					if (isset($output['parent_id'])) {
+						$ret[$field]= $output['parent_id'];
+					} else {
+						$ret[$field]= $output[1];
+					}
 				}
 			}
 		}
