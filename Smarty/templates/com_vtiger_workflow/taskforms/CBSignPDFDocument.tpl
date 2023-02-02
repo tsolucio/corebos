@@ -45,6 +45,22 @@
 
 <div class="slds-grid slds-p-horizontal_x-large">
 	<div class="slds-col slds-size_6-of-12 slds-p-around_x-small">
+		<div class="slds-form-element">
+			<div class="slds-form-element__control slds-m-top_medium">
+				<div class="slds-checkbox">
+					<input type="checkbox" name="usecontextcoordinates" id="usecontextcoordinates" {if $task->usecontextcoordinates}checked{/if}/>
+					<label class="slds-checkbox__label" for="usecontextcoordinates">
+						<span class="slds-checkbox_faux"></span>
+						<span class="slds-form-element__label">{$MOD.usecontextcoordinates}</span>
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="slds-grid slds-p-horizontal_x-large">
+	<div class="slds-col slds-size_6-of-12 slds-p-around_x-small">
 		<label class="slds-form-element__label" for="coordX">{'Coordinate X'|@getTranslatedString}</label>
 		<div class="slds-form-element">
 			<div class="slds-form-element__control">
