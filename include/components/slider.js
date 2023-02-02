@@ -91,7 +91,11 @@ const Slider = {
 				</div>
 			</div>
 		`;
-		ldsModal.show(header, content, 'large', '', '', '', true, '', encodeURIComponent(id));
+		let doc2edit = encodeURIComponent(id);
+		let drawButton = (doc2edit != '') ?
+			`<button class="slds-button slds-button_neutral" id="drawOnImage" onClick="javascript:window.open('index.php?module=Utilities&action=UtilitiesAjax&file=Paint2Document&formodule=Contacts&forrecord=1084&inwindow=1&doc2edit=${doc2edit}','photo2doc','width=800,height=860')">${alert_arr.JSLBL_DRAW}</button>`
+			: '';
+		ldsModal.show(header, content, 'large', '', '', true, drawButton);
 	}
 }
 
