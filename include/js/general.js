@@ -1477,7 +1477,7 @@ function runBAScript(scripturi) {
 	return void(0);
 }
 
-function runBAWorkflow(workflowid, crmids, context = '') {
+function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false) {
 	if (typeof workflowid == 'undefined' || workflowid == '') {
 		return false;
 	}
@@ -1508,7 +1508,10 @@ function runBAWorkflow(workflowid, crmids, context = '') {
 			}
 		}
 		VtigerJS_DialogBox.unblock();
-		corebosjshook_runBAWorkflow(workflowid, crmids);
+		corebosjshook_runBAWorkflow(workflowid, crmids, response);
+		if (refreshDV) {
+			dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
+		}
 	});
 	return void(0);
 }
