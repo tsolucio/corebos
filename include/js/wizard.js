@@ -754,6 +754,9 @@ class WizardComponent {
 			delete this.IsDuplicatedFrom[this.ActiveStep-1];
 			return true;
 		}
+		if (this.Context.id === undefined) {
+			this.Context['id'] = this.MainSelectedId;
+		}
 		const url = `${this.url}&wizardaction=CustomCreate&subaction=${this.WizardCustomFunction[this.ActiveStep]}&step=${this.ActiveStep}&rid=${this.Context.id}&mainid=${this.MainSelectedId}`;
 		let rows = [];
 		for (let i in this.CheckedRows[this.ActiveStep]) {
