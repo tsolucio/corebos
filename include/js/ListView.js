@@ -1176,6 +1176,16 @@ function getSelectedRecordsFromLV() {
 	return [excludedRecords, searchurl, idstring, viewid, confirm_status];
 }
 
+function runBAWorkflowFromListView(workflowid, context) {
+	let lvinfo = getSelectedRecordsFromLV();
+	if (lvinfo) {
+		let crmids = lvinfo[2];
+		if (crmids != '') {
+			runBAWorkflow(workflowid, crmids, context);
+		}
+	}
+}
+
 function runBAScriptFromListView(scriptname, module, callback) {
 	if (document.getElementById('allids').value=='' && document.getElementById('allselectedboxes').value=='') {
 		alert(alert_arr.SELECT);
