@@ -1553,7 +1553,8 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				}
 			}
 		}
-		if (!empty($block_sequence) && $module != 'Users') {
+		$specialModules = array('Users', 'Emails');
+		if (!empty($block_sequence) && !in_array($module, $specialModules)) {
 			$returndata_[$curBlock]['__header'] = $i18nidx;
 			$returndata_[$curBlock]['__fields'] = $returndata[$i18nidx];
 			$returndata_[$curBlock]['__type'] = 'block';
