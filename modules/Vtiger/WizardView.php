@@ -53,8 +53,8 @@ if ($cbMapid) {
 			$context = array(
 				'mapid' => $value['detailviewlayoutmap'],
 			);
-			$view = $setfield->process($context);
 			$smarty->assign('WizardStep', $step);
+			$view = $setfield->process($context);
 			$views[$key] = $view;
 			$step++;
 		}
