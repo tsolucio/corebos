@@ -101,20 +101,12 @@ class CustomView extends CRMEntity {
 			} else {
 				$viewid = cbCVManagement::getDefaultView($module, $current_user->id);
 				if (empty($viewid)) {
-					$defcv_result = $adb->pquery(
-						'select default_cvid from vtiger_user_module_preferences where userid = ? and tabid =?',
-						array($current_user->id, getTabid($module))
-					);
-					if ($adb->num_rows($defcv_result) > 0) {
-						$viewid = $adb->query_result($defcv_result, 0, 'default_cvid');
+					$query = 'select cvid from vtiger_customview where setdefault=1 and entitytype=?';
+					$cvresult = $adb->pquery($query, array($module));
+					if ($adb->num_rows($cvresult) > 0) {
+						$viewid = $adb->query_result($cvresult, 0, 'cvid');
 					} else {
-						$query = 'select cvid from vtiger_customview where setdefault=1 and entitytype=?';
-						$cvresult = $adb->pquery($query, array($module));
-						if ($adb->num_rows($cvresult) > 0) {
-							$viewid = $adb->query_result($cvresult, 0, 'cvid');
-						} else {
-							$viewid = '';
-						}
+						$viewid = '';
 					}
 				}
 			}
@@ -164,20 +156,17 @@ class CustomView extends CRMEntity {
 	 */
 	public function getCustomViewByCvid($cvid) {
 		global $adb, $current_user;
+		global $log;
 		$result = $adb->pquery(
 			'select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name=vtiger_customview.entitytype where vtiger_customview.cvid=?',
 			array($cvid)
 		);
 		$permissions = cbCVManagement::getPermission($cvid, $current_user->id);
 		$def_cvid = cbCVManagement::getDefaultView($this->customviewmodule, $current_user->id);
-		if (empty($def_cvid)) {
-			$tabid = getTabid($this->customviewmodule);
-			$usercv_result = $adb->pquery('select default_cvid from vtiger_user_module_preferences where userid = ? and tabid = ?', array($current_user->id, $tabid));
-			$def_cvid = $adb->query_result($usercv_result, 0, 'default_cvid');
-		}
 		$customviewlist = array();
 		if ($result && $adb->num_rows($result)>0) {
 			$cvrow = $adb->fetch_array($result);
+			global $log;
 			if ($permissions['R'] || $cvrow['viewname']=='All') {
 				$customviewlist['viewname'] = $cvrow['viewname'];
 				if ($def_cvid == $cvid) {
@@ -188,6 +177,7 @@ class CustomView extends CRMEntity {
 				$customviewlist['setmetrics'] = $cvrow['setmetrics'];
 				$customviewlist['userid'] = $cvrow['userid'];
 				$customviewlist['status'] = $cvrow['status'];
+				$customviewlist['setPrivate'] = cbCVManagement::getSetPrivateByCvId($cvid);
 			}
 		}
 		return $customviewlist;
@@ -1494,23 +1484,15 @@ class CustomView extends CRMEntity {
 		return array('status' => $this->_status, 'userid' => $this->_userid);
 	}
 
-	public function CustomPermissions($record_id) {
-		global $adb;
-		$rs = $adb->pquery('select * from vtiger_cbcvmanagement inner join vtiger_crmentity on crmid=cbcvmanagementid where deleted=0 and cvid=?', array(
-			$record_id
-		));
-		if ($adb->num_rows($rs) == 1) {
-			return array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
-		}
-		return false;
-	}
-
 	//Function to check if the current user is able to see the customView
 	public function isPermittedCustomView($record_id, $action, $module) {
-		global $log, $current_user;
+		global $log, $current_user, $adb;
 		$log->debug("> isPermittedCustomView $record_id,$action,$module");
 		//check for custom permissions
-		$cp = $this->CustomPermissions($record_id);
+		$cp = cbCVManagement::getFilterViewPermission($record_id);
+		// if (!$filterPermission['R']) {
+		// 	return 'no';
+		// }
 		if ($cp && !is_admin($current_user)) {
 			$pmvalue = array('no', 'yes');
 			$cvrole = explode(' |##| ', $cp['cvrole']);
@@ -1528,7 +1510,6 @@ class CustomView extends CRMEntity {
 
 		if ($record_id != '') {
 			$status_userid_info = $this->getStatusAndUserid($record_id);
-
 			if ($status_userid_info) {
 				$status = $status_userid_info['status'];
 				$userid = $status_userid_info['userid'];

@@ -108,21 +108,21 @@ function mandatoryCheck() {
 					<td class="dvtCellInfo" width="30%">
 						<input class="detailedViewTextBox" type="text" name='viewName' value="{if isset($VIEWNAME)}{$VIEWNAME}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" size="40" {if $PERMITALL eq 'true'}disabled{/if}/>
 					</td>
-					<td class="dvtCellInfo" width="20%">
+					<td class="dvtCellInfo" width="15%">
 					{if $CHECKED eq 'checked'}
 						<input type="checkbox" name="setDefault" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_SETDEFAULT}
 					{else}
 						<input type="checkbox" name="setDefault" value="0" {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_SETDEFAULT}
 					{/if}
 					</td>
-					<td class="dvtCellInfo" width="20%">
+					<td class="dvtCellInfo" width="15%">
 					{if $MCHECKED eq 'checked'}
 						<input type="checkbox" name="setMetrics" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_LIST_IN_METRICS}
 					{else}
 						<input type="checkbox" name="setMetrics" value="0" {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_LIST_IN_METRICS}
 					{/if}
 					</td>
-					<td class="dvtCellInfo" width="20%">
+					<td class="dvtCellInfo" width="15%">
 					{if $PERMITALL eq 'true'}
 						<input type="checkbox" name="setStatus" value="0" checked {if $PERMITALL eq 'true'}disabled{/if} />
 					{else}
@@ -135,6 +135,14 @@ function mandatoryCheck() {
 						{/if}
 					{/if}
 						{$MOD.LBL_SET_AS_PUBLIC}
+					</td>
+					<td class="dvtCellInfo" width="15%">
+						{if isset($setPrivate)}
+							<input type="checkbox" name="setPrivate" value="1" {$setPrivate} />
+						{else}
+							<input type="checkbox" name="setPrivate" value="1" />
+						{/if}
+						{$MOD.LBL_SET_AS_PRIVATE}
 					</td>
 				</tr>
 			</table>

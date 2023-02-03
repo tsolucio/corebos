@@ -42,4 +42,11 @@
 	<classname>addBAforMasterDetail</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>maliknajjar</author>
+	<description>add set private field for View Permissions module</description>
+	<filename>build/changeSets/2023/addIsPrivateFieldToCbCVManagement.php</filename>
+	<classname>addIsPrivateFieldToCbCVManagement</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

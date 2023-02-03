@@ -88,6 +88,7 @@ if ($recordid == '') {
 		if ($customviewdtls['setmetrics'] == 1) {
 			$smarty->assign('MCHECKED', 'checked');
 		}
+		$smarty->assign('setPrivate', $customviewdtls['setPrivate'] ? 'checked' : '');
 		$status = $customviewdtls['status'];
 		$smarty->assign('STATUS', $status);
 		$choosecolslist = $oCustomView->getByModule_ColumnsList($modulecollist);
