@@ -21,6 +21,7 @@
 <title>Process Title</title>
 <operation></operation>
 <instantshow>0|1</instantshow>
+<subwizardmainfield>related_product</subwizardmainfield>
 <steps>
 	<step>
 		<title></title>
@@ -104,6 +105,7 @@ class Wizard extends processcbMap {
 		$this->mapping['title'] = (isset($xml->title) ? (string)$xml->title : '');
 		$this->mapping['operation'] = (isset($xml->operation) ? (string)$xml->operation : '');
 		$this->mapping['instantshow'] = (isset($xml->instantshow) ? boolval((string)$xml->instantshow) : false);
+		$this->mapping['subwizardmainfield'] = (isset($xml->subwizardmainfield) ? (string)$xml->subwizardmainfield : '');
 		usort($steps, function ($a, $b) {
 			return $a['sequence'] > $b['sequence'] ? 1 : -1;
 		});

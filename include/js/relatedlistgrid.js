@@ -191,7 +191,8 @@ var relatedlistgrid = {
 			relatedlistgrid.Request(url, 'post', {
 				grid: grid,
 				recordid: id,
-				isModal: true
+				isModal: true,
+				modname: module,
 			}).then(function (response) {
 				ldsModal.close();
 				ldsModal.show('Wizard', response, 'large', '', '', false);

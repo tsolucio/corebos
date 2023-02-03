@@ -16,6 +16,9 @@
 	<script src="include/js/wizard.js"></script>
 	{/if}
 	<script type="text/javascript">
+		wizard.Context = {};
+		wizard.CheckedRows = [];
+		wizard.MainSelectedId = 0;
 		wizard.steps = {$wizardTotal};
 		wizard.MCModule = '{$formodule}';
 		wizard.GroupByField = '{$GroupBy}';
@@ -23,6 +26,7 @@
 		wizard.isModal = {$isModal};
 		wizard.gridInstance = '{$gridInstance}';
 		wizard.RecordID = '{$RecordID}';
+		wizard.SubWizardInfoMainId = '{$SubWizardInfo}';
 		wizard.IsDuplicatedFromProduct = [];
 		wizard.DeleteSession().then(function() {
 			window.addEventListener('DOMContentLoaded', () => {

@@ -59,6 +59,12 @@ if ($cbMapid) {
 		$smarty->assign('isModal', empty($data) ? 0 : true);
 		$smarty->assign('gridInstance', !empty($data) ? $data['grid'] : '');
 		$smarty->assign('RecordID', !empty($data) ? $data['recordid'] : 0);
+		$smarty->assign('SubWizardInfo', '');
+		if ($cbMapWz['instantshow'] && !empty($data['modname']) && !empty($cbMapWz['subwizardmainfield'])) {
+			$focus = CRMEntity::getInstance($data['modname']);
+			$focus->retrieve_entity_info($data['recordid'], $data['modname']);
+			$smarty->assign('SubWizardInfo', $focus->column_fields[$cbMapWz['subwizardmainfield']]);
+		}
 	}
 } else {
 	$smarty->assign('showDesert', true);

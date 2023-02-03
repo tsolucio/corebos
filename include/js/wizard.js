@@ -46,6 +46,7 @@ class WizardComponent {
 		this.ProceedToNextStep = true;
 		this.ResetWizard = true;
 		this.MainSelectedId = 0; //the record selected/duplicated in first step
+		this.SubWizardInfoMainId = 0;
 		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI';
 		//formtemplate params
 		this.FormFields = [];
@@ -92,6 +93,10 @@ class WizardComponent {
 				this.el(`seq-${i}`).style.display = 'none';
 			}
 		}
+		const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
+		if (checkedRows.length == 0) {
+			delete this.CheckedRows[this.ActiveStep];
+		}
 	}
 
 	/**
@@ -121,10 +126,19 @@ class WizardComponent {
 		if (ev != '') {
 			type = ev.target.dataset.type;
 		}
+		if (this.WizardInstance[`wzgrid${this.ActiveStep+1}`] !== undefined) {
+			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep+1}`].getCheckedRows();
+			if (checkedRows.length == 0) {
+				delete this.CheckedRows[this.ActiveStep+1];
+			}
+		}
 		if (this.WizardValidate[this.ActiveStep]) {
 			if (!this.CheckSelection(ev)) {
 				return false;
 			}
+		}
+		if (this.SubWizardInfoMainId != 0) {
+			this.MainSelectedId = parseInt(this.SubWizardInfoMainId);
 		}
 		this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep+1]);
 		if (this.WizardRequiredAction[this.ActiveStep] == 'duplicate' && this.IsDuplicatedFrom[this.ActiveStep] == undefined && type == 'next') {
@@ -405,6 +419,7 @@ class WizardComponent {
 							let res = JSON.parse(response);
 							if (res.success) {
 								ev.instance.readData(1);
+								wizard.CheckRows(wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].getPagination()._options);
 							} else {
 								ldsNotification.show(alert_arr.ERROR, alert_arr.Failed, 'error');
 							}
@@ -771,12 +786,16 @@ class WizardComponent {
 		}
 		let rows = [];
 		//get FROMID
-		for (let i in this.CheckedRows[0]) {
-			let ids = [];
-			for (let j in this.CheckedRows[0][i]) {
-				ids.push(this.CheckedRows[0][i][j].id);
+		if (this.SubWizardInfoMainId == 0) {
+			for (let i in this.CheckedRows[0]) {
+				let ids = [];
+				for (let j in this.CheckedRows[0][i]) {
+					ids.push(this.CheckedRows[0][i][j].id);
+				}
+				rows.push(ids);
 			}
-			rows.push(ids);
+		} else {
+			rows.push([this.MainSelectedId]);
 		}
 		//get TOIDS
 		if (this.CheckedRows[this.ActiveStep] == undefined && this.WizardMode[this.ActiveStep+1] == 'ListView') {
@@ -1133,7 +1152,6 @@ class WizardComponent {
 	}
 
 	async CreateFormRow(data) {
-		console.log(this.FormModule)
 		const url = `${this.url}&wizardaction=CreateForm&subaction=CreateForm`;
 		const array = Object.entries(data).map(([key, value]) => ({ key, value }));
 		return await this.Request(url, 'post', {
