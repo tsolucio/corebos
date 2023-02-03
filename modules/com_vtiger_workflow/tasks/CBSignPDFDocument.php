@@ -34,13 +34,25 @@ class CBSignPDFDocument extends VTTask {
 	public $taskSavedData = array();
 	public $executeImmediately = true;
 	public $queable = false;
+	public $image_field;
+	public $coordX;
+	public $coordY;
+	public $usecontextcoordinates;
 
 	public function getFieldNames() {
-		return array('image_field', 'coordX', 'coordY');
+		return array('image_field', 'coordX', 'coordY', 'usecontextcoordinates');
+	}
+
+	public function after_retrieve() {
+		$this->taskSavedData = array(
+			'image_field' => $this->image_field,
+			'coordX' => $this->coordX,
+			'coordY' => $this->coordY );
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $site_URL, $current_user;
+		global $adb, $site_URL, $current_user, $logbg;
+		$logbg->debug('> SignPDFDocument');
 		$moduleName = $entity->getModuleName();
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
@@ -48,16 +60,32 @@ class CBSignPDFDocument extends VTTask {
 
 		if ($this->image_field != '') {
 			$image_field = $this->image_field;
-			$width = (int)$this->coordX;
-			$height = (int)$this->coordY;
+			$width = 0;
+			$height = 0;
+
+			if (isset($this->usecontextcoordinates) && $this->usecontextcoordinates == 'on') {
+				// PDF dimensions == A4 dimensions in Landscape i.e. 297 x 210
+				if (isset($entity->WorkflowContext['coordXPercentage'])) {
+					$width = round(297 * (floatval($entity->WorkflowContext['coordXPercentage']) / 100));
+				}
+				if (isset($entity->WorkflowContext['coordYPercentage'])) {
+					$height = round(210 * (floatval($entity->WorkflowContext['coordYPercentage']) / 100));
+				}
+			} else {
+				$width = (int)$this->coordX;
+				$height = (int)$this->coordY;
+			}
 
 			// Fetching PDF
-			$sql = "select vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime, vtiger_seattachmentsrel.attachmentsid attachmentsid, vtiger_crmentity.smownerid smownerid, vtiger_notes.notesid crmid,vtiger_notes.notecontent description,vtiger_notes.* from vtiger_notes
+			$sql = 'select vtiger_attachments.type FileType, vtiger_attachments.path as path, vtiger_attachments.name as name,crm2.modifiedtime lastmodified,
+					vtiger_crmentity.modifiedtime, vtiger_seattachmentsrel.attachmentsid attachmentsid, vtiger_crmentity.smownerid smownerid,
+					vtiger_notes.notesid crmid, vtiger_notes.notecontent description, vtiger_notes.*
+				from vtiger_notes
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
 				inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
 				inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid
 				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
-				left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid";
+				left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid';
 			$sql .= getNonAdminAccessControlQuery($moduleName, $current_user);
 			$sql .= ' WHERE vtiger_crmentity.deleted = 0 and crm2.crmid=? order by vtiger_attachments.attachmentsid desc LIMIT 1';
 			$rs = $adb->pquery($sql, array($recordId));
@@ -78,9 +106,9 @@ class CBSignPDFDocument extends VTTask {
 					// Getting image
 					$signature_path = '';
 					$sql = "select vtiger_attachments.*
-					from vtiger_attachments
-					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-					where vtiger_crmentity.setype='Users Attachment' and vtiger_attachments.name = ?";
+						from vtiger_attachments
+						inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
+						where vtiger_crmentity.setype='Users Attachment' and vtiger_attachments.name=?";
 					$image_res = $adb->pquery($sql, array(str_replace(' ', '_', decode_html($current_user->$image_field))));
 					if ($adb->num_rows($image_res)>0) {
 						$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
@@ -90,6 +118,7 @@ class CBSignPDFDocument extends VTTask {
 					}
 					if ($signature_path != '') {
 						// Adding Image to PDF;
+						$logbg->debug('(SignPDFDocument) signing the PDF', [$signature_path, $width, $height]);
 						$pdf = new FPDI();
 						$pages_count = $pdf->setSourceFile($file_storage_path);
 						for ($i = 1; $i <= $pages_count; $i++) {
@@ -101,20 +130,19 @@ class CBSignPDFDocument extends VTTask {
 								$pdf->Image($signature_path, $width, $height, '', '', '', '', '', false, 300);
 							}
 						}
-
 						$pdf->Output($file_storage_path, 'F');
+					} else {
+						$logbg->debug('(SignPDFDocument) not called: the signature path is empty');
 					}
 				}
 				$util->revertUser();
+			} else {
+				$logbg->debug('(SignPDFDocument) not called: no PDFs where found');
 			}
+		} else {
+			$logbg->debug('(SignPDFDocument) not called: the image_field is empty');
 		}
-	}
-
-	public function after_retrieve() {
-		$this->taskSavedData = array(
-			'image_field' => $this->image_field,
-			'coordX' => $this->coordX,
-			'coordY' => $this->coordY );
+		$logbg->debug('< SignPDFDocument');
 	}
 }
 ?>

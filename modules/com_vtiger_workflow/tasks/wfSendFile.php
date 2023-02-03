@@ -24,13 +24,18 @@ class wfSendFile extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
 	public $_accessToken = array();
+	public $credentialid;
+	public $credentialid_display;
+	public $filename;
+	public $exptype;
 
 	public function getFieldNames() {
 		return array('credentialid', 'credentialid_display', 'filename', 'exptype');
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $site_URL, $current_language, $default_charset;
+		global $adb, $site_URL, $current_language, $default_charset, $logbg;
+		$logbg->debug('> wfSendFile');
 		$workflow_context = $entity->WorkflowContext;
 		$reportfile_context = !empty($entity->WorkflowContext['wfgenerated_file']) ? $entity->WorkflowContext['wfgenerated_file'] : array();
 		$query = 'select * from vtiger_cbcredentials inner join vtiger_crmentity on crmid=cbcredentialsid where deleted=0 and cbcredentialsid=?';
@@ -44,7 +49,7 @@ class wfSendFile extends VTTask {
 		if ($this->exptype == 'rawtext') {
 			if ($filename != '') {
 				for ($y=0; $y < count($reportfile_context); $y++) {
-					$workflow_context['wfgenerated_file'][$y]['dest_name'] = empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
+					$workflow_context['wfgenerated_file'][$y]['dest_name']=empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
 				}
 			}
 		} elseif ($this->exptype == 'fieldname') {
@@ -55,7 +60,7 @@ class wfSendFile extends VTTask {
 				$fn = new VTSimpleTemplate(trim($filename));
 				$filename = $fn->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 				for ($y=0; $y < count($reportfile_context); $y++) {
-					$workflow_context['wfgenerated_file'][$y]['dest_name'] = empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
+					$workflow_context['wfgenerated_file'][$y]['dest_name']=empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
 				}
 			}
 		} else {
@@ -65,7 +70,7 @@ class wfSendFile extends VTTask {
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 				$filename = $exprEvaluater->evaluate($entity);
 				for ($y=0; $y < count($reportfile_context); $y++) {
-					$workflow_context['wfgenerated_file'][$y]['dest_name'] = empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
+					$workflow_context['wfgenerated_file'][$y]['dest_name']=empty($reportfile_context[$y]['dest_name']) ? $filename : $reportfile_context[$y]['dest_name'];
 				}
 			}
 		}
@@ -75,6 +80,7 @@ class wfSendFile extends VTTask {
 			require_once 'modules/Emails/Emails.php';
 			return send_mail('Email', 'sendfile@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $adapter, print_r($workflow_context, true));
 		}
+		$logbg->debug('(wfSendFile)', [$this->exptype, $this->credentialid, $adapter, $filename]);
 		if ($adapter == 'FTP') {
 			require_once 'modules/com_vtiger_workflow/actions/FTP.php';
 			$ftp = new FTPAdapter($data, $workflow_context);
@@ -134,7 +140,10 @@ class wfSendFile extends VTTask {
 			$storage = new GoogleStorageAdapter($data, $client, $workflow_context);
 			$storage->setUp();
 			$storage->writeFile();
+		} else {
+			$logbg->debug('(wfSendFile) not called: adapter is not supported');
 		}
+		$logbg->debug('< wfSendFile');
 	}
 }
 ?>

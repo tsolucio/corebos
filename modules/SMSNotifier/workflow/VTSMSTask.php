@@ -14,12 +14,17 @@ require_once 'modules/SMSNotifier/SMSNotifier.php';
 
 class VTSMSTask extends VTTask {
 	public $executeImmediately = true;
+	public $content;
+	public $sms_recepient;
 
 	public function getFieldNames() {
 		return array('content', 'sms_recepient');
 	}
 
 	public function doTask(&$entity) {
+		global $logbg;
+
+		$logbg->debug('> SMSTask');
 		if (SMSNotifier::checkServer()) {
 			global $current_user;
 			$util = new VTWorkflowUtils();
@@ -45,13 +50,20 @@ class VTSMSTask extends VTTask {
 				if (!empty($inBucketServeUrl)) {
 					require_once 'modules/Emails/mail.php';
 					require_once 'modules/Emails/Emails.php';
+					$logbg->debug('(SMSTask) sending email to inbucket');
 					return send_mail('Email', 'sms@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $tonumbers, $content);
 				} else {
+					$logbg->debug('(SMSTask) sending sms');
 					SMSNotifier::sendsms($content, $tonumbers, $current_user->id, $relatedCRMid, $relatedModule);
 				}
+			} else {
+				$logbg->debug('(SMSTask) not called: there are no phone numbers');
 			}
 			$util->revertUser();
+		} else {
+			$logbg->debug('(SMSTask) not called: no service is active');
 		}
+		$logbg->debug('< SMSTask');
 	}
 }
 ?>

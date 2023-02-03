@@ -117,5 +117,6 @@ $mod_strings = array(
 	'Value' => 'Valore',
 	'Description' => 'Descrizione',
 	'querytype' => 'Query Type',
+	'Direct Sql' => 'Direct SQL',
 );
 ?>

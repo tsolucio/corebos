@@ -414,6 +414,7 @@ var alert_arr = {
 	'JSLBL_Loading': 'Cargando',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'No se ha podido eliminar el adjunto',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Límite de carga excedida!!',
+	'JSLBL_DRAW': 'Dibujar',
 	'JSLBL_CANCEL': 'Cancelar',
 	'JSLBL_SAVEAS': 'Guardar como',
 	'JSLBL_SAVE': 'Guardar',
@@ -487,4 +488,5 @@ var alert_arr = {
 	'SelectField': 'Selecciona campo',
 	'MoveFile': 'Mover fichero',
 	'JSLBL_BACK': 'Back',
+	'GENDOC_CONFIRM_ACTION': '¿Estás seguro que quieres ejecutar esta operación?',
 };

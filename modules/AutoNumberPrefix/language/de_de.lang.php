@@ -9,14 +9,23 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Modulname',
-	'SINGLE_ModuleName' => 'Modulname',
-	'ModuleName ID' => 'Modulname ID',
+	'AutoNumberPrefix' => 'Auto Number Prefix',
+	'Prefix' => 'Prefix',
+	'SINGLE_AutoNumberPrefix' => 'Auto Number Prefix',
 
 	'LBL_CUSTOM_INFORMATION' => 'zusätzliche Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
+	'LBL_AUTO_NUMBER_PREFIX_INFORMATION' => 'Auto Number Prefix Information',
 	'LBL_DESCRIPTION_INFORMATION' => 'Beschreibung',
 
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'AutoNumberPrefix ID' => 'Auto Number Prefix ID',
+	'AutoPrefixNumber No' => 'Auto Number Prefix No',
+	'Active' => 'Active',
+	'Workflow Expression' => 'Workflow Expression',
+	'Module' => 'Module',
+	'Format' => 'Format',
+	'Current Value' => 'Current Value',
+	'Default' => 'Default',
+	'FIX_MISSING_NUMBERING' => 'Update Missing Record Sequence',
+	'LBL_MASSINCERROR' => 'Error trying to update the missing sequences',
 );
 ?>

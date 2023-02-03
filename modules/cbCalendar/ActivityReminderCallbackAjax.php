@@ -47,7 +47,7 @@ if (isPermitted('cbCalendar', 'index') == 'yes') {
 		$date = date('Y-m-d', strtotime("+$intervalInMinutes minutes", $time));
 		$date_inpast = date('Y-m-d', strtotime('-'.$Calendar_PopupReminder_DaysPast.' day', $time));
 		$time = date('H:i', strtotime("+$intervalInMinutes minutes", $time));
-		$callback_query = cbCalendar::getActionsQuery($current_user, $date, $date_inpast, $time, $list_max_entries_per_page);
+		$callback_query = cbCalendar::getActionsQuery($current_user, $date, $date_inpast, $time, $list_max_entries_per_page, 1);
 		$result = $adb->query($callback_query);
 
 		$cbrows = $adb->num_rows($result);

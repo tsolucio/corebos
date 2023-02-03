@@ -200,6 +200,10 @@ abstract class VTTask {
 	public $workflowId;
 	public $summary;
 	public $active;
+	public $id;
+	public $executionorder;
+	public $reevaluate;
+
 	abstract public function doTask(&$data);
 	abstract public function getFieldNames();
 

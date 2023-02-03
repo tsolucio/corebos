@@ -414,6 +414,7 @@ var alert_arr = {
 	'JSLBL_Loading': 'Laden',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Der Anhang konnte nicht gelöscht werden',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Upload-Limit erreicht!',
+	'JSLBL_DRAW': 'Draw',
 	'JSLBL_CANCEL': 'Abbrechen',
 	'JSLBL_SAVEAS': 'Speichern als',
 	'JSLBL_SAVE': 'Speichern',
@@ -484,4 +485,5 @@ var alert_arr = {
 	'currentuser': 'Current User',
 	'wfmodule': 'Workflow Module',
 	'JSLBL_BACK': 'Back',
+	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 };

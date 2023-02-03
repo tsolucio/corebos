@@ -402,6 +402,7 @@ var alert_arr = {
 	'JSLBL_Loading': 'Chargement',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Le fichier joint ne peut être supprimé',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Taille limite de fichier dépassée!!',
+	'JSLBL_DRAW': 'Draw',
 	'JSLBL_CANCEL': 'Cancel',
 	'JSLBL_SAVEAS': 'Save as',
 	'JSLBL_SAVE': 'Save',
@@ -468,4 +469,5 @@ var alert_arr = {
 	'SelectField': 'Select field',
 	'MoveFile': 'Move file',
 	'JSLBL_BACK': 'Back',
+	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 };

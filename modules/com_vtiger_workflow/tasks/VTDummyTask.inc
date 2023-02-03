@@ -25,8 +25,11 @@ class VTDummyTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
+		global $logbg;
+		$logbg->debug('> VTDummyTask');
 		$statement=$this->statement;
 		echo "This is a dummy workflow task: $statement";
+		$logbg->debug('< VTDummyTask');
 	}
 }
 ?>

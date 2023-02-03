@@ -394,6 +394,7 @@ var alert_arr = {
 	'JSLBL_Loading': 'Loading',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Attachment could not be deleted',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!',
+	'JSLBL_DRAW': 'Draw',
 	'JSLBL_CANCEL': 'Cancel',
 	'JSLBL_SAVEAS': 'Save as',
 	'JSLBL_SAVE': 'Save',
@@ -462,4 +463,5 @@ var alert_arr = {
 	'currentuser': 'Current User',
 	'wfmodule': 'Workflow Module',
 	'JSLBL_BACK': 'Back',
+	'GENDOC_SAVE_PDF': 'Are you sure you want to override template?',
 };

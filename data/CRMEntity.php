@@ -1187,6 +1187,7 @@ class CRMEntity {
 			}
 		}
 
+		$this->id = $record;
 		$this->column_fields['record_id'] = $record;
 		$this->column_fields['record_module'] = $module;
 		if (!in_array($module, $this->specialModules)) {

@@ -24,6 +24,33 @@ class Workflow {
 	public static $SCHEDULED_MONTHLY_BY_WEEKDAY = 6;
 	public static $SCHEDULED_ANNUALLY = 7;
 	public static $SCHEDULED_BY_MINUTE=8;
+	public $id;
+	public $moduleName;
+	public $description;
+	public $test;
+	public $select_expressions;
+	public $executionCondition;
+	public $schtypeid;
+	public $schtime;
+	public $schdayofmonth;
+	public $schdayofweek;
+	public $schannualdates;
+	public $schminuteinterval;
+	public $defaultworkflow;
+	public $purpose;
+	public $wfstarton;
+	public $wfendon;
+	public $active;
+	public $nexttrigger_time;
+	public $options;
+	public $cbquestion;
+	public $cbquestiondisplay;
+	public $recordset;
+	public $recordsetdisplay;
+	public $onerecord;
+	public $onerecorddisplay;
+	public $relatemodule;
+	public $conditionStrategy;
 
 	public function __construct() {
 		$this->conditionStrategy = new VTJsonCondition();

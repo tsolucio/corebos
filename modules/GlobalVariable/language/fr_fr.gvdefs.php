@@ -1309,8 +1309,14 @@ $GlobalVariableDefinitons = array(
 'Workflow_Email_GenDoc_Attachment_Name' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => 'Name|Number',
-	'definition' => 'When merging a GenDoc workflow email attachment, the name used for the attachment will be the Entity Name field (Name) or the Entity Number field (Number) concatenated with the template name.',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'When merging a GenDoc workflow email attachment, the name used for the attachment will be the Entity Name field (Name) or the Entity Number field (Number) concatenated with the template name. If set to Expression, the result of the related business map will be used.',
+),
+'Workflow_Email_GenDoc_Save_Document' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Enable or disable creating a new document in storage and Documents module each time you send an email with a GenDoc template.',
 ),
 'Workflow_GeoDistance_Country_Default' => array(
 	'valuetype' => 'Chaîne:<br>Nom de pays en Anglais',
@@ -1522,6 +1528,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Any valid Zero Bounce API KEY',
 	'definition' => 'The valid Zero Bounce API KEY',
 ),
+'GenDoc_Attachment_Name' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'When merging a GenDoc template, the name used for the download will be the module name concatenated with the Entity Name field (Name), or the Entity Number field (Number), or, if set to Expression, the result of the related business map will be used. In the business map, you can use three special context variables to determine the result: GDTemplateID, GDTemplateName, GDTemplateNumber',
+),
 'GenDoc_CopyLabelToClipboard' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Extension',
@@ -1544,13 +1556,31 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Extension',
 	'values' => 'URL',
-	'definition' => 'URL to the conversion server: https://github.com/sfoxdev/docker-unoconv',
+	'definition' => 'URL to the UNOCONV conversion server: https://github.com/sfoxdev/docker-unoconv',
+),
+'GenDoc_Convert_URL_UnoServer' => array(
+	'valuetype' => 'String',
+	'category' => 'Extension',
+	'values' => 'URL',
+	'definition' => 'URL to the UNOSERVER conversion server: https://github.com/lynxtaa/unoserver-web',
 ),
 'GenDoc_PDFConversion_Retries' => array(
 	'valuetype' => 'Integer',
 	'category' => 'Extension',
 	'values' => 'Positive Integer',
 	'definition' => 'The maximum number of retries when PDF conversion fails.',
+),
+'GenDoc_Confirm_ActionFor' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Example: ID1,ID2,...,IDn',
+	'definition' => 'A comma-separated list of document IDs to check before proceeding with the action.',
+),
+'GenDoc_Confirm_Actions' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '* | export,save,email',
+	'definition' => 'A comma-separated list of GenDoc actions.',
 ),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Integer',

@@ -415,6 +415,7 @@ var alert_arr = {
 	'JSLBL_Loading': 'Carregando',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'O anexo não pode ser excluído',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Limite de carregamento do arquivo excedido!!',
+	'JSLBL_DRAW': 'Draw',
 	'JSLBL_CANCEL': 'Cancelar',
 	'JSLBL_SAVEAS': 'Salvar como',
 	'JSLBL_SAVE': 'Salvar',
@@ -488,4 +489,5 @@ var alert_arr = {
 	'SelectField': 'Select field',
 	'MoveFile': 'Move file',
 	'JSLBL_BACK': 'Back',
+	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 };

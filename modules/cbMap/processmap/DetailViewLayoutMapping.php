@@ -176,6 +176,7 @@ class DetailViewLayoutMapping extends processcbMap {
 							'label' => getTranslatedString($lblraw, $mapping['origin']),
 							'labelraw' => $lblraw,
 							'uitype' => $finfo['uitype'],
+							'generatedtype' => $finfo['generatedtype'],
 						);
 					}
 					$idx++;

@@ -317,5 +317,6 @@ $mod_strings = array(
 'HELP_GenerateReportName' => 'The value in this variable will set or override the report name selected in the task',
 'HELP_GenerateQuestionName' => 'The value in this variable will set or override the question name selected in the task',
 'HELP_wfgenerated_file' => 'This is an output context variable with the result of the work done. It is an array of arrays that contain:<br>[<br>"path" => path of the generated file,<br>"name" => name of the file,<br>"hascontent" => true/false,<br>"content" => the generated content if `wfgenerated_returncontent` is set to true<br>]<br>Note that although this task can generate only one file, this context variable can contain many files. If you have more than one Generate Report task in the same workflow, the result of each task accumulates in this context variable, so you can effectively send more than one report in an email (for example). That means that to get the content element you have to use the offset of the task order, like this <pre>getFromContext(\'wfgenerated_file.0.content\')</pre>',
+'usecontextcoordinates' => 'Use coordinates from frontend',
 );
 ?>

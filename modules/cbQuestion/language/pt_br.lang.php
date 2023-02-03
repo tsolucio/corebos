@@ -104,5 +104,6 @@ $mod_strings = array(
 	'Export Results' => 'Export Results',
 	'Value' => 'Value',
 	'querytype' => 'Query Type',
+	'Direct Sql' => 'Direct SQL',
 );
 ?>

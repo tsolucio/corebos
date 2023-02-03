@@ -515,8 +515,7 @@
 <!-- Last visited panel -->
 <div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
-	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{$APP.LBL_LAST_VIEWED}">{$APP.LBL_LAST_VIEWED}
-	</h2>
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{$APP.LBL_LAST_VIEWED}">{$APP.LBL_LAST_VIEWED}</h2>
 	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'Close LAST_VIEWED'|@getTranslatedString}" onclick="panelViewHide(document.getElementById('cbds-last-visited'));">
 		<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
@@ -534,8 +533,8 @@
 							<svg class="{$trackelements.__ICONClass}" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use>
 							</svg>
-						<span class="slds-assistive-text">{$trackelements.module_name}</span>
-					</span>
+							<span class="slds-assistive-text">{$trackelements.module_name}</span>
+						</span>
 					</div>
 					<div class="slds-media__body">
 						<h2 class="slds-card__header-title slds-truncate">
@@ -573,13 +572,11 @@
 	jQuery('#tracker').draggable({ldelim} handle: "#Track_Handle" {rdelim});
 </script>
 <script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
-</div>
 <!-- ActivityReminder Customization for callback -->
 <audio id="newEvents" src="{$Calendar_Notification_Sound}" preload="auto"></audio>
 <div id="cbds-notificationpanel" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
-	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}">{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}
-	</h2>
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}">{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}</h2>
 	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__refresh" title="{'LBL_REFRESH'|@getTranslatedString}" onclick="ActivityReminderCallback();">
 		<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
@@ -625,10 +622,9 @@
 		</tr>
 	</table>
 	<table border='0' cellpadding='0' cellspacing='0' width='100%' class='hdrNameBg'>
+		<tr>
+			<td style='padding:10px;' colspan='2'>{$APP.LBL_OUTGOING_CALL_MESSAGE}</td>
 		</tr>
-		<tr><td style='padding:10px;' colspan='2'>
-			{$APP.LBL_OUTGOING_CALL_MESSAGE}
-		</td></tr>
 	</table>
 </div>
 <!-- divs for asterisk integration :: end-->

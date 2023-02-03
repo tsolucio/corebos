@@ -1309,8 +1309,14 @@ $GlobalVariableDefinitons = array(
 'Workflow_Email_GenDoc_Attachment_Name' => array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
-	'values' => 'Name|Number',
-	'definition' => 'Al fusionar una plantilla GenDoc adjunto a un correo electrónico de flujo de trabajo, el nombre utilizado para el archivo adjunto será el campo Nombre de la entidad (Name) o el campo Número de entidad (Number) concatenados con el nombre de la plantilla.',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'Al fusionar una plantilla GenDoc adjunto a un correo electrónico de flujo de trabajo, el nombre utilizado para el archivo adjunto será el campo Nombre de la entidad (Name) o el campo Número de entidad (Number) concatenados con el nombre de la plantilla. Si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado.',
+),
+'Workflow_Email_GenDoc_Save_Document' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Habilita o deshabilita la creación de un nuevo documento en el módulo de Documentos y el storage cada vez que se envía un correo electrónico con una plantilla GenDoc.',
 ),
 'Workflow_GeoDistance_Country_Default' => array(
 	'valuetype' => 'Texto',
@@ -1522,6 +1528,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Cualquier Clave API válida de Zero Bounce',
 	'definition' => 'Una clave válida para el API de Zero Bounce para poder validar cuentas de correo.',
 ),
+'GenDoc_Attachment_Name' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'Al fusionar una plantilla GenDoc, el nombre utilizado para la descarga será el nombre del módulo concatenado con el campo Nombre de la entidad (Name), o el número de la entidad (Number), o, si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado. En el mapa de negocios, puedes usar tres variables de contexto especiales para determinar el resultado: GDTemplateID, GDTemplateName, GDTemplateNumber',
+),
 'GenDoc_CopyLabelToClipboard' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Extensión',
@@ -1544,13 +1556,31 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Cadena',
 	'category' => 'Extensión',
 	'values' => 'URL',
-	'definition' => 'URL al servidor de conversión: https://github.com/sfoxdev/docker-unoconv',
+	'definition' => 'URL al servidor de conversión UNOCONV: https://github.com/sfoxdev/docker-unoconv',
+),
+'GenDoc_Convert_URL_UnoServer' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Extensión',
+	'values' => 'URL',
+	'definition' => 'URL al servidor de conversión UNOSERVER: https://github.com/lynxtaa/unoserver-web',
 ),
 'GenDoc_PDFConversion_Retries' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Extensión',
 	'values' => 'Entero positivo',
 	'definition' => 'El número máximo de reintentos al convertir la plantilla a PDF si falla la conversión.',
+),
+'GenDoc_Confirm_ActionFor' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Example: ID1,ID2,...,IDn',
+	'definition' => 'A comma-separated list of document IDs to check before proceeding with the action.',
+),
+'GenDoc_Confirm_Actions' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '* | export,save,email',
+	'definition' => 'A comma-separated list of GenDoc actions.',
 ),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Entero',
