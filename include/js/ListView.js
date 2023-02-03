@@ -1176,26 +1176,24 @@ function runBAScriptFromListView(scriptname, module, callback) {
 			confirm_status = true;
 		}
 
-		if (confirm_status) {
-			if (idstring) {
-				VtigerJS_DialogBox.block();
-				VtigerJS_DialogBox.showbusy();
-				let url = 'module='+module+'&action='+module+'Ajax&file='+scriptname;
-				url += '&ids=' + encodeURIComponent(idstring);
-				url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
-				url += '&viewname=' +encodeURIComponent(viewid);
-				url += '&searchurl=' +encodeURIComponent(searchurl);
-				jQuery.ajax({
-					method: 'POST',
-					url: 'index.php?'+url
-				}).done(function (response) {
-					VtigerJS_DialogBox.unblock();
-					VtigerJS_DialogBox.hidebusy();
-					if (typeof callback == 'function') {
-						callback(response);
-					}
-				});
-			}
+		if (confirm_status && idstring) {
+			VtigerJS_DialogBox.block();
+			VtigerJS_DialogBox.showbusy();
+			let url = 'module='+module+'&action='+module+'Ajax&file='+scriptname;
+			url += '&ids=' + encodeURIComponent(idstring);
+			url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
+			url += '&viewname=' +encodeURIComponent(viewid);
+			url += '&searchurl=' +encodeURIComponent(searchurl);
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+url
+			}).done(function (response) {
+				VtigerJS_DialogBox.unblock();
+				VtigerJS_DialogBox.hidebusy();
+				if (typeof callback == 'function') {
+					callback(response);
+				}
+			});
 		}
 	}
 }
