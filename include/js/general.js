@@ -1595,23 +1595,36 @@ function getProcessInfo(edit_type, formName, action, callback, parameters) {
 	if (callback!='') {
 		params = params + '&savefn=' + callback;
 	}
+	const reminderId = document.activeElement.dataset.reminderId;
+	if (reminderId !== undefined) {
+		params += '&ProcessReminderID=' + reminderId;
+	}
 	window.open('index.php?action=cbProcessInfoAjax&file=bpmpopup&module=cbProcessInfo'+params, null, cbPopupWindowSettings + ',dependent=yes');
 }
 
 function finishProcessInfo(module, return_id, mode, saveinfo) {
 	let sinfo = JSON.parse(decodeURIComponent(saveinfo));
+	let reload = true;
+	if (sinfo.ProcessReminderID!='') {
+		ExecuteFunctions('setNotificationStatus', 'status=2&remid='+sinfo.ProcessReminderID);
+	}
 	if (sinfo.originField!='') {
 		let fld = document.getElementById(sinfo.originField);
 		if (fld) {
+			reload = false;
 			fld.value = return_id;
 			submitFormForAction(sinfo.formName, sinfo.actionName);
 		} else {
 			let fld = document.getElementById('txtbox_'+sinfo.originField);
 			if (fld) {
+				reload = false;
 				fld.value = return_id;
 				dtlViewAjaxSave(sinfo.originField, sinfo.bpmmodule, sinfo.uitype, '', sinfo.originField, sinfo.bpmrecord);
 			}
 		}
+	}
+	if (reload) {
+		location.reload();
 	}
 }
 
