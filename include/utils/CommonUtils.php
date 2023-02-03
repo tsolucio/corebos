@@ -3957,18 +3957,4 @@ function getModuleFieldsInfo($module, $columns = ['*']) {
 	}
 	return false;
 }
-
-function DeleteNotificationForBPM($bpminfo) {
-	global $adb;
-	if (is_string($bpminfo)) {
-		$bpminfo = urldecode($bpminfo);
-		$bpminfo = json_decode($bpminfo, true);
-	}
-	if (!isset($bpminfo['ProcessReminderID'])) {
-		return false;
-	}
-	$adb->pquery('delete from vtiger_activity_reminder_popup where reminderid=?', array(
-		$bpminfo['ProcessReminderID']
-	));
-}
 ?>

@@ -155,9 +155,6 @@ if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
 			echo '<script>window.close();</script>';
 		} else {
 			$saveHook = vtlib_purify($_REQUEST['Module_Popup_Save']);
-			if ($saveHook == 'finishProcessInfo' && isset($_REQUEST['Module_Popup_Save_Param'])) {
-				DeleteNotificationForBPM($_REQUEST['Module_Popup_Save_Param']);
-			}
 			$saveParm = "'$currentModule', $return_id, '$mode', '".(empty($_REQUEST['Module_Popup_Save_Param']) ? '' : vtlib_purify($_REQUEST['Module_Popup_Save_Param']))."'";
 			echo "<script>if (typeof window.opener.$saveHook == 'function') window.opener.$saveHook($saveParm);window.close();</script>";
 		}
