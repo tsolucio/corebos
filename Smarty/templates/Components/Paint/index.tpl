@@ -71,7 +71,7 @@
 		</div>
 		<div class="slds-form-element slds-m-top_small">
 			<div class="slds-form-element__control">
-				<button type="button" class="slds-button slds-button_neutral" onclick="paint.Create({$DOC2EDITID});">
+				<button type="button" class="slds-button slds-button_neutral" onclick="paint.Upsert({$DOC2EDITID});">
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 					</svg>
