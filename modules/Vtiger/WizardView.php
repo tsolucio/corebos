@@ -44,6 +44,7 @@ if ($cbMapid) {
 		$smarty->assign('wizardTotal', $cbMapWz['totalsteps']);
 		$smarty->assign('wizardSteps', $cbMapWz['steps']);
 		$views = array();
+		$step = 0;
 		foreach ($cbMapWz['steps'] as $key => $value) {
 			if (!is_numeric($value['detailviewlayoutmap'])) {
 				$views[$key] = '';
@@ -53,7 +54,9 @@ if ($cbMapid) {
 				'mapid' => $value['detailviewlayoutmap'],
 			);
 			$view = $setfield->process($context);
+			$smarty->assign('WizardStep', $step);
 			$views[$key] = $view;
+			$step++;
 		}
 		$smarty->assign('wizardViews', $views);
 		$smarty->assign('isModal', empty($data) ? 0 : true);

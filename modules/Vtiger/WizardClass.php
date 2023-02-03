@@ -119,7 +119,6 @@ class WizardView {
 			}
 			$smarty->assign('Columns', $columns);
 			$smarty->assign('relatedmodules', $this->RelatedFields());
-			$smarty->assign('step', $this->step);
 			$smarty->assign('entitynames', getEntityFieldNames($this->module));
 			$smarty->assign('WizardMode', $this->mode);
 			//ListView, Create_{ModuleName}, MassCreate_{ModuleName}
