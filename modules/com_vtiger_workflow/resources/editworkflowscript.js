@@ -217,7 +217,7 @@ function editworkflowscript($, conditions) {
 		var mapping = [
 			['string', ['string', 'text', 'url', 'email', 'phone']],
 			['number', ['integer', 'double', 'currency']],
-			['value', ['reference', 'picklist', 'multipicklist', 'datetime', 'time', 'date', 'boolean']],
+			['value', ['reference', 'multireference', 'picklist', 'multipicklist', 'datetime', 'time', 'date', 'boolean']],
 			['multipicklist', ['multipicklist']],
 			['date', ['date']],
 			['datetime', ['datetime', 'time']]
@@ -257,7 +257,7 @@ function editworkflowscript($, conditions) {
 			['string', ['string', 'text', 'url', 'email', 'phone']],
 			['number', ['integer', 'double', 'currency']],
 			['value', ['picklist', 'multipicklist', 'datetime', 'time', 'date', 'boolean']],
-			['reference', ['reference']],
+			['reference', ['reference', 'multireference']],
 			['date', ['date']],
 			['datetime', ['datetime', 'time']]
 		];
