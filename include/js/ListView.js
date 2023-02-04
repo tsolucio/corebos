@@ -1266,3 +1266,29 @@ function runBAScriptFromListViewSSE(scriptname, module, eventsink, parameters2se
 		}
 	}
 }
+
+function listViewReload() {
+	if (document.basicSearch) {
+		var srch = document.basicSearch.searchtype.searchlaunched;
+		if (srch=='basic') {
+			callSearch('Basic');
+		} else if (srch=='advance') {
+			callSearch('Advanced');
+		} else {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=loadlv'
+			}).done(function (response) {
+				var result = response.split('&#&#&#');
+				if (Application_Landing_View=='table') {
+					document.getElementById('ListViewContents').innerHTML= result[2];
+				} else {
+					ListView.Show('massedit');
+				}
+				if (result[1] != '') {
+					ldsPrompt.show(alert_arr['ERROR'], result[1]);
+				}
+			});
+		}
+	}
+}
