@@ -1240,13 +1240,14 @@ function runBAScriptFromListViewSSE(scriptname, module, eventsink, parameters2se
 				sentForm['module'] = module;
 				sentForm.SSE_SOURCE_ACTION = scriptname;
 				sentForm.SSE_SOURCE_KEY = 'runBAScript'+corebos_browsertabID;
+				parameters2send = parameters2send || [];
 				var selectedinfo = {
 					'ids': encodeURIComponent(idstring),
 					'excludedRecords': encodeURIComponent(excludedRecords),
 					'viewname': encodeURIComponent(viewid),
 					'searchurl': encodeURIComponent(searchurl),
+					'ListViewSSEParameters': encodeURIComponent(JSON.stringify(parameters2send)),
 				};
-				parameters2send = parameters2send || [];
 				parameters2send.forEach(element => {
 					let e = document.getElementById(element);
 					if (e) {
@@ -1254,14 +1255,14 @@ function runBAScriptFromListViewSSE(scriptname, module, eventsink, parameters2se
 					}
 				});
 				ExecuteFunctions('setSetting', 'skey='+sentForm.SSE_SOURCE_KEY+'&svalue='+JSON.stringify(selectedinfo)).then(function (response) {
+					var worker = new Worker('massedit-worker.js');
+					//a message is received
+					worker.postMessage(sentForm);
+					worker.addEventListener('message', eventsink, false);
+					worker.postMessage(true);
 				}, function (error) {
 					console.log('error', error);
 				});
-				var worker = new Worker('massedit-worker.js');
-				//a message is received
-				worker.postMessage(sentForm);
-				worker.addEventListener('message', eventsink, false);
-				worker.postMessage(true);
 				var rdo = document.getElementById('relresultssection');
 				rdo.style.visibility = 'visible';
 				rdo.style.display = 'block';
