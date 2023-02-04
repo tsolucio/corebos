@@ -1176,12 +1176,16 @@ function getSelectedRecordsFromLV() {
 	return [excludedRecords, searchurl, idstring, viewid, confirm_status];
 }
 
-function runBAWorkflowFromListView(workflowid, context) {
+function runBAWorkflowFromListView(workflowid, context = '', refreshLV = false) {
 	let lvinfo = getSelectedRecordsFromLV();
 	if (lvinfo) {
 		let crmids = lvinfo[2];
 		if (crmids != '') {
 			runBAWorkflow(workflowid, crmids, context);
+			corebosjshook_runBAWorkflowFromListView(workflowid, crmids);
+			if (refreshLV) {
+				listViewReload();
+			}
 		}
 	}
 }

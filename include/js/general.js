@@ -1486,7 +1486,7 @@ function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false) {
 			}
 		}
 		VtigerJS_DialogBox.unblock();
-		corebosjshook_runBAWorkflow(workflowid, crmids, response);
+		corebosjshook_runBAWorkflow(workflowid, crmids, context, refreshDV, response);
 		if (refreshDV) {
 			dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
 		}
