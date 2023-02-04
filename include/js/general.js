@@ -1423,7 +1423,7 @@ function runBAScript(scripturi) {
 		url: scripturi+'&__module='+SVModule+'&__crmid='+SVRecord,
 		type:'get'
 	}).fail(function (jqXHR, textStatus) {
-		document.getElementById('appnotifydiv').innerHTML='</b>'+alert_arr.Error+'</b>';
+		document.getElementById('appnotifydiv').innerHTML='</b>'+alert_arr.ERROR+'</b>';
 		document.getElementById('appnotifydiv').style.display='block';
 		VtigerJS_DialogBox.unblock();
 	}).done(function (msg) {
@@ -1482,7 +1482,7 @@ function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false) {
 			if (dataset.error !== undefined && dataset.error != '') {
 				ldsPrompt.show(dataset.title, dataset.error);
 			} else {
-				ldsPrompt.show(alert_arr['ERROR'], alert_arr.Error);
+				ldsPrompt.show(alert_arr['ERROR'], alert_arr.ERROR);
 			}
 		}
 		VtigerJS_DialogBox.unblock();
