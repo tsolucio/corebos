@@ -1377,22 +1377,7 @@ function progressMassEditDetails(sentForm) {
 	//a message is received
 	sentForm.SSE_SOURCE_ACTION = 'MassEditSave';
 	worker.postMessage(sentForm);
-	worker.addEventListener('message', function (e) {
-		var message = e.data;
-		if (e.data == 'CLOSE') {
-			listViewReload();
-			__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
-			var pBar = document.getElementById('progressor');
-			pBar.value = pBar.max; //max out the progress bar
-		} else {
-			__addLog(message.message);
-			var pBar = document.getElementById('progressor');
-			pBar.value = message.progress;
-			var perc = document.getElementById('percentage');
-			perc.innerHTML   = message.progress  + '% &nbsp;&nbsp;' + message.processed + '/' + message.total;
-			perc.style.width = (Math.floor(pBar.clientWidth * (message.progress/100)) + 15) + 'px';
-		}
-	}, false);
+	worker.addEventListener('message', processCustomSSE, false);
 	worker.postMessage(true);
 }
 
