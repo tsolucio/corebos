@@ -1240,6 +1240,7 @@ function runBAScriptFromListViewSSE(scriptname, module, eventsink, parameters2se
 				sentForm['module'] = module;
 				sentForm.SSE_SOURCE_ACTION = scriptname;
 				sentForm.SSE_SOURCE_KEY = 'runBAScript'+corebos_browsertabID;
+				sentForm.corebos_browsertabID= corebos_browsertabID;
 				parameters2send = parameters2send || [];
 				var selectedinfo = {
 					'ids': encodeURIComponent(idstring),
