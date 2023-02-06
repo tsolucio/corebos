@@ -128,7 +128,7 @@ class WizardView {
 			$smarty->assign('WizardRequiredAction', $this->required_action);
 			$smarty->assign('WizardCustomFunction', $this->custom_function);
 			$smarty->assign('WizardModuleEditor', $this->module);
-			$smarty->assign('WizardContext', $this->filtercontext);
+			$smarty->assign('WizardContext', isset($this->filtercontext) ? $this->filtercontext : '');
 			$WizardSaveAction = false;
 			if (!empty($this->save_action)) {
 				$WizardSaveAction = boolval($this->save_action);
