@@ -46,9 +46,9 @@ class GridListView {
 		$viewid = isset($_SESSION['lvs'][$this->module]) ? $_SESSION['lvs'][$this->module]['viewname'] : 0;
 		$focus = new $this->module();
 		$focus->initSortbyField($this->module);
-		$gvOrderField = GlobalVariable::getVariable('Application_ListView_Default_OrderField', '');
-		$gvSortOrder = GlobalVariable::getVariable('Application_ListView_Default_Sort_Order', '');
-		$gvDefaultSorting = GlobalVariable::getVariable('Application_ListView_Default_Sorting', false);
+		$gvOrderField = GlobalVariable::getVariable('Application_ListView_Default_OrderField', '', $this->module);
+		$gvSortOrder = GlobalVariable::getVariable('Application_ListView_Default_Sort_Order', '', $this->module);
+		$gvDefaultSorting = boolval(GlobalVariable::getVariable('Application_ListView_Default_Sorting', false, $this->module));
 		if (isset($_REQUEST['sortAscending'])) {
 			$this->orderBy = $_REQUEST['sortAscending'] == 'true' ? 'ASC' : 'DESC';
 		} elseif (!empty($gvSortOrder) && $gvDefaultSorting) {
