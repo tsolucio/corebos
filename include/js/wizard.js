@@ -47,6 +47,7 @@ class WizardComponent {
 		this.ResetWizard = true;
 		this.MainSelectedId = 0; //the record selected/duplicated in first step
 		this.SubWizardInfoMainId = 0;
+		this.isSubWizard = false;
 		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=WizardAPI';
 		//formtemplate params
 		this.FormFields = [];
@@ -76,6 +77,7 @@ class WizardComponent {
 	}
 
 	GoTo(step) {
+		this.isSubWizard = true;
 		this.ActiveStep = step-1;
 		for (let i = 0; i < this.steps; i++) {
 			if (step >= i) {
@@ -175,7 +177,14 @@ class WizardComponent {
 				return this.FilterRows(ev);
 			}
 			if (this.WizardMode[this.ActiveStep] == 'CREATEPRODUCTCOMPONENT') {
-				return this.Create_ProductComponent(ev);
+				if (this.steps == this.ActiveStep+1) {
+					await this.Create_ProductComponent(ev);
+					setTimeout(function() {
+						wizard.Finish();
+					}, 1000);
+				} else {
+					return this.Create_ProductComponent(ev);
+				}
 			}
 			if (this.WizardMode[this.ActiveStep] == 'ListView' && this.WizardCurrentModule[this.ActiveStep] == 'ProductComponent' && type == 'back') {
 				this.CheckedRows[this.ActiveStep-1] = [];
@@ -459,7 +468,9 @@ class WizardComponent {
 					wizard.CallCustomFunction();
 				}
 				wizard.IsDuplicatedFrom[wizard.ActiveStep] = 1;
-				wizard.MoveToStep('');
+				if (!wizard.isSubWizard) {
+					wizard.MoveToStep('');
+				}
 				wizard.CheckedRows[wizard.ActiveStep-1][1]= [response];
 				if (wizard.WizardFilterFromContext[wizard.ActiveStep] != '') {
 					wizard.FilterRows(ev, wizard.WizardFilterFromContext[wizard.ActiveStep], wizard.ActiveStep);
@@ -571,9 +582,9 @@ class WizardComponent {
 		if (this.el('btn-next')) {
 			if (this.ActiveStep + 1 == this.steps && type == 'next') {
 				this.el('btn-next').innerHTML = alert_arr.JSLBL_FINISH;
-				setTimeout(function () {
-					wizard.el('btn-next').setAttribute('onclick', 'wizard.Finish()');
-				}, 200);
+				//setTimeout(function () {
+					//wizard.el('btn-next').setAttribute('onclick', 'wizard.Finish()');
+				//}, 200);
 				return false;
 			} else {
 				this.el('btn-next').innerHTML = alert_arr.JSLBL_NEXT;
@@ -779,7 +790,7 @@ class WizardComponent {
 	 * Create ProductComponent records. *Specific use case
 	 * @param {Object} event
 	 */
-	Create_ProductComponent(ev) {
+	async Create_ProductComponent(ev) {
 		let type = 'next';
 		if (ev != '') {
 			type = ev.target.dataset.type;
