@@ -458,7 +458,7 @@ switch ($functiontocall) {
 	case 'execwf':
 		include_once 'include/Webservices/ExecuteWorkflow.php';
 		$wfid = vtlib_purify($_REQUEST['wfid']);
-		$ids = explode(';', vtlib_purify($_REQUEST['ids']));
+		$ids = explode(';', trim(vtlib_purify($_REQUEST['ids']), ';'));
 		$id = reset($ids);
 		$wsid = vtws_getEntityId(getSalesEntityType($id)).'x';
 		$crmids = array();

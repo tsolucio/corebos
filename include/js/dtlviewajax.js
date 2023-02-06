@@ -360,6 +360,26 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	itsonview=false;
 }
 
+function dtlViewReload(module, record) {
+	fetch('index.php?action='+module+'Ajax&file=DetailViewAjax&module='+module+'&ajxaction=DETAILVIEWLOAD&record='+record)
+	.then(response => response.text())
+	.then(response => {
+		if (response.indexOf(':#:SUCCESS')>-1) {
+			let result = response.split(':#:');
+			if (result[2] != null) {
+				var target = null;
+				if (module == 'Users') {
+					target = document.getElementsByClassName('user-detailview')[0];
+				} else {
+					target = document.getElementsByClassName('detailview_wrapper_table')[0];
+				}
+				target.innerHTML = result[2];
+				vtlib_executeJavascriptInElement(target);
+			}
+		}
+	});
+}
+
 function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldName, crmId) {
 	var formName = 'DetailView';
 	if (doformValidation('')) { //base function which validates form data

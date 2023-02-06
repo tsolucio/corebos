@@ -33,7 +33,6 @@
 *
 */
 global $root_directory;
-$ruta = '/usr/lib/pear';
 set_include_path(get_include_path() . PATH_SEPARATOR . $root_directory.'vtlib/thirdparty/network');
 require_once 'OpenDocument/ZipWrapper.php';
 require_once 'OpenDocument/Exception.php';
