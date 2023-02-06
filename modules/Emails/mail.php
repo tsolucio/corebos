@@ -154,7 +154,7 @@ function send_mail(
 		array('Emails', 'modules/Emails/Emails.php')
 	);
 	require_once $systemEmailClassPath;
-	if (!call_user_func(array($systemEmailClassName, 'useEmailHook'))) {
+	if (!call_user_func(array($systemEmailClassName, 'useEmailHook'), $from_email, $to_email, $replyToEmail)) {
 		$systemEmailClassName = 'Emails'; // default system method
 	}
 
