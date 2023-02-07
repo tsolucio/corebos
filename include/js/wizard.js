@@ -150,8 +150,8 @@ class WizardComponent {
 				return false;
 			}
 			if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
-				this.DuplicateProduct(ev);
-				return false;
+				await this.DuplicateProduct(ev);
+				return true;
 			}
 		} else {
 			delete this.IsDuplicatedFrom[this.ActiveStep-1];
@@ -468,10 +468,11 @@ class WizardComponent {
 					wizard.MainSelectedId = response.id;
 				}
 				if (wizard.WizardCustomFunction[wizard.ActiveStep] != '') {
+					wizard.ActiveStep = wizard.ActiveStep-1;
 					wizard.CallCustomFunction();
+					wizard.ActiveStep = wizard.ActiveStep+1;
 				}
 				wizard.IsDuplicatedFrom[wizard.ActiveStep] = 1;
-				wizard.MoveToStep('');
 				wizard.CheckedRows[wizard.ActiveStep-1][1]= [response];
 				if (wizard.WizardFilterFromContext[wizard.ActiveStep] != '') {
 					wizard.FilterRows(ev, wizard.WizardFilterFromContext[wizard.ActiveStep], wizard.ActiveStep);
