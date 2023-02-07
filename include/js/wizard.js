@@ -43,7 +43,7 @@ class WizardComponent {
 		this.WizardFilterFromContext = [];
 		this.Context = {};
 		this.Operation = '';
-		this.ProceedToNextStep = true;
+		this.ProceedToNextStep = false;
 		this.ResetWizard = true;
 		this.MainSelectedId = 0; //the record selected/duplicated in first step
 		this.SubWizardInfoMainId = 0;
@@ -150,7 +150,7 @@ class WizardComponent {
 				return false;
 			}
 			if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length > 0) {
-				await this.DuplicateProduct(ev);
+				await this.DuplicateRow(ev);
 				return true;
 			}
 		} else {
@@ -228,7 +228,7 @@ class WizardComponent {
 						ldsModal.close();
 						wizard.ActiveStep = 0;
 						wizard.IsDuplicatedFrom = [];
-						wizard.ProceedToNextStep = true;
+						wizard.ProceedToNextStep = false;
 						wizard.CheckedRows = [];
 						wizard.GridData = [];
 						wizard.GroupData = [];
@@ -282,7 +282,7 @@ class WizardComponent {
 		ldsModal.close();
 		this.ActiveStep = 0;
 		this.IsDuplicatedFrom = [];
-		this.ProceedToNextStep = true;
+		this.ProceedToNextStep = false;
 		this.CheckedRows = [];
 		this.GridData = [];
 		this.GroupData = [];
@@ -444,7 +444,7 @@ class WizardComponent {
 		}
 	}
 
-	async DuplicateProduct(ev = '') {
+	async DuplicateRow(ev = '') {
 		let type = 'next';
 		if (ev != '') {
 			type = ev.target.dataset.type;
