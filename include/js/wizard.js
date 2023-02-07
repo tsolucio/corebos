@@ -216,56 +216,59 @@ class WizardComponent {
 		return true;
 	}
 
-	Finish(resetWizard = true) {
+	FinishRequest(url, resetWizard) {
+		this.Request(url, 'post', {'masterid': this.RecordID}).then(function (response) {
+			if (response) {
+				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+				if (wizard.isModal) {
+					RLInstance[wizard.gridInstance].readData(1);
+					wizard.CheckedRows[wizard.ActiveStep] = [];
+					wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].uncheckAll();
+					if (resetWizard) {
+						ldsModal.close();
+						wizard.ActiveStep = 0;
+						wizard.IsDuplicatedFrom = [];
+						wizard.ProceedToNextStep = true;
+						wizard.CheckedRows = [];
+						wizard.GridData = [];
+						wizard.GroupData = [];
+						wizard.gridInstance = [];
+						wizard.WizardInstance = [];
+						localStorage.removeItem('currentWizardActive');
+					} else {
+						//if we click "save" make sure that "finish" will not create twice records
+						if (wizard.steps == wizard.ActiveStep+1) {
+							let nextBtn = wizard.el('btn-next');
+							nextBtn.setAttribute('onclick', 'wizard.CloseModal()');
+						}
+					}
+				} else {
+					setTimeout(function () {
+						location.reload(true);
+					}, 1000);
+				}
+			} else {
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+			}
+			wizard.loader('hide');
+		});
+	}
+
+	async Finish(resetWizard = true) {
 		switch (this.Operation) {
 		case 'CREATEPRODUCTCOMPONENTS':
+			const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
 			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
 			if (checkedRows.length == 0 && !resetWizard) {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
 				return false;
 			}
-			if (this.WizardCustomFunction[this.ActiveStep] != '' && !resetWizard) {
+			if (this.WizardCustomFunction[this.ActiveStep] != '') {
 				this.WizardSaveIsActive[this.ActiveStep] = true;
-				this.CallCustomFunction();
-			}
-			if (this.ActiveStep+1 == this.steps) {
-				this.loader('show');
-				const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
-				this.Request(url, 'post', {'masterid': this.RecordID}).then(function (response) {
-					if (response) {
-						ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
-						if (wizard.isModal) {
-							RLInstance[wizard.gridInstance].readData(1);
-							wizard.CheckedRows[wizard.ActiveStep] = [];
-							wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].uncheckAll();
-							if (resetWizard) {
-								ldsModal.close();
-								wizard.ActiveStep = 0;
-								wizard.IsDuplicatedFrom = [];
-								wizard.ProceedToNextStep = true;
-								wizard.CheckedRows = [];
-								wizard.GridData = [];
-								wizard.GroupData = [];
-								wizard.gridInstance = [];
-								wizard.WizardInstance = [];
-								localStorage.removeItem('currentWizardActive');
-							} else {
-								//if we click "save" make sure that "finish" will not create twice records
-								if (wizard.steps == wizard.ActiveStep+1) {
-									let nextBtn = wizard.el('btn-next');
-									nextBtn.setAttribute('onclick', 'wizard.CloseModal()');
-								}
-							}
-						} else {
-							setTimeout(function () {
-								location.reload(true);
-							}, 1000);
-						}
-					} else {
-						ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
-					}
-					wizard.loader('hide');
-				});
+				await this.CallCustomFunction();
+				if (this.ActiveStep+1 == this.steps || this.isSubWizard) {
+					this.FinishRequest(url, resetWizard);
+				}
 			}
 			break;
 		default:
@@ -468,9 +471,7 @@ class WizardComponent {
 					wizard.CallCustomFunction();
 				}
 				wizard.IsDuplicatedFrom[wizard.ActiveStep] = 1;
-				if (!wizard.isSubWizard) {
-					wizard.MoveToStep('');
-				}
+				wizard.MoveToStep('');
 				wizard.CheckedRows[wizard.ActiveStep-1][1]= [response];
 				if (wizard.WizardFilterFromContext[wizard.ActiveStep] != '') {
 					wizard.FilterRows(ev, wizard.WizardFilterFromContext[wizard.ActiveStep], wizard.ActiveStep);
@@ -582,9 +583,9 @@ class WizardComponent {
 		if (this.el('btn-next')) {
 			if (this.ActiveStep + 1 == this.steps && type == 'next') {
 				this.el('btn-next').innerHTML = alert_arr.JSLBL_FINISH;
-				//setTimeout(function () {
-					//wizard.el('btn-next').setAttribute('onclick', 'wizard.Finish()');
-				//}, 200);
+				setTimeout(function () {
+					wizard.el('btn-next').setAttribute('onclick', 'wizard.Finish()');
+				}, 200);
 				return false;
 			} else {
 				this.el('btn-next').innerHTML = alert_arr.JSLBL_NEXT;
@@ -756,7 +757,7 @@ class WizardComponent {
 		this.WizardInstance[`wzgrid${step}`].removeRows(rowKeys);
 	}
 
-	CallCustomFunction(ev = '') {
+	async CallCustomFunction(ev = '') {
 		let type = 'next';
 		if (ev != '') {
 			type = ev.target.dataset.type;
@@ -777,7 +778,7 @@ class WizardComponent {
 			}
 			rows.push(ids);
 		}
-		this.Request(url, 'post', rows).then(function (response) {
+		await this.Request(url, 'post', rows).then(function (response) {
 			if (response) {
 				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 			} else {

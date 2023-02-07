@@ -27,6 +27,7 @@
 		wizard.gridInstance = '{$gridInstance}';
 		wizard.RecordID = '{$RecordID}';
 		wizard.SubWizardInfoMainId = '{$SubWizardInfo}';
+		wizard.isSubWizard = '{$isSubWizard}';
 		wizard.IsDuplicatedFromProduct = [];
 		wizard.DeleteSession().then(function() {
 			window.addEventListener('DOMContentLoaded', () => {
