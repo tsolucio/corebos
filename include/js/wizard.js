@@ -111,6 +111,7 @@ class WizardComponent {
 		];
 		for (let i in ids) {
 			this.el(ids[i]).addEventListener('click', async function (event) {
+				event.preventDefault();
 				const prc = await wizard.Next(event);
 				if (prc) {
 					wizard.MoveToStep(event);
@@ -250,6 +251,8 @@ class WizardComponent {
 			} else {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 			}
+			wizard.el(`save-wizard-${wizard.ActiveStep}`).innerHTML = alert_arr.JSLBL_SAVE;
+			wizard.el(`save-wizard-${wizard.ActiveStep}`).removeAttribute('disabled');
 			wizard.loader('hide');
 		});
 	}
@@ -264,6 +267,8 @@ class WizardComponent {
 				return false;
 			}
 			if (this.WizardCustomFunction[this.ActiveStep] != '') {
+				this.el(`save-wizard-${this.ActiveStep}`).innerHTML = `${alert_arr.JSLBL_Loading}...`;
+				this.el(`save-wizard-${this.ActiveStep}`).setAttribute('disabled', '');
 				this.WizardSaveIsActive[this.ActiveStep] = true;
 				await this.CallCustomFunction();
 				if (this.ActiveStep+1 == this.steps || this.isSubWizard) {
@@ -578,6 +583,7 @@ class WizardComponent {
 			btn.style.marginLeft = '5px';
 			btn.classList.add('slds-button');
 			btn.classList.add('slds-button_neutral');
+			btn.id = `save-wizard-${this.ActiveStep}`;
 			el.appendChild(btn);
 			this.WizardSaveIsActive[this.ActiveStep] = true;
 		}
@@ -832,16 +838,9 @@ class WizardComponent {
 				if (response) {
 					ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 					wizard.FilterDataForStep();
-					//if (wizard.steps == wizard.ActiveStep+1) {
-					//	wizard.Finish();
-					//}
 				} else {
 					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 				}
-			} else {
-				//if (wizard.steps == wizard.ActiveStep+1) {
-				//	wizard.Finish();
-				//}
 			}
 			wizard.loader('hide');
 		});
