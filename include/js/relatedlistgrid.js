@@ -269,7 +269,8 @@ class RLinkRender {
 					props.value = `<span>${props.value}</span>
 					<span class="slds-icon_container slds-float_right slds-m-right_small cbds-tooltip__trigger slds-p-left_xx-small"
 						id="cbds-tooltip__trigger-${parent_id}"
-						onmouseover="relatedlistgrid.Tooltip(${parent_id}, '${props.grid.el.id}', ${rowKey}, '${parent_module}')">
+						onmouseover="relatedlistgrid.Tooltip(${parent_id}, '${props.grid.el.id}', ${rowKey}, '${parent_module}')"
+						style="position: absolute">
 						<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 						</svg>
@@ -328,10 +329,14 @@ class RLActionRender {
 			related_parent_fieldname = related_fieldname;
 		}
 		el = document.createElement('span');
+		let className = 'slds-button_icon-border-filled';
+		if (parent_module == module) {
+			className = 'slds-button_icon-brand';
+		}
 		let actions = `
 		<div class="slds-button-group" role="group">
 			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
-				<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="Show More">
+				<button class="slds-button slds-button_icon ${className}" aria-haspopup="true" aria-expanded="true" title="Show More">
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
 					</svg>
