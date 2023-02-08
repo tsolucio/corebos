@@ -251,8 +251,10 @@ class WizardComponent {
 			} else {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 			}
-			wizard.el(`save-wizard-${wizard.ActiveStep}`).innerHTML = alert_arr.JSLBL_SAVE;
-			wizard.el(`save-wizard-${wizard.ActiveStep}`).removeAttribute('disabled');
+			if (wizard.el(`save-wizard-${wizard.ActiveStep}`) !== null) {
+				wizard.el(`save-wizard-${wizard.ActiveStep}`).innerHTML = alert_arr.JSLBL_SAVE;
+				wizard.el(`save-wizard-${wizard.ActiveStep}`).removeAttribute('disabled');
+			}
 			wizard.loader('hide');
 		});
 	}
@@ -267,10 +269,16 @@ class WizardComponent {
 				return false;
 			}
 			if (this.WizardCustomFunction[this.ActiveStep] != '') {
-				this.el(`save-wizard-${this.ActiveStep}`).innerHTML = `${alert_arr.JSLBL_Loading}...`;
-				this.el(`save-wizard-${this.ActiveStep}`).setAttribute('disabled', '');
+				if (this.el(`save-wizard-${wizard.ActiveStep}`) !== null) {
+					this.el(`save-wizard-${this.ActiveStep}`).innerHTML = `${alert_arr.JSLBL_Loading}...`;
+					this.el(`save-wizard-${this.ActiveStep}`).setAttribute('disabled', '');
+				}
 				this.WizardSaveIsActive[this.ActiveStep] = true;
 				await this.CallCustomFunction();
+				if (this.ActiveStep+1 == this.steps || this.isSubWizard) {
+					this.FinishRequest(url, resetWizard);
+				}
+			} else {
 				if (this.ActiveStep+1 == this.steps || this.isSubWizard) {
 					this.FinishRequest(url, resetWizard);
 				}
@@ -790,6 +798,10 @@ class WizardComponent {
 				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 			} else {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
+			}
+			if (wizard.el(`save-wizard-${wizard.ActiveStep}`) !== null) {
+				wizard.el(`save-wizard-${wizard.ActiveStep}`).innerHTML = alert_arr.JSLBL_SAVE;
+				wizard.el(`save-wizard-${wizard.ActiveStep}`).removeAttribute('disabled');
 			}
 		});
 	}
