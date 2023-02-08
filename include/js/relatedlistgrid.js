@@ -160,18 +160,18 @@ var relatedlistgrid = {
 		let getWizardActive = localStorage.getItem('currentWizardActive');
 		let modalContainer = document.getElementById('global-modal-container');
 		if (getWizardActive == null) {
-			localStorage.setItem('currentWizardActive', id);
+			localStorage.setItem('currentWizardActive', id+mapid);
 			if (modalContainer) {
 				ldsModal.close();
 			}
 		} else {
-			if (getWizardActive == id) {
+			if (getWizardActive == id+mapid) {
 				if (modalContainer) {
 					modalContainer.style.display = '';
 					return false;
 				}
 			} else {
-				localStorage.setItem('currentWizardActive', id);
+				localStorage.setItem('currentWizardActive', id+mapid);
 				if (modalContainer) {
 					ldsModal.close();
 				}
@@ -376,16 +376,28 @@ class RLActionRender {
 		}
 		let wizard = JSON.parse(relatedlistgrid.Wizard[`${props.grid.el.id}`]);
 		if (wizard[parent_module] !== undefined && wizard[parent_module] != '') {
-			for (let i in wizard[parent_module]) {			
-				actions += `
-				<li class="slds-dropdown__item">
-					<a onclick="relatedlistgrid.openWizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module][i].id}, '${parent_module}');" role="menuitem" tabindex="0">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
-						</svg>
-						<span class="slds-truncate">${wizard[parent_module][i].label}</span>
-					</a>
-				</li>`;
+			if (wizard[parent_module].length === undefined && wizard[parent_module].id !== undefined) {
+					actions += `
+					<li class="slds-dropdown__item">
+						<a onclick="relatedlistgrid.openWizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module].id}, '${parent_module}');" role="menuitem" tabindex="0">
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+							</svg>
+							<span class="slds-truncate">${wizard[parent_module].label}</span>
+						</a>
+					</li>`;
+			} else {
+				for (let i in wizard[parent_module]) {
+					actions += `
+					<li class="slds-dropdown__item">
+						<a onclick="relatedlistgrid.openWizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module][i].id}, '${parent_module}');" role="menuitem" tabindex="0">
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+							</svg>
+							<span class="slds-truncate">${wizard[parent_module][i].label}</span>
+						</a>
+					</li>`;
+				}
 			}
 		}
 		if (permissions.parent_edit == 'yes') {
