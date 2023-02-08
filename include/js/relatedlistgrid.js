@@ -328,67 +328,114 @@ class RLActionRender {
 			related_parent_fieldname = related_fieldname;
 		}
 		el = document.createElement('span');
-		let actions = '<div class="slds-button-group" role="group">';
-		let wizard = JSON.parse(relatedlistgrid.Wizard[`${props.grid.el.id}`]);
-		if (wizard[parent_module] !== undefined && wizard[parent_module] != '') {
-			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="relatedlistgrid.openWizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module]}, '${parent_module}');">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
-				</svg>
-			</button>`;
-		}
+		let actions = `
+		<div class="slds-button-group" role="group">
+			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
+				<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="Show More">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
+					</svg>
+					<span class="slds-assistive-text">${alert_arr.LBL_SHOW_MORE}</span>
+				</button>
+				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" style="width: 8rem;">
+				<ul class="slds-dropdown__list" role="menu">`;
 		if (parent_module != '') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Create']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}');" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+					</svg>
+					<span class="slds-truncate">${alert_arr['JSLBL_Create']}</span>
+				</a>
+			</li>
+			`;
 		} else {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Create']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}');" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+					</svg>
+					<span class="slds-truncate">${alert_arr['JSLBL_Create']}</span>
+				</a>
+			</li>`;
 			if (relatedlistgrid.findRelatedField(related_child, props.grid.el.id) == '') {
-				actions = '<div class="slds-button-group" role="group">';
+				actions = `
+				<div class="slds-button-group" role="group">
+				<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
+					<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="Show More">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
+						</svg>
+						<span class="slds-assistive-text">${alert_arr.LBL_SHOW_MORE}</span>
+					</button>
+					<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" style="width: 8rem;">
+					<ul class="slds-dropdown__list" role="menu">`;
+			}
+		}
+		let wizard = JSON.parse(relatedlistgrid.Wizard[`${props.grid.el.id}`]);
+		if (wizard[parent_module] !== undefined && wizard[parent_module] != '') {
+			for (let i in wizard[parent_module]) {			
+				actions += `
+				<li class="slds-dropdown__item">
+					<a onclick="relatedlistgrid.openWizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module][i].id}, '${parent_module}');" role="menuitem" tabindex="0">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+						</svg>
+						<span class="slds-truncate">${wizard[parent_module][i].label}</span>
+					</a>
+				</li>`;
 			}
 		}
 		if (permissions.parent_edit == 'yes') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${module}', ${recordid});" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+					</svg>
+					<span class="slds-truncate">${alert_arr['JSLBL_Edit']}</span>
+				</a>
+			</li>
+			`;
 		}
 		if (permissions.child_edit == 'yes') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${module}', ${recordid});" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+					</svg>
+					<span class="slds-truncate">${alert_arr['JSLBL_Edit']}</span>
+				</a>
+			</li>`;
 		}
 		const parent_delete = props.columnInfo.renderer.options.parent_delete;
 		const child_delete = props.columnInfo.renderer.options.child_delete;
 		if (parent_delete == 'O' && permissions.parent_edit == 'yes') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('${props.grid.el.id}', '${parent_module}', ${recordid}, '${related_parent_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.delete('${props.grid.el.id}', '${parent_module}', ${recordid}, '${related_parent_fieldname}');" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left cbds-color-compl-red--sober" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					<span class="slds-truncate cbds-color-compl-red--sober">${alert_arr['JSLBL_Delete']}</span>
+				</a>
+			</li>
+			`;
 		}
 		if (child_delete == 'O' && permissions.child_edit == 'yes') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('${props.grid.el.id}', '${child_module}', ${recordid}, '${related_parent_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.delete('${props.grid.el.id}', '${child_module}', ${recordid}, '${related_parent_fieldname}');" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left cbds-color-compl-red--sober" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					<span class="slds-truncate cbds-color-compl-red--sober">${alert_arr['JSLBL_Delete']}</span>
+				</a>
+			</li>
+			`;
 		}
 		let popupactions = JSON.parse(relatedlistgrid.PopupAction[`${props.grid.el.id}`]);
 		if (parent_module == '' && popupactions[related_child] !== undefined) {
@@ -407,12 +454,16 @@ class RLActionRender {
 					}).then(function (response) {
 						if (response == 'true') {
 							actions += `
-							<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
-								<svg class="slds-button__icon" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-								</svg>
-							</button>`;
-							actions += '</div>';
+							<li class="slds-dropdown__item">
+								<a onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')" role="menuitem" tabindex="0">
+									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+									</svg>
+									<span class="slds-truncate">Process Info</span>
+								</a>
+							</li>
+							`;
+							actions += `</ul></div></div></div>`;
 							el.innerHTML = actions;
 						}
 					});
@@ -428,24 +479,30 @@ class RLActionRender {
 						}
 						if (values.value.includes(fldvalue) || values.value.includes(fldvalue_raw)) {
 							actions += `
-							<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
-								<svg class="slds-button__icon" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-								</svg>
-							</button>`;
-							actions += '</div>';
+							<li class="slds-dropdown__item">
+								<a onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')" role="menuitem" tabindex="0">
+									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+									</svg>
+									<span class="slds-truncate">Process Info</span>
+								</a>
+							</li>`;
+							actions += `</ul></div></div></div>`;
 						}
 					}
 				}
 			} else {
 				//no conditions: show action in evey row
 				actions += `
-				<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
-					<svg class="slds-button__icon" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-					</svg>
-				</button>`;
-				actions += '</div>';
+				<li class="slds-dropdown__item">
+					<a onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')" role="menuitem" tabindex="0">
+						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+						</svg>
+						<span class="slds-truncate">Process Info</span>
+					</a>
+				</li>`;
+				actions += `</ul></div></div></div>`;
 			}
 		}
 		el.innerHTML = actions;

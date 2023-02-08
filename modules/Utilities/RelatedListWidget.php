@@ -100,6 +100,11 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 				$Tooltips[$module['name']] = $module['tooltip']['fields'];
 			}
 			$Wizard[$module['name']] = '';
+			if (isset($module['wizards'])) {
+				foreach ((array)$module['wizards'] as $wz) {
+					$Wizard[$module['name']] = (array)$wz;
+				}
+			}
 			if (isset($module['wizard'])) {
 				$Wizard[$module['name']] = $module['wizard'];
 			}
