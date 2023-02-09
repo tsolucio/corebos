@@ -1576,7 +1576,7 @@ function getProcessInfo(edit_type, formName, action, callback, parameters) {
 	let module = ps.shift();
 	let forrecord = ps.shift();
 	let fparams = encodeURIComponent(ps.join('|'));
-	let params='&minfo='+minfo+'&bpmmodule='+module+'&pflowid=0&bpmrecord='+forrecord+'&params='+fparams+'&formName='+formName+'&actionName='+action;
+	let params='&minfo='+minfo+'&bpmmodule='+module+'&pflowid=0&cbfromid='+forrecord+'&bpmrecord='+forrecord+'&params='+fparams+'&formName='+formName+'&actionName='+action;
 	if (callback!='') {
 		params = params + '&savefn=' + callback;
 	}
