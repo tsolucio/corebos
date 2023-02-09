@@ -601,6 +601,16 @@ class WizardComponent {
 			btn.id = `save-wizard-${this.ActiveStep}`;
 			el.appendChild(btn);
 			this.WizardSaveIsActive[this.ActiveStep] = true;
+			//change the color of next button
+			if (this.ActiveStep + 1 != this.steps) {			
+				this.el('btn-next').style.background = '#c31e35';
+				this.el('btn-next').style.borderColor = '#c31e35';
+				this.el('btn-next').style.color = '#fff';
+			}
+		} else {
+			this.el('btn-next').style.background = '#007ad1';
+			this.el('btn-next').style.borderColor = '#007ad1';
+			this.el('btn-next').style.color = '#fff';
 		}
 		if (this.el('btn-next')) {
 			if (this.ActiveStep + 1 == this.steps && type == 'next') {
