@@ -336,7 +336,7 @@ class RLActionRender {
 		let actions = `
 		<div class="slds-button-group" role="group">
 			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
-				<button class="slds-button slds-button_icon ${className}" aria-haspopup="true" aria-expanded="true" title="Show More">
+				<button type="button" class="slds-button slds-button_icon ${className}" aria-haspopup="true" aria-expanded="true">
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
 					</svg>
@@ -369,7 +369,7 @@ class RLActionRender {
 				actions = `
 				<div class="slds-button-group" role="group">
 				<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
-					<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="Show More">
+					<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true">
 						<svg class="slds-button__icon" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
 						</svg>
@@ -471,16 +471,11 @@ class RLActionRender {
 					}).then(function (response) {
 						if (response == 'true') {
 							actions += `
-							<li class="slds-dropdown__item">
-								<a onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')" role="menuitem" tabindex="0">
-									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-									</svg>
-									<span class="slds-truncate">Process Info</span>
-								</a>
-							</li>
-							`;
-							actions += `</ul></div></div></div>`;
+							<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+								</svg>
+							</button>`;
 							el.innerHTML = actions;
 						}
 					});
@@ -496,32 +491,25 @@ class RLActionRender {
 						}
 						if (values.value.includes(fldvalue) || values.value.includes(fldvalue_raw)) {
 							actions += `
-							<li class="slds-dropdown__item">
-								<a onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')" role="menuitem" tabindex="0">
-									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-									</svg>
-									<span class="slds-truncate">Process Info</span>
-								</a>
-							</li>`;
-							actions += `</ul></div></div></div>`;
+							<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+								</svg>
+							</button>`;
 						}
 					}
 				}
 			} else {
 				//no conditions: show action in evey row
 				actions += `
-				<li class="slds-dropdown__item">
-					<a onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')" role="menuitem" tabindex="0">
-						<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-						</svg>
-						<span class="slds-truncate">Process Info</span>
-					</a>
-				</li>`;
-				actions += `</ul></div></div></div>`;
+				<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+					</svg>
+				</button>`;
 			}
 		}
+		actions += `</ul></div></div></div>`;
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);
