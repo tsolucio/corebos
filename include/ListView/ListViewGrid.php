@@ -307,7 +307,11 @@ class GridListView {
 				$columnModuleName = $Application_Filter_Remove_RelatedModule_Label ? '' : ' ('.getTranslatedString($modName, $modName).')';
 				$lv_arr = array(
 					'fieldname' => $fldName,
+<<<<<<< HEAD
 					'fieldvalue' => html_entity_decode($fValue . $columnModuleName),
+=======
+					'fieldvalue' => html_entity_decode($fValue.' ('.getTranslatedString($modName, $modName).')'),
+>>>>>>> 9bcb295baa6b2e85f5af02d8130ac638db523e62
 					'uitype' => '',
 					'tooltip' => false,
 					'edit' => false,
