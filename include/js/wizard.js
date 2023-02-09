@@ -64,6 +64,9 @@ class WizardComponent {
 			this.el('global-modal-container__title').innerHTML = this.el('wizard-steps').innerHTML;
 			this.el('wizard-steps').remove();
 		}
+		if (!this.ResetWizard[this.ActiveStep] && this.WizardSaveAction[this.ActiveStep] && this.ActiveStep == 0) {
+			this.RenderButtons();
+		}
 		if (this.isModal && this.ProceedToNextStep) {
 			const prc = this.Next('');
 			if (prc) {
@@ -613,6 +616,23 @@ class WizardComponent {
 		}
 	}
 
+	RenderButtons() {console.log(this)
+		let el = document.getElementById('save-btn');
+		if (el !== null) {
+			el.innerHTML = '';
+		}
+		let btn = document.createElement('button');
+		btn.setAttribute('onclick', 'wizard.Finish(false)');
+		btn.innerHTML = alert_arr.JSLBL_SAVE;
+		btn.style.float = 'right';
+		btn.style.marginLeft = '5px';
+		btn.classList.add('slds-button');
+		btn.classList.add('slds-button_neutral');
+		btn.id = `save-wizard-${this.ActiveStep}`;
+		el.appendChild(btn);
+		this.WizardSaveIsActive[this.ActiveStep] = true;		
+	}
+
 	/**
 	 * Save selected rows in CheckedRows array for every step and page in grid
 	 * @param {String} mode check | uncheck | checkAll | uncheckAll
@@ -785,8 +805,15 @@ class WizardComponent {
 			delete this.IsDuplicatedFrom[this.ActiveStep-1];
 			return true;
 		}
+		if (this.SubWizardInfoMainId != 0) {
+			//make sure we have the mainid when `save` action is set in the first step
+			this.MainSelectedId = parseInt(this.SubWizardInfoMainId);
+		}
 		if (this.Context.id === undefined) {
 			this.Context['id'] = this.MainSelectedId;
+		}
+		if (this.WizardCustomFunction[this.ActiveStep] == '') {
+			return true;
 		}
 		const url = `${this.url}&wizardaction=CustomCreate&subaction=${this.WizardCustomFunction[this.ActiveStep]}&step=${this.ActiveStep}&rid=${this.Context.id}&mainid=${this.MainSelectedId}`;
 		let rows = [];
