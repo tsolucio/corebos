@@ -305,7 +305,7 @@ class GridListView {
 				}
 				$lv_arr = array(
 					'fieldname' => $fldName,
-					'fieldvalue' => html_entity_decode($fValue.' ('.getTranslatedString($modName).')'),
+					'fieldvalue' => html_entity_decode($fValue.' ('.getTranslatedString($modName, $modName).')'),
 					'uitype' => '',
 					'tooltip' => false,
 					'edit' => false,
