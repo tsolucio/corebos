@@ -403,6 +403,23 @@ class cbCVManagement extends CRMEntity {
 				$allViews[] = $value['cvid'];
 			}
 		}
+
+		// push all public filters if the user is admin
+		if ($current_user->id == 1) {
+			$cvsql = 'SELECT vtiger_cbcvmanagement.cvid FROM `vtiger_cbcvmanagement` WHERE setpublic = 1 AND module_list = ?';
+			$queryResult = $adb->pquery($cvsql, array($module));
+			while ($row=$adb->fetch_array($queryResult)) {
+				$allViews[] = $row['cvid'];
+			}
+		}
+
+		// push all approved public filters
+		$cvsql = "SELECT * FROM `vtiger_customview` WHERE status = 3 AND entitytype = ?";
+		$queryResult = $adb->pquery($cvsql, array($module));
+		while ($row=$adb->fetch_array($queryResult)) {
+			$allViews[] = $row['cvid'];
+		}
+
 		VTCacheUtils::updateCachedInformation($key, $value);
 		return array_unique($allViews);
 	}
@@ -478,6 +495,12 @@ class cbCVManagement extends CRMEntity {
 		if (empty($cvuserid)) {
 			return false;
 		}
+
+		// giving all permissions if its the admin user
+		if ($cvuserid == 1) {
+			return array('C' => 1, 'R' => 1, 'U' => 1, 'D' => 1, 'A' => 1);
+		}
+
 		$module = $adb->query_result($cvrs, 0, 'entitytype');
 		$cvname = $adb->query_result($cvrs, 0, 'viewname');
 		$cvuid = $adb->query_result($cvrs, 0, 'userid');

@@ -101,20 +101,12 @@ class CustomView extends CRMEntity {
 			} else {
 				$viewid = cbCVManagement::getDefaultView($module, $current_user->id);
 				if (empty($viewid)) {
-					$defcv_result = $adb->pquery(
-						'select default_cvid from vtiger_user_module_preferences where userid = ? and tabid =?',
-						array($current_user->id, getTabid($module))
-					);
-					if ($adb->num_rows($defcv_result) > 0) {
-						$viewid = $adb->query_result($defcv_result, 0, 'default_cvid');
+					$query = 'select cvid from vtiger_customview where setdefault=1 and entitytype=?';
+					$cvresult = $adb->pquery($query, array($module));
+					if ($adb->num_rows($cvresult) > 0) {
+						$viewid = $adb->query_result($cvresult, 0, 'cvid');
 					} else {
-						$query = 'select cvid from vtiger_customview where setdefault=1 and entitytype=?';
-						$cvresult = $adb->pquery($query, array($module));
-						if ($adb->num_rows($cvresult) > 0) {
-							$viewid = $adb->query_result($cvresult, 0, 'cvid');
-						} else {
-							$viewid = '';
-						}
+						$viewid = '';
 					}
 				}
 			}
@@ -170,11 +162,6 @@ class CustomView extends CRMEntity {
 		);
 		$permissions = cbCVManagement::getPermission($cvid, $current_user->id);
 		$def_cvid = cbCVManagement::getDefaultView($this->customviewmodule, $current_user->id);
-		if (empty($def_cvid)) {
-			$tabid = getTabid($this->customviewmodule);
-			$usercv_result = $adb->pquery('select default_cvid from vtiger_user_module_preferences where userid = ? and tabid = ?', array($current_user->id, $tabid));
-			$def_cvid = $adb->query_result($usercv_result, 0, 'default_cvid');
-		}
 		$customviewlist = array();
 		if ($result && $adb->num_rows($result)>0) {
 			$cvrow = $adb->fetch_array($result);
@@ -1494,98 +1481,22 @@ class CustomView extends CRMEntity {
 		return array('status' => $this->_status, 'userid' => $this->_userid);
 	}
 
-	public function CustomPermissions($record_id) {
-		global $adb;
-		$rs = $adb->pquery('select * from vtiger_cbcvmanagement inner join vtiger_crmentity on crmid=cbcvmanagementid where deleted=0 and cvid=?', array(
-			$record_id
-		));
-		if ($adb->num_rows($rs) == 1) {
-			return array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
-		}
-		return false;
-	}
-
 	//Function to check if the current user is able to see the customView
 	public function isPermittedCustomView($record_id, $action, $module) {
-		global $log, $current_user;
+		global $log, $current_user, $adb;
 		$log->debug("> isPermittedCustomView $record_id,$action,$module");
-		//check for custom permissions
-		$cp = $this->CustomPermissions($record_id);
-		if ($cp && !is_admin($current_user)) {
-			$pmvalue = array('no', 'yes');
-			$cvrole = explode(' |##| ', $cp['cvrole']);
-			if (!in_array($current_user->roleid, $cvrole)) {
-				return 'no';
-			}
-			if ($action == 'EditView') {
-				return $pmvalue[$cp['cvupdate']];
-			} elseif ($action == 'Delete') {
-				return $pmvalue[$cp['cvdelete']];
-			}
-		}
-		$permission = 'yes';
-		$permit_all = isset($_REQUEST['permitall']) ? vtlib_purify($_REQUEST['permitall']) : 'false';
-
-		if ($record_id != '') {
-			$status_userid_info = $this->getStatusAndUserid($record_id);
-
-			if ($status_userid_info) {
-				$status = $status_userid_info['status'];
-				$userid = $status_userid_info['userid'];
-
-				if ($status == CV_STATUS_DEFAULT) {
-					$log->debug('status=0');
-					if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView' || $action == 'Export' || ($permit_all === 'true')) {
-						$permission = 'yes';
-					} else {
-						$permission = 'no';
-					}
-				} elseif (is_admin($current_user)) {
-					$permission = 'yes';
-				} elseif ($action != 'ChangeStatus') {
-					if ($userid == $current_user->id) {
-						$log->debug($userid.'='.$current_user->id);
-						$permission = 'yes';
-					} elseif ($status == CV_STATUS_PUBLIC) {
-						$log->debug('status=3');
-						if ($action == 'ListView' || $action == $module . 'Ajax' || $action == 'index' || $action == 'DetailView' || $action == 'Export') {
-							$permission = 'yes';
-						} else {
-							$user_array = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
-							if (in_array($userid, $user_array)) {
-								$permission = 'yes';
-							} else {
-								$permission = 'no';
-							}
-						}
-					} elseif ($status == CV_STATUS_PRIVATE || $status == CV_STATUS_PENDING) {
-						$log->debug('status=1 or 2');
-						if ($userid == $current_user->id) {
-							$permission = 'yes';
-						} else {
-							$log->debug('status=1 or status=2 and action equals ListView or '.$module.'Ajax or index');
-							$user_array = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
-							if (count($user_array) > 0) {
-								if (in_array($current_user->id, $user_array)) {
-									$permission = 'yes';
-								} else {
-									$permission = 'no';
-								}
-							} else {
-								$permission = 'no';
-							}
-						}
-					} else {
-						$permission = 'yes';
-					}
-				} else {
-					$log->debug('else condition');
-					$permission = 'no';
-				}
-			} else {
-				$log->debug('count=0');
-				$permission = 'no';
-			}
+		$cp = cbCVManagement::getPermission($record_id, $current_user->id);
+		$permission = 'no';
+		if ($action == "CustomView" && $cp['U']) {
+			$permission = 'yes';
+		} elseif ($action == "index" && $cp['R']) {
+			$permission = 'yes';
+		} elseif (strpos($action, 'Ajax') !== false && $cp['R']) {
+			$permission = 'yes';
+		} elseif ($action == "EditView" && $cp['U']) {
+			$permission = 'yes';
+		} elseif ($action == "Delete" && $cp['D']) {
+			$permission = 'yes';
 		}
 		$log->debug('< isPermittedCustomView '.$permission);
 		return $permission;
