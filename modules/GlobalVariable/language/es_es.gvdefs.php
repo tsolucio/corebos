@@ -1870,6 +1870,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'mostrar o esconder la pestaña de más información',
 ),
+'Application_ImageSlider_Mode' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'documents | fields | both',
+	'definition' => 'select which images to show on the image slider',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {
