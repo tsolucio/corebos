@@ -11450,7 +11450,7 @@ precacheAndRoute([{
   "revision": "0b6bdbfee7b61226371c555ced95bde2"
 }, {
   "url": "include/js/corebosjshooks.js",
-  "revision": "eaa2e2eda37ce0a295b392dafe00728a"
+  "revision": "4c964ea50f733f39e72145b7e04f39e3"
 }, {
   "url": "include/js/customview.js",
   "revision": "5c870b070f867f9e010109f6faace4b1"
@@ -11462,7 +11462,7 @@ precacheAndRoute([{
   "revision": "f09b1b73041383bfe8a85ccce9641617"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "5cd21c1015423b1fa6ad1ed041757737"
+  "revision": "658c4b5c6f83fd40ac21c00a4df3fd08"
 }, {
   "url": "include/js/en_gb.lang.js",
   "revision": "69ef41019a6ccba5d5db0db6da5d9d2e"
@@ -11486,7 +11486,7 @@ precacheAndRoute([{
   "revision": "c44f39e9342c7d659c24b6bbb4022113"
 }, {
   "url": "include/js/general.js",
-  "revision": "7e9837a7f9fe36c9c06335f8d36f28f4"
+  "revision": "f42352c6b5f0fb232c74509d318c4327"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "d2955c6192419e2666204ffd18e44b43"
@@ -11501,7 +11501,7 @@ precacheAndRoute([{
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "0a2a3b376432239f46fe992e0c6223f8"
+  "revision": "809c270ede538f7efaca311327419d12"
 }, {
   "url": "include/js/ListViewJSON.js",
   "revision": "159df7964f61d988879fb5dcc2ff8410"
