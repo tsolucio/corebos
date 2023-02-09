@@ -109,14 +109,16 @@ class WizardComponent {
 			'btn-next',
 			'btn-back'
 		];
-		for (let i in ids) {
-			this.el(ids[i]).addEventListener('click', async function (event) {
-				event.preventDefault();
-				const prc = await wizard.Next(event);
-				if (prc) {
-					wizard.MoveToStep(event);
-				}
-			}, true);
+		if (!this.isSubWizard) {
+			for (let i in ids) {
+				this.el(ids[i]).addEventListener('click', async function (event) {
+					event.preventDefault();
+					const prc = await wizard.Next(event);
+					if (prc) {
+						wizard.MoveToStep(event);
+					}
+				}, true);
+			}
 		}
 	}
 
@@ -581,7 +583,9 @@ class WizardComponent {
 			}
 		}
 		let el = document.getElementById('save-btn');
-		el.innerHTML = '';
+		if (el !== null) {
+			el.innerHTML = '';
+		}
 		if (!this.ResetWizard[this.ActiveStep] && this.WizardSaveAction[this.ActiveStep]) {
 			//create a save button
 			let btn = document.createElement('button');
@@ -1124,20 +1128,23 @@ class WizardComponent {
 
 	ActionButtons() {
 		const footer = document.getElementsByClassName('slds-modal__footer');
-		let buttons = `
-		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete" disabled id="btn-back" data-type="back" style="float:left">
-			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
-			</svg>
-			${alert_arr.JSLBL_BACK}
-		</button>
-		<button type="button" class="slds-button slds-button_brand slds-path__mark-complete slds-float_right" id="btn-next" data-type="next">
-			${alert_arr.JSLBL_NEXT}
-			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-			</svg>
-		</button>
-		<div id="save-btn" class="slds-float_right"></div>`;
+		let buttons = '';
+		if (!this.isSubWizard) {
+			buttons += `
+			<button type="button" class="slds-button slds-button_brand slds-path__mark-complete" disabled id="btn-back" data-type="back" style="float:left">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
+				</svg>
+				${alert_arr.JSLBL_BACK}
+			</button>
+			<button type="button" class="slds-button slds-button_brand slds-path__mark-complete slds-float_right" id="btn-next" data-type="next">
+				${alert_arr.JSLBL_NEXT}
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+				</svg>
+			</button>`;
+		}
+		buttons += `<div id="save-btn" class="slds-float_right"></div>`;
 		footer[footer.length-1].innerHTML = buttons;
 	}
 
