@@ -11486,7 +11486,7 @@ precacheAndRoute([{
   "revision": "c44f39e9342c7d659c24b6bbb4022113"
 }, {
   "url": "include/js/general.js",
-  "revision": "f42352c6b5f0fb232c74509d318c4327"
+  "revision": "65f76960b1ba74a6c5e240375c61afe0"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "d2955c6192419e2666204ffd18e44b43"
@@ -11804,7 +11804,7 @@ precacheAndRoute([{
   "revision": "a171b462413db156e982aafcaec4c551"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
-  "revision": "1f4424f72609c356317ea1f8c15a5a5d"
+  "revision": "01d57f115d24a128f40bd772855b561a"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
   "revision": "fc683735b7a78c8fc840d73220632b65"
