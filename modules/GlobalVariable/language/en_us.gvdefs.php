@@ -1690,6 +1690,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Edit the filter "All". The default is 1',
 ),
+'Application_Filter_Remove_RelatedModule_Label' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Remove Related Module Label from column name',
+),
 'Security_ImageCheck' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
