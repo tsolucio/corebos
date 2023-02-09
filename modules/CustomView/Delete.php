@@ -9,15 +9,18 @@
  ********************************************************************************/
 require_once 'include/logging.php';
 require_once 'include/database/PearDatabase.php';
-global $adb;
+global $adb, $current_user;
 
 $cvid = vtlib_purify($_REQUEST["record"]);
 $module = vtlib_purify($_REQUEST["dmodule"]);
+$cp = cbCVManagement::getPermission($cvid, $current_user->id);
 
-if (isset($cvid) && $cvid != '') {
-	$deletesql = "delete from vtiger_customview where cvid =?";
-	$deleteresult = $adb->pquery($deletesql, array($cvid));
-	coreBOS_Session::set('lvs^'.$module.'^viewname', '');
+if ($cp['D']) {
+	if (isset($cvid) && $cvid != '') {
+		$deletesql = "delete from vtiger_customview where cvid =?";
+		$deleteresult = $adb->pquery($deletesql, array($cvid));
+		coreBOS_Session::set('lvs^'.$module.'^viewname', '');
+	}
 }
 
 header('Location: index.php?action=ListView&module=' . urlencode($module));

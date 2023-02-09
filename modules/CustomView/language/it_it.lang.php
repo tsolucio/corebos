@@ -230,6 +230,7 @@ $mod_strings = array (
 	'between' => 'Tra',
 
 	'LBL_SET_AS_PUBLIC' => 'Imposta a Pubblico ',
+	'LBL_SET_AS_PRIVATE'=>'Set as Private',
 	'LBL_NEW' => 'Nuovo',
 	'LBL_EDIT' => 'Modifica',
 	'LBL_STATUS_PUBLIC_APPROVE' => 'Approva',
