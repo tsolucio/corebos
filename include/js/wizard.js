@@ -41,6 +41,7 @@ class WizardComponent {
 		this.WizardSaveActive = [];
 		this.WizardSaveIsActive = [];
 		this.WizardFilterFromContext = [];
+		this.WizardConfirmStep = [];
 		this.Context = {};
 		this.Operation = '';
 		this.ProceedToNextStep = false;
@@ -130,6 +131,10 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	async Next(ev) {
+		let confirmstep = JSON.parse(this.WizardConfirmStep[this.ActiveStep]);
+		if (confirmstep.confirm && !confirm(confirmstep.message)) {
+			return false;
+		}
 		let type = 'next';
 		if (ev != '') {
 			type = ev.target.dataset.type;

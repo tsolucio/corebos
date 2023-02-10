@@ -28,6 +28,8 @@ class WizardView {
 	private $validate = true;
 	private $required_action = '';
 	private $custom_function = '';
+	private $confirmstep = '';
+	private $confirmmsg = '';
 	private $reset_wizard = true;
 
 	public $conditions = '';
@@ -85,6 +87,14 @@ class WizardView {
 		if (isset($this->params['filter_context'])) {
 			$this->filtercontext = $this->params['filter_context'];
 		}
+		//start: ask user to confirm the step before proceed
+		if (isset($this->params['confirm_step'])) {
+			$this->confirmstep = $this->params['confirm_step'];
+		}
+		if (isset($this->params['confirm_message'])) {
+			$this->confirmmsg = $this->params['confirm_message'];
+		}
+		//end confirm
 	}
 
 	public function Init() {
@@ -128,6 +138,10 @@ class WizardView {
 			$smarty->assign('WizardRequiredAction', $this->required_action);
 			$smarty->assign('WizardCustomFunction', $this->custom_function);
 			$smarty->assign('WizardModuleEditor', $this->module);
+			$smarty->assign('WizardConfirmStep', array(
+				'confirm' => boolval($this->confirmstep),
+				'message' => $this->confirmmsg
+			));
 			$smarty->assign('WizardContext', isset($this->filtercontext) ? $this->filtercontext : '');
 			$WizardSaveAction = false;
 			if (!empty($this->save_action)) {
