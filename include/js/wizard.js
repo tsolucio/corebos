@@ -132,7 +132,7 @@ class WizardComponent {
 	 */
 	async Next(ev) {
 		let confirmstep = JSON.parse(this.WizardConfirmStep[this.ActiveStep]);
-		if (confirmstep.confirm && !confirm(confirmstep.message)) {
+		if (!this.isSubWizard && confirmstep.confirm && !confirm(confirmstep.message)) {
 			return false;
 		}
 		let type = 'next';
