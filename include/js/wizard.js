@@ -263,7 +263,6 @@ class WizardComponent {
 			}
 			if (wizard.el(`save-wizard-${wizard.ActiveStep}`) !== null) {
 				wizard.el(`save-wizard-${wizard.ActiveStep}`).innerHTML = alert_arr.JSLBL_SAVE;
-				wizard.el(`save-wizard-${wizard.ActiveStep}`).removeAttribute('disabled');
 			}
 			wizard.loader('hide');
 		});
@@ -282,6 +281,8 @@ class WizardComponent {
 				if (this.el(`save-wizard-${wizard.ActiveStep}`) !== null) {
 					this.el(`save-wizard-${this.ActiveStep}`).innerHTML = `${alert_arr.JSLBL_Loading}...`;
 					this.el(`save-wizard-${this.ActiveStep}`).setAttribute('disabled', '');
+					this.CheckedRows[this.ActiveStep] = [];
+					this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
 				}
 				this.WizardSaveIsActive[this.ActiveStep] = true;
 				await this.CallCustomFunction();
@@ -475,6 +476,7 @@ class WizardComponent {
 		if (type == 'back') {
 			return true;
 		}
+		//move to step+2 if the product in the previous step is not selected
 		if (this.IdVal().length == 0) {
 			this.MoveToStep('');
 			return true;
@@ -604,17 +606,23 @@ class WizardComponent {
 			btn.classList.add('slds-button');
 			btn.classList.add('slds-button_neutral');
 			btn.id = `save-wizard-${this.ActiveStep}`;
+			btn.setAttribute('disabled', '');
 			el.appendChild(btn);
 			this.WizardSaveIsActive[this.ActiveStep] = true;
 			//change the color of next button
 			if (this.ActiveStep + 1 != this.steps) {
-				this.el('btn-next').style.background = '#c31e35';
-				this.el('btn-next').style.borderColor = '#c31e35';
-				this.el('btn-next').style.color = '#fff';
+				this.el('btn-next').style.background = '#fff';
+				this.el('btn-next').style.borderColor = '#c9c9c9';
+				this.el('btn-next').style.color = '#007ad1';
 			} else {
 				this.el('btn-next').style.background = '#007ad1';
 				this.el('btn-next').style.borderColor = '#007ad1';
 				this.el('btn-next').style.color = '#fff';
+			}
+			if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length == 0) {
+				this.ButtonsUI('uncheck');
+			} else {
+				this.ButtonsUI('check');
 			}
 		} else {
 			this.el('btn-next').style.background = '#007ad1';
@@ -635,7 +643,10 @@ class WizardComponent {
 		}
 	}
 
-	RenderButtons() {console.log(this)
+	/**
+	 * Render custom buttons in the first step of wizard
+	 */
+	RenderButtons() {
 		let el = document.getElementById('save-btn');
 		if (el !== null) {
 			el.innerHTML = '';
@@ -648,13 +659,48 @@ class WizardComponent {
 		btn.classList.add('slds-button');
 		btn.classList.add('slds-button_neutral');
 		btn.id = `save-wizard-${this.ActiveStep}`;
+		btn.setAttribute('disabled', '');
 		el.appendChild(btn);
 		this.WizardSaveIsActive[this.ActiveStep] = true;		
 	}
 
 	/**
+	 * Enable/disable custom buttons
+	 * @param {String} mode check | uncheck
+	 */
+	ButtonsUI(mode) {
+		let el = this.el(`save-wizard-${this.ActiveStep}`);
+		if (!el) {
+			return false;
+		}
+		let empty = [];
+		for (let i in this.CheckedRows[this.ActiveStep]) {
+			if (this.CheckedRows[this.ActiveStep][i].length > 0) {
+				empty.push(false);
+			}
+		}
+		const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
+		if (checkedRows.length == 0) {
+			empty = [];
+		}
+		if (mode == 'check') {
+			if (empty.length != 0) {
+				el.removeAttribute('disabled');
+				el.style.background = '#007ad1';
+				el.style.color = '#fff';
+			}
+		} else {
+			if (empty.length == 0) {
+				el.style.background = '#fff';
+				el.style.color = '#c9c9c9';
+				el.setAttribute('disabled', '');
+			}
+		}
+	}
+
+	/**
 	 * Save selected rows in CheckedRows array for every step and page in grid
-	 * @param {String} mode check | uncheck | checkAll | uncheckAll
+	 * @param {String} mode check | uncheck
 	 * @param {String} step
 	 * @param {Object} grid event
 	 */
@@ -851,7 +897,6 @@ class WizardComponent {
 			}
 			if (wizard.el(`save-wizard-${wizard.ActiveStep}`) !== null) {
 				wizard.el(`save-wizard-${wizard.ActiveStep}`).innerHTML = alert_arr.JSLBL_SAVE;
-				wizard.el(`save-wizard-${wizard.ActiveStep}`).removeAttribute('disabled');
 			}
 		});
 	}

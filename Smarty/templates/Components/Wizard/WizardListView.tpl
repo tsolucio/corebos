@@ -73,15 +73,19 @@ function WizardGrid{$formodule}{$WizardStep}() {
 	tui.Grid.applyTheme('striped');
 	wizard.WizardInstance['wzgrid{$WizardStep}'].on('checkAll', (ev) => {
 		wizard.SaveRows('check', {$WizardStep}, ev);
+		wizard.ButtonsUI('check');
 	});
 	wizard.WizardInstance['wzgrid{$WizardStep}'].on('check', (ev) => {
 		wizard.SaveRows('check', {$WizardStep}, ev);
+		wizard.ButtonsUI('check');
 	});
 	wizard.WizardInstance['wzgrid{$WizardStep}'].on('uncheckAll', (ev) => {
 		wizard.SaveRows('uncheck', {$WizardStep}, ev);
+		wizard.ButtonsUI('uncheck');
 	});
 	wizard.WizardInstance['wzgrid{$WizardStep}'].on('uncheck', (ev) => {
 		wizard.SaveRows('uncheck', {$WizardStep}, ev);
+		wizard.ButtonsUI('uncheck');
 	});
 	wizard.WizardInstance['wzgrid{$WizardStep}'].on('afterPageMove', (ev) => {
 		wizard.CheckRows(ev);
