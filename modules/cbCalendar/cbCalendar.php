@@ -353,18 +353,19 @@ class cbCalendar extends CRMEntity {
 					break;
 			}
 		} else {
-			// For non-calendar records.
-			if (empty($cbrecord)) {
-				$moreinfo = json_decode(html_entity_decode($moreinfo, ENT_QUOTES), true);
-				$cbsubject = $moreinfo['subject'];
-				$cbactivitytype = $moreinfo['subtitle'];
-				$activity['activityimage'] = $moreinfo['icon'];
-			} else {
+			$cbsubject = $cbactivitytype = $activity['activityimage'] = '';
+			if (!empty($cbrecord)) {
 				$cbsubject = array_values(getEntityName($cbmodule, $cbrecord));
 				$cbsubject = $cbsubject[0];
 				$cbactivitytype = getTranslatedString($cbmodule, $cbmodule);
 				$mod = CRMEntity::getInstance($cbmodule);
 				$activity['activityimage'] = [$mod->moduleIcon['library'], $mod->moduleIcon['icon']];
+			}
+			if (!empty($moreinfo)) {
+				$moreinfo = json_decode(html_entity_decode($moreinfo, ENT_QUOTES), true);
+				$cbsubject = empty($moreinfo['subject']) ? $cbsubject : $moreinfo['subject'];
+				$cbactivitytype = empty($moreinfo['subtitle']) ? $cbactivitytype : $moreinfo['subtitle'];
+				$activity['activityimage'] = empty($moreinfo['icon']) ? $activity['activityimage'] : $moreinfo['icon'];
 			}
 			if (!empty($cbaction)) {
 				$strtemplate = new Vtiger_StringTemplate();
