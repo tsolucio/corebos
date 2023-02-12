@@ -86,7 +86,7 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 				$dataIMG[] = array(
 					'id' => $value['id'],
 					'title' => $value['name'],
-					'path' => $site_URL . '/' . $value['path'] . $value['id'] . "_" . $value['name']
+					'path' => $site_URL . '/' . $value['path'] . $value['id'] . '_' . $value['name']
 				);
 			}
 		}
