@@ -2773,6 +2773,23 @@ $WFExpressionFunctionDefinitons = array(
 		"EUVATValidation('IT16816050114')"
 	),
 ),
+'AutoNumberDec' => array(
+	'name' => 'AutoNumberDec(ANPid)',
+	'desc' => 'Decrementa el contador del registro de autonumber dado.',
+	'params' => array(
+		array(
+			'name' => 'ANPid',
+			'type' => 'Número/Texto',
+			'optional' => false,
+			'desc' => 'CRMID o valor AutoNumber del registro a decrementar',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		'AutoNumberDec(999)',
+		"AutoNumberDec('ANPx-00001')",
+	),
+),
 );
 
 foreach (glob('modules/com_vtiger_workflow/language/es_es.fndefs.*.php', GLOB_BRACE) as $tcode) {
