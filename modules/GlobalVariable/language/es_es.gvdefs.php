@@ -1871,10 +1871,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'mostrar o esconder la pestaña de más información',
 ),
 'Application_ImageSlider_Mode' => array(
-	'valuetype' => 'String',
-	'category' => 'Application',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
 	'values' => 'documents | fields | both',
-	'definition' => 'select which images to show on the image slider',
+	'definition' => 'selecciona qué imágenes mostrar en el control deslizante de imágenes: documents mostrará imágenes de documentos relacionados, fields mostrará campos de imágenes en el registro y both mostrará ambos tipos',
 ),
 );
 

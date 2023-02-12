@@ -1874,7 +1874,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => 'documents | fields | both',
-	'definition' => 'select which images to show on the image slider',
+	'definition' => 'select which images to show on the image slider: documents will show images from related documents, fields will show image fields in the record and both will show, well... both types :-)',
 ),
 );
 
