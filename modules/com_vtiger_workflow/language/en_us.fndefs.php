@@ -2785,13 +2785,14 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'ANPid',
 			'type' => 'Number/String',
 			'optional' => false,
-			'desc' => 'CRMID or AutoNumber field value of the record to decrement',
+			'desc' => 'CRMID or AutoNumber field value of the record to decrement. Optionally it can be the name of an active module, in which case it will find the currently active default autonumber record for the given module.',
 		),
 	),
 	'categories' => array('Application'),
 	'examples' => array(
 		'AutoNumberDec(999)',
 		"AutoNumberDec('ANPx-00001')",
+		"AutoNumberDec('Accounts')",
 	),
 ),
 );
