@@ -62,6 +62,7 @@
 	{if $wizardTitle!=''}
 		<span class="slds-page-header__title slds-truncate" title="{$wizardTitle}" id="wizard-title">{$wizardTitle}</span>
 	{/if}
+	<div class="slds-brand-band slds-brand-band_medium">
 	<div class="slds-path">
 		<div class="slds-grid slds-path__track">
 			<div class="slds-grid slds-path__scroller-container">
@@ -93,26 +94,15 @@
 								<div class="slds-media">
 									<div class="slds-media__body slds-m-top_x-small">
 										<div class="slds-media">
-											<div class="slds-setup-assistant__step-summary-content slds-media__body">
-												{if $step.filter}
-												<button class="slds-button slds-button_neutral" onclick="wizard.ClearFilter({$smarty.foreach.stepwizard.index})" style="float: right;">{'LBL_CLEAR'|@getTranslatedString}</button>
-												{/if}
-												{if in_array('delete', $step.actions)}
-												<button class="slds-button slds-button_neutral" onclick="wizard.DeleteRowFromGrid({$smarty.foreach.stepwizard.index})" style="float: right;">{'LNK_REMOVE'|@getTranslatedString}</button>
-												{/if}
-												{if $step.description neq ''}
-												<div class="slds-text-heading_small">
-													<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-													</svg>
-													{$step.description}
-												</div>
-												{/if}
-												<div class="slds-m-top_large">
+											<div class="slds-media__body">
+												{include file='Smarty/templates/Components/Wizard/WizardActions.tpl'}
 												<script type="text/javascript">
 													wizard.ApplyFilter[{$smarty.foreach.stepwizard.index}] = '{$step.filter}';
 												</script>
-												{$wizardViews[$smarty.foreach.stepwizard.index]}
+												<div class="slds-tabs_scoped">
+													<div class="slds-tabs_scoped__content slds-show" role="tabpanel">
+														{$wizardViews[$smarty.foreach.stepwizard.index]}
+													</div>
 												</div>
 											</div>
 										</div>
@@ -125,6 +115,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 	{if !isset($isWigdet)}
 	<div class="slds-path__action">

@@ -50,3 +50,10 @@
 .slds-modal__container {
 	padding: 3rem 0 .5rem 0 !important;
 }
+.slds-modal__content {
+	min-height: 80% !important;
+}
+.wizard-step {
+	margin-top: 0% !important;
+	min-height: 500px
+}

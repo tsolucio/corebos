@@ -610,14 +610,16 @@ class WizardComponent {
 			el.appendChild(btn);
 			this.WizardSaveIsActive[this.ActiveStep] = true;
 			//change the color of next button
-			if (this.ActiveStep + 1 != this.steps) {
-				this.el('btn-next').style.background = '#fff';
-				this.el('btn-next').style.borderColor = '#c9c9c9';
-				this.el('btn-next').style.color = '#007ad1';
-			} else {
-				this.el('btn-next').style.background = '#007ad1';
-				this.el('btn-next').style.borderColor = '#007ad1';
-				this.el('btn-next').style.color = '#fff';
+			if (this.el('btn-next') !== null) {
+				if (this.ActiveStep + 1 != this.steps) {
+					this.el('btn-next').style.background = '#fff';
+					this.el('btn-next').style.borderColor = '#c9c9c9';
+					this.el('btn-next').style.color = '#007ad1';
+				} else {
+					this.el('btn-next').style.background = '#007ad1';
+					this.el('btn-next').style.borderColor = '#007ad1';
+					this.el('btn-next').style.color = '#fff';
+				}
 			}
 			if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length == 0) {
 				this.ButtonsUI('uncheck');
@@ -625,9 +627,11 @@ class WizardComponent {
 				this.ButtonsUI('check');
 			}
 		} else {
-			this.el('btn-next').style.background = '#007ad1';
-			this.el('btn-next').style.borderColor = '#007ad1';
-			this.el('btn-next').style.color = '#fff';
+			if (this.el('btn-next') !== null) {
+				this.el('btn-next').style.background = '#007ad1';
+				this.el('btn-next').style.borderColor = '#007ad1';
+				this.el('btn-next').style.color = '#fff';
+			}
 		}
 		if (this.el('btn-next')) {
 			if (this.ActiveStep + 1 == this.steps && type == 'next') {
