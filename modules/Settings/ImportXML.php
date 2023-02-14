@@ -37,7 +37,6 @@ if ($uploaded) {
 			foreach ($xmlreader->vtcrm_role as $role) {
 				$rlname = html_entity_decode((string)$role->vtcrm_definition->vtcrm_rolename, ENT_QUOTES, 'UTF-8');
 
-				//$pfexist = $adb->getone("select count(*) as cnt from vtiger_role where rolename='".addslashes($rlname)."'");
 				$pfrs = $adb->pquery('select count(*) as cnt from vtiger_role where rolename=?', array($rlname));
 				$pfcnt = $adb->fetch_array($pfrs);
 				if (!empty($pfcnt['cnt'])) {
@@ -71,7 +70,6 @@ if ($uploaded) {
 				$prfname = html_entity_decode((string)$profile->vtcrm_definition->vtcrm_profilename, ENT_QUOTES, 'UTF-8');
 				$prfdesc = html_entity_decode((string)$profile->vtcrm_definition->vtcrm_profiledescription, ENT_QUOTES, 'UTF-8');
 
-				//$pfexist = $adb->getone("select count(*) as cnt from vtiger_profile where profilename='".addslashes($prfname)."'");
 				$pfrs = $adb->pquery('select count(*) as cnt from vtiger_profile where profilename=?', array($prfname));
 				$pfcnt = $adb->fetch_array($pfrs);
 				if (!empty($pfcnt['cnt'])) {
@@ -176,7 +174,6 @@ if ($uploaded) {
 				$grpname = html_entity_decode((string)$group->vtcrm_definition->vtcrm_groupname, ENT_QUOTES, 'UTF-8');
 				$grpdesc = html_entity_decode((string)$group->vtcrm_definition->vtcrm_groupdescription, ENT_QUOTES, 'UTF-8');
 
-				//$pfexist = $adb->getone("select count(*) as cnt from vtiger_groups where groupname='".addslashes($grpname)."'");
 				$pfrs = $adb->pquery('select count(*) as cnt from vtiger_groups where groupname=?', array($grpname));
 				$pfcnt = $adb->fetch_array($pfrs);
 				if (!empty($pfcnt['cnt'])) {

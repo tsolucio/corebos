@@ -1312,6 +1312,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Name|Number|Expression',
 	'definition' => 'Al fusionar una plantilla GenDoc adjunto a un correo electrónico de flujo de trabajo, el nombre utilizado para el archivo adjunto será el campo Nombre de la entidad (Name) o el campo Número de entidad (Number) concatenados con el nombre de la plantilla. Si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado.',
 ),
+'Workflow_Email_GenDoc_Save_Document' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Habilita o deshabilita la creación de un nuevo documento en el módulo de Documentos y el storage cada vez que se envía un correo electrónico con una plantilla GenDoc.',
+),
 'Workflow_GeoDistance_Country_Default' => array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
@@ -1863,6 +1869,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'mostrar o esconder la pestaña de más información',
+),
+'Application_ImageSlider_Mode' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'documents | fields | both',
+	'definition' => 'selecciona qué imágenes mostrar en el control deslizante de imágenes: documents mostrará imágenes de documentos relacionados, fields mostrará campos de imágenes en el registro y both mostrará ambos tipos',
 ),
 );
 

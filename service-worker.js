@@ -11450,31 +11450,31 @@ precacheAndRoute([{
   "revision": "0b6bdbfee7b61226371c555ced95bde2"
 }, {
   "url": "include/js/corebosjshooks.js",
-  "revision": "eaa2e2eda37ce0a295b392dafe00728a"
+  "revision": "4c964ea50f733f39e72145b7e04f39e3"
 }, {
   "url": "include/js/customview.js",
   "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "af3257e41685430d89ecb4f5c63cfb04"
+  "revision": "ed0d7fb1162f635762facb486ce36e79"
 }, {
   "url": "include/js/dedup.js",
   "revision": "f09b1b73041383bfe8a85ccce9641617"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "5cd21c1015423b1fa6ad1ed041757737"
+  "revision": "658c4b5c6f83fd40ac21c00a4df3fd08"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "69e502b97b6918f9349bc4cd1d61f1e4"
+  "revision": "69ef41019a6ccba5d5db0db6da5d9d2e"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "d41ce5a59526238f1ffea7b48571e293"
+  "revision": "a413629a3f56334fdb3d92d9bfe4e51b"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "d917f2d1682a0d394387c446c739d09e"
+  "revision": "d2b18b3c13d8b33d9a2ce78c2d232932"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "eb6cda1dfaf8985387c19894c5e38477"
+  "revision": "8dd615cb264162eff8b6b9d000b5ba6e"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "d6d031135855b0672d09e0c8772b473a"
@@ -11483,25 +11483,25 @@ precacheAndRoute([{
   "revision": "ea50bf8ba6238325c4604d65ed39589b"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "a64820b57c743235a06759eb33679e62"
+  "revision": "c44f39e9342c7d659c24b6bbb4022113"
 }, {
   "url": "include/js/general.js",
-  "revision": "3e08e5f58ddd4f88bdcee5bda748dde1"
+  "revision": "65f76960b1ba74a6c5e240375c61afe0"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "a779360d033235ca93054b3162f06ce1"
+  "revision": "d2955c6192419e2666204ffd18e44b43"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "733037aedbea5f5a6a76f9afd5ebc54d"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "dc6430d0304b417df86685cf82d3d44e"
+  "revision": "d10a7bf8471e73bd270707a4ccb220e7"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
 }, {
   "url": "include/js/ListView.js",
-  "revision": "0a2a3b376432239f46fe992e0c6223f8"
+  "revision": "809c270ede538f7efaca311327419d12"
 }, {
   "url": "include/js/ListViewJSON.js",
   "revision": "159df7964f61d988879fb5dcc2ff8410"
@@ -11528,7 +11528,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "b208ee7c75d811a6a516fe4ab8a17598"
+  "revision": "9c8587477f80f3eb2c95242ccd24d71f"
 }, {
   "url": "include/js/notebook.js",
   "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
@@ -11546,7 +11546,7 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "885c614564f36a7fc3f1c326c992690c"
+  "revision": "5ce94054f09d91e37f5c8369c7383a56"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "89ad8ae2e8972f6085b6728624061ac2"
@@ -11561,7 +11561,7 @@ precacheAndRoute([{
   "revision": "5939e45063d7400f478b0b4a37a91e81"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "369e346a4e149fc46b6594db82de5179"
+  "revision": "e8ea345506c233dbf1194c2274056e52"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -11588,7 +11588,7 @@ precacheAndRoute([{
   "revision": "05becc7a0a84cda65e7fec3e97ff7933"
 }, {
   "url": "include/components/ldsmodal.js",
-  "revision": "dd0e9c83b07505582a57b0e6fb2e8dfd"
+  "revision": "daf823e352f61689ab6d714fbf7fb118"
 }, {
   "url": "include/components/ldsnotifications.js",
   "revision": "594eb5bf352d4dfb7517d6459fdbddf8"
@@ -11612,7 +11612,7 @@ precacheAndRoute([{
   "revision": "3e6e33cd306b1235add3d25fcda8541d"
 }, {
   "url": "include/components/slider.js",
-  "revision": "42229672ed2de6ba7fcf3f3d4f2a5362"
+  "revision": "5b6d053078efb6c178337e72015ab9a0"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.css",
   "revision": "fb40fb9c699a0e8b656b5345d2929b2c"
@@ -11642,7 +11642,7 @@ precacheAndRoute([{
   "revision": "991a585db2b78a2ede5fbf5c1cf1f29a"
 }, {
   "url": "include/components/toast-ui/image-editor/script.js",
-  "revision": "368b27c6b7451d5273ef01ab0483b4ec"
+  "revision": "6189e25d74ea42915a59c84f53fbfeb5"
 }, {
   "url": "include/components/toast-ui/image-editor/svg/icon-a.svg",
   "revision": "b70e0c0e87b49a32cc307c72d897a0cd"
@@ -11804,7 +11804,7 @@ precacheAndRoute([{
   "revision": "a171b462413db156e982aafcaec4c551"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
-  "revision": "1f4424f72609c356317ea1f8c15a5a5d"
+  "revision": "01d57f115d24a128f40bd772855b561a"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
   "revision": "fc683735b7a78c8fc840d73220632b65"

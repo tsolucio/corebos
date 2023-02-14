@@ -399,6 +399,7 @@ var alert_arr = {
 	'JSLBL_Loading': 'Loading',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Attachment could not be deleted',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!',
+	'JSLBL_DRAW': 'Draw',
 	'JSLBL_CANCEL': 'Cancella',
 	'JSLBL_SAVEAS': 'Save as',
 	'JSLBL_SAVE': 'Salva',

@@ -27,7 +27,7 @@
 								</svg>
 							</button>
 							<button class="slds-button slds-button_destructive" onclick="mb.resetTemplate();" style="float: right;margin-bottom: 15px; text-transform: uppercase;">
-								Start new module&nbsp;
+							{$MOD.LBL_MB_STARTMODULE}&nbsp;
 								<svg class="slds-icon slds-icon_small" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 								</svg>

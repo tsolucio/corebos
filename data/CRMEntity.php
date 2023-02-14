@@ -1403,7 +1403,16 @@ class CRMEntity {
 							QueryGenerator::$AND
 						);
 						$sql = $qg->getQuery(); // No conditions
-						$maxsql = mkMaxQuery($sql, $mdmap['sortfield']);
+						if (strpos($mdmap['sortfield'], '.')) {
+							$maxsql = mkMaxQuery($sql, $mdmap['sortfield']);
+						} else {
+							$ftbl = getTableNameForField($mdmap['targetmodule'], $mdmap['sortfield']);
+							if ($ftbl=='') {
+								$maxsql = mkMaxQuery($sql, $mdmap['sortfield']);
+							} else {
+								$maxsql = mkMaxQuery($sql, $ftbl.'.'.$mdmap['sortfield']);
+							}
+						}
 						$rs = $adb->query($maxsql);
 						$max = (int)$rs->fields['max'];
 						$this->column_fields[$mdmap['sortfield']] = $max+1;

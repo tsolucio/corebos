@@ -42,6 +42,7 @@ class VTEmailTask extends VTTask {
 	public $cbmsgtemplate_display;
 	public $sgmsgtemplate;
 	public $linktemplate;
+	public $isDuplicateDocument = false;
 
 	public function getFieldNames() {
 		return array(
@@ -66,6 +67,12 @@ class VTEmailTask extends VTTask {
 				INNER JOIN vtiger_notes ON vtiger_notes.notesid=vtiger_seattachmentsrel.crmid
 				WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
 			$calculation = GlobalVariable::getVariable('Workflow_Email_GenDoc_Attachment_Name', 'Name', $this->entitymodule);
+			// check whether to duplicate or not
+			if (empty($entity->WorkflowContext['duplicateGenDocDocument'])) {
+				$this->$isDuplicateDocument = filter_var(GlobalVariable::getVariable('Workflow_Email_GenDoc_Save_Document', 0), FILTER_VALIDATE_BOOLEAN);
+			} else {
+				$this->$isDuplicateDocument = filter_var($entity->WorkflowContext['saveGenDocDocument'], FILTER_VALIDATE_BOOLEAN);
+			}
 			foreach ($aids as $docid) {
 				$docrs = $adb->pquery($query, array($docid));
 				if ($docrs && $adb->num_rows($docrs)==1) {
@@ -82,11 +89,17 @@ class VTEmailTask extends VTTask {
 							'GDTemplateNumber' => $adb->query_result($docrs, 0, 'note_no'),
 						];
 						$name = OpenDocument::getConvertedName($this->entityid, $this->entitymodule, $this->entityinfo, $calculation, $context);
-						$docid = OpenDocument::saveAsDocument($this->entityid, $this->entitymodule, $format, $mergeTemplateName, $docfname, $name);
-						$docrs = $adb->pquery($query, array($docid));
-						$this->attachmentids = str_replace($prevdocid, $docid, $this->attachmentids);
+						if ($this->$isDuplicateDocument) {
+							$docid = OpenDocument::saveAsDocument($this->entityid, $this->entitymodule, $format, $mergeTemplateName, $docfname, $name);
+							$docrs = $adb->pquery($query, array($docid));
+							$this->attachmentids = str_replace($prevdocid, $docid, $this->attachmentids);
+						}
 					}
-					$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
+					if ($this->$isDuplicateDocument) {
+						$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
+					} else {
+						$attname = convertPathFromAbsoluteToRelative($docfname);
+					}
 					$this->attachmentsinfo[] = $attname;
 					$this->dzattinfo[] = array(
 						'docid' => $docid,

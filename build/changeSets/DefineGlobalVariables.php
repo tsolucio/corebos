@@ -139,6 +139,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Toolbar_Show',
 				'Application_Header_Buttons_Position',
 				'Application_Hide_Related_List',
+				'Application_ImageSlider_Mode',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',
@@ -249,6 +250,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'PurchaseOrder_TransferCostPrice',
 				'PurchaseOrder_IgnoreTransferDiscount',
 				'Workflow_Email_GenDoc_Attachment_Name',
+				'Workflow_Email_GenDoc_Save_Document',
 				'Workflow_Send_Email_ToCCBCC',
 				'Workflow_GeoDistance_Country_Default',
 				'Workflow_GeoDistance_ServerIP',
