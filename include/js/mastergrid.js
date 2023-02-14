@@ -47,7 +47,12 @@ class MasterGrid {
 			if (cRow != null) {
 				let rowdata = {};
 				for (let i in fields) {
-					rowdata[fields[i].name] = cRow.querySelector(`[name=${fields[i].name}]`).value;
+					const type = cRow.querySelector(`[name=${fields[i].name}]`).type;
+					if (type == 'checkbox') {
+						rowdata[fields[i].name] = cRow.querySelector(`[name=${fields[i].name}]`).checked;
+					} else {
+						rowdata[fields[i].name] = cRow.querySelector(`[name=${fields[i].name}]`).value;
+					}
 				}
 				rowdata['id'] = cRow.querySelector(`[name=mastergrid-rowid]`).value;
 				data.push(rowdata);
@@ -60,11 +65,15 @@ class MasterGrid {
 		let fld = '';
 		let editable = '';
 		let fieldvalue = '';
+		let fieldvalueDisplay = '';
 		if (!field.editable) {
 			editable = 'readonly';
 		}
 		if (this.currentRow[field.name] !== undefined) {
 			fieldvalue = this.currentRow[field.name];
+			if (this.currentRow[`${field.name}_displayValue`] !== undefined) {
+				fieldvalueDisplay = this.currentRow[`${field.name}_displayValue`];
+			}
 		}
 		switch(field.uitype) {
 			case '1':
@@ -79,8 +88,24 @@ class MasterGrid {
 				`;
 				break;
 			case '10':
+				let url = `index.php?module=${field.searchin}&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield=${field.name}&srcmodule=${this.module}&forrecord=${this.currentRow.id}`;
 				fld += `
-					<input type="text" value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
+					<input id="${field.name}_mastergrid" name="${field.name}" type="hidden" value="${fieldvalue}">
+					<span style="display:none;" id="${field.name}_hidden"></span>
+					<input class="slds slds-input" value="${fieldvalueDisplay}" id="${field.name}_display" name="${field.name}_display" readonly="" type="text" style="width: 85%;border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
+					<button class="slds-button slds-button_icon" title="Select" type="button" onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+						</svg>
+						<span class="slds-assistive-text">Select</span>
+					</button>
+					<button class="slds-button slds-button_icon" type="button" onclick="mg[${this.id}].ClearValues('${field.name}');">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+						</svg>
+						<span class="slds-assistive-text">Clear</span>
+					</button>
+					</div>
 				`;
 				break;
 			case '14'://time
@@ -107,7 +132,7 @@ class MasterGrid {
 				break;
 			case '50'://datetime
 				fld += `
-					<input type="datetime-local" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
+					<input type="datetime-local" value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
 				`;
 				break;
 			case '53':
@@ -123,12 +148,26 @@ class MasterGrid {
 				}
 				fld += `</select>`;
 				break;
+			case '56':
+				let checked = 'checked';
+				if (fieldvalue == '0') {
+					checked = '';
+				}
+				fld += `
+					<input type="checkbox" value="${fieldvalue}" ${checked} name="${field.name}" data-grid-name="${field.name}" ${editable}>
+				`;
+				break;
 			default:
 				fld += `
 					<input value="${fieldvalue}" type="text" name="${field.name}" class="slds slds-input" data-grid-name="${field.name}" ${editable}>
 				`;
 		}
 		return fld;
+	}
+
+	ClearValues(column) {
+		document.getElementById(`${column}_mastergrid`).value = '';
+		document.getElementById(`${column}_display`).value = '';
 	}
 
 	DeleteRow(idx) {
