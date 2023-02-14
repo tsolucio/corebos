@@ -37,6 +37,10 @@ function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname, 
 		var domnode_id = wodform[target_fieldname];
 		if (!domnode_id) {
 			domnode_id = window.opener.document.getElementById('txtbox_'+ target_fieldname);
+			let mastergridnode = window.opener.document.getElementById(`${target_fieldname}_mastergrid`);
+			if (domnode_id === null && mastergridnode !== null) {
+				domnode_id = mastergridnode;
+			}
 		}
 		var domnode_display = wodform[target_fieldname+'_display'];
 		if (!domnode_display) {
