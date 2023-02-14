@@ -3968,8 +3968,7 @@ function CreateMasterRecord($data, $module, $relatedfield, $related_id) {
 		$masterfocus->mode = 'edit';
 	}
 	foreach ($data as $key => $value) {
-		$col = getColumnnameByFieldname(getTabid($module), $key);
-		$masterfocus->column_fields[$col] = $value;
+		$masterfocus->column_fields[$key] = $value;
 	}
 	$masterfocus->column_fields[$relatedfield] = $related_id;
 	$handler = vtws_getModuleHandlerFromName($module, $current_user);

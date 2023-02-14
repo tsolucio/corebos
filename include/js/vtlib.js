@@ -35,16 +35,23 @@ function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname, 
 	}
 	if (ret) {
 		var domnode_id = wodform[target_fieldname];
+		let isMasterGrid = false;
+		const urlSearchParams = new URLSearchParams(window.location.search);
+		const params = Object.fromEntries(urlSearchParams.entries());
 		if (!domnode_id) {
 			domnode_id = window.opener.document.getElementById('txtbox_'+ target_fieldname);
-			let mastergridnode = window.opener.document.getElementById(`${target_fieldname}_mastergrid`);
+			let mastergridnode = window.opener.document.getElementById(`${target_fieldname}_mastergrid_${params.index}`);
 			if (domnode_id === null && mastergridnode !== null) {
 				domnode_id = mastergridnode;
+				isMasterGrid = true;
 			}
 		}
 		var domnode_display = wodform[target_fieldname+'_display'];
 		if (!domnode_display) {
 			domnode_display = window.opener.document.getElementById(target_fieldname+'_display');
+			if (isMasterGrid) {
+				domnode_display = window.opener.document.getElementById(`${target_fieldname}_display_${params.index}`);
+			}
 		}
 		if (domnode_id) {
 			domnode_id.value = recordid;

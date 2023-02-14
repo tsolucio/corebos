@@ -71,7 +71,7 @@ class MasterGrid {
 		}
 		if (this.currentRow[field.name] !== undefined) {
 			fieldvalue = this.currentRow[field.name];
-			if (this.currentRow[`${field.name}_displayValue`] !== undefined) {
+			if (this.currentRow[`${field.name}_displayValue`] !== null) {
 				fieldvalueDisplay = this.currentRow[`${field.name}_displayValue`];
 			}
 		}
@@ -88,11 +88,11 @@ class MasterGrid {
 				`;
 				break;
 			case '10':
-				let url = `index.php?module=${field.searchin}&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield=${field.name}&srcmodule=${this.module}&forrecord=${this.currentRow.id}`;
+				let url = `index.php?module=${field.searchin}&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield=${field.name}&srcmodule=${this.module}&forrecord=${this.currentRow.id}&index=${this.idx}`;
 				fld += `
-					<input id="${field.name}_mastergrid" name="${field.name}" type="hidden" value="${fieldvalue}">
+					<input id="${field.name}_mastergrid_${this.idx}" name="${field.name}" type="hidden" value="${fieldvalue}">
 					<span style="display:none;" id="${field.name}_hidden"></span>
-					<input class="slds slds-input" value="${fieldvalueDisplay}" id="${field.name}_display" name="${field.name}_display" readonly="" type="text" style="width: 85%;border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
+					<input class="slds slds-input" value="${fieldvalueDisplay}" id="${field.name}_display_${this.idx}" name="${field.name}_display" readonly="" type="text" style="width: 85%;border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
 					<button class="slds-button slds-button_icon" title="Select" type="button" onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
 						<svg class="slds-button__icon" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
