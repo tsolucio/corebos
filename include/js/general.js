@@ -7153,7 +7153,7 @@ function initSelect2() {
 	* @return: (bool)
 	*/
 	cbVal.isInt = function (val) {
-		return (cbNumber.isInt(val));
+		return cbNumber.isInt(val);
 	};
 
 	/*
@@ -7164,7 +7164,8 @@ function initSelect2() {
 	* @return: (bool)
 	*/
 	cbVal.isValidCheckBoxVal = function (val) {
-		return cbVal.validCheckBoxVals.indexOf(val) > -1 ? true : false;
+		cbVal.validCheckBoxVals.push(alert_arr.YES, alert_arr.NO);
+		return cbVal.validCheckBoxVals.indexOf(val) > -1;
 	};
 
 	/*
