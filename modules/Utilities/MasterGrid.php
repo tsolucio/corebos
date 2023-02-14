@@ -53,8 +53,14 @@ class mastergrid_EditViewBlock extends DeveloperBlock {
 		$rows = array();
 		if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'EditView') {
 			$qfields = array('id');
+			$matchFields = array();
 			foreach ($MapMG['fields'] as $r) {
 				$qfields[] = $r['name'];
+				$matchFields[$r['columnname']] = array(
+					$r['name'],
+					$r['uitype'],
+					isset($r['searchin']) ? $r['searchin'] : ''
+				);
 			}
 			$record = $_REQUEST['record'];
 			$qg = new QueryGenerator($MapMG['module'], $current_user);
@@ -66,12 +72,20 @@ class mastergrid_EditViewBlock extends DeveloperBlock {
 			if ($noOfRows > 0) {
 				$entityField = getEntityField($MapMG['module']);
 				while ($row = $adb->fetch_array($results)) {
+					$currentRow = array();
 					if (isset($row['smownerid'])) {
-						$row['assigned_user_id'] = $row['smownerid'];
-						$row['assigned_user_id_displayValue'] = getUserFullName($row['smownerid']);
+						$currentRow['assigned_user_id'] = $row['smownerid'];
+						$currentRow['assigned_user_id_displayValue'] = getUserFullName($row['smownerid']);
 					}
-					$row['id'] = $row[$entityField['entityid']];
-					$rows[] = array_filter($row, 'is_string', ARRAY_FILTER_USE_KEY);
+					foreach ($row as $key => $value) {
+						if (!empty($matchFields[$key][2])) {
+							$displayValue = getEntityName($matchFields[$key][2], $value);
+							$currentRow[$matchFields[$key][0].'_displayValue'] = $displayValue[$value];
+						}
+						$currentRow[$matchFields[$key][0]] = $value;
+					}
+					$currentRow['id'] = $row[$entityField['entityid']];
+					$rows[] = $currentRow;
 				}
 			}
 		}
