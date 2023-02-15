@@ -2049,6 +2049,7 @@ class ReportRun extends CRMEntity {
 			}
 			$fldcnt=$adb->num_fields($result);
 			$i18nheader = $jsonheader = array();
+			$Application_Filter_Remove_RelatedModule_Label = GlobalVariable::getVariable('Application_Filter_Remove_RelatedModule_Label', '0', '', $current_user->id);
 			for ($x=0; $x<$fldcnt; $x++) {
 				$fld = $adb->field_name($result, $x);
 				if ($fld->name=='LBL_ACTION') {
@@ -2077,6 +2078,10 @@ class ReportRun extends CRMEntity {
 				if ($module != $this->primarymodule && !empty($this->secondarymodule) && in_array($module, $modules_selected)) {
 					$headerLabel = $module.' '.$headerLabel;
 					$i18nheaderLabel = getTranslatedString($module, $module).' '.$i18nheaderLabel;
+				}
+				if (!$Application_Filter_Remove_RelatedModule_Label) {
+					$moduleLabelName = $module == $this->secondarymodule ? " (" . getTranslatedString($module, $module) . ")" : "";
+					$i18nheaderLabel = $i18nheaderLabel . $moduleLabelName;
 				}
 				if ($fld->name=='LBL_ACTION') {
 					$jsonheader[] = 'reportrowaction';

@@ -284,6 +284,7 @@ class GridListView {
 		$listview_header_arr = array();
 		$findRelatedModule = '';
 		$fieldPermission = getProfile2FieldPermissionList($this->module, $profileid);
+		$Application_Filter_Remove_RelatedModule_Label = GlobalVariable::getVariable('Application_Filter_Remove_RelatedModule_Label', '0', '', $current_user->id);
 		foreach ($listview_header_search as $fName => $fValue) {
 			if ($fName == 'cblvactioncolumn') {
 				$lv_arr = array(
@@ -303,9 +304,10 @@ class GridListView {
 				} else {
 					$fldName = strtolower($modName.$fldName);
 				}
+				$columnModuleName = $Application_Filter_Remove_RelatedModule_Label ? '' : ' ('.getTranslatedString($modName, $modName).')';
 				$lv_arr = array(
 					'fieldname' => $fldName,
-					'fieldvalue' => html_entity_decode($fValue.' ('.getTranslatedString($modName, $modName).')'),
+					'fieldvalue' => html_entity_decode($fValue . $columnModuleName),
 					'uitype' => '',
 					'tooltip' => false,
 					'edit' => false,
