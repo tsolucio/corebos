@@ -16,11 +16,11 @@ $smarty = new vtigerCRM_Smarty();
 require_once 'modules/Vtiger/DetailView.php';
 $fieldlabel = getTranslatedString('linktype', $currentModule);
 $kk = getFieldFromDetailViewBlockArray($blocks, $fieldlabel);
-$batypearray = $blocks[$kk['block_label']][$kk['field_key']][$fieldlabel]['options'];
+$batypearray = $blocks[$kk['block_label']]['__fields'][$kk['field_key']][$fieldlabel]['options'];
 uasort($batypearray, function ($a, $b) {
 	return strtolower($a[0]) < strtolower($b[0]) ? -1 : 1;
 });
-$blocks[$kk['block_label']][$kk['field_key']][$fieldlabel]['options'] = $batypearray;
+$blocks[$kk['block_label']]['__fields'][$kk['field_key']][$fieldlabel]['options'] = $batypearray;
 $smarty->assign('BLOCKS', $blocks);
 $smarty->display('DetailView.tpl');
 ?>
