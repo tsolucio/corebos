@@ -132,11 +132,9 @@ class GridListView {
 			coreBOS_Session::delete('export_where');
 		}
 		// Sorting
-		if (!empty($order_by) && count($sortArrayList) <= 1) {
-			$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$sorder;
-		} elseif (!empty($order_by) && count($sortArrayList) > 1) {
-			$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$sorder. ' '
-			. $queryGenerator->getOrderByColumn($sortArrayList[1]['orderBy']) . ' ' . $sortArrayList[1]['sortOrder'];
+		$list_query .= ' ORDER BY';
+		foreach ($sortArrayList as $sortObj) {
+			$list_query .= ' ' . $queryGenerator->getOrderByColumn($sortObj['orderBy']).' '.$sortObj['sortOrder'];
 		}
 		if (isset($_REQUEST['isRecycleModule'])) {
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias($this->module, true);
