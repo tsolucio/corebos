@@ -66,7 +66,7 @@ const Slider = {
 		Slider.showFullImage(Slider.CurrentObj.path, Slider.CurrentObj.title, Slider.CurrentObj.id);
 	},
 
-	showFullImage: (src, title, id, recordid='', currentmodule='') => {
+	showFullImage: (src, title, id, recordid = '', currentmodule = '') => {
 		let header = `
 			<a href="index.php?action=DetailView&module=Documents&record=${id}" target="_blank">${title}</a>
 		`;

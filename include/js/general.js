@@ -7638,7 +7638,9 @@ async function handleDrawClick(checkmodule, checkaction, recordid, doc2edit = ''
 	if (!response) {
 		try {
 		  ldsModal.close(true);
-		} catch (error) {}
+		} catch (error) {
+			
+		}
 		ldsModal.show(alert_arr.JSLBL_DRAW_MODAL_TITLE, alert_arr.JSLBL_DRAW_MODAL_MESSAGE);
 		return;
 	  }
