@@ -7632,6 +7632,35 @@ function openWizard(mapid) {
 	}, 100);
 }
 
+async function handleDrawClick(checkmodule, checkaction, recordid, doc2edit = '') {
+	const response = await ExecuteFunctions('ispermitted', `checkmodule=${checkmodule}&checkaction=${checkaction}&checkrecord=${recordid}`);
+
+	if (!response) {
+		try {
+		  ldsModal.close(true);
+		} catch (error) {
+			
+		}
+		ldsModal.show(alert_arr.JSLBL_DRAW_MODAL_TITLE, alert_arr.JSLBL_DRAW_MODAL_MESSAGE);
+		return;
+	  }
+  
+	const urlParams = new URLSearchParams();
+	urlParams.set('module', 'Utilities');
+	urlParams.set('action', 'UtilitiesAjax');
+	urlParams.set('file', 'Paint2Document');
+	urlParams.set('formodule', checkmodule);
+	urlParams.set('forrecord', recordid);
+	urlParams.set('inwindow', '1');
+	if (doc2edit) {
+	  urlParams.set('doc2edit', doc2edit);
+	}
+  
+	const url = `index.php?${urlParams.toString()}`;
+	window.open(url, 'photo2doc', 'width=1416,height=830');
+  
+  }
+
 window.addEventListener('DOMContentLoaded', () => {
 	AutocompleteSetup();
 	initSelect2();

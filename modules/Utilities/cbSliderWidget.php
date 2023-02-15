@@ -76,6 +76,10 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 		if (!empty($BAInfo['widget_width'])) {
 			$customstyle .= 'width:'.$BAInfo['widget_width'].';';
 		}
+
+		$smarty->assign('recordid', $ID);
+		$smarty->assign('currentmodule', $currentModule);
+
 		$Application_Menu_Show = GlobalVariable::getVariable('Application_ImageSlider_Mode', 'documents', $currentModule, $current_user->id);
 		if ($Application_Menu_Show == 'fields' || $Application_Menu_Show == 'both') {
 			if ($Application_Menu_Show == 'fields') {
