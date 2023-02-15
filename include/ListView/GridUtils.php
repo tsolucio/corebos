@@ -818,7 +818,7 @@ function generateRelationQuery($module, $relatedmodule, $fieldname, $value, $map
 	}
 	$conditions = '';
 	foreach ($map['modules'] as $mod) {
-		if ($mod['name'] == $module) {
+		if ($mod['name'] == $module && isset($mod['listview']['conditions'])) {
 			$conditions = json_decode(trim($mod['listview']['conditions']), true);
 			break;
 		}

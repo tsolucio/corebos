@@ -68,6 +68,7 @@ class LaunchWorkflowButton_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('record_id', $record_id);
 		$smarty->assign('workflow_id', $workflow_id);
 		$smarty->assign('slds_class', $slds_class);
+		$smarty->assign('refreshdv', filter_var($this->getFromContext('refreshdv'), FILTER_VALIDATE_BOOLEAN));
 		$smarty->assign('link_label', getTranslatedString($link_label, 'Documents'));
 		return $smarty->fetch('modules/Documents/LaunchWorkflowButton.tpl');
 	}

@@ -199,7 +199,12 @@ class FieldDependency extends processcbMap {
 		}
 		$mapping_arr['blockedtriggerfields'] = [];
 		$target_fields = array();
-		foreach ($xml->dependencies->dependency as $v) {
+		if (isset($xml->dependencies->loadfrom)) {
+			$dependencies = $this->getXMLBranch((string)$xml->dependencies->loadfrom);
+		} else {
+			$dependencies = $xml->dependencies;
+		}
+		foreach ($dependencies->dependency as $v) {
 			if (isset($v->loadfrom)) {
 				$v = $this->getXMLBranch((string)$v->loadfrom);
 				if ($v===false) {

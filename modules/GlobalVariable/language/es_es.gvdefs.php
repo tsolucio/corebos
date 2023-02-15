@@ -1870,6 +1870,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'mostrar o esconder la pestaña de más información',
 ),
+'Application_ImageSlider_Mode' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'documents | fields | both',
+	'definition' => 'selecciona qué imágenes mostrar en el control deslizante de imágenes: documents mostrará imágenes de documentos relacionados, fields mostrará campos de imágenes en el registro y both mostrará ambos tipos',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

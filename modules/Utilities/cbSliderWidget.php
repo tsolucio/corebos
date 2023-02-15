@@ -80,6 +80,20 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('recordid', $ID);
 		$smarty->assign('currentmodule', $currentModule);
 
+		$Application_Menu_Show = GlobalVariable::getVariable('Application_ImageSlider_Mode', 'documents', $currentModule, $current_user->id);
+		if ($Application_Menu_Show == 'fields' || $Application_Menu_Show == 'both') {
+			if ($Application_Menu_Show == 'fields') {
+				$dataIMG = array();
+			}
+			$recordImages = cbws_getrecordimageinfo($ID, $current_user);
+			foreach ($recordImages['images'] as $key => $value) {
+				$dataIMG[] = array(
+					'id' => $value['id'],
+					'title' => $value['name'],
+					'path' => $site_URL . '/' . $value['path'] . $value['id'] . '_' . $value['name']
+				);
+			}
+		}
 		$smarty->assign('images', $dataIMG);
 		$smarty->assign('totalslides', count($dataIMG));
 		$smarty->assign('imagesjson', json_encode($dataIMG));

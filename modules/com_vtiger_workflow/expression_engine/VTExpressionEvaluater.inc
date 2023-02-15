@@ -160,6 +160,7 @@ class VTFieldExpressionEvaluater {
 			'getCurrentConfiguredTaxValues' => '__cb_getCurrentConfiguredTaxValues',
 			'getCurrencyConversionValue' => '__cb_getCurrencyConversionValue',
 			'EUVATValidation' => '__cb_euvatvalidation',
+			'AutoNumberDec' => '__cb_autonumber_dec',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',

@@ -1870,6 +1870,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'hide or show the more information tab in detail view',
 ),
+'Application_ImageSlider_Mode' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'documents | fields | both',
+	'definition' => 'select which images to show on the image slider: documents will show images from related documents, fields will show image fields in the record and both will show, well... both types :-)',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {

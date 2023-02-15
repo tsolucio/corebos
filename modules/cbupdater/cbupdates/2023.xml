@@ -42,4 +42,11 @@
 	<classname>addBAforMasterDetail</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change AutoNumber workflow increment description</description>
+	<filename>build/changeSets/2023/chgAutoNumberWFDesc.php</filename>
+	<classname>chgAutoNumberWFDesc</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

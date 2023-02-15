@@ -44,7 +44,7 @@ TASKActions
 	<div class="slds-media__footer">
 	<div class="slds-grid slds-grid_align-spread">
 	{foreach from=$TASKActions item=taction key=tlabel}
-		<a href="{if $taction.type=='link'}{$taction.action}{else}javascript:void(0);{/if}" class="slds-text-link_reset slds-has-flexi-truncate" {if $taction.type=='click'}onclick="{$taction.action}"{/if}>
+		<a href="{if $taction.type=='link'}{$taction.action}{else}javascript:void(0);{/if}" class="slds-text-link_reset slds-has-flexi-truncate" {if $taction.type=='click'}onclick="{$taction.action}"{/if} data-reminder-id="{$TASKReminderID}">
 		<p class="slds-m-top_x-small slds-text-color_weak">{$tlabel}</p>
 		</a>
 	{/foreach}

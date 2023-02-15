@@ -2,12 +2,12 @@
 /*+********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
+ * The Original Code is: TSolucio Open Source
+ * The Initial Developer of the Original Code is TSolucio.
+ * Portions created by TSolucio are Copyright (C) TSolucio.
  * All Rights Reserved.
  ********************************************************************************/
-require_once "modules/Vtiger/ExecuteFunctionsfromphp.php";
+require_once 'modules/Vtiger/ExecuteFunctionsfromphp.php';
 
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache'); // recommended to prevent caching of event data.
@@ -15,8 +15,8 @@ set_time_limit(0);
 
 global $app_strings;
 
-function send_message($id, $message, $progress, $processed, $total) {
-	$d = array('message' => $message , 'progress' => $progress, 'processed' => $processed, 'total' => $total);
+function send_message($id, $message, $progress, $processed, $total, $refreshLV = false) {
+	$d = array('message' => $message , 'progress' => $progress, 'processed' => $processed, 'total' => $total, 'refreshLV' => $refreshLV);
 	echo "id: $id" . PHP_EOL;
 	echo 'data:'. json_encode($d) . PHP_EOL;
 	echo PHP_EOL;
@@ -115,7 +115,7 @@ if (!empty($idlist)) {
 			unlink($file);
 		}
 	}
-	send_message('CLOSE', $app_strings['processcomplete'], 100, $recordcount, $recordcount);
+	send_message('CLOSE', $app_strings['processcomplete'], 100, $recordcount, $recordcount, true);
 	coreBOS_Settings::delSetting('masseditids'.$params['corebos_browsertabID']);
 }
 

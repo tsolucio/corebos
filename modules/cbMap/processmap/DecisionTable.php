@@ -200,9 +200,9 @@ class DecisionTable extends processcbMap {
 									} else {
 										$crmid = $conditionvalue;
 									}
-										$relmod = getSalesEntityType($crmid);
-										$queryGenerator->addReferenceModuleFieldCondition($relmod, (string)$v->field, 'id', $crmid, (string)$v->operation);
-										$queryGenerator->addReferenceModuleFieldCondition($relmod, (string)$v->field, 'id', '', 'y', $queryGenerator::$OR);
+									$relmod = getSalesEntityType($crmid);
+									$queryGenerator->addReferenceModuleFieldCondition($relmod, (string)$v->field, 'id', $crmid, (string)$v->operation);
+									$queryGenerator->addReferenceModuleFieldCondition($relmod, (string)$v->field, 'id', '', 'y', $queryGenerator::$OR);
 								} else {
 									$queryGenerator->addCondition((string)$v->field, $conditionvalue, (string)$v->operation);
 									$queryGenerator->addCondition((string)$v->field, '__IGNORE__', 'e', $queryGenerator::$OR);

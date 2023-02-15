@@ -1377,44 +1377,7 @@ function progressMassEditDetails(sentForm) {
 	//a message is received
 	sentForm.SSE_SOURCE_ACTION = 'MassEditSave';
 	worker.postMessage(sentForm);
-	worker.addEventListener('message', function (e) {
-		var message = e.data;
-		if (e.data == 'CLOSE') {
-			if (document.basicSearch) {
-				var srch = document.basicSearch.searchtype.searchlaunched;
-				if (srch=='basic') {
-					callSearch('Basic');
-				} else if (srch=='advance') {
-					callSearch('Advanced');
-				} else {
-					jQuery.ajax({
-						method: 'POST',
-						url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
-					}).done(function (response) {
-						var result = response.split('&#&#&#');
-						if (Application_Landing_View=='table') {
-							document.getElementById('ListViewContents').innerHTML= result[2];
-						} else {
-							ListView.Show('massedit');
-						}
-						if (result[1] != '') {
-							ldsPrompt.show(alert_arr['ERROR'], result[1]);
-						}
-					});
-				}
-			}
-			__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
-			var pBar = document.getElementById('progressor');
-			pBar.value = pBar.max; //max out the progress bar
-		} else {
-			__addLog(message.message);
-			var pBar = document.getElementById('progressor');
-			pBar.value = message.progress;
-			var perc = document.getElementById('percentage');
-			perc.innerHTML   = message.progress  + '% &nbsp;&nbsp;' + message.processed + '/' + message.total;
-			perc.style.width = (Math.floor(pBar.clientWidth * (message.progress/100)) + 15) + 'px';
-		}
-	}, false);
+	worker.addEventListener('message', processCustomSSE, false);
 	worker.postMessage(true);
 }
 
@@ -1427,6 +1390,25 @@ function __addLog(message) {
 	var r = document.getElementById('relresults');
 	r.innerHTML += message + '<br>';
 	r.scrollTop = r.scrollHeight;
+}
+
+function processCustomSSE(e) {
+	if (e.data == 'CLOSE') {
+		__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
+		var pBar = document.getElementById('progressor');
+		pBar.value = pBar.max; //max out the progress bar
+	} else {
+		var message = e.data;
+		__addLog(message.message);
+		var pBar = document.getElementById('progressor');
+		pBar.value = message.progress;
+		var perc = document.getElementById('percentage');
+		perc.innerHTML = message.progress + '% &nbsp;&nbsp;' + message.processed + '/' + message.total;
+		perc.style.width = (Math.floor(pBar.clientWidth * (message.progress/100)) + 15) + 'px';
+		if (typeof message.refreshLV != undefined && message.refreshLV) {
+			listViewReload();
+		}
+	}
 }
 
 function runBAScript(scripturi) {
@@ -1445,7 +1427,7 @@ function runBAScript(scripturi) {
 		url: scripturi+'&__module='+SVModule+'&__crmid='+SVRecord,
 		type:'get'
 	}).fail(function (jqXHR, textStatus) {
-		document.getElementById('appnotifydiv').innerHTML='</b>'+alert_arr.Error+'</b>';
+		document.getElementById('appnotifydiv').innerHTML='</b>'+alert_arr.ERROR+'</b>';
 		document.getElementById('appnotifydiv').style.display='block';
 		VtigerJS_DialogBox.unblock();
 	}).done(function (msg) {
@@ -1477,7 +1459,7 @@ function runBAScript(scripturi) {
 	return void(0);
 }
 
-function runBAWorkflow(workflowid, crmids, context = '') {
+function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false) {
 	if (typeof workflowid == 'undefined' || workflowid == '') {
 		return false;
 	}
@@ -1504,11 +1486,14 @@ function runBAWorkflow(workflowid, crmids, context = '') {
 			if (dataset.error !== undefined && dataset.error != '') {
 				ldsPrompt.show(dataset.title, dataset.error);
 			} else {
-				ldsPrompt.show(alert_arr['ERROR'], alert_arr.Error);
+				ldsPrompt.show(alert_arr['ERROR'], alert_arr.ERROR);
 			}
 		}
 		VtigerJS_DialogBox.unblock();
-		corebosjshook_runBAWorkflow(workflowid, crmids);
+		corebosjshook_runBAWorkflow(workflowid, crmids, context, refreshDV, response);
+		if (refreshDV) {
+			dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
+		}
 	});
 	return void(0);
 }
@@ -1591,27 +1576,40 @@ function getProcessInfo(edit_type, formName, action, callback, parameters) {
 	let module = ps.shift();
 	let forrecord = ps.shift();
 	let fparams = encodeURIComponent(ps.join('|'));
-	let params='&minfo='+minfo+'&bpmmodule='+module+'&pflowid=0&bpmrecord='+forrecord+'&params='+fparams+'&formName='+formName+'&actionName='+action;
+	let params='&minfo='+minfo+'&bpmmodule='+module+'&pflowid=0&cbfromid='+forrecord+'&bpmrecord='+forrecord+'&params='+fparams+'&formName='+formName+'&actionName='+action;
 	if (callback!='') {
 		params = params + '&savefn=' + callback;
+	}
+	const reminderId = document.activeElement.dataset.reminderId;
+	if (reminderId !== undefined) {
+		params += '&ProcessReminderID=' + reminderId;
 	}
 	window.open('index.php?action=cbProcessInfoAjax&file=bpmpopup&module=cbProcessInfo'+params, null, cbPopupWindowSettings + ',dependent=yes');
 }
 
 function finishProcessInfo(module, return_id, mode, saveinfo) {
 	let sinfo = JSON.parse(decodeURIComponent(saveinfo));
+	let reload = true;
+	if (sinfo.ProcessReminderID!='') {
+		ExecuteFunctions('setNotificationStatus', 'status=2&remid='+sinfo.ProcessReminderID);
+	}
 	if (sinfo.originField!='') {
 		let fld = document.getElementById(sinfo.originField);
 		if (fld) {
+			reload = false;
 			fld.value = return_id;
 			submitFormForAction(sinfo.formName, sinfo.actionName);
 		} else {
 			let fld = document.getElementById('txtbox_'+sinfo.originField);
 			if (fld) {
+				reload = false;
 				fld.value = return_id;
 				dtlViewAjaxSave(sinfo.originField, sinfo.bpmmodule, sinfo.uitype, '', sinfo.originField, sinfo.bpmrecord);
 			}
 		}
+	}
+	if (reload) {
+		location.reload();
 	}
 }
 
@@ -7155,7 +7153,7 @@ function initSelect2() {
 	* @return: (bool)
 	*/
 	cbVal.isInt = function (val) {
-		return (cbNumber.isInt(val));
+		return cbNumber.isInt(val);
 	};
 
 	/*
@@ -7166,7 +7164,8 @@ function initSelect2() {
 	* @return: (bool)
 	*/
 	cbVal.isValidCheckBoxVal = function (val) {
-		return cbVal.validCheckBoxVals.indexOf(val) > -1 ? true : false;
+		cbVal.validCheckBoxVals.push(alert_arr.YES, alert_arr.NO);
+		return cbVal.validCheckBoxVals.indexOf(val) > -1;
 	};
 
 	/*

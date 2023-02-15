@@ -93,5 +93,6 @@ var mod_alert_arr = {
 	'Related_modlabel': 'El módulo no tiene campos de relación, por favor añade alguno',
 	'FirstFilterAll_msg': 'El primer filtro debe ser All',
 	'generatedtype': 'Tipo Generado',
-	'fieldlength': 'Longitud'
+	'fieldlength': 'Longitud',
+	'FunctionName': 'Nombre función',
 };
