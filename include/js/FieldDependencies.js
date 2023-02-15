@@ -127,6 +127,7 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
 /**
  * Control all actions performed on both edit and detail views.
  */
+var newEvents = new Array();
 FieldDependencies.prototype.controlActions = function (sourcename) {
 	var sourcevalue ='';
 	var field, comparator, value, columncondition, fieldName, groupid, conditionCurr, newGroup;
@@ -215,7 +216,18 @@ FieldDependencies.prototype.controlActions = function (sourcename) {
 					this.addCSS(responsibleConfig['actions']['setclass']);
 				}
 				if (responsibleConfig['actions']['function'] !== undefined && responsibleConfig['actions']['function'].length > 0) {
-					this.callFunc(sourcename, responsibleConfig['actions']['function']);
+					var thisContexts = this;
+					this.callFunc(sourcename, responsibleConfig['actions']['function']).then(function () {
+						for (let dependencyactive in thisContexts.DS) {
+							let fVal = document.getElementById(dependencyactive);
+							if (fVal != null) {
+								if (fVal.value != '' && newEvents[dependencyactive] != fVal.value) {
+									thisContexts.controlActions(dependencyactive);
+								}
+								newEvents[dependencyactive] = fVal.value;
+							}
+						}
+					});
 				}
 			} else {
 				if ((responsibleConfig['actions']['setoptions']) !== undefined && responsibleConfig['actions']['setoptions'].length > 0) {
@@ -706,7 +718,7 @@ FieldDependencies.prototype.blockAppearDetailView = function (appBlock) {
 	}
 };
 
-FieldDependencies.prototype.callFunc = function (sourcename, allParam) {
+FieldDependencies.prototype.callFunc = async function (sourcename, allParam) {
 	for (var i=0; i<allParam.length; i++) {
 		var funcName=allParam[i]['value'];
 		var action_field=allParam[i]['field'];
@@ -720,7 +732,7 @@ FieldDependencies.prototype.callFunc = function (sourcename, allParam) {
 			}
 			//check if the function is already declared
 			if (window[funcName]!==undefined) {
-				window[funcName](sourcename, action_field, fldValue, fld.data('initialVal'), parameters);
+				await window[funcName](sourcename, action_field, fldValue, fld.data('initialVal'), parameters);
 			}
 		}
 	}
