@@ -431,7 +431,7 @@ class GridListView {
 	}
 
 	public function processResults($result, $field_types, $parentid = 0) {
-		global $adb, $current_user, $current_module;
+		global $adb, $current_user;
 		$ids = array();
 		$Colorizer = vtlib_isModuleActive('Colorizer');
 		if (isset($_REQUEST['searchFullDocuments']) && !empty($_REQUEST['searchFullDocuments'])) {
