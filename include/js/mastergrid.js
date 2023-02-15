@@ -8,6 +8,7 @@ class MasterGrid {
 		this.fields = [];
 		this.data = [];
 		this.currentRow = {};
+		this.url = 'index.php?module=Utilities&action=UtilitiesAjax&file=MasterGridAPI';
 	}
 
 	Init() {
@@ -171,7 +172,16 @@ class MasterGrid {
 	}
 
 	DeleteRow(idx) {
-		document.getElementById(`grid-id-${this.id}-${idx}`).remove();
+		const el = document.getElementById(`grid-id-${this.id}-${idx}`);
+		el.remove();
+		const rowid = el.querySelector(`[name=mastergrid-rowid]`).value;
+		if (rowid > 0) {
+			Request(this.url, 'post', {
+				'rowid': rowid,
+				'module': this.module,
+				'method': 'deleteRow',
+			});
+		}
 	}
 
 	DuplicateRow(idx) {
@@ -180,6 +190,7 @@ class MasterGrid {
 		let newrow = el.cloneNode(true);
 		newrow.deleteCell(-1);
 		newrow.id = `grid-id-${this.id}-${this.idx}`;
+		newrow.querySelector(`[name=mastergrid-rowid]`).value = 0;
 		let actions = document.createElement('td');
 		actions.innerHTML = this.GenerateActions();
 		newrow.appendChild(actions);
