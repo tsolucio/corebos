@@ -31,11 +31,13 @@
 					{assign var="rlmode" value="RelatedPane"}
 					{include file='RelatedPanes.tpl' tabposition='top'}
 				{else}
+					{if !(GlobalVariable::getVariable('Application_Hide_Related_List', 0))}
 					<li class="slds-tabs_default__item slds-is-active" role="presentation">
 						<a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
 							{$APP.LBL_MORE} {$APP.LBL_INFORMATION}
 						</a>
 					</li>
+					{/if}
 				{/if}
 			</ul>
 		</div>
