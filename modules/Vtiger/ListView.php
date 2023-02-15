@@ -35,8 +35,9 @@ $list_buttons=$focus->getListButtons($app_strings, $mod_strings);
 if (ListViewSession::hasViewChanged($currentModule)) {
 	coreBOS_Session::set($currentModule.'_Order_By', '');
 }
-$sorder = $focus->getSortOrder();
-$order_by = $focus->getOrderBy();
+$sortArrayList = $focus->getOrderByAndSortOrderList();
+$order_by = $sortArrayList[0]['orderBy'];
+$sorder = $sortArrayList[0]['sortOrder'];
 
 coreBOS_Session::set($currentModule.'_Order_By', $order_by);
 coreBOS_Session::set($currentModule.'_Sort_Order', $sorder);
@@ -150,8 +151,11 @@ if ($sql_error) {
 	$smarty->assign('export_where', to_html($where));
 
 	// Sorting
-	if (!empty($order_by)) {
+	if (!empty($order_by) && count($sortArrayList) <= 1) {
 		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$sorder;
+	} elseif (!empty($order_by) && count($sortArrayList) > 1) {
+		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$sorder. ' '
+		. $queryGenerator->getOrderByColumn($sortArrayList[1]['orderBy']) . ' ' . $sortArrayList[1]['sortOrder'];
 	}
 	if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
 		echo '<br>'.$list_query.'<br>';
