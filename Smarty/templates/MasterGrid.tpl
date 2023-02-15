@@ -38,7 +38,9 @@
 		<thead>
 			<tr class="slds-line-height_reset">
 				{foreach from=$GridFields item=$i}
-				<th data-name="{$i.name}">{$i.label}</th>
+				<th data-name="{$i.name}">
+					{$i.label} {if $i.mandatory}<span class="slds-required">*</span>{/if}
+				</th>
 				{/foreach}
 				<th data-name="gridaction" style="width: 40px">Actions</th>
 			</tr>

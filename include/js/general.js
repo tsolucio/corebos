@@ -4462,15 +4462,26 @@ function submitFormForAction(formName, action) {
 		return false;
 	}
 	form.action.value = action;
+	let isValid = true;
 	if (corebosjshook_submitFormForAction(formName, action)) {
 		//check for MasterGridWidget if is available
 		if (typeof MasterGridInsances !== 'undefined') {
 			let data = submitMasterGrid();
+			for (let i in data[2]) {
+				if (!data[2][i]) {
+					VtigerJS_DialogBox.unblock();
+					alert('Please fill the required fields');
+					isValid = false;
+					break;
+				}
+			}
 			form.MasterGridValues.value = JSON.stringify(Object.entries(MasterGridData));
 			form.MasterGridModule.value = JSON.stringify(Object.entries(data[0]));
 			form.MasterGridRelatedField.value = JSON.stringify(Object.entries(data[1]));
 		}
-		form.submit();
+		if (isValid) {
+			form.submit();
+		}
 	}
 	return true;
 }
@@ -4478,8 +4489,9 @@ function submitFormForAction(formName, action) {
 function submitMasterGrid() {
 	let modules = [];
 	let relatedfields = [];
+	let isValid = [];
 	for (let i in MasterGridInsances) {
-		mg[MasterGridInsances[i]].TableData(MasterGridInsances[i]);
+		isValid[MasterGridInsances[i]] = mg[MasterGridInsances[i]].TableData(MasterGridInsances[i]);
 		modules[MasterGridInsances[i]] = {
 			module: mg[MasterGridInsances[i]].module,
 		};
@@ -4487,7 +4499,7 @@ function submitMasterGrid() {
 			relatedfield: mg[MasterGridInsances[i]].relatedfield
 		};
 	}
-	return [modules, relatedfields];
+	return [modules, relatedfields, isValid];
 }
 
 /** Javascript dialog box utility functions **/

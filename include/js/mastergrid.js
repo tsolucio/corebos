@@ -43,6 +43,7 @@ class MasterGrid {
 	TableData(instance) {
 		let data = new Array();
 		let fields = JSON.parse(mg[instance].fields);
+		let isValid = new Array();
 		for (let j = 0; j < mg[instance].idx; j++) {
 			let cRow = document.getElementById(`grid-id-${instance}-${j}`);
 			if (cRow != null) {
@@ -52,7 +53,13 @@ class MasterGrid {
 					if (type == 'checkbox') {
 						rowdata[fields[i].name] = cRow.querySelector(`[name=${fields[i].name}]`).checked;
 					} else {
-						rowdata[fields[i].name] = cRow.querySelector(`[name=${fields[i].name}]`).value;
+						const val = cRow.querySelector(`[name=${fields[i].name}]`).value;
+						if (cRow.querySelector(`[name=${fields[i].name}]`).hasAttribute('required')) {
+							if (val == '' || val == null) {
+								isValid.push(true);
+							}
+						}
+						rowdata[fields[i].name] = val;
 					}
 				}
 				rowdata['id'] = cRow.querySelector(`[name=mastergrid-rowid]`).value;
@@ -60,15 +67,20 @@ class MasterGrid {
 			}
 		}
 		MasterGridData[instance] = data;
+		return isValid.length == 0 ? true : false;
 	}
 
 	GenerateField(field) {
 		let fld = '';
 		let editable = '';
+		let mandatory = '';
 		let fieldvalue = '';
 		let fieldvalueDisplay = '';
 		if (!field.editable) {
 			editable = 'readonly';
+		}
+		if (field.mandatory) {
+			mandatory = 'required';
 		}
 		if (this.currentRow[field.name] !== undefined) {
 			fieldvalue = this.currentRow[field.name];
@@ -80,18 +92,18 @@ class MasterGrid {
 			case '1':
 			case '2':
 				fld += `
-					<input type="text" value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
+					<input type="text" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
 				`;
 				break;
 			case '5'://date
 				fld += `
-					<input type="date" value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
+					<input type="date" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
 				`;
 				break;
 			case '10':
 				let url = `index.php?module=${field.searchin}&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield=${field.name}&srcmodule=${this.module}&forrecord=${this.currentRow.id}&index=${this.idx}`;
 				fld += `
-					<input id="${field.name}_mastergrid_${this.idx}" name="${field.name}" type="hidden" value="${fieldvalue}">
+					<input ${mandatory} id="${field.name}_mastergrid_${this.idx}" name="${field.name}" type="hidden" value="${fieldvalue}">
 					<span style="display:none;" id="${field.name}_hidden"></span>
 					<input class="slds slds-input" value="${fieldvalueDisplay}" id="${field.name}_display_${this.idx}" name="${field.name}_display" readonly="" type="text" style="width: 85%;border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
 					<button class="slds-button slds-button_icon" title="Select" type="button" onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
@@ -111,7 +123,7 @@ class MasterGrid {
 				break;
 			case '14'://time
 				fld += `
-					<input type="time" value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
+					<input type="time" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
 				`;
 				break;
 			case '15':
@@ -120,7 +132,7 @@ class MasterGrid {
 					editable = 'disabled';
 				}
 				fld += `
-					<select class="slds slds-select" name="${field.name}" data-grid-name=${field.name} ${editable}>
+					<select class="slds slds-select" ${mandatory} name="${field.name}" data-grid-name=${field.name} ${editable}>
 				`;
 				for (let i in field.type.picklistValues) {
 					let selected = '';
@@ -133,7 +145,7 @@ class MasterGrid {
 				break;
 			case '50'://datetime
 				fld += `
-					<input type="datetime-local" value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
+					<input type="datetime-local" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
 				`;
 				break;
 			case '53':
@@ -160,7 +172,7 @@ class MasterGrid {
 				break;
 			default:
 				fld += `
-					<input value="${fieldvalue}" type="text" name="${field.name}" class="slds slds-input" data-grid-name="${field.name}" ${editable}>
+					<input value="${fieldvalue}" ${mandatory} type="text" name="${field.name}" class="slds slds-input" data-grid-name="${field.name}" ${editable}>
 				`;
 		}
 		return fld;
