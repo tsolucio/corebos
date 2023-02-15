@@ -66,7 +66,7 @@ const Slider = {
 		Slider.showFullImage(Slider.CurrentObj.path, Slider.CurrentObj.title, Slider.CurrentObj.id);
 	},
 
-	showFullImage: (src, title, id) => {
+	showFullImage: (src, title, id, recordid='', currentmodule='') => {
 		let header = `
 			<a href="index.php?action=DetailView&module=Documents&record=${id}" target="_blank">${title}</a>
 		`;
@@ -78,7 +78,7 @@ const Slider = {
 						<svg class="slds-button__icon" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#arrow_left"></use>
 						</svg>
-						<span class="slds-assistive-text">Left</span>
+						<span class="slds-assistive-text">${alert_arr.JSLBL_LEFT}</span>
 					</button>
 				</div>
 				<div class="slds-col">
@@ -86,14 +86,16 @@ const Slider = {
 						<svg class="slds-button__icon" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#arrow_right"></use>
 						</svg>
-						<span class="slds-assistive-text">Right</span>
+						<span class="slds-assistive-text">${alert_arr.JSLBL_RIGHT}</span>
 					</button>
 				</div>
 			</div>
 		`;
 		let doc2edit = encodeURIComponent(id);
+		let forrecord = recordid
+		let module = currentmodule
 		let drawButton = (doc2edit != '') ?
-			`<button class="slds-button slds-button_neutral" id="drawOnImage" onClick="javascript:window.open('index.php?module=Utilities&action=UtilitiesAjax&file=Paint2Document&formodule=Contacts&forrecord=1084&inwindow=1&doc2edit=${doc2edit}','photo2doc','width=800,height=860')">${alert_arr.JSLBL_DRAW}</button>`
+			`<button class="slds-button slds-button_neutral" id="drawOnImage" onClick="handleDrawClick('${module}', 'EditView', '${forrecord}', '${doc2edit}')">${alert_arr.JSLBL_DRAW}</button>`
 			: '';
 		ldsModal.show(header, content, 'large', '', '', true, drawButton);
 	}

@@ -76,6 +76,10 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 		if (!empty($BAInfo['widget_width'])) {
 			$customstyle .= 'width:'.$BAInfo['widget_width'].';';
 		}
+
+		$smarty->assign('recordid', $ID);
+		$smarty->assign('currentmodule', $currentModule);
+
 		$smarty->assign('images', $dataIMG);
 		$smarty->assign('totalslides', count($dataIMG));
 		$smarty->assign('imagesjson', json_encode($dataIMG));
