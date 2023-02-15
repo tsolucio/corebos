@@ -34,7 +34,7 @@
 </script>
 <form id="fake__form"></form>
 <form id="mastergridform__{$linkid}">
-	<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-m-bottom_xx-small">
+	<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
 		<thead>
 			<tr class="slds-line-height_reset">
 				{foreach from=$GridFields item=$i}
@@ -42,12 +42,15 @@
 					{$i.label} {if $i.mandatory}<span class="slds-required">*</span>{/if}
 				</th>
 				{/foreach}
-				<th data-name="gridaction" style="width: 40px">Actions</th>
+				<th data-name="gridaction">{$APP.LBL_ACTIONS}</th>
 			</tr>
 		</thead>
 		<tbody id="mastergrid-{$linkid}"></tbody>
 	</table>
 </form>
-<button class="slds-button slds-button_neutral slds-m-top_xx-small slds-m-bottom_xx-small slds-float_right" type="button" data-id="{$linkid}" onclick="mg[{$linkid}].EmptyRow()">
-	Add row
+<button type="button" data-id="{$linkid}" class="slds-button slds-button_brand slds-float_right slds-m-top_x-small" onclick="mg[{$linkid}].EmptyRow()">
+	<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+	</svg>
+	{$APP.LBL_NEW_BUTTON_LABEL} {$module_label}
 </button>

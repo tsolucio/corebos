@@ -4470,7 +4470,7 @@ function submitFormForAction(formName, action) {
 			for (let i in data[2]) {
 				if (!data[2][i]) {
 					VtigerJS_DialogBox.unblock();
-					alert('Please fill the required fields');
+					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_REQUIRED_FIELDS);
 					isValid = false;
 					break;
 				}

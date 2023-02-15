@@ -16,6 +16,7 @@ class MasterGrid {
 		for (let i in data) {
 			this.currentRow = data[i];
 			this.EmptyRow();
+			this.currentRow = [];
 		}
 	}
 
@@ -103,22 +104,29 @@ class MasterGrid {
 			case '10':
 				let url = `index.php?module=${field.searchin}&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield=${field.name}&srcmodule=${this.module}&forrecord=${this.currentRow.id}&index=${this.idx}`;
 				fld += `
-					<input ${mandatory} id="${field.name}_mastergrid_${this.idx}" name="${field.name}" type="hidden" value="${fieldvalue}">
-					<span style="display:none;" id="${field.name}_hidden"></span>
-					<input class="slds slds-input" value="${fieldvalueDisplay}" id="${field.name}_display_${this.idx}" name="${field.name}_display" readonly="" type="text" style="width: 85%;border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
-					<button class="slds-button slds-button_icon" title="Select" type="button" onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
-						<svg class="slds-button__icon" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
-						</svg>
-						<span class="slds-assistive-text">Select</span>
-					</button>
-					<button class="slds-button slds-button_icon" type="button" onclick="mg[${this.id}].ClearValues('${field.name}');">
-						<svg class="slds-button__icon" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
-						</svg>
-						<span class="slds-assistive-text">Clear</span>
-					</button>
+				<input ${mandatory} id="${field.name}_mastergrid_${this.idx}" name="${field.name}" type="hidden" value="${fieldvalue}">
+				<span style="display:none;" id="${field.name}_hidden"></span>
+				<div class="slds-grid slds-wrap">
+					<div class="slds-col slds-size_8-of-10" style="margin-right: -25px">
+						<input class="slds-input" value="${fieldvalueDisplay}" id="${field.name}_display_${this.idx}" name="${field.name}_display" readonly="" type="text" style="width: 85%;border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
 					</div>
+					<div class="slds-col slds-size_2-of-10">
+						<div class="slds-grid slds-grid_vertical slds-align_absolute-center">
+							<button class="slds-button slds-button_icon" title="Select" type="button" onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+								</svg>
+								<span class="slds-assistive-text">Select</span>
+							</button>
+							<button class="slds-button slds-button_icon" type="button" onclick="mg[${this.id}].ClearValues('${field.name}');">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+								</svg>
+								<span class="slds-assistive-text">Clear</span>
+							</button>
+						</div>
+					</div>
+				</div>
 				`;
 				break;
 			case '14'://time
@@ -216,7 +224,7 @@ class MasterGrid {
 			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
 				<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="Show More">
 					<svg class="slds-button__icon" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
 					</svg>
 					<span class="slds-assistive-text"></span>
 				</button>
@@ -224,12 +232,18 @@ class MasterGrid {
 				<ul class="slds-dropdown__list" role="menu">
 					<li class="slds-dropdown__item" role="presentation">
 						<a role="menuitem" tabindex="-1" onclick="mg[${this.id}].DuplicateRow(${this.idx})">
-							<span class="slds-truncate">Duplicate</span>
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#layers"></use>
+							</svg>
+							<span class="slds-truncate">${alert_arr.LNK_DUPLICATE}</span>
 						</a>
 					</li>
 					<li class="slds-dropdown__item" role="presentation">
 						<a role="menuitem" tabindex="-1" onclick="mg[${this.id}].DeleteRow(${this.idx})">
-							<span class="slds-truncate">Delete</span>
+							<svg class="slds-button__icon slds-button__icon_left cbds-color-compl-red--sober" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+							</svg>
+							<span class="slds-truncate cbds-color-compl-red--sober">${alert_arr.JSLBL_Delete}</span>
 						</a>
 					</li>
 				</ul>

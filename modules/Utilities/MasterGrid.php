@@ -48,6 +48,7 @@ class mastergrid_EditViewBlock extends DeveloperBlock {
 		$ID = $this->getFromContext('RECORDID');
 		$smarty->assign('linkid', $BAInfo['linkid']);
 		$smarty->assign('module', $MapMG['module']);
+		$smarty->assign('module_label', getTranslatedString($MapMG['module'], $MapMG['module']));
 		$smarty->assign('relatedfield', $MapMG['relatedfield']);
 		$smarty->assign('GridFields', $MapMG['fields']);
 		$rows = array();
