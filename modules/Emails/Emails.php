@@ -298,6 +298,9 @@ class Emails extends CRMEntity {
 			$mail->AddReplyTo($HELPDESK_SUPPORT_EMAIL_REPLY_ID);
 		}
 		$mail_status = MailSend($mail);
+
+		cbEventHandler::do_action('corebos.email.aftersend', array($mail, $mail_status));
+
 		if ($mail_status != 1) {
 			$mail_error = getMailError($mail, $mail_status);
 		} else {
@@ -306,11 +309,11 @@ class Emails extends CRMEntity {
 		return $mail_error;
 	}
 
-	/*
+	/**
 	* Function to get the secondary query part of a report
-	* @param - $module primary module name
-	* @param - $secmodule secondary module name
-	* returns the query string formed on fetching the related data for report for secondary module
+	* @param string primary module name
+	* @param string secondary module name
+	* @return string query formed on fetching the related data for report for secondary module
 	*/
 	public function generateReportsSecQuery($module, $secmodule, $queryPlanner, $type = '', $where_condition = '') {
 		$matrix = $queryPlanner->newDependencyMatrix();
@@ -348,10 +351,10 @@ class Emails extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	* Function to get the relation tables for related modules
-	* @param - $secmodule secondary module name
-	* returns the array with table names and fieldnames storing relations between module and this module
+	* @param string secondary module name
+	* @return array with table names and fieldnames storing relations between module and this module
 	*/
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -389,8 +392,8 @@ class Emails extends CRMEntity {
 			}
 			if (in_array('BULKMAIL', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$button .= "<input title='" . getTranslatedString('LBL_BULK_MAILS') . "' class='crmbutton small create'" .
-						" onclick='this.form.action.value=\"sendmail\";this.form.module.value=\"$this_module\"' type='submit' name='button'" .
-						" value='" . getTranslatedString('LBL_BULK_MAILS') . "'>";
+					" onclick='this.form.action.value=\"sendmail\";this.form.module.value=\"$this_module\"' type='submit' name='button'" .
+					" value='" . getTranslatedString('LBL_BULK_MAILS') . "'>";
 			}
 		}
 
@@ -487,9 +490,7 @@ class Emails extends CRMEntity {
 		global $adb;
 		$sql = 'DELETE FROM vtiger_seactivityrel WHERE activityid=? AND crmid = ?';
 		$adb->pquery($sql, array($id, $return_id));
-		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
-		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$adb->pquery($sql, $params);
+		deleteFromCrmEntityRel($id, $return_id);
 		$mtime = date('y-m-d H:i:d');
 		$adb->pquery('UPDATE '.$this->crmentityTable.' SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
 		$adb->pquery('UPDATE vtiger_crmobject SET modifiedtime=? WHERE crmid=?', array($mtime, $id));

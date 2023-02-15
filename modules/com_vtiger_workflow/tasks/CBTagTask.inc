@@ -21,13 +21,17 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 class CBTagTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $listoftags;
+	public $addrel;
+	public $forallusers;
 
 	public function getFieldNames() {
 		return array('listoftags', 'addrel', 'forallusers');
 	}
 
 	public function doTask(&$entity) {
-		global $current_user;
+		global $current_user, $logbg;
+		$logbg->debug('> TagTask');
 		list($cto, $cto_id) = explode('x', $entity->getId());
 		if (!empty($cto_id) && !empty($this->listoftags)) {
 			$setype = getSalesEntityType($cto_id);
@@ -47,14 +51,20 @@ class CBTagTask extends VTTask {
 					$users = $current_user->id;
 				}
 				$freetag->tag_object($users, $cto_id, $this->listoftags, $setype);
+				$logbg->debug('(TagTask) ADD object tag', [$users, $cto_id, $this->listoftags, $setype]);
 			} else {
 				if ($this->forallusers) {
+					$logbg->debug('(TagTask) DELETE object tags for all users', [$cto_id, $this->listoftags]);
 					$freetag->delete_object_tags($cto_id, $this->listoftags);
 				} else {
+					$logbg->debug('(TagTask) DELETE object tag for', [$current_user->id, $cto_id, $this->listoftags]);
 					$freetag->delete_object_tag($current_user->id, $cto_id, $this->listoftags);
 				}
 			}
+		} else {
+			$logbg->debug('(TagTask) not called: cto_id or listoftags are empty');
 		}
+		$logbg->debug('< TagTask');
 	}
 }
 ?>

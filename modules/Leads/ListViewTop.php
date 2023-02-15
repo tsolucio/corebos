@@ -9,7 +9,7 @@
  ************************************************************************************/
 
 /** Function to get the 5 New Leads
- *return array $values - array with the title, header and entries like
+ * @return array with the title, header and entries like
  *  Array('Title'=>$title,'Header'=>$listview_header,'Entries'=>$listview_entries)
  *  where listview_header and listview_entries are arrays of header and entity values which are returned from function getListViewHeader and getListViewEntries
 */

@@ -187,12 +187,12 @@ class HelpDesk extends CRMEntity {
 	}
 
 	/** Function to get the Ticket History information as in array format
-	 *	@param int $ticketid - ticket id
-	 *	@return array - return an array with title and the ticket history informations in the following format
-				array(
-					header=>array('0'=>'title'),
-					entries=>array('0'=>'info1','1'=>'info2',etc.,)
-				)
+	 * @param int ticket id
+	 * @return array with title and the ticket history informations in the following format
+	 *		array(
+	 *			header=>array('0'=>'title'),
+	 *			entries=>array('0'=>'info1','1'=>'info2',etc.,)
+	 *		)
 	 */
 	public function get_ticket_history($ticketid) {
 		global $log, $adb;
@@ -211,14 +211,14 @@ class HelpDesk extends CRMEntity {
 		return $return_value;
 	}
 
-	/**	Function to get the ticket comments as a array
-	 *	@param  int   $ticketid - ticketid
-	 *	@return array $output - array(
-						[$i][comments]    => comments
-						[$i][owner]       => name of the user or customer who made the comment
-						[$i][createdtime] => the comment created time
-					)
-				where $i = 0,1,..n which are all made for the ticket
+	/** Function to get the ticket comments as a array
+	 * @param int ticketid
+	 * @return array
+	 * 		[$i][comments] => comments
+	 * 		[$i][owner] => name of the user or customer who made the comment
+	 * 		[$i][createdtime] => the comment created time
+	 * 	)
+	 * 	where $i = 0,1,..n which are all made for the ticket
 	**/
 	public function get_ticket_comments_list($ticketid) {
 		global $log, $adb;
@@ -255,8 +255,8 @@ class HelpDesk extends CRMEntity {
 		return $output;
 	}
 
-	/**	Function to get the HelpDesk field labels in caps letters without space
-	 *	@return array $mergeflds - array(	key => val	)    where   key=0,1,2..n & val = ASSIGNEDTO,RELATEDTO, .,etc
+	/** Function to get the HelpDesk field labels in caps letters without space
+	 * @return array (key => val) where key=0,1,2..n & val = ASSIGNEDTO,RELATEDTO, .,etc
 	**/
 	public function getColumnNames_Hd() {
 		global $log, $current_user, $adb;
@@ -293,8 +293,8 @@ class HelpDesk extends CRMEntity {
 	}
 
 	/** Function to get the list of comments for the given ticket id
-	 * @param  int  $ticketid - Ticket id
-	 * @return list $list - return the list of comments and comment informations as an html DIV output
+	 * @param int Ticket id
+	 * @return list of comments and comment informations as an html DIV output
 	**/
 	public function getCommentInformation($ticketid) {
 		global $log, $adb, $mod_strings, $default_charset;
@@ -355,8 +355,8 @@ class HelpDesk extends CRMEntity {
 	}
 
 	/** Function to get the Customer Name who has made comment to the ticket from the customer portal
-	 * @param  int    $id   - Ticket id
-	 * @return string $customername - The contact name
+	 * @param int Ticket id
+	 * @return string the contact name
 	**/
 	public function getCustomerName($id) {
 		global $log, $adb;

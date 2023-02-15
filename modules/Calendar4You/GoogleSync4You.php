@@ -181,7 +181,7 @@ class GoogleSync4You {
 					}
 				}
 				if ($client->getAccessToken()) {
-					$this->gService =  new Google_Service_Calendar($client);
+					$this->gService = new Google_Service_Calendar($client);
 					//a fast way to check if the login parameters work
 					$colors = $this->gService->colors->get();
 					$this->is_logged = true;
@@ -369,7 +369,7 @@ class GoogleSync4You {
 		if ($num_rows > 0) {
 			for ($i=0; $i<$num_rows; $i++) {
 				$googleEmail=$this->db->query_result($result, $i, 'email1');
-				$who  = new Google_Service_Calendar_EventAttendee();
+				$who = new Google_Service_Calendar_EventAttendee();
 				$who->setEmail($googleEmail);
 				$whos[] = $who;
 			}
@@ -470,7 +470,7 @@ class GoogleSync4You {
 		try {
 			$evnt = $this->gService->events->get($cal, $event_id);
 		} catch (Exception $e) {
-			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			echo 'Caught exception: ', $e->getMessage(), "\n";
 			$evnt = false;
 		}
 		set_include_path($this->root_directory);

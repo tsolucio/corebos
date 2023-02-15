@@ -290,9 +290,9 @@ class SMSNotifierManager {
 	public static function updateConfiguredServer($id, $frmvalues) {
 		global $adb;
 		$providertype = vtlib_purify($frmvalues['smsserver_provider']);
-		$username     = vtlib_purify($frmvalues['smsserver_username']);
-		$password     = vtlib_purify($frmvalues['smsserver_password']);
-		$isactive     = vtlib_purify($frmvalues['smsserver_isactive']);
+		$username = vtlib_purify($frmvalues['smsserver_username']);
+		$password = vtlib_purify($frmvalues['smsserver_password']);
+		$isactive = vtlib_purify($frmvalues['smsserver_isactive']);
 
 		$provider = SMSProvider::getInstance($providertype);
 

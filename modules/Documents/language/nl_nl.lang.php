@@ -130,5 +130,6 @@ $mod_strings = array(
 	'LBL_MASSUPLOAD_DESCRIPTION' => 'Activate and deactivate the document mass upload widget on each module.',
 	'Approve' => 'Approve',
 	'Decline' => 'Decline',
+	'View PDF' => 'View PDF',
 );
 ?>

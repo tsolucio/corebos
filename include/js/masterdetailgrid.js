@@ -7,6 +7,10 @@ GlobalVariable_getVariable('MasterDetail_ReloadScreenAfterEdit', 0).then(functio
 
 var masterdetailwork = {
 
+	MasterMapID: [],
+	MasterButtons: [],
+	MasterHide: [],
+
 	moveup: (MDGrid, recordid, module, rowkey) => {
 		if (rowkey == 0) {
 			return false;
@@ -114,6 +118,8 @@ var masterdetailwork = {
 			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&'+targetfield+'='+CurrentRecord;
 		} else if (document.getElementById('record')) {
 			CurrentRecord = '&MDCurrentRecord='+document.getElementById('record').value+'&'+targetfield+'='+document.getElementById('record').value;
+		} else if (document.getElementById('parent_id')) {
+			CurrentRecord = '&MDCurrentRecord='+document.getElementById('parent_id').value+'&'+targetfield+'='+document.getElementById('parent_id').value;
 		}
 		let mapname = document.getElementById(MDGrid.substring(6)).dataset.mapname;
 		let mdgridinfo = JSON.stringify({
@@ -200,6 +206,12 @@ var masterdetailwork = {
 		}
 	},
 
+	GridMounted: (ev) => {
+		if (masterdetailwork.MasterHide[ev.instance.el.id]) {
+			document.getElementById(`masterdetail__${ev.instance.el.id}`).style.display = 'none';
+		}
+	},
+
 	ToggleStatus: []
 };
 
@@ -212,40 +224,78 @@ class mdActionRender {
 		let recordid = props.grid.getValue(rowKey, 'record_id') || '';
 		let module = props.grid.getValue(rowKey, 'record_module');
 		el = document.createElement('span');
-		let actions = '<div class="slds-button-group" role="group">';
-		if (props.columnInfo.renderer.options.moveup) {
-			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.moveup('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveUp']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#up"></use>
-				</svg>
-			</button>`;
-		}
-		if (props.columnInfo.renderer.options.movedown) {
-			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.movedown('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveDown']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-				</svg>
-			</button>`;
-		}
+		let editbtn = ``;
 		if (props.columnInfo.renderer.options.edit && permissions.edit == 'yes') {
-			actions += `
+			editbtn = `
 			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.MDUpsert('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 				</svg>
 			</button>`;
 		}
+		let actions = `
+		<div class="slds-button-group" role="group">
+			${editbtn}
+			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open">
+				<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true">
+				<svg class="slds-button__icon" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
+				</svg>
+				<span class="slds-assistive-text">${alert_arr.LBL_SHOW_MORE}</span>
+			</button>
+			<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" style="width: 9rem;">
+			<ul class="slds-dropdown__list" role="menu">`;
+		if (props.columnInfo.renderer.options.moveup) {
+			actions += `
+			<li class="slds-dropdown__item" role="presentation">
+				<a onclick="masterdetailwork.moveup('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveUp']}">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#up"></use>
+					</svg>
+					<span class="slds-truncate">${alert_arr['MoveUp']}</span>
+				</a>
+			</li>`;
+		}
+		if (props.columnInfo.renderer.options.movedown) {
+			actions += `
+			<li class="slds-dropdown__item" role="presentation">
+				<a onclick="masterdetailwork.movedown('mdgrid${props.grid.el.id}', ${recordid}, '${module}', ${rowKey});" title="${alert_arr['MoveDown']}">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+					</svg>
+					<span class="slds-truncate">${alert_arr['MoveDown']}</span>
+				</a>
+			</li>`;
+		}
 		if (props.columnInfo.renderer.options.delete && permissions.delete == 'yes') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Delete']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item" role="presentation">
+				<a onclick="masterdetailwork.delete('mdgrid${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Delete']}">
+					<svg class="slds-button__icon slds-button__icon_left cbds-color-compl-red--sober" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					<span class="slds-truncate cbds-color-compl-red--sober">${alert_arr['JSLBL_Delete']}</span>
+				</a>
+			</li>`;
 		}
-		actions += '</div>';
+		const MDButtons = JSON.parse(masterdetailwork.MasterButtons[props.grid.el.id]);
+		if (MDButtons.length > 0) {
+			for (let i in MDButtons) {
+				const linklabel = MDButtons[i].linklabel.split('_');
+				if (`${linklabel[0]}_${linklabel[1]}` == `MasterDetailButton_${masterdetailwork.MasterMapID[props.grid.el.id]}`) {
+					actions += `
+					<li class="slds-dropdown__item" role="presentation">
+						<a onclick="${MDButtons[i].linkurl.replace('$RECORD$', recordid)}" title="${MDButtons[i].linklabel}">
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#touch_action"></use>
+							</svg>
+							<span class="slds-truncate">${linklabel[2] !== undefined ? linklabel[2] : MDButtons[i].linklabel}</span>
+						</a>
+					</li>`;
+				}
+			}
+		}
+		actions += '</ul></div></div></div>';
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);
@@ -259,6 +309,7 @@ class mdActionRender {
 		this.el.value = String(props.value);
 	}
 }
+
 
 class mdLinkRender {
 

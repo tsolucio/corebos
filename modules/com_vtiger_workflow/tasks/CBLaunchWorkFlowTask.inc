@@ -24,6 +24,15 @@ include_once 'include/Webservices/ExecuteWorkflow.php';
 class CBLaunchWorkFlowTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $workflowid;
+	public $workflowid_display;
+	public $record_filter_opt;
+	public $relModlist;
+	public $conditionexpressionmapid;
+	public $conditionexpressionmapid_display;
+	public $recordsetmapid;
+	public $recordsetmapid_display;
+	public $crmids_list;
 
 	public function getFieldNames() {
 		return array(
@@ -34,7 +43,7 @@ class CBLaunchWorkFlowTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $currentModule, $from_wf, $logbg;
-		$logbg->debug('LaunchWF '.$this->workflowid.' with type '.$this->record_filter_opt);
+		$logbg->debug('> LaunchWorkFlowTask '.$this->record_filter_opt);
 		switch ($this->record_filter_opt) {
 			case 'filterByThese':
 				$idslist = explode(',', $this->crmids_list);
@@ -47,6 +56,8 @@ class CBLaunchWorkFlowTask extends VTTask {
 						}
 					}
 					$this->executeWorkflow($this->workflowid, $entityids, '[]');
+				} else {
+					$logbg->debug('(LaunchWorkFlowTask) crmids_list is empty');
 				}
 				break;
 			case 'filterByrelModuleAndConditionExpressionMap':
@@ -92,7 +103,11 @@ class CBLaunchWorkFlowTask extends VTTask {
 							}
 						}
 						$this->executeWorkflow($this->workflowid, $crmids, '[]');
+					} else {
+						$logbg->debug('(LaunchWorkFlowTask) not called: executed relationData query has no results');
 					}
+				} else {
+					$logbg->debug('(LaunchWorkFlowTask) not called: relationData query is not set');
 				}
 				break;
 			case 'filterByRecordSetMap':
@@ -116,6 +131,8 @@ class CBLaunchWorkFlowTask extends VTTask {
 										}
 									}
 									$this->executeWorkflow($this->workflowid, $crmids, '[]');
+								} else {
+									$logbg->debug('(LaunchWorkFlowTask) not called: include is empty');
 								}
 							}
 							break;
@@ -126,9 +143,10 @@ class CBLaunchWorkFlowTask extends VTTask {
 								$context['record_id'] = $crmid;
 							}
 							$return = coreBOS_Rule::evaluate($this->recordsetmapid, $context);
+							$crmids = array();
 							if (is_string($return)) {
 								$crmids[] = $return;
-							} else {
+							} elseif (is_array($return)) {
 								foreach ($return as $ids) {
 									$crmids[] = reset($ids);
 								}
@@ -136,6 +154,8 @@ class CBLaunchWorkFlowTask extends VTTask {
 							$this->executeWorkflow($this->workflowid, $crmids, '[]');
 							break;
 					}
+				} else {
+					$logbg->debug('(LaunchWorkFlowTask) not called: cbMap does not exist');
 				}
 				break;
 			case 'filterByCurrentRecord':
@@ -145,6 +165,7 @@ class CBLaunchWorkFlowTask extends VTTask {
 				$this->executeWorkflow($this->workflowid, $crmids, '[]');
 				break;
 		}
+		$logbg->debug('< LaunchWorkFlowTask');
 	}
 
 	private function validateCRMID($entityId) {
@@ -157,7 +178,7 @@ class CBLaunchWorkFlowTask extends VTTask {
 	private function executeWorkflow($wfid, $crmids, $context) {
 		global $current_user, $logbg;
 		if (!empty($crmids)) {
-			$logbg->debug('LaunchWF with', $crmids);
+			$logbg->debug('(LaunchWorkFlowTask) executing workflow '.$wfid.' with these ids', $crmids);
 			cbwsExecuteWorkflowWithContext($wfid, json_encode($crmids), $context, $current_user);
 		}
 	}

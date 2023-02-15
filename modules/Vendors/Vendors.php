@@ -127,7 +127,7 @@ class Vendors extends CRMEntity {
 				$actions = explode(',', strtoupper($actions));
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module).
+				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
 					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
 					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
 					"cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT').' '.getTranslatedString($related_module, $related_module) ."'>&nbsp;";
@@ -202,7 +202,7 @@ class Vendors extends CRMEntity {
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .=  "<input type='hidden' name='createmode' value='link' />"
+				$button .= "<input type='hidden' name='createmode' value='link' />"
 					."<input title='".getTranslatedString('LBL_ADD_NEW').' '.$singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW').' '. $singular_modname ."'>&nbsp;";
@@ -274,16 +274,16 @@ class Vendors extends CRMEntity {
 		$log->debug('< transferRelatedRecords');
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			"Products" =>array("vtiger_products"=>array("vendor_id","productid"),"vtiger_vendor"=>"vendorid"),
-			"PurchaseOrder" =>array("vtiger_purchaseorder"=>array("vendorid","purchaseorderid"),"vtiger_vendor"=>"vendorid"),
-			"Contacts" =>array("vtiger_vendorcontactrel"=>array("vendorid","contactid"),"vtiger_vendor"=>"vendorid"),
+			'Products' =>array('vtiger_products'=>array('vendor_id','productid'),'vtiger_vendor'=>'vendorid'),
+			'PurchaseOrder' =>array('vtiger_purchaseorder'=>array('vendorid','purchaseorderid'),'vtiger_vendor'=>'vendorid'),
+			'Contacts' =>array('vtiger_vendorcontactrel'=>array('vendorid','contactid'),'vtiger_vendor'=>'vendorid'),
 		);
 		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
@@ -294,20 +294,20 @@ class Vendors extends CRMEntity {
 		global $adb;
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('PurchaseOrder');
 		$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('PurchaseOrder', true);
-		$po_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable.' 
-			INNER JOIN vtiger_purchaseorder ON vtiger_crmentity.crmid=vtiger_purchaseorder.purchaseorderid
+		$po_q = 'SELECT vtiger_crmentity.crmid FROM '.$crmEntityTable
+			.' INNER JOIN vtiger_purchaseorder ON vtiger_crmentity.crmid=vtiger_purchaseorder.purchaseorderid
 			INNER JOIN vtiger_vendor ON vtiger_vendor.vendorid=vtiger_purchaseorder.vendorid
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_purchaseorder.vendorid=?';
 		$po_res = $adb->pquery($po_q, array($id));
 		$po_ids_list = array();
 		for ($k=0; $k < $adb->num_rows($po_res); $k++) {
-			$po_id = $adb->query_result($po_res, $k, "crmid");
+			$po_id = $adb->query_result($po_res, $k, 'crmid');
 			$po_ids_list[] = $po_id;
 			$adb->pquery('UPDATE '.$crmEntityTable1.' SET deleted=1 WHERE crmid=?', array($po_id));
 			$adb->pquery('UPDATE vtiger_crmobject SET deleted=1 WHERE crmid=?', array($po_id));
 		}
 		//Backup deleted Vendors related Potentials.
-		$params = array($id, RB_RECORD_UPDATED, $crmEntityTable1, 'deleted', 'crmid', implode(",", $po_ids_list));
+		$params = array($id, RB_RECORD_UPDATED, $crmEntityTable1, 'deleted', 'crmid', implode(',', $po_ids_list));
 		$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 
 		//Backup Product-Vendor Relation
@@ -316,9 +316,9 @@ class Vendors extends CRMEntity {
 		if ($adb->num_rows($pro_res) > 0) {
 			$pro_ids_list = array();
 			for ($k=0; $k < $adb->num_rows($pro_res); $k++) {
-				$pro_ids_list[] = $adb->query_result($pro_res, $k, "productid");
+				$pro_ids_list[] = $adb->query_result($pro_res, $k, 'productid');
 			}
-			$params = array($id, RB_RECORD_UPDATED, 'vtiger_products', 'vendor_id', 'productid', implode(",", $pro_ids_list));
+			$params = array($id, RB_RECORD_UPDATED, 'vtiger_products', 'vendor_id', 'productid', implode(',', $pro_ids_list));
 			$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 		}
 		//Deleting Product-Vendor Relation.
@@ -326,19 +326,16 @@ class Vendors extends CRMEntity {
 		$adb->pquery($pro_q, array($id));
 
 		/*//Backup Contact-Vendor Relaton
-		$con_q = 'SELECT contactid FROM vtiger_vendorcontactrel WHERE vendorid = ?';
-		$con_res = $adb->pquery($con_q, array($id));
+		$con_res = $adb->pquery('SELECT contactid FROM vtiger_vendorcontactrel WHERE vendorid=?', array($id));
 		if ($adb->num_rows($con_res) > 0) {
-			for($k=0;$k < $adb->num_rows($con_res);$k++)
-			{
-				$con_id = $adb->query_result($con_res,$k,"contactid");
+			for($k=0; $k < $adb->num_rows($con_res); $k++) {
+				$con_id = $adb->query_result($con_res, $k, 'contactid');
 				$params = array($id, RB_RECORD_DELETED, 'vtiger_vendorcontactrel', 'vendorid', 'contactid', $con_id);
 				$adb->pquery('INSERT INTO vtiger_relatedlists_rb VALUES (?,?,?,?,?,?)', $params);
 			}
 		}
 		//Deleting Contact-Vendor Relaton
-		$vc_sql = 'DELETE FROM vtiger_vendorcontactrel WHERE vendorid=?';
-		$adb->pquery($vc_sql, array($id));*/
+		$adb->pquery('DELETE FROM vtiger_vendorcontactrel WHERE vendorid=?', array($id));*/
 
 		parent::unlinkDependencies($module, $id);
 	}
@@ -398,9 +395,9 @@ class Vendors extends CRMEntity {
 		$with_crmids = (array)$with_crmids;
 		foreach ($with_crmids as $with_crmid) {
 			if ($with_module == 'Contacts') {
-				$adb->pquery("insert into vtiger_vendorcontactrel values (?,?)", array($crmid, $with_crmid));
+				$adb->pquery('insert into vtiger_vendorcontactrel values (?,?)', array($crmid, $with_crmid));
 			} elseif ($with_module == 'Products') {
-				$adb->pquery("update vtiger_products set vendor_id=? where productid=?", array($crmid, $with_crmid));
+				$adb->pquery('update vtiger_products set vendor_id=? where productid=?', array($crmid, $with_crmid));
 			} else {
 				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			}

@@ -16,6 +16,7 @@ include_once 'vtlib/Vtiger/PackageImport.php';
 class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 
 	public $_migrationinfo = false;
+	public $_migrations;
 
 	/**
 	 * Constructor

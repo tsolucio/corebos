@@ -18,6 +18,13 @@ function __vt_concat($arr) {
 	return implode($arr);
 }
 
+function __cb_char($arr) {
+	if (count($arr)) {
+		return chr($arr[0]);
+	}
+	return '';
+}
+
 function __vt_substring($arr) {
 	if (count($arr)<2 || count($arr)>3) {
 		return $arr[0];

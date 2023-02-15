@@ -84,6 +84,7 @@ class Campaigns extends CRMEntity {
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('campaignname','createdtime' ,'modifiedtime');
+	public $campaignrelstatus;
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
@@ -135,7 +136,7 @@ class Campaigns extends CRMEntity {
 		$ahtml .= $customviewcombo_html;
 		$ahtml .= '</select>';
 
-		$button .= $ahtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= $ahtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
 		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
 		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";
@@ -191,6 +192,22 @@ class Campaigns extends CRMEntity {
 		return $return_value;
 	}
 
+	public function get_potentials($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+		require_once 'modules/CustomView/CustomView.php';
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
+		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One').' --</option>';
+		$oCustomView = new CustomView($related_module);
+		$viewid = $oCustomView->getViewId($related_module);
+		$customviewcombo_html = $oCustomView->getCustomViewCombo($viewid, false);
+		$lhtml .= $customviewcombo_html;
+		$lhtml .= '</select>';
+
+		$button = $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
+		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
+		return parent::get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions, $button);
+	}
+
 	/**
 	 * Function to get Campaign related Contacts
 	 * @param integer campaignid
@@ -235,7 +252,7 @@ class Campaigns extends CRMEntity {
 		$lhtml .= $customviewcombo_html;
 		$lhtml .= '</select>';
 
-		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
 		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
 		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";
@@ -339,7 +356,7 @@ class Campaigns extends CRMEntity {
 		$lhtml .= $customviewcombo_html;
 		$lhtml .= '</select>';
 
-		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
 		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
 		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";
@@ -434,10 +451,10 @@ class Campaigns extends CRMEntity {
 		return $related_list;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -541,10 +558,7 @@ class Campaigns extends CRMEntity {
 			} elseif ($with_module == 'Accounts') {
 				$adb->pquery('DELETE FROM vtiger_campaignaccountrel WHERE campaignid=? AND accountid=?', array($crmid, $relcrmid));
 			} else {
-				$adb->pquery(
-					'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND module=? AND relcrmid=? AND relmodule=?) OR (relcrmid=? AND relmodule=? AND crmid=? AND module=?)',
-					array($crmid, $module, $relcrmid, $with_module,$crmid, $module, $relcrmid, $with_module)
-				);
+				deleteFromCrmEntityRel($crmid, $relcrmid);
 			}
 			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		}

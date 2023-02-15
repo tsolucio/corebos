@@ -201,10 +201,10 @@ class Invoice extends CRMEntity {
 		parent::trash($module, $recordId);
 	}
 
-	/**	Function used to get the Status history of the Invoice
-	 *	@param $id - invoice id
-	 *	@return $return_data - array with header and the entries in format array('header'=>$header,'entries'=>$entries_list)
-	 *		where as $header and $entries_list are arrays which contains header values and all column values of all entries
+	/** Function used to get the Status history of the Invoice
+	 * @param integer invoice id
+	 * @return array with header and the entries in format array('header'=>$header,'entries'=>$entries_list)
+	 * 	where as $header and $entries_list are arrays which contains header values and all column values of all entries
 	 */
 	public function get_invoicestatushistory($id) {
 		global $log, $adb, $app_strings, $current_user;
@@ -261,11 +261,11 @@ class Invoice extends CRMEntity {
 		return parent::get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype);
 	}
 
-	/*
+	/**
 	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string query formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsSecQuery($module, $secmodule, $queryPlanner, $type = '', $where_condition = '') {
 		// Define the dependency matrix ahead
@@ -321,10 +321,10 @@ class Invoice extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -695,8 +695,8 @@ class Invoice extends CRMEntity {
 	}
 
 	/** Function to export the lead records in CSV Format
-	* @param reference variable - where condition is passed when the query is executed
-	* Returns Export Invoice Query.
+	* @param string reference variable - where condition is passed when the query is executed
+	* @return string Export Invoice Query.
 	*/
 	public function create_export_query($where) {
 		global $log, $current_user;
@@ -709,8 +709,8 @@ class Invoice extends CRMEntity {
 		$fields_list = getFieldsListFromQuery($sql);
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
 		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
-		$query = "SELECT $fields_list FROM ".$crmEntityTable." 
-			INNER JOIN vtiger_invoice ON vtiger_invoice.invoiceid = vtiger_crmentity.crmid
+		$query = "SELECT $fields_list FROM ".$crmEntityTable
+			." INNER JOIN vtiger_invoice ON vtiger_invoice.invoiceid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
 			LEFT JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_invoice.salesorderid
 			LEFT JOIN vtiger_invoicebillads ON vtiger_invoicebillads.invoicebilladdressid = vtiger_invoice.invoiceid

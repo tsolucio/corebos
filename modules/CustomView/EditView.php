@@ -145,9 +145,9 @@ $smarty->assign('RETURN_ACTION', $return_action);
 $smarty->display('CustomView.tpl');
 
 /** to get the standard filter criteria
-* @param $module(module name) :: Type String
-* @param $elected (selection status) :: Type String (optional)
-* @returns  $filter Array in the following format
+* @param string module name
+* @param string selection status
+* @return array in the following format
 * $filter = Array( 0 => array('value'=>$tablename:$colname:$fieldname:$fieldlabel,'text'=>$mod_strings[$field label],'selected'=>$selected),
 *	1 => array('value'=>$$tablename1:$colname1:$fieldname1:$fieldlabel1,'text'=>$mod_strings[$field label1],'selected'=>$selected),
 */
@@ -186,8 +186,8 @@ function getStdFilterHTML($module, $selected = '') {
 }
 
 /** to get the Advanced filter criteria
-* @param $selected :: Type String (optional)
-* @returns  $AdvCriteria Array in the following format
+* @param string selected element
+* @return array in the following format
 * $AdvCriteria = Array( 0 => array('value'=>$tablename:$colname:$fieldname:$fieldlabel,'text'=>$mod_strings[$field label],'selected'=>$selected),
 * 	1 => array('value'=>$$tablename1:$colname1:$fieldname1:$fieldlabel1,'text'=>$mod_strings[$field label1],'selected'=>$selected),
 * 	n => array('value'=>$$tablenamen:$colnamen:$fieldnamen:$fieldlabeln,'text'=>$mod_strings[$field labeln],'selected'=>$selected))

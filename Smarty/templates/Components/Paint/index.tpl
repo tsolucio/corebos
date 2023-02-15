@@ -38,7 +38,7 @@
 				{$APP.LBL_TITLE} <span style="color: red">*</span>
 			</label>
 			<div class="slds-form-element__control">
-				<input type="text" id="title" class="slds-input">
+				<input type="text" id="title" class="slds-input" value="{$DOCTITLE}">
 			</div>
 		</div>
 		<div class="slds-form-element">
@@ -46,7 +46,7 @@
 				{$APP.LBL_DESCRIPTION}
 			</label>
 			<div class="slds-form-element__control">
-				<textarea id="content" class="slds-input"></textarea>
+				<textarea id="content" class="slds-input">{$DOCDESC}</textarea>
 			</div>
 		</div>
 		<div class="slds-form-element">
@@ -54,7 +54,7 @@
 				{$APP.LBL_FILENAME} <span style="color: red">*</span>
 			</label>
 			<div class="slds-form-element__control">
-				<input type="text" id="filename" class="slds-input">
+				<input type="text" id="filename" class="slds-input" value="{$DOCFNAME}">
 			</div>
 		</div>
 		<div class="slds-form-element">
@@ -64,14 +64,14 @@
 			<div class="slds-form-element__control">
 				<select id="folders" class="slds-input">
 					{foreach from=$FOLDERS item=name}
-					<option value="{$name[0]}"{if $FOLDERID==$name[0]} selected{/if}>{$name[1]}</option>
+						<option value="{$name[0]}"{if $FOLDERID==$name[0] || $DOCFOLDERID==$name[0]} selected{/if}>{$name[1]}</option>
 					{/foreach}
 				</select>
 			</div>
 		</div>
 		<div class="slds-form-element slds-m-top_small">
 			<div class="slds-form-element__control">
-				<button type="button" class="slds-button slds-button_neutral" onclick="paint.Create();">
+				<button type="button" class="slds-button slds-button_neutral" onclick="paint.Upsert({$DOC2EDITID});">
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
 					</svg>
@@ -99,7 +99,7 @@
 	var imageEditor = new tui.ImageEditor('#tui-image-editor-container', {
 		includeUI: {
 			loadImage: {
-			path: 'include/components/toast-ui/image-editor/blank.png',
+			path: '{$PATH}',
 			name: 'blank',
 			},
 			locale: i18nImageEditor[i18nLanguage],

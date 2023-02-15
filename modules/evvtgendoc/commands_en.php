@@ -30,6 +30,8 @@ global $dateGD;
 global $lineGD;
 global $repeticionGD;
 global $enGD;
+global $conditionalGD;
+global $conditionalENDGD;
 
 $foreachGD="{foreach ";
 $foreachEndGD="{/foreach}";
@@ -45,4 +47,6 @@ $dateGD="date";
 $lineGD="line";
 $repeticionGD='iteration';
 $enGD='in';
+$conditionalGD='{conditional ';
+$conditionalENDGD='{/conditional}';
 ?>

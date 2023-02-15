@@ -49,7 +49,7 @@ class ModTracker_Basic {
 	public function getViewLink() {
 		if (!isset($this->_viewlink)) {
 			$entityName = $this->getDisplayName();
-			$this->_viewlink = "<a href='index.php?module=$this->module&action=DetailView&record=$this->crmid'>" . $entityName . "</a>";
+			$this->_viewlink = "<a href='index.php?module=$this->module&action=DetailView&record=$this->crmid'>".$entityName.'</a>';
 		}
 		return $this->_viewlink;
 	}

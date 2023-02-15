@@ -1353,6 +1353,8 @@ $app_strings = array (
 	'saved' => 'guardado',
 	'notsaved' => 'no guardado',
 	'processcomplete' => 'Proceso Terminado',
+	'processed' => 'procesado',
+	'notprocessed' => 'no procesado',
 	'typetosearch_prodser' => 'Busca productos o servicios',
 	'RecordIsAssignedToInactiveUser' => 'El registro está asignado a un usuario inactivo. Por favor selecciona otro usuario.',
 	'Add Relation' => 'Añadir Relación',
@@ -1370,6 +1372,23 @@ $app_strings = array (
 	'LBL_FIX_NOW' => 'Arreglar Ahora',
 	'LBL_HIERARCHY' => 'Jerarquía',
 	'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Buscar Documentos',
+
+	// watermark WF template
+	'Watermark Value' => 'Valor de la marca de agua',
+	'image field name' => 'Nombre del campo de imagen',
+	'Water Mark Size' => 'Tamaño de la marca de agua',
+	'Water Mark Position' => 'Posicón de la marca de agua',
+	// watermark direction
+	'Center' => 'Centro',
+	'Top' => 'Arriba',
+	'Bottom' => 'Abajo',
+	'Right' => 'Derecha',
+	'Left' => 'Izquierda',
+	'Top Right' => 'Arriba Derecha',
+	'Top Left' => 'Arriba Izquierda',
+	'Bottom Left' => 'Abajo Izquierda',
+	'Bottom Right' => 'Abajo Derecha',
+
 	//login translation
 	'LBL_Please_login_to_your_account' => 'Por favor accede a tu cuenta',
 	'LBL_Bussiness'	=> 'Haz que tu negocio funcione sin problemas',
@@ -1391,7 +1410,8 @@ $app_strings = array (
 	'Paste the link here' => 'Pega el enlace aquí',
 	'LBL_UITYPE10_NOTALLOWED' => 'El módulo relacionado tiene un campo relacional obligatorio.',
 	'LBL_PAINT2DOCUMENT' => 'Dibujo a Documento',
-	'Slider' => 'Slider',
+	'Slider' => 'Carrusel',
+	'LBL_WIZARD' => 'Asistente',
 );
 
 // Translation for currency names

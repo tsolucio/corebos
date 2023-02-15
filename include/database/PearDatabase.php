@@ -23,6 +23,9 @@ $logsqltm = LoggerManager::getLogger('SQLTIME');
 // Callback class useful to convert PreparedStatement Question Marks to SQL value
 // See function convertPS2Sql in PearDatabase below
 class PreparedQMark2SqlValue {
+	public $ctr;
+	public $vals;
+
 	// Constructor
 	public function __construct($vals) {
 		$this->ctr = 0;
@@ -435,7 +438,7 @@ class PearDatabase {
 		$sql_start_time = microtime(true);
 		$params = $this->flatten_array($params);
 		if (!is_null($params) && is_array($params)) {
-			$this->println('parameters', $params);
+			$this->println($params);
 		}
 
 		if ($this->avoidPreparedSql || empty($params)) {
@@ -989,9 +992,6 @@ class PearDatabase {
 		$this->checkConnection();
 		$db = $this->database;
 		$schema = new adoSchema($db);
-		//Debug Adodb XML Schema
-		$schema->XMLS_DEBUG = true;
-		//Debug Adodb
 		$schema->debug = true;
 		$sql = $schema->ParseSchema($schemaFile);
 

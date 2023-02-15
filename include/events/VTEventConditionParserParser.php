@@ -28,6 +28,7 @@ class VTEventConditionParserParser extends AntlrParser {
 	public $EOF=-1;
 	public $ELEMENT_ID=11;
 	public $STRING=6;
+	public $state;
 
 	// delegates
 	// delegators

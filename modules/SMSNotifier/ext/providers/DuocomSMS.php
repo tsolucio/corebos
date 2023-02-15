@@ -53,10 +53,10 @@ class DuocomSMS implements ISMSProvider {
 		if ($type) {
 			switch (strtoupper($type)) {
 				case self::SERVICE_AUTH:
-					return  self::SERVICE_URI . '/http/auth';
-				//case self::SERVICE_SEND: return  self::SERVICE_URI . '/http/sendmsg';
+					return self::SERVICE_URI . '/http/auth';
+				//case self::SERVICE_SEND: return self::SERVICE_URI . '/http/sendmsg';
 				case self::SERVICE_SEND:
-					return  self::SERVICE_URI;
+					return self::SERVICE_URI;
 				case self::SERVICE_QUERY:
 				default:
 					return self::SERVICE_URI . '/http/querymsg';

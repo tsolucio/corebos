@@ -29,6 +29,7 @@ class WebserviceField {
 	private $tabid;
 	private $presence;
 	private $quickCreate;
+	private $helpinfo;
 	/**
 	 *
 	 * @var PearDatabase

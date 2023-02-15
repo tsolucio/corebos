@@ -12,6 +12,9 @@ $theme_path = 'themes/' . $theme . '/';
 $image_path = $theme_path . 'images/';
 require_once 'include/utils/utils.php';
 require_once 'include/Webservices/Utils.php';
+require_once 'modules/cbCVManagement/cbCVManagement.php';
+use \PHPSQLParser\PHPSQLParser;
+use \PHPSQLParser\utils\ExpressionType;
 
 class CustomView extends CRMEntity {
 
@@ -47,6 +50,9 @@ class CustomView extends CRMEntity {
 		'y' => 'is empty',
 		'ny' => 'is not empty',
 		'bw' => 'between',
+		'rgxp' => 'regexp',
+		'sx' => 'soundex',
+		'nsx' => 'not soundex',
 	);
 
 	/** This function sets
@@ -93,19 +99,22 @@ class CustomView extends CRMEntity {
 			} elseif ($this->setdefaultviewid != '') {
 				$viewid = $this->setdefaultviewid;
 			} else {
-				$defcv_result = $adb->pquery(
-					'select default_cvid from vtiger_user_module_preferences where userid = ? and tabid =?',
-					array($current_user->id, getTabid($module))
-				);
-				if ($adb->num_rows($defcv_result) > 0) {
-					$viewid = $adb->query_result($defcv_result, 0, 'default_cvid');
-				} else {
-					$query = 'select cvid from vtiger_customview where setdefault=1 and entitytype=?';
-					$cvresult = $adb->pquery($query, array($module));
-					if ($adb->num_rows($cvresult) > 0) {
-						$viewid = $adb->query_result($cvresult, 0, 'cvid');
+				$viewid = cbCVManagement::getDefaultView($module, $current_user->id);
+				if (empty($viewid)) {
+					$defcv_result = $adb->pquery(
+						'select default_cvid from vtiger_user_module_preferences where userid = ? and tabid =?',
+						array($current_user->id, getTabid($module))
+					);
+					if ($adb->num_rows($defcv_result) > 0) {
+						$viewid = $adb->query_result($defcv_result, 0, 'default_cvid');
 					} else {
-						$viewid = '';
+						$query = 'select cvid from vtiger_customview where setdefault=1 and entitytype=?';
+						$cvresult = $adb->pquery($query, array($module));
+						if ($adb->num_rows($cvresult) > 0) {
+							$viewid = $adb->query_result($cvresult, 0, 'cvid');
+						} else {
+							$viewid = '';
+						}
 					}
 				}
 			}
@@ -147,43 +156,39 @@ class CustomView extends CRMEntity {
 	/** to get the details of a custom view
 	 * @param integer custom view ID
 	 * @return array in the following format
-	 * $customviewlist = array('viewname'=>value,
-	 *                         'setdefault'=>defaultchk,
-	 *                         'setmetrics'=>setmetricschk)
+	 * array(
+	 * 'viewname'=>value,
+	 * 'setdefault'=>defaultchk,
+	 * 'setmetrics'=>setmetricschk
+	 * )
 	 */
 	public function getCustomViewByCvid($cvid) {
 		global $adb, $current_user;
-		$tabid = getTabid($this->customviewmodule);
-		$userprivs = $current_user->getPrivileges();
-
-		$ssql = 'select vtiger_customview.*
-			from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype where vtiger_customview.cvid=?';
-		$sparams = array($cvid);
-
-		if (!$userprivs->isAdmin()) {
-			$ssql .= ' and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or ';
-			$ssql .= " vtiger_customview.userid in (select vtiger_user2role.userid
-				from vtiger_user2role
-				inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
-				where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%'))";
-			$sparams[] = $current_user->id;
+		$result = $adb->pquery(
+			'select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name=vtiger_customview.entitytype where vtiger_customview.cvid=?',
+			array($cvid)
+		);
+		$permissions = cbCVManagement::getPermission($cvid, $current_user->id);
+		$def_cvid = cbCVManagement::getDefaultView($this->customviewmodule, $current_user->id);
+		if (empty($def_cvid)) {
+			$tabid = getTabid($this->customviewmodule);
+			$usercv_result = $adb->pquery('select default_cvid from vtiger_user_module_preferences where userid = ? and tabid = ?', array($current_user->id, $tabid));
+			$def_cvid = $adb->query_result($usercv_result, 0, 'default_cvid');
 		}
-		$result = $adb->pquery($ssql, $sparams);
-
-		$usercv_result = $adb->pquery('select default_cvid from vtiger_user_module_preferences where userid = ? and tabid = ?', array($current_user->id, $tabid));
-		$def_cvid = $adb->query_result($usercv_result, 0, 'default_cvid');
-
 		$customviewlist = array();
-		while ($cvrow = $adb->fetch_array($result)) {
-			$customviewlist['viewname'] = $cvrow['viewname'];
-			if ((isset($def_cvid) || $def_cvid != '') && $def_cvid == $cvid) {
-				$customviewlist['setdefault'] = 1;
-			} else {
-				$customviewlist['setdefault'] = $cvrow['setdefault'];
+		if ($result && $adb->num_rows($result)>0) {
+			$cvrow = $adb->fetch_array($result);
+			if ($permissions['R'] || $cvrow['viewname']=='All') {
+				$customviewlist['viewname'] = $cvrow['viewname'];
+				if ($def_cvid == $cvid) {
+					$customviewlist['setdefault'] = 1;
+				} else {
+					$customviewlist['setdefault'] = $cvrow['setdefault'];
+				}
+				$customviewlist['setmetrics'] = $cvrow['setmetrics'];
+				$customviewlist['userid'] = $cvrow['userid'];
+				$customviewlist['status'] = $cvrow['status'];
 			}
-			$customviewlist['setmetrics'] = $cvrow['setmetrics'];
-			$customviewlist['userid'] = $cvrow['userid'];
-			$customviewlist['status'] = $cvrow['status'];
 		}
 		return $customviewlist;
 	}
@@ -194,7 +199,7 @@ class CustomView extends CRMEntity {
 	 */
 	public function getCustomViewCombo($viewid = '', $markselected = true) {
 		require_once 'include/Webservices/GetViewsByModule.php';
-		global $adb, $current_user, $app_strings;
+		global $current_user, $app_strings;
 		$getViewsByModule = getViewsByModule($this->customviewmodule, $current_user);
 		$userprivs = $current_user->getPrivileges();
 		$shtml_user = '';
@@ -208,19 +213,18 @@ class CustomView extends CRMEntity {
 		$Application_All_Filter_Show = GlobalVariable::getVariable('Application_All_Filter_Show', 1, $this->customviewmodule);
 		$cuserroles = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
 		foreach ($getViewsByModule['filters'] as $cvid => $cvrow) {
-			$cvrow['cvid'] = $cvid;
-			$cvrow['ename'] = getUserFullName($cvrow['userid']);
 			if ($cvrow['raw_name'] == 'All' && $Application_All_Filter_Show == 0) {
 				continue;
 			}
 			if ($cvrow['raw_name'] == 'All') {
 				$cvrow['name'] = $app_strings['COMBO_ALL'];
 			} else { /** Should the filter shown?  */
-				$return = cbEventHandler::do_filter('corebos.filter.listview.filter.show', $cvrow);
-				if (!$return) {
+				if (!cbEventHandler::do_filter('corebos.filter.listview.filter.show', $cvrow)) {
 					continue;
 				}
 			}
+			$cvrow['cvid'] = $cvid;
+			$cvrow['ename'] = getUserFullName($cvrow['userid']);
 			$option = '';
 			$viewname = $cvrow['name'];
 			if ($cvrow['status'] == CV_STATUS_DEFAULT || $cvrow['userid'] == $current_user->id) {
@@ -229,14 +233,11 @@ class CustomView extends CRMEntity {
 				$userName = getFullNameFromArray('Users', $cvrow);
 				$disp_viewname = $viewname . ' [' . $userName . '] ';
 			}
-			if ($cvrow['default'] && $viewid == '') {
-				$option = "<option $selected value=\"" . $cvrow['cvid'] . "\">" . $disp_viewname . "</option>";
-				$this->setdefaultviewid = $cvrow['cvid'];
-			} elseif ($cvrow['cvid'] == $viewid) {
-				$option = "<option $selected value=\"" . $cvrow['cvid'] . "\">" . $disp_viewname . "</option>";
+			if (($cvrow['default'] && $viewid == '') || ($cvrow['cvid'] == $viewid)) {
+				$option = "<option $selected value=\"" . $cvrow['cvid'] . '">' . $disp_viewname . '</option>';
 				$this->setdefaultviewid = $cvrow['cvid'];
 			} else {
-				$option = "<option value=\"" . $cvrow['cvid'] . "\">" . $disp_viewname . "</option>";
+				$option = '<option value="' . $cvrow['cvid'] . '">' . $disp_viewname . '</option>';
 			}
 			// Add the option to combo box at appropriate section
 			if ($option != '') {
@@ -736,9 +737,8 @@ class CustomView extends CRMEntity {
 					}
 					$advfilterval = implode(',', $val);
 				}
-				$uitype = getUItypeByFieldName($this->customviewmodule, $col[2]);
-				if (($col[1]=='smownerid' || $col[1]=='smcreatorid' || $col[1]=='modifiedby' || $uitype==101)
-					&& ($advfilterval=='current_user' || $advfilterval=='current_userandgroup') && (empty($_REQUEST['action']) || $_REQUEST['action']!='CustomView') && empty($_REQUEST['record'])
+				if (($advfilterval=='current_user' || $advfilterval=='current_userandgroup')
+					&& (empty($_REQUEST['action']) || $_REQUEST['action']!='CustomView') && empty($_REQUEST['record'])
 				) {
 					if ($advfilterval=='current_user') {
 						$advfilterval = trim($current_user->first_name.' '.$current_user->last_name);
@@ -1061,6 +1061,257 @@ class CustomView extends CRMEntity {
 			$groupjoin = $cols['condition'];
 		}
 		return json_encode($evql);
+	}
+
+	/** convert SQL query "where conditions" to Custom View filter format
+	 * side effect: the vtiger_crmentity.deleted=0 condition will be eliminated
+	 * @param string SQL query to convert
+	 * @param array containing a condition to add to the result
+	 * 	array(
+	 * 		'columnname' => 'rating',
+	 * 		'comparator' => 'e',
+	 * 		'value' => 'Active',
+	 * 		'columncondition' => ''
+	 * 	)
+	 * @return array filter conditions that represent the SQL query where conditions
+	 */
+	public function getConditionsFromSQL2CV($sqlquery, $addCondition = []) {
+		$conds = [];
+		$parser = new PHPSQLParser();
+		$parsed = $parser->parse($sqlquery);
+		if (!empty($parsed['WHERE'])) {
+			getColumnFields($this->customviewmodule);
+			$tabid = getTabid($this->customviewmodule);
+			$group = 1;
+			$glue = 'AND';
+			for ($sqlp=0; $sqlp<count($parsed['WHERE']); $sqlp++) {
+				$skipthese = 0;
+				if (($parsed['WHERE'][$sqlp]['base_expr']=='vtiger_crmentity.deleted' || $parsed['WHERE'][$sqlp]['base_expr']=='deleted' || substr($parsed['WHERE'][$sqlp]['base_expr'], -8)=='.deleted')
+					&& $parsed['WHERE'][$sqlp+2]['base_expr']==0
+				) {
+					$sqlp = $sqlp+2;
+					continue;
+				}
+				if ($parsed['WHERE'][$sqlp]['expr_type']=='colref') {
+					if (strpos($parsed['WHERE'][$sqlp]['base_expr'], '.')) {
+						list($table, $column) = explode('.', $parsed['WHERE'][$sqlp]['base_expr']);
+					} else {
+						$column = $parsed['WHERE'][$sqlp]['base_expr'];
+					}
+					$mainmodule = true;
+					$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $column);
+					if (!$fieldinfo) {
+						$modinfo = getEntityFieldNamesByTableName($table);
+						if (!empty($modinfo['modulename']) && $this->customviewmodule!=$modinfo['modulename']) {
+							getColumnFields($modinfo['modulename']);
+							$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn(getTabid($modinfo['modulename']), $column);
+							$mainmodule = false;
+						}
+						if (!$fieldinfo) {
+							$sqlp = $sqlp+2;
+							continue;
+						}
+					}
+					$colspec = $this->getFilterFieldDefinition($fieldinfo['fieldname'], ($mainmodule ? $this->customviewmodule : $modinfo['modulename']));
+					$sqlop = $parsed['WHERE'][$sqlp+1]['base_expr'];
+					if (strtolower($sqlop)=='in' && $parsed['WHERE'][$sqlp+2]['expr_type']=='subquery') {
+						$sqlp = $sqlp+3;
+						continue;
+					}
+					if ($parsed['WHERE'][$sqlp+2]['expr_type']=='operator') {
+						$sqlop = $sqlop.' '.$parsed['WHERE'][$sqlp+2]['base_expr'];
+						$skipthese = 1;
+					}
+					$operator = $this->convertOperatorFromSQL2CV($sqlop);
+					$value = trim($parsed['WHERE'][$sqlp+2+$skipthese]['base_expr'], "'");
+					if ($operator=='bw') {
+						$value = $value.','.$parsed['WHERE'][$sqlp+4+$skipthese]['base_expr'];
+						$skipthese = $skipthese + 2;
+					}
+					$offset = $sqlp+3+$skipthese;
+					$glue = (isset($parsed['WHERE'][$offset]) && $parsed['WHERE'][$offset]['expr_type']=='operator' ? $parsed['WHERE'][$offset]['base_expr'] : '');
+					$conds[] = [
+						'columnname' => $colspec,
+						'comparator' => $operator,
+						'value' => $value,
+						'groupid' => $group,
+						'columncondition' => $glue
+					];
+					$sqlp = $sqlp+2+$skipthese;
+					continue;
+				}
+				if ($parsed['WHERE'][$sqlp]['expr_type']=='bracket_expression') {
+					$conds[] = $this->getConditionBranchFromSQL2CV($parsed['WHERE'][$sqlp]['sub_tree'], $group);
+				}
+			}
+			if (!isset($conds[0]['columnname'])) {
+				$conds = $this->flattenBracketElements($conds);
+			}
+		}
+		$conds = isset($conds[0]) && !isset($conds[0]['columnname']) ? $conds[0] : $conds;
+		if (isset($conds['columnname'])) {
+			$conds[0] = $conds;
+		}
+		if (count($addCondition)>0) {
+			$colspec = $this->getFilterFieldDefinition($addCondition['columnname'], $this->customviewmodule);
+			if (!empty($conds)) {
+				$conds[count($conds)-1]['columncondition'] = 'and';
+			}
+			$conds[] = [
+				'columnname' => $colspec,
+				'comparator' => $addCondition['comparator'],
+				'value' => $addCondition['value'],
+				'groupid' => $group,
+				'columncondition' => ''
+			];
+		}
+		return $conds;
+	}
+
+	public function getConditionBranchFromSQL2CV($where, $group = 1) {
+		$conds = [];
+		if (!empty($where)) {
+			getColumnFields($this->customviewmodule);
+			$tabid = getTabid($this->customviewmodule);
+			$glue = 'AND';
+			for ($sqlp=0; $sqlp<count($where); $sqlp++) {
+				$skipthese = 0;
+				if (($where[$sqlp]['base_expr']=='vtiger_crmentity.deleted' || $where[$sqlp]['base_expr']=='deleted')
+					&& $where[$sqlp+2]['base_expr']==0
+				) {
+					$sqlp = $sqlp+2;
+					continue;
+				}
+				if ($where[$sqlp]['expr_type']=='colref') {
+					if (strpos($where[$sqlp]['base_expr'], '.')) {
+						list($table, $column) = explode('.', $where[$sqlp]['base_expr']);
+					} else {
+						$column = $where[$sqlp]['base_expr'];
+					}
+					$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $column);
+					if (!$fieldinfo) {
+						$sqlp = $sqlp+2;
+						continue;
+					}
+					$colspec = $this->getFilterFieldDefinition($fieldinfo['fieldname'], $this->customviewmodule);
+					$sqlop = $where[$sqlp+1]['base_expr'];
+					if (strtolower($sqlop)=='in' && $where[$sqlp+2]['expr_type']=='subquery') {
+						$sqlp = $sqlp+3;
+						continue;
+					}
+					if ($where[$sqlp+2]['expr_type']=='operator') {
+						$sqlop = $sqlop.' '.$where[$sqlp+2]['base_expr'];
+						$skipthese = 1;
+					}
+					$operator = $this->convertOperatorFromSQL2CV($sqlop);
+					$value = trim($where[$sqlp+2+$skipthese]['base_expr'], "'");
+					if ($operator=='bw') {
+						$value = $value.','.$where[$sqlp+4+$skipthese]['base_expr'];
+						$skipthese = $skipthese + 2;
+					}
+					$offset = $sqlp+3+$skipthese;
+					$glue = (isset($where[$offset]) && $where[$offset]['expr_type']=='operator' ? $where[$offset]['base_expr'] : '');
+					$conds[] = [
+						'columnname' => $colspec,
+						'comparator' => $operator,
+						'value' => $value,
+						'groupid' => $group,
+						'columncondition' => $glue
+					];
+					$sqlp = $sqlp+2+$skipthese;
+					continue;
+				}
+				if ($where[$sqlp]['expr_type']=='bracket_expression') {
+					$group++;
+					$c = $this->getConditionBranchFromSQL2CV($where[$sqlp]['sub_tree'], $group);
+					if (!empty($c)) {
+						if (isset($where[$sqlp+1]['expr_type']) && $where[$sqlp+1]['expr_type']=='operator') {
+							$c[count($c)-1]['columncondition'] = $where[$sqlp+1]['base_expr'];
+							$sqlp++;
+						}
+						$flat = [];
+						for ($idx = 0; $idx < count($c); $idx++) {
+							if (count($c[$idx])==1) {
+								$flat[] = reset($c[$idx]);
+							} elseif (count($c)==1) {
+								$flat = reset($c);
+							} else {
+								$flat[] = $c[$idx];
+							}
+						}
+						$conds[] = $flat;
+					}
+				} elseif (strpos($where[$sqlp]['base_expr'], 'select translation_key')) {
+					preg_match("/ (\w+)\.(\w+) = '(\w+)'\)/", $where[$sqlp]['base_expr'], $parts);
+					$op = 'e';
+					if (empty($parts)) {
+						preg_match("/ (\w+)\.(\w+) <> '(\w+)'\)/", $where[$sqlp]['base_expr'], $parts);
+						$op = 'n';
+					}
+					$glue = (isset($where[$sqlp+1]) && $where[$sqlp+1]['expr_type']=='operator' ? $where[$sqlp+1]['base_expr'] : '');
+					$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($tabid, $parts[2]);
+					$colspec = $this->getFilterFieldDefinition($fieldinfo['fieldname'], $this->customviewmodule);
+					$conds[] = [
+						'columnname' => $colspec,
+						'comparator' => $op,
+						'value' => $parts[3],
+						'groupid' => $group,
+						'columncondition' => $glue
+					];
+				}
+			}
+		}
+		return $conds;
+	}
+
+	public function convertOperatorFromSQL2CV($comparator) {
+		switch (strtolower($comparator)) {
+			case '=':
+				return 'e';
+			case '!=':
+			case '<>':
+				return 'n';
+			case 'like':
+				return 'c';
+			case 'not like':
+				return 'k';
+			case '<':
+				return 'l';
+			case '>':
+				return 'g';
+			case '<=':
+				return 'm';
+			case '>=':
+				return 'h';
+			case 'is':
+				return 'y';
+			case 'not is':
+				return 'ny';
+			case 'between':
+				return 'bw';
+			// case not supported in SQL:
+			// return 's';
+			// return 'dnsw';
+			// return 'ew';
+			// return 'dnew';
+			// return 'b';
+			// return 'a';
+		}
+		return 'e';
+	}
+
+	public function flattenBracketElements($conds) {
+		$flat = [];
+		for ($idx = 0; $idx < count($conds); $idx++) {
+			if (count($conds[$idx])==1) {
+				$flat[] = reset($conds[$idx]);
+			} elseif (count($conds)==1) {
+				$flat = reset($conds);
+			} else {
+				$flat[] = $conds[$idx];
+			}
+		}
+		return $flat;
 	}
 
 	/** get workflow operator from a query generator comparator

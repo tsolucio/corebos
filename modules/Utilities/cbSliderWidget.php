@@ -32,36 +32,34 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 	protected $widgetName = 'sliderWidget';
 
 	public function process($context = false) {
-		global $adb, $site_URL;
+		global $adb, $site_URL, $currentModule, $current_user;
 		$this->context = $context;
 		$smarty = $this->getViewer();
 		$BAInfo = json_decode($this->getFromContext('BusinessActionInformation'), true);
 		$ID = $this->getFromContext('RECORDID');
+		if (empty($ID)) {
+			return 'ID '.getTranslatedString('LBL_NO_SEARCHRESULT', 'Mobile');
+		}
 		$title = $this->getFromContext('title');
 		$autoplay = $this->getFromContext('autoplay');
 		$infinite = $this->getFromContext('infinite');
 		$initial = $this->getFromContext('initial');
 		$dots = $this->getFromContext('dots');
 		$arrows = $this->getFromContext('arrows');
-		if (empty($ID)) {
-			return 'ID not found.';
-		}
 		$rs = $adb->pquery(
 			'select vtiger_attachments.attachmentsid,vtiger_attachments.type filetype,vtiger_attachments.path,vtiger_attachments.name,vtiger_notes.title,vtiger_notes.notesid
 			from vtiger_notes
-			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
-			left join vtiger_notescf ON vtiger_notescf.notesid=vtiger_notes.notesid
 			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid and vtiger_crmentity.deleted=0
+			inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid
 			inner join vtiger_crmobject crm2 on crm2.crmid=vtiger_senotesrel.crmid
-			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
-			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid
-			left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
-			where crm2.crmid=? and vtiger_notes.filetype in ("image/png", "image/jpg", "image/jpeg") order by vtiger_attachments.attachmentsid',
+			left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid'
+			.getNonAdminAccessControlQuery('Documents', $current_user)
+			.' where crm2.crmid=? and vtiger_notes.filetype in ("image/png", "image/jpg", "image/jpeg") order by vtiger_attachments.attachmentsid',
 			array($ID)
 		);
 		if ($adb->num_rows($rs) == 0) {
-			return 'No images found.';
+			return getTranslatedString('MSG_IMAGE_ERROR', $currentModule);
 		}
 		$dataIMG = array();
 		while ($image = $adb->fetch_array($rs)) {
@@ -77,6 +75,20 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 		}
 		if (!empty($BAInfo['widget_width'])) {
 			$customstyle .= 'width:'.$BAInfo['widget_width'].';';
+		}
+		$Application_Menu_Show = GlobalVariable::getVariable('Application_ImageSlider_Mode', 'documents', $currentModule, $current_user->id);
+		if ($Application_Menu_Show == 'fields' || $Application_Menu_Show == 'both') {
+			if ($Application_Menu_Show == 'fields') {
+				$dataIMG = array();
+			}
+			$recordImages = cbws_getrecordimageinfo($ID, $current_user);
+			foreach ($recordImages['images'] as $key => $value) {
+				$dataIMG[] = array(
+					'id' => $value['id'],
+					'title' => $value['name'],
+					'path' => $site_URL . '/' . $value['path'] . $value['id'] . '_' . $value['name']
+				);
+			}
 		}
 		$smarty->assign('images', $dataIMG);
 		$smarty->assign('totalslides', count($dataIMG));

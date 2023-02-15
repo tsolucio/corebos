@@ -54,7 +54,7 @@ class SMSUP implements ISMSProvider {
 			switch (strtoupper($type)) {
 				case self::SERVICE_SEND:
 				default:
-					return  self::SERVICE_URI . '/sms/send';
+					return self::SERVICE_URI . '/sms/send';
 			}
 		}
 		return false;

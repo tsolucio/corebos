@@ -9,28 +9,30 @@
  ************************************************************************************/
 
 /** Get the details of a KeyMetrics on Home page
-* @returns  $customviewlist Array in the following format
-* $values = Array('Title'=>Array(0=>'image name',
-*				1=>'Key Metrics',
-*				2=>'home_metrics'
-*				),
-*		'Header'=>Array(0=>'Metrics',
-*				1=>'Count'
-*				),
-*		'Entries'=>Array($cvid=>Array(
-*				0=>$customview name,
-*				1=>$no of records for the view
-*				),
+* @return array in the following format
+* $values = Array('Title'=>Array(
+*			0=>'image name',
+*			1=>'Key Metrics',
+*			2=>'home_metrics'
+*		),
+*		'Header'=>Array(
+*			0=>'Metrics',
+*			1=>'Count'
+*		),
+*		'Entries'=>Array(
+*			$cvid=>Array(
+*			0=>$customview name,
+*			1=>$no of records for the view
+*		),
 *		$cvid=>Array(
-*				0=>$customview name,
-*				1=>$no of records for the view
-*				),
-*		|
+*			0=>$customview name,
+*			1=>$no of records for the view
+*		),
 *		|
 *		$cvid=>Array(
-*				0=>$customview name,
-*				1=>$no of records for the view
-*				)
+*			0=>$customview name,
+*			1=>$no of records for the view
+*		)
 *	)
 */
 function getKeyMetrics($maxval, $calCnt) {
@@ -89,7 +91,7 @@ function getKeyMetrics($maxval, $calCnt) {
 }
 
 /** to get the details of a customview Entries
-* @returns  $metriclists Array in the following format
+* @return array in the following format
 * $customviewlist []= Array(
 *		'id'=>custom view id,
 *		'name'=>custom view name,

@@ -59,7 +59,7 @@ class VTWorkflowUtils {
 			if (trim($fieldValue)=='') {
 				$fieldValue = '';
 			} else {
-				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
+				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue, $entity)));
 				$expression = $parser->expression();
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 				$fieldValue = $exprEvaluater->evaluate($entity);

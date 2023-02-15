@@ -874,6 +874,22 @@ $WFExpressionFunctionDefinitons = array(
 		'log(10, 10)',
 	),
 ),
+'char' => array(
+	'name' => 'char(número)',
+	'desc' => 'Esta función devuelve el carácter correspondiente al código ASCII dado.',
+	'params' => array(
+		array(
+			'name' => 'número',
+			'type' => 'Entero',
+			'optional' => false,
+			'desc' => 'Código ASCII para convertir a carácter',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		'char(39)',
+	),
+),
 'substring' => array(
 	'name' => 'substring(stringfield,start,length)',
 	'desc' => 'Esta función devuelve la parte del campo de cadena especificada por los parámetros de inicio y longitud.',
@@ -1895,7 +1911,9 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"getFieldsOF('8509', 'Contacts')",
+		"getFieldsOF('8509,8510,IDn', 'Contacts')",
 		"getFieldsOF('8509', 'Contacts', 'field1,field2,...,fieldN')",
+		"getFieldsOF('8509,8510,IDn', 'Contacts', 'field1,field2,...,fieldN')",
 	),
 ),
 'getFromContext' => array(
@@ -2452,6 +2470,23 @@ $WFExpressionFunctionDefinitons = array(
 		"regex('[a-z]+', msg )",
 	),
 ),
+'uniqid' => array(
+	'name' => 'uniqid(prefijo)',
+	'desc' => 'Esta función devuelve un ID único con un prefijo opcional delante.',
+	'params' => array(
+		array(
+			'name' => 'prefijo',
+			'type' => 'Texto',
+			'optional' => true,
+			'desc' => 'cualquier texto',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"uniqid('pfx')",
+		"uniqid()",
+	),
+),
 'array' => array(
 	'name' => 'array(valores...)',
 	'desc' => 'Esta función devuelve un array con los valores dados.',
@@ -2485,8 +2520,8 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'exists' => array(
-	'name' => 'exists(fieldname, value)',
-	'desc' => 'Esta función verifica si existe o no un registro con el valor dado en el campo dado.',
+	'name' => 'exists(fieldname, value, exclude_current)',
+	'desc' => 'Esta función verifica si existe o no un registro con el valor dado en el campo dado. Opcionalmente excluyendo el registro actual.',
 	'params' => array(
 		array(
 			'name' => 'fieldname',
@@ -2500,10 +2535,18 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'valor que debe tener el campo',
 		),
+		array(
+			'name' => 'exclude_current',
+			'type' => 'Booleano',
+			'optional' => true,
+			'desc' => 'verdadero, el valor predeterminado, excluirá el registro actual de la búsqueda, falso lo incluirá',
+		),
 	),
 	'categories' => array('Logical'),
 	'examples' => array(
 		"exists('accountname', 'Chemex Labs Ltd')",
+		"exists('accountname', 'Chemex Labs Ltd', 1)",
+		"exists('accountname', 'Chemex Labs Ltd', 'false')",
 	),
 ),
 'existsrelated' => array(
@@ -2728,6 +2771,24 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"EUVATValidation('IT16816050114')"
+	),
+),
+'AutoNumberDec' => array(
+	'name' => 'AutoNumberDec(ANPid)',
+	'desc' => 'Decrementa el contador del registro de autonumber dado.',
+	'params' => array(
+		array(
+			'name' => 'ANPid',
+			'type' => 'Número/Texto',
+			'optional' => false,
+			'desc' => 'CRMID o valor AutoNumber del registro a decrementar. Opcionalmente, puede ser el nombre de un módulo activo, en cuyo caso encontrará el registro de autonumeración predeterminado actualmente activo para el módulo dado.',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		'AutoNumberDec(999)',
+		"AutoNumberDec('ANPx-00001')",
+		"AutoNumberDec('Accounts')",
 	),
 ),
 );

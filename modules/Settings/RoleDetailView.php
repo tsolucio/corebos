@@ -20,8 +20,8 @@ $smarty = new vtigerCRM_Smarty;
 $roleid= vtlib_purify($_REQUEST['roleid']);
 
 /** gives the role info, role profile info and role user info details in an array for the specified role id
-  * @param integer role ID
-  * @return array contains role info, role profile info and role user info. This array is used to construct the detail view for the specified role ID
+ * @param integer role ID
+ * @return array contains role info, role profile info and role user info. This array is used to construct the detail view for the specified role ID
  */
 function getStdOutput($roleid) {
 	$roleProfileArr=getRoleRelatedProfiles($roleid);

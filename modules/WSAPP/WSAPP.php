@@ -40,26 +40,26 @@ class WSAPP {
 	public function initCustomWebserviceOperations() {
 		$operations = array();
 
-		$wsapp_register_parameters    = array('type' => 'string','synctype'=>'string');
+		$wsapp_register_parameters = array('type' => 'string','synctype'=>'string');
 		$operations['wsapp_register'] = array(
 			'file' => 'modules/WSAPP/api/ws/Register.php', 'handler' => 'wsapp_register', 'reqtype' => 'POST', 'prelogin' => '0',
 			'parameters' => $wsapp_register_parameters );
 
-		$wsapp_deregister_parameters    = array('type' => 'string', 'key' => 'string');
+		$wsapp_deregister_parameters = array('type' => 'string', 'key' => 'string');
 		$operations['wsapp_deregister'] = array(
 			'file' => 'modules/WSAPP/api/ws/DeRegister.php', 'handler' => 'wsapp_deregister', 'reqtype' => 'POST', 'prelogin' => '0',
 			'parameters' => $wsapp_deregister_parameters );
 
-		$wsapp_get_parameters    = array('key' => 'string', 'module' => 'string', 'token' => 'string');
+		$wsapp_get_parameters = array('key' => 'string', 'module' => 'string', 'token' => 'string');
 		$operations['wsapp_get'] = array(
 			'file' => 'modules/WSAPP/api/ws/Get.php', 'handler' => 'wsapp_get', 'reqtype' => 'POST', 'prelogin' => '0',
 			'parameters' => $wsapp_get_parameters );
 
-		$wsapp_put_parameters    = array('key' => 'string', 'element' => 'encoded');
+		$wsapp_put_parameters = array('key' => 'string', 'element' => 'encoded');
 		$operations['wsapp_put'] = array(
 			'file' => 'modules/WSAPP/api/ws/Put.php', 'handler' => 'wsapp_put', 'reqtype' => 'POST', 'prelogin' => '0',
 			'parameters' => $wsapp_put_parameters );
-		$wsapp_put_parameters    = array('key' => 'string', 'element' => 'encoded');
+		$wsapp_put_parameters = array('key' => 'string', 'element' => 'encoded');
 		$operations['wsapp_map'] = array(
 			'file' => 'modules/WSAPP/api/ws/Map.php', 'handler' => 'wsapp_map', 'reqtype' => 'POST', 'prelogin' => '0',
 			'parameters' => $wsapp_put_parameters );
@@ -122,7 +122,7 @@ class WSAPP {
 	public function registerVtigerCRMApp() {
 		$db = PearDatabase::getInstance();
 		$appName = 'vtigerCRM';
-		$type  ='user';
+		$type ='user';
 		$uid = uniqid();
 		$db->pquery('INSERT INTO vtiger_wsapp (name, appkey,type) VALUES(?,?,?)', array($appName, $uid,$type));
 	}

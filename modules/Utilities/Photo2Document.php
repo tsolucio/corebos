@@ -19,7 +19,7 @@
 // {"library":"utility", "icon":"photo"}
 
 require_once 'modules/cbtranslation/cbtranslation.php';
-require_once 'include/ListView/ListViewJSON.php';
+require_once 'include/ListView/ListViewGrid.php';
 require_once 'modules/Vtiger/DeveloperWidget.php';
 global $currentModule;
 

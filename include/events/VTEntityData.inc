@@ -14,6 +14,9 @@
 class VTEntityData {
 	private $isNew = false;
 	private $isDeleted = false;
+	public $entityId;
+	public $moduleName;
+	public $focus;
 
 	/**
 	 * Get an entity data object.

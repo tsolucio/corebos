@@ -23,6 +23,10 @@ class GridListView {
 	public $currentPage = 1;
 	public $searchUrl = '';
 	public $searchtype = 'Basic';
+	public $module;
+	public $entityidfield;
+	public $currentModule;
+	public $DocumentSearch;
 
 	public function __construct($module) {
 		$this->module = $module;
@@ -42,8 +46,18 @@ class GridListView {
 		$viewid = isset($_SESSION['lvs'][$this->module]) ? $_SESSION['lvs'][$this->module]['viewname'] : 0;
 		$focus = new $this->module();
 		$focus->initSortbyField($this->module);
+		$gvOrderField = GlobalVariable::getVariable('Application_ListView_Default_OrderField', '', $this->module);
+		$gvSortOrder = GlobalVariable::getVariable('Application_ListView_Default_Sort_Order', '', $this->module);
+		$gvDefaultSorting = boolval(GlobalVariable::getVariable('Application_ListView_Default_Sorting', false, $this->module));
+		if (isset($_REQUEST['sortAscending'])) {
+			$this->orderBy = $_REQUEST['sortAscending'] == 'true' ? 'ASC' : 'DESC';
+		} elseif (!empty($gvSortOrder) && $gvDefaultSorting) {
+			$this->orderBy = $gvSortOrder;
+		}
 		if ($this->sortColumn != '') {
 			$order_by = $this->sortColumn;
+		} elseif (!empty($gvOrderField) && $gvDefaultSorting) {
+			$order_by = $gvOrderField;
 		} else {
 			$order_by = $focus->getOrderBy();
 		}
@@ -291,7 +305,7 @@ class GridListView {
 				}
 				$lv_arr = array(
 					'fieldname' => $fldName,
-					'fieldvalue' => html_entity_decode($fValue.' ('.getTranslatedString($modName).')'),
+					'fieldvalue' => html_entity_decode($fValue.' ('.getTranslatedString($modName, $modName).')'),
 					'uitype' => '',
 					'tooltip' => false,
 					'edit' => false,
@@ -429,6 +443,14 @@ class GridListView {
 		$noValue = getTranslatedString('no', $this->module);
 		$group_array = get_group_array();
 		$usersList = $this->UsersList();
+		$bmapname = $this->module.'_FieldInfo';
+		$cbMapFI = array();
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapFI = $cbMap->FieldInfo();
+			$cbMapFI = $cbMapFI['fields'];
+		}
 		for ($i=0; $i < $rowCount; $i++) {
 			$rows = array();
 			$colorizer_row = array();
@@ -527,6 +549,22 @@ class GridListView {
 					}
 				} elseif ($fieldName == 'modifiedby') {
 						$rows[$fieldName] = isset($usersList[$fieldValue]) ? $usersList[$fieldValue] : getUserFullName($fieldValue);
+				} elseif ($fieldType == Field_Metadata::UITYPE_URL) {
+					$value = $fieldValue;
+					if (isset($cbMapFI[$fieldName])) {
+						$key = array_keys($cbMapFI[$fieldName]);
+						if ($key[0] == 'url_label') {
+							$fieldToShow = $cbMapFI[$fieldName][$key[0]];
+							$value = $adb->query_result($result, $i, $fieldToShow);
+						}
+					}
+					$rows[$fieldName] = textlength_check($value);
+					$matchPattern = "^[\w]+:\/\/^";
+					preg_match($matchPattern, $fieldValue, $matches);
+					if (empty($matches[0])) {
+						$fieldValue = 'https://'.$fieldValue;
+					}
+					$rows['url_raw_'.$fieldName] = $fieldValue;
 				} elseif ($fieldType == '1024') {
 					if (!empty($fieldValue)) {
 						$fieldValue = implode(', ', array_map('getRoleName', explode(Field_Metadata::MULTIPICKLIST_SEPARATOR, $fieldValue)));
@@ -700,16 +738,15 @@ class GridListView {
 		}
 		$query = 'select distinct vtiger_notes.*, vtiger_crmentity.*, vtiger_notescf.* from vtiger_notes
 			inner join vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_notes.notesid
-			inner join vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid=vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid=vtiger_crmentity.crmid)
+			inner join vtiger_crmentityreldenorm ON vtiger_crmentityreldenorm.relcrmid=vtiger_crmentity.crmid
 			inner join vtiger_notescf ON vtiger_notescf.notesid = vtiger_notes.notesid
 			left join vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 			left join vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			where vtiger_crmentity.deleted=0 and (vtiger_crmentityrel.crmid=? OR vtiger_crmentityrel.relcrmid=?) '.$whereClause;
-		$rs = $adb->pquery($query, array($id, $id));
+			where vtiger_crmentity.deleted=0 and vtiger_crmentityreldenorm.crmid=? '.$whereClause;
+		$rs = $adb->pquery($query, array($id));
 		$numOfRows = $adb->num_rows($rs);
 		$data = array();
 		if ($numOfRows > 0) {
-			$listviewcolumns = $adb->getFieldsArray($rs);
 			$data[] = $this->processResults($rs, $field_types, $id);
 		}
 		return $data;

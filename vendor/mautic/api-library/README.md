@@ -1,4 +1,7 @@
 [![codecov](https://codecov.io/gh/mautic/api-library/branch/master/graph/badge.svg)](https://codecov.io/gh/mautic/api-library) [![Latest Stable Version](https://poser.pugx.org/mautic/api-library/v)](//packagist.org/packages/mautic/api-library) [![Total Downloads](https://poser.pugx.org/mautic/api-library/downloads)](//packagist.org/packages/mautic/api-library) [![Latest Unstable Version](https://poser.pugx.org/mautic/api-library/v/unstable)](//packagist.org/packages/mautic/api-library) [![License](https://poser.pugx.org/mautic/api-library/license)](//packagist.org/packages/mautic/api-library)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 # Using the Mautic API Library
 
@@ -15,14 +18,12 @@ composer require mautic/api-library
 
 ## Mautic Setup
 The API must be enabled in Mautic. Within Mautic, go to the Configuration page (located in the Settings menu) and under API Settings enable
-Mautic's API. If you intend on using Basic Authentication, ensure you enable it. You can also choose which OAuth protocol to use here.  After saving the configuration, go to the API Credentials page
-(located in the Settings menu) and create a new client.  Enter the callback/redirect URI that the request will be sent from.  Click Apply
-then copy the Client ID and Client Secret to the application that will be using the API.
+Mautic's API. If you intend to use Basic Authentication, ensure you enable it. You can also choose which OAuth protocol to use here.  After saving the configuration, go to the API Credentials page (located in the Settings menu) and create a new client.  Enter the callback/redirect URI that the request will be sent from.  Click Apply, then copy the Client ID and Client Secret to the application that will be using the API.
 
 ## Authorization
 
 ### Obtaining an access token
-The first step is to obtain authorization.  Mautic supports OAuth 1.0a and OAuth 2 however it is up to the administrator
+The first step is to obtain authorization.  Mautic supports OAuth 1.0a and OAuth 2, however it is up to the administrator
 to decide which is enabled.  Thus it is best to have a configuration option within your project for the administrator
 to choose what method should be used by your code.
 
@@ -239,18 +240,43 @@ if (isset($response['errors'])) {
 }
 ```
 
-## Unit tests
+## Contributing
 
-Configure the unit tests config before running the unit tests. The tests fire real API requests to a Mautic instance.
+### Setting up your environment (automatically)
+In order to get started quickly, we recommend that you use [DDEV](https://ddev.readthedocs.io/en/stable/) which sets things up automatically for you. It clones [https://github.com/mautic/mautic](mautic/mautic), sets up a local instance for you, and connects the API library tests to that instance.
 
-1. Copy `/tests/local.config.php.dist` to `/tests/local.config.php`.
-2. Open the API tester in the browser like http://localhost/api-library/apitester/index.php
-3. Fill in the URL of your Mautic instance. NOTE: if you're using Docker/DDEV and your Mautic instance is running in another container, use the container name instead of the FQDN of your Mautic instance, e.g. http://mautic-instance/...
-4. Click Submit to store the URL to the session.
-5. Fill in one of the OAuth credentials and authorize.
-6. Open the $_SESSION array and copy the 'access_token' to the local.config.php file.
-7. Then run `vendor/bin/phpunit` to run the tests.
+To get started, run `ddev start`! Our first-run experience will guide you through the setup.
 
-Modify this command to run a specific test: `vendor/bin/phpunit --filter testCreateGetAndDelete tests/Api/NotesTest.php`
+### Setting up your environment (manually)
+If you want to set up your local environment manually, ensure that you copy `/tests/local.config.php.dist` to `/tests/local.config.php`, and fill in the required settings. We recommend using the Basic Authentication method to get up and running quickly.
 
-Modify this command to run all tests in one class: `vendor/bin/phpunit --filter test tests/Api/NotesTest.php`
+### Unit tests
+
+Configure the unit tests config before running the unit tests. The tests fire real API requests to a Mautic instance. 
+
+1. Ensure you have set up your local environment using the steps above.
+2. Run `composer test` to run the tests.
+
+Modify this command to run a specific test: `composer test -- --filter testCreateGetAndDelete tests/Api/NotesTest.php`
+
+Modify this command to run all tests in one class: `composer test -- --filter test tests/Api/NotesTest.php`
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://webmecanik.com"><img src="https://avatars.githubusercontent.com/u/462477?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Zdeno Kuzmany</b></sub></a><br /><a href="https://github.com/mautic/api-library/commits?author=kuzmany" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

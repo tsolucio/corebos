@@ -16,6 +16,11 @@ class VTWorkflowEntity {
 	public $WorkflowID = 0;
 	public $WorkflowEvent = 0;
 	public $WorkflowContext = array();
+	public $data;
+	public $moduleName;
+	public $id;
+	public $user;
+	public $isqueue;
 
 	public function __construct($user, $id, $deleted = false, $queue = false) {
 		$this->moduleName = null;
@@ -137,6 +142,8 @@ class VTWorkflowEntity {
 }
 
 class VTEntityCache {
+	public $cache;
+	public $user;
 
 	public function __construct($user) {
 		$this->user = $user;

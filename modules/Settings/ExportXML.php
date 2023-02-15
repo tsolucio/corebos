@@ -25,11 +25,11 @@ global $adb;
 
 $category = vtlib_purify($_REQUEST['category']);
 if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $category == 'PROFILE')) {
-	$filename = "export_".strtolower($category).".xml";
+	$filename = 'export_'.strtolower($category).'.xml';
 	header('Content-Type: text/xml/force-download');
 	header("Content-Disposition: attachment; filename=$filename");
 	$xmlwriter = new XMLWriter();
-	$xmlwriter->openURI("php://output");
+	$xmlwriter->openURI('php://output');
 	$xmlwriter->setIndent(true);
 
 	$xmlwriter->startDocument('1.0', 'UTF-8');
@@ -38,7 +38,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 		// Start the parent role element
 		$xmlwriter->startElement('vtcrm_roles');
 
-		$pfrs = $adb->query('select * from vtiger_role order by depth');  // Order is VERY important for import
+		$pfrs = $adb->query('select * from vtiger_role order by depth'); // Order is VERY important for import
 		while ($pf = $adb->fetch_array($pfrs)) {
 			$xmlwriter->startElement('vtcrm_role');
 			// Start the element for role definition
@@ -68,7 +68,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 			// Start the parent role2profile element
 			$xmlwriter->startElement('vtcrm_role2profiles');
 
-			$tab_perr_result = $adb->pquery("select * from vtiger_role2profile where roleid=?", array($first_roleid));
+			$tab_perr_result = $adb->pquery('select * from vtiger_role2profile where roleid=?', array($first_roleid));
 			while ($p2t = $adb->fetch_array($tab_perr_result)) {
 				$xmlwriter->startElement('vtcrm_role2pf');
 				$pfname = $adb->getone('select profilename from vtiger_profile where profileid='.$p2t['profileid']);
@@ -89,7 +89,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 		// Start the parent profile element
 		$xmlwriter->startElement('vtcrm_profiles');
 
-		$pfrs = $adb->query("select * from vtiger_profile");
+		$pfrs = $adb->query('select * from vtiger_profile');
 		while ($pf = $adb->fetch_array($pfrs)) {
 			$xmlwriter->startElement('vtcrm_profile');
 			// Start the element for profile definition
@@ -110,7 +110,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 			// Start the parent profile2glb element
 			$xmlwriter->startElement('vtcrm_profile2glbs');
 
-			$tab_perr_result = $adb->pquery("select * from vtiger_profile2globalpermissions where profileid=?", array($first_prof_id));
+			$tab_perr_result = $adb->pquery('select * from vtiger_profile2globalpermissions where profileid=?', array($first_prof_id));
 			while ($p2t = $adb->fetch_array($tab_perr_result)) {
 				$xmlwriter->startElement('vtcrm_profile2glb');
 				$xmlwriter->writeAttribute('permission', $p2t['globalactionpermission']);
@@ -122,7 +122,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 			// Start the parent profile2tab element
 			$xmlwriter->startElement('vtcrm_profile2tabs');
 
-			$tab_perr_result = $adb->pquery("select * from vtiger_profile2tab where profileid=?", array($first_prof_id));
+			$tab_perr_result = $adb->pquery('select * from vtiger_profile2tab where profileid=?', array($first_prof_id));
 			while ($p2t = $adb->fetch_array($tab_perr_result)) {
 				$xmlwriter->startElement('vtcrm_profile2tab');
 				$xmlwriter->writeAttribute('permission', $p2t['permissions']);
@@ -135,7 +135,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 			// Start the parent profile2std element
 			$xmlwriter->startElement('vtcrm_profile2stds');
 
-			$act_perr_result = $adb->pquery("select * from vtiger_profile2standardpermissions where profileid=?", array($first_prof_id));
+			$act_perr_result = $adb->pquery('select * from vtiger_profile2standardpermissions where profileid=?', array($first_prof_id));
 			while ($p2s = $adb->fetch_array($act_perr_result)) {
 				$xmlwriter->startElement('vtcrm_profile2std');
 				$xmlwriter->writeAttribute('operation', $p2s['operation']);
@@ -149,7 +149,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 			// Start the parent profile2util element
 			$xmlwriter->startElement('vtcrm_profile2utils');
 
-			$act_utility_result = $adb->pquery("select * from vtiger_profile2utility where profileid=?", array($first_prof_id));
+			$act_utility_result = $adb->pquery('select * from vtiger_profile2utility where profileid=?', array($first_prof_id));
 			while ($p2u = $adb->fetch_array($act_utility_result)) {
 				$xmlwriter->startElement('vtcrm_profile2util');
 				$xmlwriter->writeAttribute('activityid', $p2u['activityid']);
@@ -163,7 +163,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 			// Start the parent profile2field element
 			$xmlwriter->startElement('vtcrm_profile2fields');
 
-			$p2fld_result = $adb->pquery("select * from vtiger_profile2field where profileid=?", array($first_prof_id));
+			$p2fld_result = $adb->pquery('select * from vtiger_profile2field where profileid=?', array($first_prof_id));
 			while ($p2f = $adb->fetch_array($p2fld_result)) {
 				$xmlwriter->startElement('vtcrm_profile2field');
 				$xmlwriter->writeAttribute('visible', $p2f['visible']);
@@ -212,7 +212,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 			// Start the parent group2role element
 			$xmlwriter->startElement('vtcrm_group2roles');
 
-			$tab_perr_result = $adb->pquery("select * from vtiger_group2role where groupid=?", array($first_groupid));
+			$tab_perr_result = $adb->pquery('select * from vtiger_group2role where groupid=?', array($first_groupid));
 			while ($p2t = $adb->fetch_array($tab_perr_result)) {
 				$xmlwriter->startElement('vtcrm_group2role');
 				$rolename = $adb->getone("select rolename from vtiger_role where roleid='".$p2t['roleid']."'");
@@ -224,7 +224,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 			// Start the parent group2rolesub element
 			$xmlwriter->startElement('vtcrm_group2rolesubs');
 
-			$tab_perr_result = $adb->pquery("select * from vtiger_group2rs where groupid=?", array($first_groupid));
+			$tab_perr_result = $adb->pquery('select * from vtiger_group2rs where groupid=?', array($first_groupid));
 			while ($p2t = $adb->fetch_array($tab_perr_result)) {
 				$xmlwriter->startElement('vtcrm_group2rolesub');
 				$rolename = $adb->getone("select rolename from vtiger_role where roleid='".$p2t['roleandsubid']."'");
@@ -236,7 +236,7 @@ if (!empty($category) && ($category == 'GROUP' || $category == 'ROLE' || $catego
 			// Start the parent group2group element
 			$xmlwriter->startElement('vtcrm_group2groups');
 
-			$tab_perr_result = $adb->pquery("select * from vtiger_group2grouprel where groupid=?", array($first_groupid));
+			$tab_perr_result = $adb->pquery('select * from vtiger_group2grouprel where groupid=?', array($first_groupid));
 			while ($p2t = $adb->fetch_array($tab_perr_result)) {
 				$xmlwriter->startElement('vtcrm_group2group');
 				$grpname = $adb->getone("select groupname from vtiger_groups where groupid='".$p2t['containsgroupid']."'");

@@ -56,13 +56,21 @@ function __cb_regex($arr) {
 
 function __cb_exists($arr) {
 	global $current_user, $adb;
-	$env = $arr[2];
-	$data = $env->getData();
-	$recordid = $data['id'];
+	if (is_object($arr[2])) {
+		$excludecurrent = true;
+		$env = $arr[2];
+	} else {
+		$excludecurrent = filter_var($arr[2], FILTER_VALIDATE_BOOLEAN);
+		$env = $arr[3];
+	}
 	$qg = new QueryGenerator($env->getModuleName(), $current_user);
 	$qg->addCondition($arr[0], $arr[1], 'e');
-	list($mid, $crmid) = explode('x', $recordid);
-	$qg->addCondition('id', $crmid, 'n', $qg::$AND);
+	if ($excludecurrent) {
+		$data = $env->getData();
+		$recordid = $data['id'];
+		list($mid, $crmid) = explode('x', $recordid);
+		$qg->addCondition('id', $crmid, 'n', $qg::$AND);
+	}
 	$qe = 'SELECT EXISTS(SELECT 1 '.$qg->getFromClause().$qg->getWhereClause().')';
 	$rs = $adb->query($qe);
 	if ($rs) {
@@ -97,7 +105,7 @@ function __cb_relatedevaluations($evaluation, $params) {
 		$env = $params[3];
 	}
 	$data = $env->getData();
-	$recordid = $data['id'];
+	$recordid = empty($data['id']) ? 0 : $data['id']; // creating
 	$module = $env->getModuleName();
 	if (!empty($relatedmodule) && !empty($recordid) && !empty($module)) {
 		list($mid, $crmid) = explode('x', $recordid);

@@ -20,9 +20,8 @@ if (!empty($user_groups) && !is_admin($current_user)) {
 	$user_group_query = " (shareid IN (".generateQuestionMarks($user_groups).") AND setype='groups') OR";
 	$params[] = $user_groups;
 }
-$summaryReportQuery = "SELECT * FROM vtiger_report
- INNER JOIN vtiger_reportsortcol ON vtiger_report.reportid = vtiger_reportsortcol.reportid
- WHERE vtiger_reportsortcol.columnname!='none'";
+$summaryReportQuery = "SELECT * FROM vtiger_report INNER JOIN vtiger_reportsortcol ON vtiger_report.reportid=vtiger_reportsortcol.reportid
+	WHERE vtiger_reportsortcol.columnname!='none'";
 $non_admin_query = " vtiger_report.reportid IN (SELECT reportid from vtiger_reportsharing WHERE $user_group_query (shareid=? AND setype='users'))";
 if (!is_admin($current_user)) {
 	$summaryReportQuery .= " and ( (".$non_admin_query.") or vtiger_report.sharingtype='Public' or vtiger_report.owner = ? or";

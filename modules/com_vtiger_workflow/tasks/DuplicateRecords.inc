@@ -23,12 +23,16 @@ require_once 'include/utils/duplicate.php';
 class DuplicateRecords extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $bmapid;
+	public $bmapid_display;
 
 	public function getFieldNames() {
 		return array('bmapid','bmapid_display');
 	}
 
 	public function doTask(&$recordid) {
+		global $logbg;
+		$logbg->debug('> DuplicateRecords');
 		list($cto, $cto_id) = explode('x', $recordid->getId());
 		if (!empty($cto_id) && !empty($this->bmapid)) {
 			$module = getSalesEntityType($cto_id);
@@ -38,12 +42,17 @@ class DuplicateRecords extends VTTask {
 				if (strpos($duplicatedfrom, 'x')>0) {
 					list($wsdup, $duplicatedfrom) = explode('x', $duplicatedfrom);
 				}
-				duplicateRecordRelations($module, $cto_id, $duplicatedfrom, $this->bmapid);
+				$new_record_id = duplicateRecordRelations($module, $cto_id, $duplicatedfrom, $this->bmapid);
+				$logbg->debug('(DuplicateRecords) duplicating from', [$module, $cto_id, $duplicatedfrom, $this->bmapid, $new_record_id]);
 			} else {
 				$new_record_id = duplicaterec($module, $cto_id, $this->bmapid);
 				dq_updateRevisionFields($module, $cto_id, $new_record_id);
+				$logbg->debug('(DuplicateRecords) duplicating', [$module, $cto_id, $this->bmapid, $new_record_id]);
 			}
+		} else {
+			$logbg->debug('(DuplicateRecords) not called: cto_id is empty or map does not exist');
 		}
+		$logbg->debug('< DuplicateRecords');
 	}
 }
 ?>

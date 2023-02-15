@@ -877,6 +877,22 @@ $WFExpressionFunctionDefinitons = array(
 		'log(10, 10)',
 	),
 ),
+'char' => array(
+	'name' => 'char(number)',
+	'desc' => 'This function returns the character corresponding to the given ASCII code.',
+	'params' => array(
+		array(
+			'name' => 'number',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'ASCII code to convert to character',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		'char(39)',
+	),
+),
 'substring' => array(
 	'name' => 'substring(stringfield,start,length)',
 	'desc' => 'This function returns the portion of stringfield specified by the start and length parameters.',
@@ -1898,7 +1914,9 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"getFieldsOF('8509', 'Contacts')",
+		"getFieldsOF('8509,8510,IDn', 'Contacts')",
 		"getFieldsOF('8509', 'Contacts', 'field1,field2,...,fieldN')",
+		"getFieldsOF('8509,8510,IDn', 'Contacts', 'field1,field2,...,fieldN')",
 	),
 ),
 'getFromContext' => array(
@@ -2455,6 +2473,23 @@ $WFExpressionFunctionDefinitons = array(
 		"regex('[a-z]+', msg )",
 	),
 ),
+'uniqid' => array(
+	'name' => 'uniqid(prefix)',
+	'desc' => 'This function returns a unique ID with an optional prefix in front.',
+	'params' => array(
+		array(
+			'name' => 'prefix',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'any string',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"uniqid('pfx')",
+		"uniqid()",
+	),
+),
 'array' => array(
 	'name' => 'array(values...)',
 	'desc' => 'This function returns an array with the given values.',
@@ -2488,8 +2523,8 @@ $WFExpressionFunctionDefinitons = array(
 	),
 ),
 'exists' => array(
-	'name' => 'exists(fieldname, value)',
-	'desc' => 'This function checks if a record with the given value in the given field exists or not.',
+	'name' => 'exists(fieldname, value, exclude_current)',
+	'desc' => 'This function checks if a record with the given value in the given field exists or not. Optionally excluding the current record.',
 	'params' => array(
 		array(
 			'name' => 'fieldname',
@@ -2503,10 +2538,18 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'value the field must have',
 		),
+		array(
+			'name' => 'exclude_current',
+			'type' => 'Boolean',
+			'optional' => true,
+			'desc' => 'true, the default value, will exclude the current record from the search, false will include it',
+		),
 	),
 	'categories' => array('Logical'),
 	'examples' => array(
 		"exists('accountname', 'Chemex Labs Ltd')",
+		"exists('accountname', 'Chemex Labs Ltd', 1)",
+		"exists('accountname', 'Chemex Labs Ltd', 'false')",
 	),
 ),
 'existsrelated' => array(
@@ -2732,6 +2775,24 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"EUVATValidation('IT16816050114')"
+	),
+),
+'AutoNumberDec' => array(
+	'name' => 'AutoNumberDec(ANPid)',
+	'desc' => 'Decrements the counter in the given autonumber record.',
+	'params' => array(
+		array(
+			'name' => 'ANPid',
+			'type' => 'Number/String',
+			'optional' => false,
+			'desc' => 'CRMID or AutoNumber field value of the record to decrement. Optionally it can be the name of an active module, in which case it will find the currently active default autonumber record for the given module.',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		'AutoNumberDec(999)',
+		"AutoNumberDec('ANPx-00001')",
+		"AutoNumberDec('Accounts')",
 	),
 ),
 );

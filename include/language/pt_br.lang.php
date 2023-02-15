@@ -1360,6 +1360,8 @@ $app_strings = array (
 'saved' => 'salvo',
 'notsaved' => 'não foi salvo',
 'processcomplete' => 'Processo Completo',
+'processed' => 'processed',
+'notprocessed' => 'not processed',
 'typetosearch_prodser' => 'Digite p/pesquisar produto/serviço',
 'RecordIsAssignedToInactiveUser' => 'O registro é atribuído a um usuário inativo. Por favor, selecione outro usuário.',
 'Add Relation' => 'Adic. relacionamento',
@@ -1375,6 +1377,22 @@ $app_strings = array (
 'LBL_FIX_NOW' => 'Fixa Agora',
 'LBL_HIERARCHY' => 'Hierarquia',
 'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Procurar documentos',
+
+// watermark WF template
+'Watermark Value' => 'Watermark Value',
+'image field name' => 'Image Field Name',
+'Water Mark Size' => 'Water Mark Size',
+'Water Mark Position' => 'Water Mark Position',
+// watermark direction
+'Center' => 'Center',
+'Top' => 'Top',
+'Bottom' => 'Bottom',
+'Right' => 'Right',
+'Left' => 'Left',
+'Top Right' => 'Top Right',
+'Top Left' => 'Top Left',
+'Bottom Left' => 'Bottom Left',
+'Bottom Right' => 'Bottom Right',
 
 //login translation
 'LBL_Please_login_to_your_account' => 'Faça login em sua conta',
@@ -1407,6 +1425,7 @@ $app_strings = array (
 'LBL_UITYPE10_NOTALLOWED' => 'O módulo relacionado tem um campo relacionado obrigatório.',
 'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 'Slider' => 'Slider',
+'LBL_WIZARD' => 'Wizard',
 );
 
 // Translation for currency names

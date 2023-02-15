@@ -43,7 +43,7 @@ switch ($exptype) {
 			$entityId = vtws_getEntityId($crmmod).'x'.$crmid;
 			$entity = new VTWorkflowEntity($adminUser, $entityId);
 			try {
-				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer(rawurldecode($exp))));
+				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer(rawurldecode($exp), $entity)));
 				$expression = $parser->expression();
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 				$msg = $exprEvaluater->evaluate($entity);

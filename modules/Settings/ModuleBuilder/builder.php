@@ -305,7 +305,7 @@ class ModuleBuilder {
 		$_currentPage = isset($_REQUEST['_currentPage']) ? (int)$_REQUEST['_currentPage'] : 1;
 		$list_query = 'SELECT vtiger_modulebuilder.modulebuilder_name as modulebuilder_name, mb.date as date, mb.completed as completed, vtiger_modulebuilder.modulebuilderid as moduleid
 			FROM vtiger_modulebuilder_name as mb
-			JOIN vtiger_modulebuilder ON mb.modulebuilderid=vtiger_modulebuilder.modulebuilderid 
+			JOIN vtiger_modulebuilder ON mb.modulebuilderid=vtiger_modulebuilder.modulebuilderid
 			WHERE userid=?';
 		$modulesSql = $adb->pquery($list_query, array($current_user->id));
 		$numOfRows = $adb->num_rows($modulesSql);

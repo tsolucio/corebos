@@ -146,10 +146,10 @@ class cbCVManagement extends CRMEntity {
 		}
 	}
 
-	/* returns the default Custom View ID for the given module and user applying escalation rules
-	 * param $module: the module we need the view for, will use current module if no value is given
-	 * param $cvuserid: user for which we want to get the view, will use current user if no value is given
-	 * returns: custom view ID
+	/** returns the default Custom View ID for the given module and user applying escalation rules
+	 * @param string the module we need the view for, will use current module if no value is given
+	 * @param integer user for which we want to get the view, will use current user if no value is given
+	 * @return integer custom view ID
 	 *   search for mandatory default record
 	 *   search for non-mandatory record that belongs to the role of the user
 	 *   search for non-mandatory record assigned to the user
@@ -197,13 +197,12 @@ class cbCVManagement extends CRMEntity {
 			from vtiger_cbcvmanagement
 			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
-			left join vtiger_user2role on vtiger_user2role.userid=?
-			where vtiger_crmentity.deleted=0 and cvdefault='1' and cvrole like concat('%', vtiger_user2role.roleid, '%') and entitytype=? and cvretrieve='1' limit 1";
+			where vtiger_crmentity.deleted=0 and cvdefault='1' and smownerid=? and entitytype=? and cvretrieve='1' limit 1";
 		self::$validationinfo[] = '---';
-		self::$validationinfo[] = 'search for role records';
+		self::$validationinfo[] = 'search for user records';
 		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
-			self::$validationinfo[] = 'role records found';
+			self::$validationinfo[] = 'user records found';
 			$value = $adb->query_result($cvrs, 0, 0);
 			VTCacheUtils::updateCachedInformation($key, $value);
 			return $value;
@@ -212,12 +211,13 @@ class cbCVManagement extends CRMEntity {
 			from vtiger_cbcvmanagement
 			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
-			where vtiger_crmentity.deleted=0 and cvdefault='1' and smownerid=? and entitytype=? and cvretrieve='1' limit 1";
+			left join vtiger_user2role on vtiger_user2role.userid=?
+			where vtiger_crmentity.deleted=0 and cvdefault='1' and cvrole like concat('%', vtiger_user2role.roleid, '%') and entitytype=? and cvretrieve='1' limit 1";
 		self::$validationinfo[] = '---';
-		self::$validationinfo[] = 'search for user records';
+		self::$validationinfo[] = 'search for role records';
 		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
-			self::$validationinfo[] = 'user records found';
+			self::$validationinfo[] = 'role records found';
 			$value = $adb->query_result($cvrs, 0, 0);
 			VTCacheUtils::updateCachedInformation($key, $value);
 			return $value;
@@ -273,10 +273,10 @@ class cbCVManagement extends CRMEntity {
 		return false;
 	}
 
-	/* returns all the Custom Views available for the given module and user applying escalation rules
-	 * param $module: the module we need the views for, will use current module if no value is given
-	 * param $cvuserid: user for which we want to get the views, will use current user if no value is given
-	 * returns: custom view ID
+	/** returns all the Custom Views available for the given module and user applying escalation rules
+	 * @param string the module we need the views for, will use current module if no value is given
+	 * @param integer user for which we want to get the views, will use current user if no value is given
+	 * @return mixed custom view IDs
 	 *   search for mandatory default record
 	 *   search for non-mandatory record that belongs to the role of the user
 	 *   search for non-mandatory record assigned to the user
@@ -441,13 +441,12 @@ class cbCVManagement extends CRMEntity {
 		}
 	}
 
-	/* returns set of permissions of a user upon a custom view depending on the different records
-	 * param $cvid: the custom view identifier
-	 * param $cvuserid: user for which we want to know the perimissions, will use current user if no value is given
-	 * returns:
+	/** returns set of permissions of a user upon a custom view depending on the different records
+	 * @param integer the custom view identifier
+	 * @param integer user for which we want to know the perimissions, will use current user if no value is given
+	 * @return mixed
 	 *  if $cvid or $cvuserid are empty or invalid it returns boolean false
-	 *  else it returns
-	 *  array with CRUD and Approve permissions:
+	 *  else it returns array with CRUD and Approve permissions:
 	 *   search for mandatory record that belongs to the user
 	 *   search for mandatory record that belongs to the role of the user
 	 *   search for mandatory record that belongs to any group the user is in

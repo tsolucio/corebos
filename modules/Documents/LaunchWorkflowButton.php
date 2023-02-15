@@ -28,6 +28,9 @@ class LaunchWorkflowButton {
 class LaunchWorkflowButton_DetailViewBlock extends DeveloperBlock {
 	// Implement widget functionality
 	protected $widgetName = 'Launch Workflow Button';
+	public $title = '';
+	public $errormsg = '';
+	public $successmsg = '';
 
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {
@@ -36,7 +39,16 @@ class LaunchWorkflowButton_DetailViewBlock extends DeveloperBlock {
 		$record_id = $this->getFromContext('record');
 		$workflow_id = $this->getFromContext('workflow_id');
 		$type = $this->getFromContext('type');
-
+		$actionid = $this->getFromContext('actionid');
+		if (!empty($actionid)) {
+			require_once 'modules/BusinessActions/BusinessActions.php';
+			$focus = new BusinessActions();
+			$focus->id = $actionid;
+			$focus->retrieve_entity_info($actionid, 'BusinessActions');
+			$this->title = $focus->column_fields['linklabel'];
+			$this->errormsg = $focus->column_fields['error_msg'];
+			$this->successmsg = $focus->column_fields['success_msg'];
+		}
 		$slds_class = '';
 		$link_label = '';
 		if ($type == 'approve') {
@@ -50,9 +62,13 @@ class LaunchWorkflowButton_DetailViewBlock extends DeveloperBlock {
 			$link_label = $this->getFromContext('button_label');
 		}
 
+		$smarty->assign('title', $this->title);
+		$smarty->assign('errormsg', $this->errormsg);
+		$smarty->assign('successmsg', $this->successmsg);
 		$smarty->assign('record_id', $record_id);
 		$smarty->assign('workflow_id', $workflow_id);
 		$smarty->assign('slds_class', $slds_class);
+		$smarty->assign('refreshdv', filter_var($this->getFromContext('refreshdv'), FILTER_VALIDATE_BOOLEAN));
 		$smarty->assign('link_label', getTranslatedString($link_label, 'Documents'));
 		return $smarty->fetch('modules/Documents/LaunchWorkflowButton.tpl');
 	}

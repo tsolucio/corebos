@@ -211,16 +211,14 @@ if (count($querycolumns) > 0) {
 			$actual_values[$x] = str_replace('"', ' ', $actual_values[$x]);
 			//if value contains any line feed or carriage return replace the value with ".value."
 			if (preg_match("/(\r?\n)/", $actual_values[$x])) {
-				// <<< pag 21-Sep-2011 >>>
 				// Replacement see: php.net/manual/en/function.str-replace.php
-				// $str     = "Line 1\nLine 2\rLine 3\r\nLine 4\n";
-				$order   = array("\r\n", "\n", "\r"); // order of replacement matters
+				// $str = "Line 1\nLine 2\rLine 3\r\nLine 4\n";
+				$order = array("\r\n", "\n", "\r"); // order of replacement matters
 				$replace = '!!'; // you choose your appropriate delimiters
 				// They'll be replaced by an OO/LO macro once the resulting document has been downloaded
 				// We now processes \r\n's first so they aren't converted twice.
 				// $newstr = str_replace($order, $replace, $str);
 				$actual_values[$x] = str_replace($order, $replace, $actual_values[$x]);
-				// <<< pag 21-Sep-2011 END >>>
 				// not needed ??? // $actual_values[$x] = '"'.$actual_values[$x].'"';
 			}
 			$actual_values[$x] = decode_html(str_replace(',', ' ', $actual_values[$x]));

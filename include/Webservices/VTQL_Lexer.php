@@ -210,7 +210,7 @@ class VTQL_Lexer {
 				$yysubmatches = $yymatches;
 				$yymatches = array_filter($yymatches, 'strlen'); // remove empty sub-patterns
 				if (!count($yymatches)) {
-					throw new InvalidArgumentException('Error: lexing failed because a rule matched an empty string. Input "' . substr($this->data, $this->index, 5) . ' state INITR');
+					throw new InvalidArgumentException('Error: lexing failed; rule matched an empty string. Input "'.substr($this->data, $this->index, 5).' state INITR');
 				}
 				next($yymatches); // skip global match
 				$this->token = key($yymatches); // token number
@@ -262,7 +262,7 @@ class VTQL_Lexer {
 					return true;
 				}
 			} else {
-				throw new InvalidArgumentException('Unexpected input at line' . $this->linenum . ': ' . $this->data [$this->index]);
+				throw new InvalidArgumentException('Unexpected input at line'.$this->linenum.': '.$this->data [$this->index]);
 			}
 		} while (true);
 	} // end function

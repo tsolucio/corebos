@@ -239,10 +239,10 @@ class SalesOrder extends CRMEntity {
 		return GetRelatedList('SalesOrder', 'Invoice', $focus, $query, $button, $returnset);
 	}
 
-	/**	Function used to get the Status history of the Sales Order
-	 *	@param $id - salesorder id
-	 *	@return $return_data - array with header and the entries in format array('header'=>$header,'entries'=>$entries_list)
-	 *	 where as $header and $entries_list are arrays which contains header values and all column values of all entries
+	/** Function used to get the Status history of the Sales Order
+	 * @param integer salesorder id
+	 * @return array with header and the entries in format array('header'=>$header,'entries'=>$entries_list)
+	 *  where as $header and $entries_list are arrays which contains header values and all column values of all entries
 	 */
 	public function get_sostatushistory($id) {
 		global $log, $adb, $app_strings, $current_user;
@@ -292,11 +292,11 @@ class SalesOrder extends CRMEntity {
 		return $return_data;
 	}
 
-	/*
+	/**
 	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
+	 * @param string primary module name
+	 * @param string secondary module name
+	 * @return string query formed on fetching the related data for report for secondary module
 	 */
 	public function generateReportsSecQuery($module, $secmodule, $queryPlanner, $type = '', $where_condition = '') {
 		$matrix = $queryPlanner->newDependencyMatrix();
@@ -359,10 +359,10 @@ class SalesOrder extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -444,8 +444,8 @@ class SalesOrder extends CRMEntity {
 	}
 
 	/** Function to export the lead records in CSV Format
-	* @param reference variable - where condition is passed when the query is executed
-	* Returns Export SalesOrder Query.
+	* @param string reference variable - where condition is passed when the query is executed
+	* @return string Export SalesOrder Query
 	*/
 	public function create_export_query($where) {
 		global $log, $current_user;

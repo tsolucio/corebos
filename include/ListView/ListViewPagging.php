@@ -78,5 +78,5 @@ $pageNumber = ceil($noofrows/$list_max_entries_per_page);
 if ($pageNumber == 0) {
 	$pageNumber = 1;
 }
-echo $app_strings['LBL_LIST_OF'].' '.$pageNumber;
+echo $app_strings['LBL_LIST_OF'].' '.$pageNumber.'&#&#&#'.$app_strings['LBL_LIST_OF'].' '.$noofrows;
 ?>

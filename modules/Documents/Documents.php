@@ -18,7 +18,7 @@ class Documents extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
-	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-document', 'class' => 'slds-icon', 'icon'=>'document');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-document', 'class'=>'slds-icon', 'icon'=>'document');
 
 	public $customFieldTable = array('vtiger_notescf', 'notesid');
 
@@ -84,6 +84,7 @@ class Documents extends CRMEntity {
 	public $default_sort_order = 'ASC';
 	public $mandatory_fields = array('notes_title', 'createdtime', 'modifiedtime', 'filename', 'filesize', 'filetype', 'filedownloadcount');
 	public $old_filename = '';
+	public $parentid = 0;
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
@@ -92,11 +93,13 @@ class Documents extends CRMEntity {
 		global $adb, $upload_badext;
 		$filetype_fieldname = $this->getFileTypeFieldName();
 		$filename_fieldname = $this->getFile_FieldName();
+		$tryToFindMime = false;
 		if ($this->column_fields[$filetype_fieldname] == 'I') {
 			if (!empty($_FILES[$filename_fieldname]['name'])) {
 				$filedownloadcount = 0;
 				$errCode=$_FILES[$filename_fieldname]['error'];
 				if ($errCode == 0) {
+					$tryToFindMime = true;
 					foreach ($_FILES as $files) {
 						if ($files['name'] != '' && $files['size'] > 0) {
 							$filename = $_FILES[$filename_fieldname]['name'];
@@ -110,6 +113,7 @@ class Documents extends CRMEntity {
 					}
 				}
 			} elseif ($this->mode == 'edit') {
+				$tryToFindMime = true;
 				$fileres = $adb->pquery('select filetype, filesize,filename,filedownloadcount,filelocationtype from vtiger_notes where notesid=?', array($this->id));
 				if ($adb->num_rows($fileres) > 0) {
 					$filename = $adb->query_result($fileres, 0, 'filename');
@@ -119,6 +123,7 @@ class Documents extends CRMEntity {
 					$filelocationtype = $adb->query_result($fileres, 0, 'filelocationtype');
 				}
 			} elseif ($this->column_fields[$filename_fieldname]) {
+				$tryToFindMime = true;
 				$filename = $this->column_fields[$filename_fieldname];
 				$filesize = $this->column_fields['filesize'];
 				$filetype = $this->column_fields['filetype'];
@@ -141,6 +146,11 @@ class Documents extends CRMEntity {
 			$filetype = '';
 			$filesize = 0;
 			$filedownloadcount = null;
+		}
+		if ($tryToFindMime && $filetype=='') {
+			$finfo = new finfo(FILEINFO_MIME);
+			$filetype = explode(';', $finfo->buffer(file_get_contents(self::getAttachmentPath($this->id))));
+			$filetype = $filetype[0];
 		}
 		$query = 'UPDATE vtiger_notes SET filename = ? ,filesize = ?, filetype = ? , filelocationtype = ? , filedownloadcount = ? WHERE notesid = ?';
 		$adb->pquery($query, array(decode_html($filename), $filesize, $filetype, $filelocationtype, $filedownloadcount, $this->id));
@@ -235,8 +245,8 @@ class Documents extends CRMEntity {
 	/**
 	 * This function is used to add attachments.
 	 * This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
-	 * @param int $id  - entity id to which the files to be uploaded
-	 * @param string $module  - the current module name
+	 * @param int entity id to which the files to be uploaded
+	 * @param string the current module name
 	*/
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log;
@@ -474,9 +484,7 @@ class Documents extends CRMEntity {
 		$data['destinationRecordId'] = $return_id;
 		cbEventHandler::do_action('corebos.entity.link.delete', $data);
 		$adb->pquery('DELETE FROM vtiger_senotesrel WHERE notesid = ? AND crmid = ?', array($id, $return_id));
-		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
-		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$adb->pquery($sql, $params);
+		deleteFromCrmEntityRel($id, $return_id);
 		cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 	}
 
@@ -525,9 +533,28 @@ class Documents extends CRMEntity {
 	}
 
 	/**
+	 * Return array of folders this document belongs to
+	 */
+	public function getFolders() {
+		global $adb;
+		$result = $adb->pquery(
+			'SELECT documentfoldersid
+				FROM vtiger_documentfolders
+				INNER JOIN vtiger_crmentityreldenorm on relcrmid=documentfoldersid
+				WHERE crmid=?',
+			array($this->id)
+		);
+		$folders = [];
+		while ($fld = $adb->fetch_array($result)) {
+			$folders[] = $fld['documentfoldersid'];
+		}
+		return $folders;
+	}
+
+	/**
 	 * Function to retrieve the physical path of the file attached to the document
 	 */
-	public static function getAttachmentPath($docid) {
+	public static function getAttachmentPath($docid, $relative = false) {
 		global $adb, $root_directory;
 		$path = '';
 		if (!empty($docid)) {
@@ -538,10 +565,10 @@ class Documents extends CRMEntity {
 				WHERE crmid=? or note_no=?';
 			$res_att = $adb->pquery($SQL_att, array($docid, $docid));
 			if ($res_att && $adb->num_rows($res_att)>0) {
-				$name   = $res_att->fields['name'];
-				$ruta   = $res_att->fields['path'];
+				$name = $res_att->fields['name'];
+				$ruta = $res_att->fields['path'];
 				$prefix = $res_att->fields['attachmentsid'].'_';
-				$path   = $root_directory.$ruta.$prefix.$name;
+				$path = ($relative ? '' : $root_directory).$ruta.$prefix.$name;
 			}
 		}
 		return $path;

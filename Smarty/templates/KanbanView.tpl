@@ -68,6 +68,7 @@
 			enabled: false,
 			footer: false
 		},
+		propagationHandlers: ['click'],
 		boards: [
 		{foreach from=$kbLanes item=BOARD key=TITLE}
 		{

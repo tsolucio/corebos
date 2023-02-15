@@ -76,9 +76,9 @@ class Versatile implements ISMSProvider {
 		if ($type) {
 			switch (strtoupper($type)) {
 				case self::SERVICE_AUTH:
-					return  self::SERVICE_URI . '/http/auth';
+					return self::SERVICE_URI . '/http/auth';
 				case self::SERVICE_SEND:
-					return  self::SERVICE_URI . '/SendSMS';
+					return self::SERVICE_URI . '/SendSMS';
 				case self::SERVICE_QUERY:
 				default:
 					return self::SERVICE_URI . '/http/querymsg';

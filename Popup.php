@@ -424,6 +424,24 @@ if (isset($_REQUEST['cbcustompopupinfo'])) {
 	$smarty->assign('CBCUSTOMPOPUPINFO', $_REQUEST['cbcustompopupinfo']);
 }
 
+// sending PopupFilter map results to the frontEnd
+$bmapname = $currentModule.'_PopupFilter';
+$Mapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($Mapid) {
+	$MapObject = new cbMap();
+	$MapObject->id = $Mapid;
+	$MapObject->mode = '';
+	$MapObject->retrieve_entity_info($Mapid, 'cbMap');
+	$MapResult = $MapObject->PopupFilter($record, $currentModule);
+	$smarty->assign('PopupFilterMapResults', $MapResult);
+}
+
+// sending json condition data to the frontEnd
+// this fixes pagination issue when using advanced search in Popup
+$smarty->assign('searchtype', !empty($_REQUEST['searchtype']) ? $_REQUEST['searchtype'] : 'BasicSearch');
+$smarty->assign('advft_criteria', !empty($_REQUEST['advft_criteria']) ? $_REQUEST['advft_criteria'] : '');
+$smarty->assign('advft_criteria_groups', !empty($_REQUEST['advft_criteria_groups']) ? $_REQUEST['advft_criteria_groups'] : '');
+
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 	$smarty->display('PopupContents.tpl');
 } else {

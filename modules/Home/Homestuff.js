@@ -664,7 +664,6 @@ function HideDefault(sid) {
 	});
 }
 
-
 /**
  * this function removes the widget dropdown window
  */

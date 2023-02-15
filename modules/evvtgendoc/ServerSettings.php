@@ -26,6 +26,14 @@ if (!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
 } else {
 	$gendoc_url = GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc');
+	if ($gendoc_url=='') {
+		$gendoc_url = GlobalVariable::getVariable('GenDoc_Convert_URL_UnoServer', '', 'evvtgendoc');
+		if ($gendoc_url!='') {
+			$gendoc_url .= ' (UnoServer)';
+		}
+	} else {
+		$gendoc_url .= ' (Unoconv)';
+	}
 	$pdflinkactive = coreBOS_Settings::getSetting('cbgendoc_showpdflinks', 0)!=0 ? 'checked' : '';
 	$smarty->assign('pdflinkactive', $pdflinkactive);
 	$gendoc_active = coreBOS_Settings::getSetting('cbgendoc_active', 0);

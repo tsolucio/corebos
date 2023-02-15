@@ -18,7 +18,7 @@
 use \PHPSQLParser\PHPSQLParser;
 use \PHPSQLParser\utils\ExpressionType;
 
-/*
+/**
  * function to aggregate a set of records related to a main record
  * @param array[0] aggregation operation: sum, min, max, avg, count, std, variance, group_concat, time_to_sec
  * @param array[1] RelatedModule
@@ -28,6 +28,7 @@ use \PHPSQLParser\utils\ExpressionType;
  *   => may be empty
  *   => if main module and related module are different the relation condition will be added automatically
  * @param array[4] environment data, this is automatically added by the application
+ * @return integer
  */
 function __cb_aggregation($arr) {
 	global $adb;
@@ -49,7 +50,7 @@ function __cb_aggregation($arr) {
 	}
 }
 
-/*
+/**
  * function to aggregate a set of records related to a main record
  * @param array[0] aggregation operation: sum, min, max, avg, count, std, variance, group_concat, time_to_sec
  * @param array[1] RelatedModule
@@ -59,6 +60,7 @@ function __cb_aggregation($arr) {
  *   => may be empty
  *   => if main module and related module are different the relation condition will be added automatically
  * @param array[4] environment data, this is automatically added by the application
+ * @return integer
  */
 function __cb_aggregation_operation($arr) {
 	global $adb;
@@ -282,7 +284,11 @@ function __cb_aggregation_queryonsamemodule($conditions, $module, $relfield, $re
 }
 
 function __cb_aggregate_time($arr) {
-	$total_seconds = __cb_aggregation_operation(['sum', $arr[0], 'time_to_sec('. $arr[1] .')', $arr[2], $arr[3]]);
+	if (is_object($arr[2])) {
+		$total_seconds = __cb_aggregation_operation(['sum', $arr[0], 'time_to_sec('. $arr[1] .')', '', $arr[2]]);
+	} else {
+		$total_seconds = __cb_aggregation_operation(['sum', $arr[0], 'time_to_sec('. $arr[1] .')', $arr[2], $arr[3]]);
+	}
 	$hours = floor($total_seconds / 3600);
 	$minutes = floor((($total_seconds - ($hours * 3600)) / 60));
 	$seconds = (($total_seconds - ($hours * 3600)) % 60);

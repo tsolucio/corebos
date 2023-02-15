@@ -1,4 +1,4 @@
-<article class="slds-card">
+<article class="slds-card" id="masterdetail__{$MasterDetailLayoutMap.mapname}">
 	<div class="slds-card__header slds-grid">
 		<header class="slds-has-flexi-truncate">
 		{include file="Components/MasterDetail/GridHeader.tpl"}

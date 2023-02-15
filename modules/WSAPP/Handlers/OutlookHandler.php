@@ -123,7 +123,7 @@ class OutlookHandler extends SyncHandler {
 		foreach ($records as $record) {
 			if (!empty($record['values'])) {
 				//converting mins to seconds
-				$record['reminder_time']  = $record['reminder_time']*60;
+				$record['reminder_time'] = $record['reminder_time']*60;
 			}
 		}
 	}

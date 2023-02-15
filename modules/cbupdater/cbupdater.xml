@@ -1361,4 +1361,11 @@
 	<classname>AddColumnsForOutgoingServerConfigurationValues</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>arditramaj</author>
+	<description>Add picklist value for direct sql to cbQuestion</description>
+	<filename>build/changeSets/2023/addBQforDirectSql.php</filename>
+	<classname>addBQforDirectSql</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

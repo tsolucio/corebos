@@ -921,7 +921,7 @@ const mb = {
 					<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
 						<div class="slds-form-element">
 						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-							<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+							<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
 						</label>
 						<div class="slds-form-element__control">
 							<input type="hidden" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
@@ -942,7 +942,7 @@ const mb = {
 					<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
 						<div class="slds-form-element">
 						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-							<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+							<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
 						</label>
 						<div class="slds-form-element__control">
 							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
@@ -955,7 +955,7 @@ const mb = {
 					<div class="slds-col" style="${inStyle.style}" id="show-fieldlength-${FIELD_COUNT}">
 						<div class="slds-form-element">
 						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-							<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+							<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
 						</label>
 						<div class="slds-form-element__control">
 							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
@@ -982,7 +982,7 @@ const mb = {
 					<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
 						<div class="slds-form-element">
 						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-							<abbr class="slds-required" title="required">* </abbr> ${textfields[key].type}
+							<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
 						</label>
 						<div class="slds-form-element__control">
 							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
@@ -1334,7 +1334,7 @@ const mb = {
 			'style': 'width: 25%'
 		};
 		let setdefaultOption = [{
-			true:  alert_arr.YES,
+			true: alert_arr.YES,
 			false: alert_arr.NO,
 		}];
 		var viewTemplate = `
@@ -1342,7 +1342,7 @@ const mb = {
 			<div class="slds-col slds-size_1-of-2">
 				<div class="slds-form-element">
 				<label class="slds-form-element__label" for="viewname-${FILTER_COUNT}">
-					<abbr class="slds-required" title="required">* </abbr> ${mod_alert_arr.filter}
+					<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${mod_alert_arr.filter}
 				</label>
 				<div class="slds-form-element__control">
 					<input type="text" placeholder="All" name="viewname-${FILTER_COUNT}" id="viewname-${FILTER_COUNT}" class="slds-input"/>
@@ -1371,7 +1371,7 @@ const mb = {
 		<div class="slds-grid slds-gutters">
 			<div class="slds-col"><br>
 				<label class="slds-form-element__label">
-					<abbr class="slds-required" title="required">* </abbr> ${mod_alert_arr.LBL_CHOOSECUSTOMVIEW}
+					<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${mod_alert_arr.LBL_CHOOSEFIELDFILTER}
 				</label>
 			</div>
 		</div>
@@ -1505,11 +1505,14 @@ const mb = {
 	 */
 	loadMessage: (msg, show = true, type = 'success') => {
 		var icon = 'task';
+		var title = type.toUpperCase();
 		if (type == 'error') {
 			icon = 'first_non_empty';
+		} else {
+			title = 'LBL_'+title;
 		}
 		if (show == true) {
-			ldsPrompt.show(type.toUpperCase(), msg, type);
+			ldsPrompt.show(alert_arr[title], msg, type);
 		}
 	},
 	/**
@@ -1677,7 +1680,7 @@ const mb = {
 			<div class="slds-col">
 				<div class="slds-form-element">
 					<label class="slds-form-element__label" for="autocomplete-related-${LIST_COUNT}">
-						<abbr class="slds-required" title="required">* </abbr> Function name
+						<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${mod_alert_arr.FunctionName}
 					</label>
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
@@ -1693,7 +1696,7 @@ const mb = {
 			<div class="slds-col">
 				<div class="slds-form-element">
 					<label class="slds-form-element__label" for="related-label-${LIST_COUNT}">
-						<abbr class="slds-required" title="required">* </abbr> Label
+						<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${mod_alert_arr.fieldlabel}
 					</label>
 					<div class="slds-form-element__control">
 					<input type="text" name="related-label-${LIST_COUNT}" id="related-label-${LIST_COUNT}" class="slds-input" />
@@ -1703,7 +1706,7 @@ const mb = {
 			<div class="slds-col">
 				<div class="slds-form-element">
 					<label class="slds-form-element__label" for="related-action-${LIST_COUNT}">
-						<abbr class="slds-required" title="required">* </abbr> Related module
+						<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${mod_alert_arr.relatedmodule}
 					</label>
 					<div class="slds-form-element__control">
 					<input type="text" onkeyup="mb.autocomplete(this, 'module')" name="related-module-${LIST_COUNT}" id="autocomplete-module-${LIST_COUNT}" class="slds-input" />

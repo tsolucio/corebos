@@ -101,15 +101,15 @@ if (!empty($querycolumns)) {
 	require_once 'data/CRMEntity.php';
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Leads');
 	$query = 'select '.$selectcolumns.' from vtiger_leaddetails
-	  inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_leaddetails.leadid
-	  inner join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid=vtiger_leaddetails.leadid
-	  inner join vtiger_leadaddress on vtiger_leadaddress.leadaddressid=vtiger_leadsubdetails.leadsubscriptionid
-	  inner join vtiger_leadscf on vtiger_leaddetails.leadid = vtiger_leadscf.leadid
-	  left join vtiger_campaignleadrel on vtiger_leaddetails.leadid = vtiger_campaignleadrel.leadid
-	  left join vtiger_campaignrelstatus on vtiger_campaignrelstatus.campaignrelstatusid = vtiger_campaignleadrel.campaignrelstatusid
-	  LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-	  left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-	  where vtiger_crmentity.deleted=0 and vtiger_leaddetails.leadid in ('. generateQuestionMarks($mass_merge) .')';
+		inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_leaddetails.leadid
+		inner join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid=vtiger_leaddetails.leadid
+		inner join vtiger_leadaddress on vtiger_leadaddress.leadaddressid=vtiger_leadsubdetails.leadsubscriptionid
+		inner join vtiger_leadscf on vtiger_leaddetails.leadid = vtiger_leadscf.leadid
+		left join vtiger_campaignleadrel on vtiger_leaddetails.leadid = vtiger_campaignleadrel.leadid
+		left join vtiger_campaignrelstatus on vtiger_campaignrelstatus.campaignrelstatusid = vtiger_campaignleadrel.campaignrelstatusid
+		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+		left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
+		where vtiger_crmentity.deleted=0 and vtiger_leaddetails.leadid in ('. generateQuestionMarks($mass_merge) .')';
 
 	$result = $adb->pquery($query, array($mass_merge));
 	$avail_pick_arr = getAccessPickListValues('Leads');
@@ -131,16 +131,14 @@ if (!empty($querycolumns)) {
 			$actual_values[$x] = str_replace('"', ' ', $actual_values[$x]);
 			//if value contains any line feed or carriage return replace the value with ".value."
 			if (preg_match("/(\r?\n)/", $actual_values[$x])) {
-				// <<< pag 21-Sep-2011 >>>
 				// Replacement see: php.net/manual/en/function.str-replace.php
-				// $str     = "Line 1\nLine 2\rLine 3\r\nLine 4\n";
-				$order   = array("\r\n", "\n", "\r"); // order of replacement matters
+				// $str = "Line 1\nLine 2\rLine 3\r\nLine 4\n";
+				$order = array("\r\n", "\n", "\r"); // order of replacement matters
 				$replace = '!!'; // you choose your appropriate delimiters
 				// They'll be replaced by an OO/LO macro once the resulting document has been downloaded
 				// We now processes \r\n's first so they aren't converted twice.
 				// $newstr = str_replace($order, $replace, $str);
 				$actual_values[$x] = str_replace($order, $replace, $actual_values[$x]);
-				// <<< pag 21-Sep-2011 END >>>
 				// not needed ??? // $actual_values[$x] = '"'.$actual_values[$x].'"';
 			}
 			$actual_values[$x] = decode_html(str_replace(',', ' ', $actual_values[$x]));

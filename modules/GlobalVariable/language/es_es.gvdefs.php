@@ -108,9 +108,21 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_Menu_Direction' => array(
 	'valuetype' => 'Cadena',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => 'Horizontal | Vertical',
 	'definition' => 'Dirección del menú de la aplicación.',
+),
+'Application_Menu_Show' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Applicación',
+	'values' => '0 | 1',
+	'definition' => 'mostrar o esconder el menú principal',
+),
+'Application_Menu_Search_Active' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Applicación',
+	'values' => '0 | 1',
+	'definition' => 'mostrar o esconder el menú de búsqueda por teclado',
 ),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Booleano',
@@ -327,6 +339,18 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '',
 	'definition' => 'Número máximo de letras de un campo que se muestran en una columna de la vista de lista. El valor por defecto es 40 y 0 muestra el valor entero.',
+),
+'Application_ListView_Mass_Edit_Show' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'esconder o mostrar el botón de edición masiva',
+),
+'Application_ListView_Mass_Delete_Show' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'esconder o mostrar el botón de eliminado masivo',
 ),
 'Application_ListView_PageSize' => array(
 	'valuetype' => 'Entero',
@@ -549,6 +573,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Si se deben aplicar las reglas de validación existentes en los registros que se están importando.',
+),
+'Import_Check_Apache' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'La importación comprobará si se ejecuta en un entorno Apache si esta variable se establece en 1, que es el valor predeterminado.',
 ),
 'Export_Field_Separator_Symbol' => array(
 	'valuetype' => 'Texto',
@@ -876,7 +906,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_MultipleUserLogins' => array(
 	'valuetype' => 'Entero',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => '1 (predeterminado) permite que el mismo usuario inicie sesión varias veces desde diferentes sesiones de navegador.',
 ),
@@ -894,7 +924,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_Session_LockUserAgent' => array(
 	'valuetype' => 'Entero',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => '1 (predeterminado) restringe el acceso al mismo navegador desde el que se inició sesión',
 ),
@@ -912,7 +942,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_Session_LockIP' => array(
 	'valuetype' => 'Entero',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => '1 restringe el acceso a la misma IP desde la que se realizó el inicio de sesión. 0 es el valor predeterminado',
 ),
@@ -1104,7 +1134,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Calendar_Show_Only_My_Events' => array(
 	'valuetype' => 'Booleano',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => 'Mostrar solo los eventos asignados a mi, compartidos conmigo y en los que esté invitado.',
 ),
@@ -1279,8 +1309,14 @@ $GlobalVariableDefinitons = array(
 'Workflow_Email_GenDoc_Attachment_Name' => array(
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
-	'values' => 'Name|Number',
-	'definition' => 'Al fusionar una plantilla GenDoc adjunto a un correo electrónico de flujo de trabajo, el nombre utilizado para el archivo adjunto será el campo Nombre de la entidad (Name) o el campo Número de entidad (Number) concatenados con el nombre de la plantilla.',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'Al fusionar una plantilla GenDoc adjunto a un correo electrónico de flujo de trabajo, el nombre utilizado para el archivo adjunto será el campo Nombre de la entidad (Name) o el campo Número de entidad (Number) concatenados con el nombre de la plantilla. Si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado.',
+),
+'Workflow_Email_GenDoc_Save_Document' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Habilita o deshabilita la creación de un nuevo documento en el módulo de Documentos y el storage cada vez que se envía un correo electrónico con una plantilla GenDoc.',
 ),
 'Workflow_GeoDistance_Country_Default' => array(
 	'valuetype' => 'Texto',
@@ -1492,6 +1528,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Cualquier Clave API válida de Zero Bounce',
 	'definition' => 'Una clave válida para el API de Zero Bounce para poder validar cuentas de correo.',
 ),
+'GenDoc_Attachment_Name' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'Al fusionar una plantilla GenDoc, el nombre utilizado para la descarga será el nombre del módulo concatenado con el campo Nombre de la entidad (Name), o el número de la entidad (Number), o, si se establece en Expression, se utilizará el resultado del mapa de negocio relacionado. En el mapa de negocios, puedes usar tres variables de contexto especiales para determinar el resultado: GDTemplateID, GDTemplateName, GDTemplateNumber',
+),
 'GenDoc_CopyLabelToClipboard' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Extensión',
@@ -1514,13 +1556,31 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Cadena',
 	'category' => 'Extensión',
 	'values' => 'URL',
-	'definition' => 'URL al servidor de conversión: https://github.com/sfoxdev/docker-unoconv',
+	'definition' => 'URL al servidor de conversión UNOCONV: https://github.com/sfoxdev/docker-unoconv',
+),
+'GenDoc_Convert_URL_UnoServer' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Extensión',
+	'values' => 'URL',
+	'definition' => 'URL al servidor de conversión UNOSERVER: https://github.com/lynxtaa/unoserver-web',
 ),
 'GenDoc_PDFConversion_Retries' => array(
 	'valuetype' => 'Entero',
 	'category' => 'Extensión',
 	'values' => 'Entero positivo',
 	'definition' => 'El número máximo de reintentos al convertir la plantilla a PDF si falla la conversión.',
+),
+'GenDoc_Confirm_ActionFor' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Example: ID1,ID2,...,IDn',
+	'definition' => 'A comma-separated list of document IDs to check before proceeding with the action.',
+),
+'GenDoc_Confirm_Actions' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '* | export,save,email',
+	'definition' => 'A comma-separated list of GenDoc actions.',
 ),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Entero',
@@ -1648,6 +1708,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número de filas para mostrar por página en la lista de filas maestro-detalle.',
 ),
+'MasterDetail_MasterDetail_OpenRecordNewTab' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Abrir el registro en una nueva pestaña o en la actual.',
+),
 'Import_ForceDuplicateRecord_Handling' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
@@ -1746,7 +1812,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Webservice_WriteRunWS_Logs' => array(
 	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'category' => 'Applicación',
 	'values' => '0 | 1',
 	'definition' => 'Write logs in the RunWebserviceWorkflow task. Default is 1',
 ),
@@ -1780,11 +1846,35 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ID HTML',
 	'definition' => 'ID de elemento HTML que se enfocará cuando se cargue la página',
 ),
+'Application_Toolbar_Show' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'mostrar o esconder los botones de ayuda en la vista de detalle',
+),
 'Application_TitleInformation' => array(
 	'valuetype' => 'Texto|Entero',
 	'category' => 'Aplicación',
 	'values' => 'MapID o texto',
 	'definition' => 'Título de la pestaña del navegador. Puede ser un ID de mapa de expresión',
+),
+'Application_Header_Buttons_Position' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => 'porcentaje',
+	'definition' => 'Porcentaje de espacio de encabezado que se deja para el título antes de colocar los botones. Por defecto, los botones estarán alineados a la derecha.',
+),
+'Application_Hide_Related_List' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'mostrar o esconder la pestaña de más información',
+),
+'Application_ImageSlider_Mode' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'documents | fields | both',
+	'definition' => 'selecciona qué imágenes mostrar en el control deslizante de imágenes: documents mostrará imágenes de documentos relacionados, fields mostrará campos de imágenes en el registro y both mostrará ambos tipos',
 ),
 );
 

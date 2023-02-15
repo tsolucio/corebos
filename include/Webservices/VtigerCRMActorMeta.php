@@ -11,7 +11,7 @@ require_once 'include/Webservices/VtigerCRMObjectMeta.php';
 
 class VtigerCRMActorMeta extends EntityMeta {
 	protected $pearDB;
-	protected static $fieldTypeMapping = array();
+	public static $fieldTypeMapping = array();
 	private $hasAccess;
 	private $hasReadAccess;
 	private $hasCreateAccess;

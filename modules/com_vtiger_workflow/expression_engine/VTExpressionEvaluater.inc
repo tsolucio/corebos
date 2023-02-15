@@ -14,6 +14,16 @@ interface VTExpressionEnv {
 
 class VTFieldExpressionEvaluater {
 
+	public $debug;
+	public $env;
+	public $expr;
+	public $functions;
+	public $needscontext;
+	public $operations;
+	public $operationsSQL;
+	public $operators;
+	public $rawparams;
+
 	public function __construct($expr) {
 		global $adb;
 		$this->debug = array();
@@ -52,6 +62,7 @@ class VTFieldExpressionEvaluater {
 			'sub_time' => '__vt_sub_time',
 			'power' => '__vt_power',
 			'log' => '__cb_logarithm',
+			'char' => '__cb_char',
 			'substring' => '__vt_substring',
 			'stringposition' => '__cb_stringposition',
 			'stringlength' => '__cb_stringlength',
@@ -131,6 +142,7 @@ class VTFieldExpressionEvaluater {
 			'AND' => '__cb_and',
 			'NOT' => '__cb_not',
 			'regex' => '__cb_regex',
+			'uniqid' => '__cb_uniqid',
 			'array' => '__cb_array',
 			'flattenarray' => '__cb_flattenarray',
 			'exists' => '__cb_exists',
@@ -148,6 +160,7 @@ class VTFieldExpressionEvaluater {
 			'getCurrentConfiguredTaxValues' => '__cb_getCurrentConfiguredTaxValues',
 			'getCurrencyConversionValue' => '__cb_getCurrencyConversionValue',
 			'EUVATValidation' => '__cb_euvatvalidation',
+			'AutoNumberDec' => '__cb_autonumber_dec',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',
@@ -180,6 +193,7 @@ class VTFieldExpressionEvaluater {
 			'add_time' => 'cbexpsql_add_time',
 			'sub_time' => 'cbexpsql_sub_time',
 			'power' => 'cbexpsql_power',
+			'char' => 'cbexpsql_char',
 			'substring' => 'cbexpsql_substring',
 			'stringposition' => 'cbexpsql_stringposition',
 			'stringlength' => 'cbexpsql_stringlength',
@@ -198,6 +212,7 @@ class VTFieldExpressionEvaluater {
 			'ceil' => 'cbexpsql_ceil',
 			'floor' => 'cbexpsql_floor',
 			'modulo' => 'cbexpsql_modulo',
+			'uniqid' => 'cbexpsql_uniqid',
 			'hash' => 'cbexpsql_hash',
 			'base64encode' => 'cbexpsql_base64encode',
 			'base64decode' => 'cbexpsql_base64decode',

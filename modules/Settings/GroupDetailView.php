@@ -26,11 +26,10 @@ $smarty->assign('GROUPID', $groupId);
 $smarty->assign('GROUP_NAME', $groupInfoArr[0]);
 
 /** Gives the group info and the group member info array
-  * @param $groupInfoArr -- Group Info Array got by calling getGroupInfo($groupId):: Type array
-  * @param $groupID -- group id::Type integer
-  * @param $mod_strings -- i18n mod strings array::Type array
-  * @returns $returndata:: Type array, Example array format given below
-	Array
+ * @param array Group Info Array got by calling getGroupInfo($groupId)
+ * @param integer group id
+ * @param array i18n mod strings array
+ * @return array, Example array format given below
 	(
 		[0] => Array
 			(
@@ -82,8 +81,8 @@ $smarty->assign('GROUP_NAME', $groupInfoArr[0]);
 		)
 
 	)
-  *
-  *
+ *
+ *
  */
 function getStdOutput($groupInfoArr, $groupId, $mod_strings) {
 	$groupfields['groupname'] = $groupInfoArr[0];

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>convert reminder More columns to JSON</description>
+	<filename>build/changeSets/2023/modifyReminderMoreColumns.php</filename>
+	<classname>modifyReminderMoreColumns</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Business Actions type for List View Button</description>
+	<filename>build/changeSets/2023/addBAtypesForLVButton.php</filename>
+	<classname>addBAtypesForLVButton</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add coreBOS Web Service Authentication Token</description>
+	<filename>build/changeSets/2023/addcoreBOSAuthWSToken.php</filename>
+	<classname>addcoreBOSAuthWSToken</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set database default values for lead lastname and company</description>
+	<filename>build/changeSets/2023/leadDefaultValues.php</filename>
+	<classname>leadDefaultValues</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Load Filter option to Potentials related list in campaigns</description>
+	<filename>build/changeSets/2023/chgCampaignPotentialRL.php</filename>
+	<classname>chgCampaignPotentialRL</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>add Business Actions type for MasterDetail Button</description>
+	<filename>build/changeSets/2023/addBAforMasterDetail.php</filename>
+	<classname>addBAforMasterDetail</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change AutoNumber workflow increment description</description>
+	<filename>build/changeSets/2023/chgAutoNumberWFDesc.php</filename>
+	<classname>chgAutoNumberWFDesc</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

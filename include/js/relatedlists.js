@@ -304,7 +304,7 @@ function createRelatedList(module) {
 function callRelatedList(module) {
 	VtigerJS_DialogBox.showbusy();
 	let url = `index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=getRelatedInfoOrder&formodule=${module}&ajax=true`;
-	ldsModal.show('Related List', '', 'small');
+	ldsModal.show(alert_arr.RelatedList, '', 'small');
 	$('#global-modal-container__content').load(url, function() {
 		VtigerJS_DialogBox.hidebusy();
 	});

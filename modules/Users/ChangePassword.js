@@ -28,12 +28,12 @@ function loadPassword(userid) {
 				<div class="slds-popover__body">
 				${alert_arr['PASSWORD REQUIREMENTS']}
 				<br>----------------------------------------<br>
-				${alert_arr['REQUIRED']}:<br> 
+				${alert_arr['REQUIRED']}:<br>
 				${alert_arr['Min. 8 characters'].replace('8', gvPasswordLength)}<br><br>
-				${alert_arr['Contains3of4']}<br> 
-				${alert_arr['Min. 1 uppercase']}<br> 
-				${alert_arr['Min. 1 lowercase']}<br> 
-				${alert_arr['Min. 1 number']}<br> 
+				${alert_arr['Contains3of4']}<br>
+				${alert_arr['Min. 1 uppercase']}<br>
+				${alert_arr['Min. 1 lowercase']}<br>
+				${alert_arr['Min. 1 number']}<br>
 				${alert_arr['Min. 1 special character']}
 				</div>
 			</div>
@@ -52,7 +52,7 @@ function loadPassword(userid) {
 			</div>
 		</div>
 		<div class="slds-grid">
-			<div class="slds-grid slds-col slds-size_1-of-4" style="font-size: 15px"> 
+			<div class="slds-grid slds-col slds-size_1-of-4" style="font-size: 15px">
 				<label for="${alert_arr['LBL_NEW_PASSWORD']}">${alert_arr['LBL_NEW_PASSWORD']} ${tooltip}</label>
 			</div>
 			<div class="slds-grid slds-col slds-size_2-of-4">

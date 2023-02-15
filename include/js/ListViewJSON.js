@@ -1001,7 +1001,7 @@ const ListView = {
 								</span>
 							</div>
 							<div class="slds-media__body">
-								<h2 class="slds-truncate slds-text-heading_medium" title="${alert_arr.QuickView}">${alert_arr.QuickView}</h2>
+								<h2 class="slds-truncate" title="${alert_arr.QuickView}">${alert_arr.QuickView}</h2>
 							</div>
 							</div>
 						</header>
@@ -1238,7 +1238,6 @@ const ListView = {
 	}
 };
 
-
 const DocumentsView = {
 
 	Show: (url, viewname = '') => {
@@ -1383,10 +1382,9 @@ const DocumentsView = {
 				content = `
 				<ul class="slds-has-dividers_top slds-has-block-links_space">
 					${list}
-				</ul>
-				`;
+				</ul>`;
 			}
-			ldsModal.show('Move file', content, 'small');
+			ldsModal.show(alert_arr.MoveFile, content, 'small');
 		});
 	},
 

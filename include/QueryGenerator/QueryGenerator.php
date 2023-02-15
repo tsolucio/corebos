@@ -35,6 +35,7 @@ class QueryGenerator {
 	private $fields;
 	private $addJoinFields;
 	private $referenceModuleMetaInfo;
+	private $referenceModuleField;
 	private $moduleNameFields;
 	private $referenceFieldInfoList;
 	private $referenceFieldList;
@@ -778,6 +779,9 @@ class QueryGenerator {
 			$alreadyinfrom[] = $baseTable;
 			if (isset($this->referenceModuleField) && is_array($this->referenceModuleField)) {
 				foreach ($this->referenceModuleField as $conditionInfo) {
+					if (empty($conditionInfo['relatedModule'])) {
+						continue;
+					}
 					if ($conditionInfo['relatedModule'] == 'Users' && $baseModule != 'Users'
 					 && !in_array('vtiger_users', $referenceFieldTableList) && !in_array('vtiger_users', $tableList)) {
 						$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
@@ -1019,7 +1023,7 @@ class QueryGenerator {
 						}
 
 						$fieldSql .= "$fieldGlue trim($columnSql) $valueSql";
-						if ($conditionInfo['operator'] == 'e' && (empty($conditionInfo['value']) || $conditionInfo['value'] == 'null') && $field->getFieldDataType() == 'reference') {
+						if ($conditionInfo['operator']=='e' && (empty($conditionInfo['value']) || $conditionInfo['value']=='null') && $field->getFieldDataType()=='reference') {
 							$fieldGlue = ' AND';
 						} else {
 							$fieldGlue = ' OR';
@@ -1075,6 +1079,9 @@ class QueryGenerator {
 		// This is added to support reference module fields
 		if (isset($this->referenceModuleField)) {
 			foreach ($this->referenceModuleField as $index => $conditionInfo) {
+				if (empty($conditionInfo['relatedModule'])) {
+					continue;
+				}
 				$handler = vtws_getModuleHandlerFromName($conditionInfo['relatedModule'], $current_user);
 				$meta_data = $handler->getMeta();
 				$fieldName = $conditionInfo['fieldName'];
@@ -1480,8 +1487,12 @@ class QueryGenerator {
 			) {
 				$value = "'$value'";
 			}
-			if ($this->isNumericType($field->getFieldDataType()) && empty($value)) {
-				$value = '0';
+			if ($this->isNumericType($field->getFieldDataType())) {
+				if (empty($value)) {
+					$value = '0';
+				} elseif (strpos((string)$value, ',')>0  || (!is_numeric($value) && strpos($value, "'") === false)) {
+					$value = "'$value'";
+				}
 			}
 			if ($this->requiresSoundex($operator)) {
 				$sql[] = 'SOUNDEX('.$field->getTableName().'.'.$field->getColumnName().') '.($operator=='nsx' ? 'NOT ' : '')."LIKE SOUNDEX($value)";

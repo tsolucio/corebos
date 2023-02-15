@@ -89,8 +89,7 @@ class corebos_stripepayment {
 				return $intentres;
 			} catch (Exception $e) {
 				$logbg->debug('createPaymentIntent failed:: '. $e->getMessage());
-				$body = $e->getJsonBody();
-				return $body;
+				return $e->getMessage();
 			}
 		}
 		return 0;
@@ -135,12 +134,15 @@ class corebos_stripepayment {
 		global $logbg;
 		$stripe = new \Stripe\StripeClient(coreBOS_Settings::getSetting(self::KEY_STRIPE_API_KEY, ''));
 		$customers = $stripe->customers->all();
-		$customer = array_map(function ($key) use ($data) {
-			if ($key->email == $data['email']) {
-				return $key;
-			}
-			return false;
-		}, $customers['data']);
+		$customer = array_map(
+			function ($key) use ($data) {
+				if ($key->email == $data['email']) {
+					return $key;
+				}
+				return false;
+			},
+			$customers['data']
+		);
 		$filter_customer = array_filter($customer);
 		$customer = array_values($filter_customer);
 		if (!$customer[0]) {
@@ -176,8 +178,7 @@ class corebos_stripepayment {
 			}
 		} catch (Exception $e) {
 			$logbg->debug('attachPaymentToCustomer failed:: '. $e->getMessage());
-			$body = $e->getJsonBody();
-			return $body;
+			return $e->getMessage();
 		}
 	}
 

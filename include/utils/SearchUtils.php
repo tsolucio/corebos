@@ -198,7 +198,7 @@ function Search($module, $input = '') {
 function get_usersid($table_name, $column_name, $search_string) {
 	global $log;
 	$log->debug('> get_usersid '.$table_name.','.$column_name.','.$search_string);
-	$where = "(trim(vtiger_users.ename) like '". formatForSqlLike($search_string)  . "' or vtiger_groups.groupname like '". formatForSqlLike($search_string) ."')";
+	$where = "(trim(vtiger_users.ename) like '".formatForSqlLike($search_string)."' or vtiger_groups.groupname like '".formatForSqlLike($search_string)."')";
 	$log->debug('< get_usersid');
 	return $where;
 }
@@ -373,7 +373,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 			} elseif ($table_name == 'vtiger_crmentity' && $column_name == 'smownerid') {
 				$where = get_usersid($table_name, $column_name, $search_string);
 			} elseif ($table_name == 'vtiger_crmentity' && $column_name == 'modifiedby') {
-				$where = "(trim(vtiger_users2.ename) like '". formatForSqlLike($search_string) . "' or vtiger_groups2.groupname like '". formatForSqlLike($search_string) ."')";
+				$where ="(trim(vtiger_users2.ename) like '".formatForSqlLike($search_string)."' or vtiger_groups2.groupname like '".formatForSqlLike($search_string)."')";
 			} elseif (in_array($column_name, $column_array)) {
 				$where = getValuesforColumns($column_name, $search_string, 'cts', $input);
 			} elseif (isset($input['type']) && $input['type'] == 'entchar') {
@@ -794,7 +794,7 @@ function getdashboardcondition($input = '') {
 	}
 
 	$where_clauses = array();
-	$url_string = "";
+	$url_string = '';
 
 	if (isset($input['leadsource'])) {
 		$lead_source = $input['leadsource'];
@@ -909,24 +909,24 @@ function str_replace_once($needle, $replace, $haystack) {
  */
 function exclude_keywords_where_builder($table_name, $column_name, $exclude_keywords) {
 	$where = '';
-	$dot = $column_name == "" ? "" : ".";
+	$dot = $column_name == '' ? '' : '.';
 	$path = $table_name . $dot . $column_name;
 	foreach ($exclude_keywords as $key => $value) {
-		$where .= "AND " . $path . " NOT LIKE'" . formatForSqlLike($value) . "'";
+		$where .= 'AND ' . $path . " NOT LIKE'" . formatForSqlLike($value) . "'";
 	}
 	return $where;
 }
 
 /**
  * Function to get the where condition for a module based on the field table entries
- * @param  string $listquery  -- ListView query for the module
- * @param  string $module     -- module name
- * @param  string $search_val -- entered search string value
- * @return string $where      -- where condition for the module based on field table entries
+ * @param string ListView query for the module
+ * @param string module name
+ * @param string entered search string value
+ * @return string where condition for the module based on field table entries
  */
 function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 	global $adb, $current_user;
-	$is_range = strpos($search_val, "..") !== false ? true : false;
+	$is_range = strpos($search_val, '..') !== false ? true : false;
 	$userprivs = $current_user->getPrivileges();
 
 	// checking if search should be exact or not
@@ -938,13 +938,13 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 
 	// checking for exclude keywords
 	$exclude_keywords = [];
-	if (strpos($search_val, "-") !== false) {
+	if (strpos($search_val, '-') !== false) {
 		$filtered_val = preg_replace('/\s+/', ' ', $search_val);
-		$search_arr = explode(" ", $filtered_val);
+		$search_arr = explode(' ', $filtered_val);
 		foreach ($search_arr as $key => $value) {
-			if (strpos($value, "-") !== false) {
-				array_push($exclude_keywords, str_replace("-", "", $value));
-				$search_val = str_replace($value, "", $search_val);
+			if (strpos($value, '-') !== false) {
+				array_push($exclude_keywords, str_replace('-', '', $value));
+				$search_val = str_replace($value, '', $search_val);
 				$search_val = preg_replace('/\s+/', ' ', $search_val);
 			}
 		}
@@ -1034,8 +1034,8 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 						.$tablename.'.'.$columnname.' LIKE "'. formatForSqlLike($search_val, $formatForSqlLikeFlag).'")';
 				} else {
 					if ($is_range) {
-						$range = explode("..", $search_val);
-						$where .= $tablename.'.'.$columnname." BETWEEN ". $range[0] . " AND " . $range[1];
+						$range = explode('..', $search_val);
+						$where .= $tablename.'.'.$columnname.' BETWEEN '. $range[0] . ' AND ' . $range[1];
 					} else {
 						$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."'"
 						. exclude_keywords_where_builder($tablename, $columnname, $exclude_keywords);
@@ -1286,6 +1286,15 @@ function getAdvancedSearchComparator($comparator, $value, $datatype = '') {
 	if ($comparator == 'a') {
 		$rtvalue = ' > '.$adb->quote($value);
 	}
+	if ($comparator == 'rgxp') {
+		$rtvalue = ' REGEXP '.$adb->quote($value);
+	}
+	if ($comparator == 'sx') {
+		$rtvalue = ' SOUNDEX '.$adb->quote($value);
+	}
+	if ($comparator == 'nsx') {
+		$rtvalue = ' NOT SOUNDEX '.$adb->quote($value);
+	}
 	return $rtvalue;
 }
 
@@ -1362,7 +1371,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 		if ($field_uitype == 56) {
 			if (strtolower($value) == 'yes') {
 				$value = 1;
-			} elseif (strtolower($value) ==  'no') {
+			} elseif (strtolower($value) == 'no') {
 				$value = 0;
 			}
 		}
@@ -1389,9 +1398,9 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 
 /**
  * Function to get the Tags where condition
- * @param  string $search_val -- entered search string value
- * @param  string $current_user_id     -- current user id
- * @return string $where      -- where condition with the list of crmids, will like vtiger_crmentity.crmid in (1,3,4,etc.,)
+ * @param string entered search string value
+ * @param string current user id
+ * @return string where condition with the list of crmids, will like vtiger_crmentity.crmid in (1,3,4,etc.,)
  */
 function getTagWhere($search_val, $current_user_id) {
 	require_once 'include/freetag/freetag.class.php';
@@ -1629,7 +1638,7 @@ function getCriteriaJS($formName) {
 				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
 			} else if( type == "last14days" ) {
 				document.'.$formName.'.startdate.value = "'.$last14DaysDateTime->getDisplayDate().'";
-				document.'.$formName.'.enddate.value =  "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
 			} else if( type == "last30days" ) {
 				document.'.$formName.'.startdate.value = "'.$last30DaysDateTime->getDisplayDate().'";
 				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
@@ -1670,8 +1679,8 @@ function getCriteriaJS($formName) {
 
 function getDateforStdFilterBytype($type) {
 	$today = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y')));
-	$tomorrow  = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
-	$yesterday  = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-1, date('Y')));
+	$tomorrow = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
+	$yesterday = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-1, date('Y')));
 	$bigbang = date('Y-m-d', mktime(0, 0, 0, '01', '01', '2000'));
 
 	$currentmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m'), '01', date('Y')));
@@ -1793,7 +1802,7 @@ function getDateforStdFilterBytype($type) {
 		$datevalue[1] = $today;
 	} elseif ($type == 'last30days') {
 		$datevalue[0] = $last30days;
-		$datevalue[1] =  $today;
+		$datevalue[1] = $today;
 	} elseif ($type == 'last60days') {
 		$datevalue[0] = $last60days;
 		$datevalue[1] = $today;

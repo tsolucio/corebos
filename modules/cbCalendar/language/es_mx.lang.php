@@ -137,7 +137,6 @@ $mod_strings = array(
 	'LBL_4WEEKS_PLUS' => '4 semanas siguientes',
 	'LBL_RELOAD' => 'Actualizar',
 
-
 	'LBL_APPCREATED_BY' => 'Creado por',
 	'LBL_AT_DATE_TIME' => 'en',
 

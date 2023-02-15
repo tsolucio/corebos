@@ -70,12 +70,12 @@ class Vtiger_MailRecord {
 	public function __toString() {
 		$tostring = '';
 		$tostring .= 'FROM: ['. implode(',', $this->_from) . ']';
-		$tostring .= ',TO: [' . implode(',', $this->_to) .   ']';
+		$tostring .= ',TO: [' . implode(',', $this->_to) . ']';
 		if (!empty($this->_cc)) {
-			$tostring .= ',CC: [' . implode(',', $this->_cc) .   ']';
+			$tostring .= ',CC: [' . implode(',', $this->_cc) . ']';
 		}
 		if (!empty($this->_bcc)) {
-			$tostring .= ',BCC: [' . implode(',', $this->_bcc) .   ']';
+			$tostring .= ',BCC: [' . implode(',', $this->_bcc) . ']';
 		}
 		$tostring .= ',DATE: ['. $this->_date . ']';
 		$tostring .= ',SUBJECT: ['. $this->_subject . ']';
@@ -233,10 +233,10 @@ class Vtiger_MailRecord {
 		$this->_flags['Draft'] = $mailheader->Draft;
 
 		$this->_from = $this->__getEmailIdList($mailheader->from);
-		$this->_to   = $this->__getEmailIdList(isset($mailheader->to) ? $mailheader->to : '');
-		$this->_cc   = $this->__getEmailIdList(isset($mailheader->cc) ? $mailheader->cc : '');
-		$this->_bcc  = $this->__getEmailIdList(isset($mailheader->bcc) ? $mailheader->bcc : '');
-		$this->_reply_to  = $this->__getEmailIdList(isset($mailheader->reply_to) ? $mailheader->reply_to : '');
+		$this->_to = $this->__getEmailIdList(isset($mailheader->to) ? $mailheader->to : '');
+		$this->_cc = $this->__getEmailIdList(isset($mailheader->cc) ? $mailheader->cc : '');
+		$this->_bcc = $this->__getEmailIdList(isset($mailheader->bcc) ? $mailheader->bcc : '');
+		$this->_reply_to = $this->__getEmailIdList(isset($mailheader->reply_to) ? $mailheader->reply_to : '');
 
 		$this->_date = $mailheader->udate;
 

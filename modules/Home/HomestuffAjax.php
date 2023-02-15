@@ -21,7 +21,7 @@ if (!empty($modval)) {
 	$sparams = array($tabid);
 
 	if (!is_admin($current_user)) {
-		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in 
+		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid=? or vtiger_customview.status=3 or vtiger_customview.userid in
 			(select vtiger_user2role.userid
 			from vtiger_user2role
 			inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid

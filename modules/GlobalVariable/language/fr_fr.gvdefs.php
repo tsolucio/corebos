@@ -112,6 +112,18 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Horizontal | Vertical',
 	'definition' => 'Application menu direction.',
 ),
+'Application_Menu_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the main menu',
+),
+'Application_Menu_Search_Active' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the type search menu',
+),
 'Accounts_BlockDuplicateName' => array(
 	'valuetype' => 'Booléen',
 	'category' => 'Fonctionnalité Module',
@@ -328,6 +340,18 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre maximum de lettres visibles du contenu des champs en affichage par liste. La valeur par défaut est (40). Si la valeur est (0), le nom entier du champ sera affiché.',
 ),
+'Application_ListView_Mass_Edit_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the mass edit button',
+),
+'Application_ListView_Mass_Delete_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the mass delete button',
+),
 'Application_ListView_PageSize' => array(
 	'valuetype' => 'Entier',
 	'category' => 'Application',
@@ -381,6 +405,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Show search columns in the list view table',
+),
+'Application_ListView_FilterPanel_Open' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the filter panel',
 ),
 'Application_DetailView_Record_Navigation' => array(
 	'valuetype' => 'Boolean',
@@ -543,6 +573,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'If existing validation rules should be applied on records being imported.',
+),
+'Import_Check_Apache' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Import will check if running in Apache environment if this variable is set to 1, which is the default value.',
 ),
 'Export_Field_Separator_Symbol' => array(
 	'valuetype' => 'character',
@@ -1273,8 +1309,14 @@ $GlobalVariableDefinitons = array(
 'Workflow_Email_GenDoc_Attachment_Name' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => 'Name|Number',
-	'definition' => 'When merging a GenDoc workflow email attachment, the name used for the attachment will be the Entity Name field (Name) or the Entity Number field (Number) concatenated with the template name.',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'When merging a GenDoc workflow email attachment, the name used for the attachment will be the Entity Name field (Name) or the Entity Number field (Number) concatenated with the template name. If set to Expression, the result of the related business map will be used.',
+),
+'Workflow_Email_GenDoc_Save_Document' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Enable or disable creating a new document in storage and Documents module each time you send an email with a GenDoc template.',
 ),
 'Workflow_GeoDistance_Country_Default' => array(
 	'valuetype' => 'Chaîne:<br>Nom de pays en Anglais',
@@ -1486,6 +1528,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Any valid Zero Bounce API KEY',
 	'definition' => 'The valid Zero Bounce API KEY',
 ),
+'GenDoc_Attachment_Name' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Name|Number|Expression',
+	'definition' => 'When merging a GenDoc template, the name used for the download will be the module name concatenated with the Entity Name field (Name), or the Entity Number field (Number), or, if set to Expression, the result of the related business map will be used. In the business map, you can use three special context variables to determine the result: GDTemplateID, GDTemplateName, GDTemplateNumber',
+),
 'GenDoc_CopyLabelToClipboard' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Extension',
@@ -1508,13 +1556,31 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Extension',
 	'values' => 'URL',
-	'definition' => 'URL to the conversion server: https://github.com/sfoxdev/docker-unoconv',
+	'definition' => 'URL to the UNOCONV conversion server: https://github.com/sfoxdev/docker-unoconv',
+),
+'GenDoc_Convert_URL_UnoServer' => array(
+	'valuetype' => 'String',
+	'category' => 'Extension',
+	'values' => 'URL',
+	'definition' => 'URL to the UNOSERVER conversion server: https://github.com/lynxtaa/unoserver-web',
 ),
 'GenDoc_PDFConversion_Retries' => array(
 	'valuetype' => 'Integer',
 	'category' => 'Extension',
 	'values' => 'Positive Integer',
 	'definition' => 'The maximum number of retries when PDF conversion fails.',
+),
+'GenDoc_Confirm_ActionFor' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Example: ID1,ID2,...,IDn',
+	'definition' => 'A comma-separated list of document IDs to check before proceeding with the action.',
+),
+'GenDoc_Confirm_Actions' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '* | export,save,email',
+	'definition' => 'A comma-separated list of GenDoc actions.',
 ),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'valuetype' => 'Integer',
@@ -1641,6 +1707,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Number of rows to show per page in the master detail list view grid.',
+),
+'MasterDetail_MasterDetail_OpenRecordNewTab' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Open the entry in a new tab or redirect',
 ),
 'Import_ForceDuplicateRecord_Handling' => array(
 	'valuetype' => 'Boolean',
@@ -1774,11 +1846,35 @@ $GlobalVariableDefinitons = array(
 	'values' => 'HTML ID',
 	'definition' => 'Element ID that will be focused when the page loads',
 ),
+'Application_Toolbar_Show' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the Toolbar menu',
+),
 'Application_TitleInformation' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => 'MapID or string',
 	'definition' => 'Browser tab title. Can be an expression business map ID',
+),
+'Application_Header_Buttons_Position' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => 'percentage',
+	'definition' => 'Percentage of header space to leave for title before placing the buttons. By default buttons will be aligned to the right.',
+),
+'Application_Hide_Related_List' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide or show the more information tab in detail view',
+),
+'Application_ImageSlider_Mode' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'documents | fields | both',
+	'definition' => 'select which images to show on the image slider: documents will show images from related documents, fields will show image fields in the record and both will show, well... both types :-)',
 ),
 );
 

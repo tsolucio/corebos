@@ -52,9 +52,14 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$FieldLabels = array();
 		$RelatedFields = array();
 		$Tooltips = array();
+		$Wizard = array();
+		$WizardWorkflows = array();
+		$NextStep = array();
+		$PopupAction = array();
 		$functionName = '';
 		$MainModule = '';
 		$MainRelateField = '';
+		$LastModule = '';
 		$idx = 0;
 		foreach ($map['modules'] as $module) {
 			if ($idx == 0) {
@@ -63,13 +68,18 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 			if ($idx == 1) {
 				$MainModule = $module['name'];
 			}
+			$LastModule = $module['name'];
 			$functionName .= $module['name'];
 			$RLInstance[] = $module;
 			if (isset($module['listview'])) {
 				foreach ($module['listview'] as $fld) {
+					if (!isset($fld['fieldinfo']['name'])) {
+						continue;
+					}
 					$Columns[] = array(
 						'name' => $fld['fieldinfo']['name'],
-						'label' => $fld['fieldinfo']['label']
+						'label' => $fld['fieldinfo']['label'],
+						'uitype' => $fld['fieldinfo']['uitype'],
 					);
 				}
 			}
@@ -89,19 +99,40 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 			if (isset($module['tooltip'])) {
 				$Tooltips[$module['name']] = $module['tooltip']['fields'];
 			}
+			$Wizard[$module['name']] = '';
+			if (isset($module['wizard'])) {
+				$Wizard[$module['name']] = $module['wizard'];
+			}
+			$NextStep[$module['name']] = true;
+			if (isset($module['wizard'])) {
+				$NextStep[$module['name']] = boolval($module['nextstep']);
+			}
+			if (isset($module['workflows'])) {
+				$WizardWorkflows = $module['workflows'];
+			}
+			if (isset($module['popupaction'])) {
+				$PopupAction[$module['name']] = $module['popupaction'];
+			}
 			$idx++;
 		}
+		$smarty->assign('ID', $id);
 		$smarty->assign('CurrentRecord', $_REQUEST['record']);
+		$smarty->assign('currentModule', $currentModule);
 		$smarty->assign('MainModule', $MainModule);
 		$smarty->assign('MainRelateField', $MainRelateField);
+		$smarty->assign('LastModule', $LastModule);
 		$smarty->assign('Columns', $Columns);
 		$smarty->assign('RLInstance', json_encode($RLInstance));
 		$smarty->assign('FieldLabels', json_encode($FieldLabels));
 		$smarty->assign('RelatedFields', json_encode($RelatedFields));
 		$smarty->assign('Tooltips', json_encode($Tooltips));
+		$smarty->assign('Wizard', json_encode($Wizard));
+		$smarty->assign('WizardArray', $Wizard);
+		$smarty->assign('WizardWorkflows', json_encode($WizardWorkflows));
+		$smarty->assign('NextStep', json_encode($NextStep));
+		$smarty->assign('PopupAction', json_encode($PopupAction));
 		$smarty->assign('mapname', $mapname);
 		$smarty->assign('functionName', $functionName);
-		$smarty->assign('ID', $id);
 		$smarty->assign('title', $map['title']);
 		$cbgridactioncol = str_replace('"RLActionRender"', 'RLActionRender', json_encode(gridRelatedListActionColumn('RLActionRender', $map)));
 		$smarty->assign('cbgridactioncol', $cbgridactioncol);

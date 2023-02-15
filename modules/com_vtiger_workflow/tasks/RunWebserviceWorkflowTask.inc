@@ -16,6 +16,8 @@ require_once 'modules/com_vtiger_workflow/expression_functions/application.php';
 class RunWebserviceWorkflowTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $bmapid;
+	public $bmapid_display;
 
 	public function getFieldNames() {
 		return array('bmapid', 'bmapid_display');
@@ -23,8 +25,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $logbg, $from_wf, $current_user;
+		$logbg->debug('> RunWebserviceTask');
 		$from_wf = true;
-		$logbg->debug('> RunWebservice');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 
@@ -277,14 +279,13 @@ class RunWebserviceWorkflowTask extends VTTask {
 				} else {
 					$options = array(
 						//'soap_version' => SOAP_1_2,
-						'trace'      => 1,      // enable trace to view what is happening
-						'exceptions' => 0,      // disable exceptions
-						'cache_wsdl' => 0,      // disable any caching on the wsdl, encase you alter the wsdl
+						'trace'      => 1, // enable trace to view what is happening
+						'exceptions' => 0, // disable exceptions
+						'cache_wsdl' => 0, // disable any caching on the wsdl, encase you alter the wsdl
 						'stream_context' => $arrContextOptions,
 					);
 					$soapclient = new SoapClient($url, $options);
 				}
-
 				$response = $soapclient->__soapCall($methodname, array('parameters' => $arrconv));
 				$methodResult = $methodname.'Result';
 				if (isset($response->$methodResult)) {
@@ -395,7 +396,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$end = strpos($url, ')', $start);
 			$first = substr($url, 0, $start);
 			$setting = substr($url, $start, $end-$start);
-			$last =  substr($url, $end+1);
+			$last = substr($url, $end+1);
 			$setkey = str_replace('getSetting(', '', $setting);
 			$value = coreBOS_Settings::getSetting($setkey, '');
 			$url = $first.$value.$last;

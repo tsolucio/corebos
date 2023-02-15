@@ -26,14 +26,32 @@
 	<modules>
 		<module>
 			<name>Messages</name>
+			<wizard>mapid</wizard>
+			<nextstep>0 | 1</nextstep>
 			<relatedfield></relatedfield>
 			<tooltip>
 				<fields></fields>
 				...
 			</tooltip>
+			<workflows>
+				<workflow>id</workflow>
+				...
+			</workflows>
 		</module>
 		<module>
 			<name>Assets</name>
+			<popupaction>
+				<id></id>
+				<conditions>
+					<fieldname>field | Module.field</fieldname>
+					<relatedfield>field</relatedfield>
+					<values>
+						<value>1</value>
+						<value>2</value>
+						...
+					</svalue>
+				</conditions>
+			</popupaction>
 			<listview>
 				<fields>
 					<field>
@@ -47,6 +65,7 @@
 					</field>
 					...
 				</fields>
+				<conditions>[{"relatedmodule":"Products","relatedfieldname":"frompdo","fieldname":"productcategory","operation":"n","value":"Morsettiera","glue":"and"}]</conditions>
 			</listview>
 			<editview>
 				<fields>
@@ -96,13 +115,29 @@ class RelatedListBlock extends processcbMap {
 				if (isset($key->tooltip)) {
 					$this->mapping_arr['modules'][$idx]['tooltip'] = (array)$key->tooltip;
 				}
+				if (isset($key->workflows)) {
+					$this->mapping_arr['modules'][$idx]['workflows'] = (array)$key->workflows->workflow;
+				}
 				if (isset($key->listview)) {
 					$this->detailModule = (string)$key->name;
 					$this->mapping_arr['modules'][$idx]['listview'] = $this->FormatFields((array)$key->listview->fields, 'listview');
+					if (isset($key->listview->conditions)) {
+						$this->mapping_arr['modules'][$idx]['listview']['conditions'] = (string)$key->listview->conditions;
+					}
 				}
 				if (isset($key->editview)) {
 					$this->detailModule = (string)$key->name;
 					$this->mapping_arr['modules'][$idx]['editview'] = $this->FormatFields((array)$key->editview->fields, 'editview');
+				}
+				if (isset($key->popupaction)) {
+					$this->mapping_arr['modules'][$idx]['popupaction'] = array(
+						'id' => (string)$key->popupaction->id,
+						'conditions' => array(
+							'fieldname' => isset($key->popupaction->conditions->fieldname) ? (string)$key->popupaction->conditions->fieldname : '',
+							'relatedfield' => isset($key->popupaction->conditions->relatedfield) ? (string)$key->popupaction->conditions->relatedfield : '',
+							'values' => isset($key->popupaction->conditions->values) ? (array)$key->popupaction->conditions->values : '',
+						)
+					);
 				}
 				$idx++;
 			}
@@ -131,6 +166,9 @@ class RelatedListBlock extends processcbMap {
 							$fieldinfo['uitype'] = 'computed';
 							break;
 					}
+				}
+				if (empty($fieldinfo)) {
+					continue;
 				}
 				if ($mode == 'editview') {
 					$fldsInfo[] = $fieldinfo['fieldid'];
@@ -163,6 +201,9 @@ class RelatedListBlock extends processcbMap {
 			}
 		}
 		$ret = array_search($fieldname, array_column($this->fieldsinfo[$this->detailModule], 'name'));
+		if ($ret === false) {
+			return array();
+		}
 		if (isset($this->fieldsinfo[$this->detailModule][$ret]['uitype']) && $this->fieldsinfo[$this->detailModule][$ret]['uitype']==10) {
 			$refmod = $this->fieldsinfo[$this->detailModule][$ret]['type']['refersTo'][0];
 			$rmod = CRMEntity::getInstance($refmod);

@@ -235,16 +235,18 @@ if ($cbMapid) {
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 
 $smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
+$smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
+$smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
 
 // sending PopupFilter map results to the frontEnd
-$MapObject = new cbMap();
 $bmapname = $currentModule.'_PopupFilter';
 $Mapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 if ($Mapid) {
+	$MapObject = new cbMap();
 	$MapObject->id = $Mapid;
 	$MapObject->mode = '';
-	$MapObject->retrieve_entity_info($Mapid, "cbMap");
+	$MapObject->retrieve_entity_info($Mapid, 'cbMap');
 	$MapResult = $MapObject->PopupFilter($record, $currentModule);
 	$smarty->assign('PopupFilterMapResults', $MapResult);
 }

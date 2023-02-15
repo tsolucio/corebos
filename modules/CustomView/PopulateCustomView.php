@@ -554,16 +554,16 @@ foreach ($customviews as $key => $customview) {
 }
 
 /** to store the details of the customview in vtiger_customview table
- * @param $viewname :: Type String
- * @param $setdefault :: Type Integer
- * @param $setmetrics :: Type Integer
- * @param $cvmodule :: Type String
- * @returns $customviewid of the stored custom view :: Type integer
+ * @param string view name
+ * @param integer set default
+ * @param integer set metrics
+ * @param string module
+ * @return integer id of the stored custom view
  */
 function insertCustomView($viewname, $setdefault, $setmetrics, $cvmodule, $status, $userid) {
 	global $adb;
 
-	$genCVid = $adb->getUniqueID("vtiger_customview");
+	$genCVid = $adb->getUniqueID('vtiger_customview');
 
 	if ($genCVid != '') {
 		$customviewsql = 'insert into vtiger_customview(cvid,viewname,setdefault,setmetrics,entitytype,status,userid) values(?,?,?,?,?,?,?)';
@@ -574,14 +574,14 @@ function insertCustomView($viewname, $setdefault, $setmetrics, $cvmodule, $statu
 }
 
 /** to store the custom view columns of the customview in vtiger_cvcolumnlist table
- * @param $cvid :: Type Integer
- * @param $columnlist :: Type Array of columnlists
+ * @param integer custom view ID
+ * @param array of columnlists
  */
 function insertCvColumns($CVid, $columnslist) {
 	global $adb;
-	if ($CVid != "") {
+	if ($CVid != '') {
 		for ($i=0; $i<count($columnslist); $i++) {
-			$columnsql = "insert into vtiger_cvcolumnlist (cvid,columnindex,columnname) values(?,?,?)";
+			$columnsql = 'insert into vtiger_cvcolumnlist (cvid,columnindex,columnname) values(?,?,?)';
 			$columnparams = array($CVid, $i, $columnslist[$i]);
 			$adb->pquery($columnsql, $columnparams);
 		}
@@ -589,12 +589,12 @@ function insertCvColumns($CVid, $columnslist) {
 }
 
 /** to store the custom view stdfilter of the customview in vtiger_cvstdfilter table
- * @param $cvid :: Type Integer
- * @param $filtercolumn($tablename:$columnname:$fieldname:$fieldlabel) :: Type String
- * @param $filtercriteria(filter name) :: Type String
- * @param $startdate :: Type String
- * @param $enddate :: Type String
- * returns nothing
+ * @param integer $cvid
+ * @param string $filtercolumn($tablename:$columnname:$fieldname:$fieldlabel)
+ * @param string $filtercriteria(filter name)
+ * @param string $startdate
+ * @param string $enddate
+ * @return nothing
  */
 function insertCvStdFilter($CVid, $filtercolumn, $filtercriteria, $startdate, $enddate) {
 	global $adb;
@@ -606,13 +606,13 @@ function insertCvStdFilter($CVid, $filtercolumn, $filtercriteria, $startdate, $e
 }
 
 /** to store the custom view advfilter of the customview in vtiger_cvadvfilter table
- * @param $cvid :: Type Integer
- * @param $filters :: Type Array('columnname'=>$tablename:$columnname:$fieldname:$fieldlabel,'comparator'=>$comparator,'value'=>$value)
- * returns nothing
+ * @param integer custom view ID
+ * @param array ('columnname'=>$tablename:$columnname:$fieldname:$fieldlabel,'comparator'=>$comparator,'value'=>$value)
+ * @return nothing
  */
 function insertCvAdvFilter($CVid, $filters) {
 	global $adb;
-	if ($CVid != "") {
+	if ($CVid != '') {
 		$columnIndexArray = array();
 		foreach ($filters as $i => $filter) {
 			$advfiltersql = 'insert into vtiger_cvadvfilter(cvid,columnindex,columnname,comparator,value) values (?,?,?,?,?)';

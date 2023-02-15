@@ -1377,44 +1377,7 @@ function progressMassEditDetails(sentForm) {
 	//a message is received
 	sentForm.SSE_SOURCE_ACTION = 'MassEditSave';
 	worker.postMessage(sentForm);
-	worker.addEventListener('message', function (e) {
-		var message = e.data;
-		if (e.data == 'CLOSE') {
-			if (document.basicSearch) {
-				var srch = document.basicSearch.searchtype.searchlaunched;
-				if (srch=='basic') {
-					callSearch('Basic');
-				} else if (srch=='advance') {
-					callSearch('Advanced');
-				} else {
-					jQuery.ajax({
-						method: 'POST',
-						url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
-					}).done(function (response) {
-						var result = response.split('&#&#&#');
-						if (Application_Landing_View=='table') {
-							document.getElementById('ListViewContents').innerHTML= result[2];
-						} else {
-							ListView.Show('massedit');
-						}
-						if (result[1] != '') {
-							ldsPrompt.show(alert_arr['ERROR'], result[1]);
-						}
-					});
-				}
-			}
-			__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
-			var pBar = document.getElementById('progressor');
-			pBar.value = pBar.max; //max out the progress bar
-		} else {
-			__addLog(message.message);
-			var pBar = document.getElementById('progressor');
-			pBar.value = message.progress;
-			var perc = document.getElementById('percentage');
-			perc.innerHTML   = message.progress  + '% &nbsp;&nbsp;' + message.processed + '/' + message.total;
-			perc.style.width = (Math.floor(pBar.clientWidth * (message.progress/100)) + 15) + 'px';
-		}
-	}, false);
+	worker.addEventListener('message', processCustomSSE, false);
 	worker.postMessage(true);
 }
 
@@ -1427,6 +1390,25 @@ function __addLog(message) {
 	var r = document.getElementById('relresults');
 	r.innerHTML += message + '<br>';
 	r.scrollTop = r.scrollHeight;
+}
+
+function processCustomSSE(e) {
+	if (e.data == 'CLOSE') {
+		__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
+		var pBar = document.getElementById('progressor');
+		pBar.value = pBar.max; //max out the progress bar
+	} else {
+		var message = e.data;
+		__addLog(message.message);
+		var pBar = document.getElementById('progressor');
+		pBar.value = message.progress;
+		var perc = document.getElementById('percentage');
+		perc.innerHTML = message.progress + '% &nbsp;&nbsp;' + message.processed + '/' + message.total;
+		perc.style.width = (Math.floor(pBar.clientWidth * (message.progress/100)) + 15) + 'px';
+		if (typeof message.refreshLV != undefined && message.refreshLV) {
+			listViewReload();
+		}
+	}
 }
 
 function runBAScript(scripturi) {
@@ -1445,7 +1427,7 @@ function runBAScript(scripturi) {
 		url: scripturi+'&__module='+SVModule+'&__crmid='+SVRecord,
 		type:'get'
 	}).fail(function (jqXHR, textStatus) {
-		document.getElementById('appnotifydiv').innerHTML='</b>'+alert_arr.Error+'</b>';
+		document.getElementById('appnotifydiv').innerHTML='</b>'+alert_arr.ERROR+'</b>';
 		document.getElementById('appnotifydiv').style.display='block';
 		VtigerJS_DialogBox.unblock();
 	}).done(function (msg) {
@@ -1477,7 +1459,7 @@ function runBAScript(scripturi) {
 	return void(0);
 }
 
-function runBAWorkflow(workflowid, crmids) {
+function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false) {
 	if (typeof workflowid == 'undefined' || workflowid == '') {
 		return false;
 	}
@@ -1492,7 +1474,7 @@ function runBAWorkflow(workflowid, crmids) {
 	}
 	VtigerJS_DialogBox.block();
 	const dataset = document.activeElement.dataset;
-	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids).then(function (data) {
+	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids+'&ctx='+encodeURIComponent(context)).then(function (data) {
 		const response = JSON.parse(data);
 		if (response) {
 			if (dataset.success !== undefined && dataset.success != '') {
@@ -1504,11 +1486,14 @@ function runBAWorkflow(workflowid, crmids) {
 			if (dataset.error !== undefined && dataset.error != '') {
 				ldsPrompt.show(dataset.title, dataset.error);
 			} else {
-				ldsPrompt.show(alert_arr['ERROR'], alert_arr.Error);
+				ldsPrompt.show(alert_arr['ERROR'], alert_arr.ERROR);
 			}
 		}
 		VtigerJS_DialogBox.unblock();
-		corebosjshook_runBAWorkflow(workflowid, crmids);
+		corebosjshook_runBAWorkflow(workflowid, crmids, context, refreshDV, response);
+		if (refreshDV) {
+			dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
+		}
 	});
 	return void(0);
 }
@@ -1591,24 +1576,40 @@ function getProcessInfo(edit_type, formName, action, callback, parameters) {
 	let module = ps.shift();
 	let forrecord = ps.shift();
 	let fparams = encodeURIComponent(ps.join('|'));
-	let params='&minfo='+minfo+'&bpmmodule='+module+'&pflowid=0&bpmrecord='+forrecord+'&params='+fparams+'&formName='+formName+'&actionName='+action;
+	let params='&minfo='+minfo+'&bpmmodule='+module+'&pflowid=0&cbfromid='+forrecord+'&bpmrecord='+forrecord+'&params='+fparams+'&formName='+formName+'&actionName='+action;
+	if (callback!='') {
+		params = params + '&savefn=' + callback;
+	}
+	const reminderId = document.activeElement.dataset.reminderId;
+	if (reminderId !== undefined) {
+		params += '&ProcessReminderID=' + reminderId;
+	}
 	window.open('index.php?action=cbProcessInfoAjax&file=bpmpopup&module=cbProcessInfo'+params, null, cbPopupWindowSettings + ',dependent=yes');
 }
 
 function finishProcessInfo(module, return_id, mode, saveinfo) {
 	let sinfo = JSON.parse(decodeURIComponent(saveinfo));
+	let reload = true;
+	if (sinfo.ProcessReminderID!='') {
+		ExecuteFunctions('setNotificationStatus', 'status=2&remid='+sinfo.ProcessReminderID);
+	}
 	if (sinfo.originField!='') {
 		let fld = document.getElementById(sinfo.originField);
 		if (fld) {
+			reload = false;
 			fld.value = return_id;
 			submitFormForAction(sinfo.formName, sinfo.actionName);
 		} else {
 			let fld = document.getElementById('txtbox_'+sinfo.originField);
 			if (fld) {
+				reload = false;
 				fld.value = return_id;
 				dtlViewAjaxSave(sinfo.originField, sinfo.bpmmodule, sinfo.uitype, '', sinfo.originField, sinfo.bpmrecord);
 			}
 		}
+	}
+	if (reload) {
+		location.reload();
 	}
 }
 
@@ -3257,6 +3258,14 @@ function toggleSelect_ListView(state, relCheckName, groupParentElementId) {
 
 function gotourl(url) {
 	document.location.href=url;
+}
+
+function backtourl(storagename = '') {
+	if (storagename != '') {
+		document.location.href = localStorage.getItem(storagename);
+	} else {
+		document.location.href = localStorage.getItem(`${gVTModule}_${gVTUserID}_LastClickedURL`);
+	}
 }
 
 // Function to display the element with id given by showid and hide the element with id given by hideid
@@ -5534,7 +5543,7 @@ function handleAcKeys(e) {
 			}
 			window.coreBOSSearchingText = '';
 		}
-	} else if (document.activeElement.tagName=='BODY' && e.key!='Control' && !e.ctrlKey && e.key!='Alt' && !e.altKey) {
+	} else if (document.activeElement.tagName=='BODY' && e.key!='Control' && !e.ctrlKey && e.key!='Alt' && !e.altKey && ((e.keyCode>64 && e.keyCode<91) || (e.keyCode>47 && e.keyCode<58) || e.keyCode==13 || e.keyCode==32 || e.keyCode==8 || e.keyCode==27)) {
 		window.coreBOSSearching = true;
 		if (e.keyCode==27) {
 			window.coreBOSSearchingText = '';
@@ -5561,32 +5570,30 @@ function handleAcKeys(e) {
 				smenuul.style.opacity = 'unset';
 			}
 		}
-		if (e.keyCode==32 || (e.keyCode>47 && e.keyCode<58) || (e.keyCode>64 && e.keyCode<91) || (e.keyCode>96 && e.keyCode<123) || e.keyCode==13 || e.keyCode==8) {
-			if (e.keyCode==8) {
-				window.coreBOSSearchingText=(window.coreBOSSearchingText.length>0 ? window.coreBOSSearchingText.substring(0, window.coreBOSSearchingText.length-1) : '');
-			}
-			if (e.keyCode>31) {
-				window.coreBOSSearchingText = window.coreBOSSearchingText+e.key.toUpperCase();
-			}
-			let tmenu = document.getElementById('typemenusearch');
-			if (tmenu) {
-				tmenu.value = window.coreBOSSearchingText;
-			}
-			fns = Object.keys(window.coreBOSMenu)
-				.filter(fn => fn.startsWith(window.coreBOSSearchingText))
-				.reduce((res, key) => {
-					res[key] = window.coreBOSMenu[key];
-					return res;
-				}, {});
-			let fnsarray = Object.keys(fns);
-			let smenu = document.getElementById('searchmenuul');
-			if (smenu) {
-				for (menuli=0; menuli<smenu.children.length; menuli++) {
-					if (!fnsarray.includes(smenu.children[menuli].id.substring(5))) {
-						smenu.children[menuli].style.display = 'none';
-					} else {
-						smenu.children[menuli].style.display = 'block';
-					}
+		if (e.keyCode==8) {
+			window.coreBOSSearchingText=(window.coreBOSSearchingText.length>0 ? window.coreBOSSearchingText.substring(0, window.coreBOSSearchingText.length-1) : '');
+		}
+		if (e.keyCode>31) {
+			window.coreBOSSearchingText = window.coreBOSSearchingText+e.key.toUpperCase();
+		}
+		let tmenu = document.getElementById('typemenusearch');
+		if (tmenu) {
+			tmenu.value = window.coreBOSSearchingText;
+		}
+		fns = Object.keys(window.coreBOSMenu)
+			.filter(fn => fn.startsWith(window.coreBOSSearchingText))
+			.reduce((res, key) => {
+				res[key] = window.coreBOSMenu[key];
+				return res;
+			}, {});
+		let fnsarray = Object.keys(fns);
+		let smenu = document.getElementById('searchmenuul');
+		if (smenu) {
+			for (menuli=0; menuli<smenu.children.length; menuli++) {
+				if (!fnsarray.includes(smenu.children[menuli].id.substring(5))) {
+					smenu.children[menuli].style.display = 'none';
+				} else {
+					smenu.children[menuli].style.display = 'block';
 				}
 			}
 		}
@@ -5710,7 +5717,11 @@ AutocompleteRelationPills.prototype.addPill = function () {
 		this.newValue = this.value;
 		this.field = this.field.replace('_display', '');
 	}
-	let fId = document.getElementById(this.field).value.split(' |##| ');
+	let fId = document.getElementById(this.field);
+	if (fId===null) {
+		fId = document.getElementById('jscal_field_'+this.field); // for date/time fields
+	}
+	fId = fId.value.split(' |##| ');
 	if (fId.length > 0) {
 		this.value = fId[fId.length-1];
 	}
@@ -7142,7 +7153,7 @@ function initSelect2() {
 	* @return: (bool)
 	*/
 	cbVal.isInt = function (val) {
-		return (cbNumber.isInt(val));
+		return cbNumber.isInt(val);
 	};
 
 	/*
@@ -7153,7 +7164,8 @@ function initSelect2() {
 	* @return: (bool)
 	*/
 	cbVal.isValidCheckBoxVal = function (val) {
-		return cbVal.validCheckBoxVals.indexOf(val) > -1 ? true : false;
+		cbVal.validCheckBoxVals.push(alert_arr.YES, alert_arr.NO);
+		return cbVal.validCheckBoxVals.indexOf(val) > -1;
 	};
 
 	/*
@@ -7176,14 +7188,9 @@ function initSelect2() {
 	* @return: (bool)
 	*/
 	cbVal.isTime = function (val) {
-		var hours  = window.userHourFormat == 'am/pm' ? 12 : 23,
-			patt   = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}$/ : /^[0-9]{1,2}\:[0-9]{2}[ ]?(am|pm)?$/,
-			isTime = false; // Assume the worst
-
-		if (patt.test(val) && parseInt(val.split(':')[0]) <= hours && parseInt(val.split(':')[1]) <= 59) {
-			isTime = true;
-		}
-		return isTime;
+		var hours = window.userHourFormat == 'am/pm' ? 12 : 23,
+			patt  = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}(\:[0-9]{2})?$/ : /^[0-9]{1,2}\:[0-9]{2}(\:[0-9]{2})?[ ]?(am|pm)?$/;
+		return (patt.test(val) && parseInt(val.split(':')[0]) <= hours && parseInt(val.split(':')[1]) <= 59);
 	};
 
 	/*
@@ -7547,14 +7554,14 @@ function findUpModuleInMenu() {
 	const modulename = document.querySelectorAll(`[data-name="${gVTModule}"]`);
 	if (modulename.length > 0) {
 		const parent = document.getElementById(`menu${modulename[0].dataset.level}`);
-		const childs = parent.querySelectorAll(`li span`);
+		const childs = parent.querySelectorAll('li span');
 		modulename[0].parentElement.style.display = 'block';
 		modulename[0].style.background = '#c5d7e3';
 		let parents = findParents(modulename[0]);
 		for (let i = 0; i < parents.length; i++) {
 			if (parents[i].dataset.type !== undefined && parents[i].dataset.type == 'parent') {
 				const submenu = parents[i].getElementsByClassName('submenu');
-				const childs1 = submenu[0].querySelectorAll(`li span`);
+				const childs1 = submenu[0].querySelectorAll('li span');
 				for (let j = 0; j < submenu.length; j++) {
 					submenu[j].style.display = 'block';
 					for (let k = 0; k < childs1.length; k++) {
@@ -7580,6 +7587,49 @@ function onBodyClickActions(e) {
 	if (smenu) {
 		smenu.style.display = 'none';
 	}
+}
+
+function openWizard(mapid) {
+	let getWizardActive = localStorage.getItem('currentWizardActive');
+	let modalContainer = document.getElementById('global-modal-container');
+	if (getWizardActive == null) {
+		localStorage.setItem('currentWizardActive', mapid);
+		if (modalContainer) {
+			ldsModal.close();
+		}
+	} else {
+		if (getWizardActive == mapid) {
+			if (modalContainer) {
+				modalContainer.style.display = '';
+				return false;
+			}
+		} else {
+			localStorage.setItem('currentWizardActive', mapid);
+			if (modalContainer) {
+				ldsModal.close();
+			}
+		}
+	}
+	let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+mapid;
+	ldsModal.show('Wizard', '<div id="cbds-loader" style="height: 200px"></div>', 'large');
+	loadJS('include/js/wizard.js');
+	setTimeout(function () {
+		Request(url, 'post', {
+			grid: mapid,
+			recordid: 0,
+			isModal: true
+		}).then(function (response) {
+			ldsModal.close();
+			ldsModal.show('Wizard', response, 'large', '', '', false);
+			let wizardTitle = document.getElementById('wizard-title').innerHTML;
+			document.getElementById('global-modal-container__title').innerHTML = wizardTitle;
+			document.getElementById('wizard-title').innerHTML = '';
+			const event = new CustomEvent('onWizardModal', {detail: {
+				'ProceedToNextStep': false
+			}});
+			window.dispatchEvent(event);
+		});
+	}, 100);
 }
 
 window.addEventListener('DOMContentLoaded', () => {

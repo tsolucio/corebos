@@ -24,6 +24,7 @@ class ClickHouseDatabase extends PearDatabase {
 	public $dbType = 'clickhouse';
 	public $chdatabase;
 	public $lastResult;
+	public $log;
 
 	/**
 	 * Manage instance usage of this class
@@ -445,9 +446,6 @@ class ClickHouseDatabase extends PearDatabase {
 		$this->checkConnection();
 		$db = $adb->database;
 		$schema = new adoSchema($db);
-		//Debug Adodb XML Schema
-		$schema->XMLS_DEBUG = true;
-		//Debug Adodb
 		$schema->debug = true;
 		$sql = $schema->ParseSchema($schemaFile);
 

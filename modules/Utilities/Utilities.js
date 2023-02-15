@@ -266,101 +266,103 @@ if (typeof (Utilities) == 'undefined') {
 }
 
 var Grid = tui.Grid;
-var gridInstance = {};
+var gridInstance = null;
 const defaultURL = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions';
 
 function loadTUIGridData() {
-	gridInstance = new Grid({
-		el: document.getElementById('chgrid'),
-		columns: [
-			{
-				name: 'table_name',
-				header: mod_alert_arr.LBL_WS_NAME,
-				sortingType: 'desc',
-				editor: 'text',
-				sortable: true,
-				onAfterChange(ev) {
-					const idx = gridInstance.getIndexOfRow(ev.rowKey);
-					updateFieldData(ev, idx);
+	if (gridInstance==null) {
+		gridInstance = new Grid({
+			el: document.getElementById('chgrid'),
+			columns: [
+				{
+					name: 'table_name',
+					header: mod_alert_arr.LBL_WS_NAME,
+					sortingType: 'desc',
+					editor: 'text',
+					sortable: true,
+					onAfterChange(ev) {
+						const idx = gridInstance.getIndexOfRow(ev.rowKey);
+						updateFieldData(ev, idx);
+					},
 				},
-			},
-			{
-				name: 'ws_name',
-				header: mod_alert_arr.LBL_TABLE_NAME,
-				sortingType: 'desc',
-				editor: 'text',
-				sortable: true,
-				onAfterChange(ev) {
-					const idx = gridInstance.getIndexOfRow(ev.rowKey);
-					updateFieldData(ev, idx);
+				{
+					name: 'ws_name',
+					header: mod_alert_arr.LBL_TABLE_NAME,
+					sortingType: 'desc',
+					editor: 'text',
+					sortable: true,
+					onAfterChange(ev) {
+						const idx = gridInstance.getIndexOfRow(ev.rowKey);
+						updateFieldData(ev, idx);
+					},
 				},
-			},
-			{
-				name: 'access',
-				header: mod_alert_arr.LBL_ACCESS,
-				whiteSpace: 'normal',
-				sortingType: 'desc',
-				renderer: {
-					type: CheckboxWithActionRender,
-				}
-			},
-			{
-				name: 'create',
-				header: mod_alert_arr.LBL_CREATE,
-				whiteSpace: 'normal',
-				sortingType: 'desc',
-				renderer: {
-					type: CheckboxWithActionRender,
-				}
-			},
-			{
-				name: 'read',
-				header: mod_alert_arr.LBL_READ,
-				whiteSpace: 'normal',
-				sortingType: 'desc',
-				renderer: {
-					type: CheckboxWithActionRender,
-				}
-			},
-			{
-				name: 'write',
-				header: mod_alert_arr.LBL_WRITE,
-				whiteSpace: 'normal',
-				sortingType: 'desc',
+				{
+					name: 'access',
+					header: mod_alert_arr.LBL_ACCESS,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					renderer: {
+						type: CheckboxWithActionRender,
+					}
+				},
+				{
+					name: 'create',
+					header: mod_alert_arr.LBL_CREATE,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					renderer: {
+						type: CheckboxWithActionRender,
+					}
+				},
+				{
+					name: 'read',
+					header: mod_alert_arr.LBL_READ,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					renderer: {
+						type: CheckboxWithActionRender,
+					}
+				},
+				{
+					name: 'write',
+					header: mod_alert_arr.LBL_WRITE,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
 
-				renderer: {
-					type: CheckboxWithActionRender,
+					renderer: {
+						type: CheckboxWithActionRender,
+					}
+				},
+				{
+					name: 'action',
+					header: mod_alert_arr.LBL_ACTION,
+					whiteSpace: 'normal',
+					sortingType: 'desc',
+					sortable: false,
+					renderer: {
+						type: DeleteButtonRender,
+					}
+				},
+			],
+			data: {
+				api: {
+					readData: {
+						url: `${defaultURL}&functiontocall=clickHouse&method=getTables`,
+						method: 'GET'
+					}
 				}
 			},
-			{
-				name: 'action',
-				header: mod_alert_arr.LBL_ACTION,
-				whiteSpace: 'normal',
-				sortingType: 'desc',
-				sortable: false,
-				renderer: {
-					type: DeleteButtonRender,
-				}
+			useClientSort: false,
+			rowHeight: 'auto',
+			bodyHeight: 500,
+			scrollX: false,
+			scrollY: false,
+			header: {
+				align: 'left',
+				valign: 'top',
 			},
-		],
-		data: {
-			api: {
-				readData: {
-					url: `${defaultURL}&functiontocall=clickHouse&method=getTables`,
-					method: 'GET'
-				}
-			}
-		},
-		useClientSort: false,
-		rowHeight: 'auto',
-		bodyHeight: 500,
-		scrollX: false,
-		scrollY: false,
-		header: {
-			align: 'left',
-			valign: 'top',
-		},
-	});
+		});
+	}
 	tui.Grid.applyTheme('striped');
 }
 
@@ -456,7 +458,7 @@ function updateFieldData(ev, idx) {
 	}
 
 	const table_name = columnChanged === 'table_name' ? newValue : gridInstance.getValue(idx, 'table_name');
-	const old_table_name = columnChanged === 'table_name' ?  oldValue : table_name;
+	const old_table_name = columnChanged === 'table_name' ? oldValue : table_name;
 	const ws_name = columnChanged === 'ws_name' ? newValue : gridInstance.getValue(idx, 'ws_name');
 	const old_ws_name = columnChanged === 'ws_name' ? oldValue : ws_name;
 	const access = columnChanged === 'access' ? newValue : gridInstance.getValue(idx, 'access');
@@ -484,9 +486,11 @@ function updateAjax(data) {
 		url: `${defaultURL}&functiontocall=clickHouse&method=addUpdateTable`,
 		data: data
 	}).then(function (response) {
-		if (response.success) {
-			gridInstance.reloadData();
+		response = JSON.parse(response);
+		if (!response.success) {
+			Utilities.show_error(response.message);
 		}
+		gridInstance.reloadData();
 	});
 }
 

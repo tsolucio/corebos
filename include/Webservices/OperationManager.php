@@ -122,7 +122,7 @@ class OperationManager {
 	}
 
 	public function runOperation($params, $user) {
-		global $API_VERSION, $current_language, $default_language;
+		global $current_language, $default_language;
 		try {
 			if (empty($current_language)) {
 				if (!empty($user->column_fields['language'])) {
@@ -141,17 +141,7 @@ class OperationManager {
 				if (is_array($userDetails)) {
 					return $userDetails;
 				} else {
-					coreBOS_Session::set('authenticated_user_id', $userDetails->id);
-					coreBOS_Session::saveUserID($userDetails->id, coreBOS_Session::id(), 'cbws');
-					if (GlobalVariable::getVariable('Webservice_MultipleUserLogins', 1, 'Users', $userDetails->id)!=1) {
-						coreBOS_Session::deleteUserID($userDetails->id, coreBOS_Session::id(), 'cbws');
-					}
-					cbEventHandler::do_action('corebos.login', array($userDetails, null, 'webservice'));
-					global $adb;
-					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
-					$userId = vtws_getId($webserviceObject->getEntityId(), $userDetails->id);
-					$vtigerVersion = vtws_getVtigerVersion();
-					return array('sessionName'=>coreBOS_Session::id(), 'userId'=>$userId, 'version'=>$API_VERSION, 'vtigerVersion'=>$vtigerVersion);
+					return vtws_registerSession($userDetails);
 				}
 			}
 		} catch (WebServiceException $e) {

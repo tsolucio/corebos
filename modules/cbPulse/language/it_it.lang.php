@@ -14,10 +14,7 @@ $mod_strings = array(
 	'cbPulse ID' => 'ID Impulsi',
 
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
-	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
-
-	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
-
+	'LBL_CBPULSE_INFORMATION' => 'Informazione Blocco del Modulo',
 
 	'cbpulse_no' => 'NO. Polso',
 	'questionid' => 'ID Domanda',
@@ -41,9 +38,5 @@ $mod_strings = array(
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrizione',
 	'LBL_PULSE_INFORMATION' => 'INFORMAZIONE POLSO',
 	'LBL_PULSE_SCHEDULE' => 'SCHEDULA POLSO',
-
-
-
-
 );
 ?>

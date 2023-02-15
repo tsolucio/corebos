@@ -1232,8 +1232,10 @@ $app_strings = array(
 	'data' => 'data',
 	'record' => 'Record',
 	'saved' => 'saved',
-	'notsaved' => 'notsaved',
+	'notsaved' => 'not saved',
 	'processcomplete' => 'Process Complete',
+	'processed' => 'processed',
+	'notprocessed' => 'not processed',
 	'typetosearch_prodser' => 'Type to search products or services',
 	'RecordIsAssignedToInactiveUser' => 'The record is assigned to an inactive user. Please select another user.',
 	'Add event' => 'Add event',
@@ -1254,6 +1256,22 @@ $app_strings = array(
 	'LBL_FIX_NOW' => 'Fix Now',
 	'LBL_HIERARCHY' => 'Hierarchy',
 	'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Search Documents',
+
+	// watermark WF template
+	'Watermark Value' => 'Watermark Value',
+	'image field name' => 'Image Field Name',
+	'Water Mark Size' => 'Water Mark Size',
+	'Water Mark Position' => 'Water Mark Position',
+	// watermark direction
+	'Center' => 'Center',
+	'Top' => 'Top',
+	'Bottom' => 'Bottom',
+	'Right' => 'Right',
+	'Left' => 'Left',
+	'Top Right' => 'Top Right',
+	'Top Left' => 'Top Left',
+	'Bottom Left' => 'Bottom Left',
+	'Bottom Right' => 'Bottom Right',
 
 	//login translation
 	'LBL_Please_login_to_your_account' => 'Please login to your account',
@@ -1278,6 +1296,7 @@ $app_strings = array(
 	'LBL_UITYPE10_NOTALLOWED' => 'The related module has a mandatory related field.',
 	'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 	'Slider' => 'Slider',
+	'LBL_WIZARD' => 'Wizard',
 );
 
 // Translation for currency names

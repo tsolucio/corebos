@@ -17,7 +17,7 @@
  *************************************************************************************************/
 require_once 'include/utils/utils.php';
 include_once 'vtlib/Vtiger/Link.php';
-require_once 'include/ListView/ListViewJSON.php';
+require_once 'include/ListView/ListViewGrid.php';
 global $adb, $log, $current_user;
 
 $functiontocall = vtlib_purify($_REQUEST['functiontocall']);
@@ -73,7 +73,7 @@ switch ($functiontocall) {
 		break;
 	case 'getProductServiceAutocomplete':
 		include_once 'include/Webservices/CustomerPortalWS.php';
-		$limit =  isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
+		$limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
 		$ret = getProductServiceAutocomplete($_REQUEST['term'], array(), $limit);
 		break;
 	case 'getEntityName':
@@ -102,6 +102,34 @@ switch ($functiontocall) {
 					$ret[$field]=$adb->query_result($queryres, 0, $col++);
 				}
 			}
+		}
+		break;
+	case 'getFieldValuesFromRecordRecursively':
+		$moduleName = vtlib_purify($_REQUEST['moduleName']);
+		$value = vtlib_purify($_REQUEST['value']);
+		$fieldsArray = explode('.', $value);
+		// remove all $ signs
+		array_walk($fieldsArray, function (&$item, $key) {
+			$item = substr($item, 1);
+		});
+		$firstFieldRecordID = vtlib_purify($_REQUEST['firstFieldRecordID']);
+
+		$ret = '';
+		$currentFieldvalue = $firstFieldRecordID;
+		foreach ($fieldsArray as $key => $fieldName) {
+			if ($key == 0) {
+				continue;
+			}
+			$queryGenerator = new QueryGenerator(getSalesEntityType($currentFieldvalue), $current_user);
+			$queryGenerator->setFields(explode(',', $fieldName));
+			$queryGenerator->addCondition('id', $currentFieldvalue, 'e');
+			$query = $queryGenerator->getQuery();
+			if (count($fieldsArray) == $key + 1) {
+				$ret = $adb->query($query)->fields;
+			} else {
+				$ret = $adb->query($query)->fields[0];
+			}
+			$currentFieldvalue = $ret;
 		}
 		break;
 	case 'getFieldValuesFromSearch':
@@ -164,8 +192,18 @@ switch ($functiontocall) {
 			$queryres=$adb->pquery($query, array());
 			if ($adb->num_rows($queryres)>0) {
 				$col=0;
+				$orgtabid = getTabid($module);
 				foreach ($fields as $field) {
-					$ret[$field]=$adb->query_result($queryres, 0, $col++);
+					$row = array(
+						$field => $adb->query_result($queryres, 0, $col++)
+					);
+					$finfo = VTCacheUtils::lookupFieldInfo($orgtabid, $field);
+					$output = getDetailViewOutputHtml($finfo['uitype'], $finfo['fieldname'], $finfo['fieldlabel'], $row, $finfo['generatedtype'], $orgtabid, $module);
+					if (isset($output['parent_id'])) {
+						$ret[$field]= $output['parent_id'];
+					} else {
+						$ret[$field]= $output[1];
+					}
 				}
 			}
 		}
@@ -242,7 +280,7 @@ switch ($functiontocall) {
 		$startDate = vtlib_purify($_REQUEST['startFrom']);
 		$endDate = vtlib_purify($_REQUEST['endFrom']);
 		$format = isset($_REQUEST['dateFormat']) ? vtlib_purify($_REQUEST['dateFormat']) : 'Y-m-d';
-		$ret =  DateTimeField::getWeekendDates($startDate, $endDate, $format);
+		$ret = DateTimeField::getWeekendDates($startDate, $endDate, $format);
 		break;
 	case 'ValidationLoad':
 		$valmod = vtlib_purify($_REQUEST['valmodule']);
@@ -420,7 +458,7 @@ switch ($functiontocall) {
 	case 'execwf':
 		include_once 'include/Webservices/ExecuteWorkflow.php';
 		$wfid = vtlib_purify($_REQUEST['wfid']);
-		$ids = explode(';', vtlib_purify($_REQUEST['ids']));
+		$ids = explode(';', trim(vtlib_purify($_REQUEST['ids']), ';'));
 		$id = reset($ids);
 		$wsid = vtws_getEntityId(getSalesEntityType($id)).'x';
 		$crmids = array();
@@ -464,14 +502,14 @@ switch ($functiontocall) {
 		$ret = Button_Check($mod);
 		break;
 	case 'getRecordActions':
-		include_once 'include/ListView/ListViewJSON.php';
+		include_once 'include/ListView/ListViewGrid.php';
 		$mod = vtlib_purify($_REQUEST['formodule']);
 		$recordid = vtlib_purify($_REQUEST['recordid']);
 		$grid = new GridListView($mod);
 		$ret = $grid->Actions($recordid);
 		break;
 	case 'listViewJSON':
-		include_once 'include/ListView/ListViewJSON.php';
+		include_once 'include/ListView/ListViewGrid.php';
 		if (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateDataListView') {
 			$grid = new GridListView($_REQUEST['modulename']);
 			$grid->Update();
@@ -514,7 +552,7 @@ switch ($functiontocall) {
 				$grid->tabid = $tabid;
 				$grid->entries = $perPage;
 				$grid->orderBy = $orderBy;
-				$grid->sortColumn =  $sortColumn;
+				$grid->sortColumn = $sortColumn;
 				$grid->currentPage = $page;
 				$grid->searchUrl = $search;
 				$grid->searchtype = $searchtype;
@@ -619,16 +657,22 @@ switch ($functiontocall) {
 			'content' => $content
 		);
 		break;
+	case 'setNotificationStatus':
+		$adb->pquery(
+			'update vtiger_activity_reminder_popup set status=? WHERE moreinfo->"$.id"=?',
+			[vtlib_purify($_REQUEST['status']), vtlib_purify($_REQUEST['remid'])]
+		);
+		$ret = '';
+		break;
 	case 'getFieldsAttributes':
 		$fields = vtlib_purify($_REQUEST['fields']);
 		$modulename = vtlib_purify($_REQUEST['modulename']);
 		$tabid = getTabid($modulename);
 		$fields = explode(',', $fields);
-		$fieldsIn = '';
-		foreach ($fields as $field) {
-			$fieldsIn .= "'$field',";
-		}
-		$rs = $adb->pquery('SELECT tablename, fieldname, columnname, fieldlabel, typeofdata FROM vtiger_field WHERE tabid=? AND fieldname IN ('.rtrim($fieldsIn, ',').')', array($tabid));
+		$rs = $adb->pquery(
+			'SELECT tablename, fieldname, columnname, fieldlabel, typeofdata FROM vtiger_field WHERE tabid=? AND fieldname IN ('.generateQuestionMarks($fields).')',
+			array($tabid, $fields)
+		);
 		$fieldInfo = array();
 		while ($row = $rs->FetchRow()) {
 			$typeofdata = explode('~', $row['typeofdata']);
@@ -656,29 +700,21 @@ switch ($functiontocall) {
 			$write = $_REQUEST['write'];
 			$old_ws_name = $_REQUEST['old_ws_name'];
 			$old_table_name = $_REQUEST['old_table_name'];
-			$res = $clickHouse->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name, $old_table_name);
-			if ($res) {
-				$success = true;
-			} else {
-				$success = false;
-			}
-			$ret = array(
-				'success' => $success,
-			);
+			$ret = $clickHouse->addUpdateTable($ws_name, $table_name, $access, $create, $read, $write, $old_ws_name, $old_table_name);
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getTables') {
 			$grid = new GridListView('Utilities');
 			$q = 'select * from vtiger_ws_clickhousetables';
 			$field_lists = array(
-				'id' =>  array('vtiger_ws_clickhousetables'=>'id'),
+				'id' => array('vtiger_ws_clickhousetables'=>'id'),
 				'ws_name' => array('vtiger_ws_clickhousetables'=>'ws_name'),
-				'table_name' =>  array('vtiger_ws_clickhousetables'=>'table_name') ,
-				'access' =>  array('vtiger_ws_clickhousetables'=>'access'),
-				'create' =>  array('vtiger_ws_clickhousetables'=>'create'),
-				'read' =>  array('vtiger_ws_clickhousetables'=>'read'),
-				'write' =>  array('vtiger_ws_clickhousetables'=>'write'),
-				'delete' =>  array('vtiger_ws_clickhousetables'=>'delete'),
+				'table_name' => array('vtiger_ws_clickhousetables'=>'table_name') ,
+				'access' => array('vtiger_ws_clickhousetables'=>'access'),
+				'create' => array('vtiger_ws_clickhousetables'=>'create'),
+				'read' => array('vtiger_ws_clickhousetables'=>'read'),
+				'write' => array('vtiger_ws_clickhousetables'=>'write'),
+				'delete' => array('vtiger_ws_clickhousetables'=>'delete'),
 			);
-			 $ret =  $grid->gridTableBasedEntries($q, $field_lists, 'vtiger_ws_clickhousetables');
+			$ret = $grid->gridTableBasedEntries($q, $field_lists, 'vtiger_ws_clickhousetables');
 		} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'deleteTable') {
 			$table_name = $_REQUEST['table_name'];
 			$ws_name = $_REQUEST['ws_name'];

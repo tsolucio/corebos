@@ -136,7 +136,7 @@
 					if (jparse) {
 						existing = jparse;
 					}
-				} catch(e) {
+				} catch (e) {
 				}
 			}
 			const groups = [];
@@ -176,7 +176,7 @@
 						comparator: condition['operator'],
 						value: '',
 						column_condition: condition['join'],
-					})
+					});
 				}
 			}
 			return result;
@@ -306,8 +306,10 @@
 		updateHiddenFields: function () {
 			var criteria = this.getCriteria(),
 				groups = this.getGroups();
-			this.searchForm.advft_criteria.value = JSON.stringify(criteria);
-			this.searchForm.advft_criteria_groups.value = JSON.stringify(groups);
+			if (criteria) {
+				this.searchForm.advft_criteria.value = JSON.stringify(criteria);
+				this.searchForm.advft_criteria_groups.value = JSON.stringify(groups);
+			}
 			return true;
 		},
 
@@ -431,14 +433,14 @@
 			const group = this.el.querySelector(`li[data-group-no="${no}"]`);
 			if (obj.group !== undefined) {
 				if (condCount - 1 == 1) {
-					let btn = group.querySelectorAll(`button[data-onclick="delete-cond"]`);
+					let btn = group.querySelectorAll('button[data-onclick="delete-cond"]');
 					for (let i = 0; i < btn.length; i++) {
-						group.querySelectorAll(`button[data-onclick="delete-cond"]`)[i].setAttribute('disabled', 'disabled');
+						group.querySelectorAll('button[data-onclick="delete-cond"]')[i].setAttribute('disabled', 'disabled');
 					}
 				}
 			} else {
 				if (condCount >= 1) {
-					group.querySelectorAll(`button[data-onclick="delete-cond"]`)[0].removeAttribute('disabled');
+					group.querySelectorAll('button[data-onclick="delete-cond"]')[0].removeAttribute('disabled');
 				}
 			}
 		},
@@ -562,14 +564,13 @@
 						</div>
 					</li>`;
 			});
-			content += `
-						</ul>
+			content += `</ul>
 					</div>
 				</div>
 			</div>
 			<div style="height: 13rem;"></div>`;
 
-			ldsModal.show('Select field', content, 'medium', 'AdvancedFilter.onComparisonModalClose()');
+			ldsModal.show(alert_arr.SelectField, content, 'medium', 'AdvancedFilter.onComparisonModalClose()');
 			this.comparisonModalCombo = new ldsCombobox(document.getElementById('cbds-advfilt__fieldcomp-combo'), {'isMulti': true});
 
 			this.currentComparisonInput = function () {
@@ -999,8 +1000,8 @@
 		*/
 		setVals: function () {
 			var curVal  = this.fieldCombo.getVal(),
-			curType = Field.getType(curVal),
-			curOp   = this.op.combo.getVal();
+				curType = Field.getType(curVal),
+				curOp = this.op.combo.getVal();
 
 			for (var i = 0; i < this.parent.vals.length; i++) {
 				if (this.parent.vals[i].cond === this) {
@@ -1513,11 +1514,8 @@
 		* @return: (bool)
 		*/
 		allowedChars: function (char) {
-			const chars = ['$'];
-			if (chars.includes(char)) {
-				return true;
-			}
-			return false;
+			const chars = ['$', '+'];
+			return Array.from(char).some(c => chars.includes(c));
 		},
 
 		/*

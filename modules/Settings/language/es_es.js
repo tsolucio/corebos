@@ -3,7 +3,7 @@ var mod_alert_arr = {
 	'LBL_CHOOSECUSTOMVIEW': 'Choose fields for filter',
 	'LBL_MB_PROGRESS': 'Progreso',
 	'RecordDeleted': 'El registro se eliminó con éxito.',
-	'RecordSaved': 'The record was successfully saved',
+	'RecordSaved': 'Se guardó el registro correctamente',
 	'Field': 'Campo',
 	'WasSaved': 'fue guardado con éxito',
 	'LBL_MB_SAVEFIELD': 'Guardar campo',
@@ -93,5 +93,6 @@ var mod_alert_arr = {
 	'Related_modlabel': 'El módulo no tiene campos de relación, por favor añade alguno',
 	'FirstFilterAll_msg': 'El primer filtro debe ser All',
 	'generatedtype': 'Tipo Generado',
-	'fieldlength': 'Longitud'
+	'fieldlength': 'Longitud',
+	'FunctionName': 'Nombre función',
 };

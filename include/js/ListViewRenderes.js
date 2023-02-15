@@ -70,7 +70,7 @@ class LinkRender {
 			<span class="slds-icon_container slds-float_right slds-m-right_small cbds-tooltip__trigger slds-p-left_xx-small"
 				id="cbds-tooltip__trigger-${recordid}-${columnName}"
 				onmouseover="ListView.addTooltip('${recordid}', '${columnName}', '${relatedRows[columnName] != undefined ? relatedRows[columnName][0] : props.module}')"
-				onclick="(function(e){e.stopPropagation(); e.preventDefault()})(event)">
+				onclick="(function(e){if (e.path[0].tagName!='A') {e.stopPropagation(); e.preventDefault();}})(event)">
 				<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 				</svg>
@@ -128,11 +128,12 @@ class LinkRender {
 				edit_query_string = ListView.encodeQueryData(edit_query);
 				el.href = `index.php?${edit_query_string}`;
 			} else {
+				let urlRaw = props.grid.getValue(rowKey, 'url_raw_' + columnName);
 				let fieldType = props.grid.getValue(rowKey, 'uitype_' + columnName);
 				let fieldValue = props.grid.getValue(rowKey, columnName);
 				if (fieldType == '17') {
 					el = document.createElement('a');
-					el.href = fieldValue;
+					el.href = urlRaw;
 					el.target = '_blank';
 				} else {
 					el = document.createElement('span');

@@ -10,6 +10,10 @@
 
 class SqlResultIterator implements Iterator {
 
+	public $result;
+	public $adb;
+	public $pos;
+
 	public function __construct($adb, $result) {
 		$this->result = $result;
 		$this->adb = $adb;
@@ -73,6 +77,8 @@ class SqlResultIterator implements Iterator {
 }
 
 class SqlResultIteratorRow {
+
+	public $data;
 
 	public function __construct($data) {
 		$this->data = $data;

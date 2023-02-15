@@ -4,6 +4,9 @@ var MasterDetail_Pagination = 0;
 if (MasterDetail_TargetField === undefined) {
 	var MasterDetail_TargetField = Array();
 }
+masterdetailwork.MasterMapID['{$MasterDetailLayoutMap.mapname}'] = '{$MasterMapID}';
+masterdetailwork.MasterButtons['{$MasterDetailLayoutMap.mapname}'] = '{$MasterButtons|json_encode}';
+masterdetailwork.MasterHide['{$MasterDetailLayoutMap.mapname}'] = {$MasterDetailHide};
 MasterDetail_TargetField['mdgrid{$MasterDetailLayoutMap.mapname}'] = '{$MasterTargetField}';
 var pageOptions = false;
 if ({$MasterDetail_Pagination} > 0) {
@@ -63,6 +66,7 @@ function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 
 	tui.Grid.applyTheme('striped');
 	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('editingFinish', masterdetailwork.inlineedit);
+	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('onGridMounted', masterdetailwork.GridMounted);
 }
 loadMDGrid{$MasterDetailLayoutMap.mapname}();
 </script>

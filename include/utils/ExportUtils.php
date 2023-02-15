@@ -127,7 +127,6 @@ function exportUserCommentsForModule($module, $recordid, $format, $field_arr = a
 	return true;
 }
 
-
 /**
  * Function to exporting XLS rows file format for modules.
  * @param object $rowsonfo object contain rows to export
@@ -447,7 +446,7 @@ function getFieldsListFromQuery($query) {
 			$fields .= "vtiger_products.productname as '".$fieldlabel."',";
 		} elseif (($tablename == 'vtiger_invoice' || $tablename == 'vtiger_quotes' || $tablename == 'vtiger_salesorder')&& $columnName == 'accountid') {
 			$fields .= 'concat("Accounts::::",vtiger_account.accountname) as "'.$fieldlabel.'",';
-		} elseif (($tablename == 'vtiger_invoice' || $tablename == 'vtiger_quotes' || $tablename == 'vtiger_salesorder' || $tablename == 'vtiger_purchaseorder') && $columnName == 'contactid') {
+		} elseif (($tablename=='vtiger_invoice' || $tablename=='vtiger_quotes' || $tablename=='vtiger_salesorder' || $tablename=='vtiger_purchaseorder') && $columnName=='contactid') {
 			$fields .= 'concat("Contacts::::",vtiger_contactdetails.lastname," ",vtiger_contactdetails.firstname) as "'.$fieldlabel.'",';
 		} elseif ($tablename == 'vtiger_invoice' && $columnName == 'salesorderid') {
 			$fields .= 'concat("SalesOrder::::",vtiger_salesorder.subject) as "'.$fieldlabel.'",';
@@ -460,7 +459,7 @@ function getFieldsListFromQuery($query) {
 		} elseif ($tablename == 'vtiger_purchaseorder' && $columnName == 'vendorid') {
 			$fields .= 'concat("Vendors::::",vtiger_vendor.vendorname) as "'.$fieldlabel.'",';
 		} elseif (($tablename == 'vtiger_users' && ($columnName == 'user_password' || $columnName == 'confirm_password' || $columnName == 'accesskey'))
-			|| ($tablename == 'vtiger_notes' && ($columnName == 'filename' || $columnName == 'filetype' || $columnName == 'filesize' || $columnName == 'filelocationtype' || $columnName == 'filestatus' || $columnName == 'filedownloadcount' ||$columnName == 'folderid'))
+			|| ($tablename == 'vtiger_notes' && ($columnName == 'filename' || $columnName == 'filetype' || $columnName == 'filesize' || $columnName == 'filelocationtype' || $columnName == 'filestatus' || $columnName == 'filedownloadcount' || $columnName == 'folderid'))
 		) {
 			// do nothing, just continue
 		} else {
@@ -499,7 +498,7 @@ class ExportUtils {
 
 	/**
 	 * this function takes in an array of values for an user and sanitizes it for export
-	 * @param array $arr - the array of values
+	 * @param array the array of values
 	 */
 	public function sanitizeValues($arr) {
 		global $current_user, $adb;

@@ -404,6 +404,9 @@ FieldDependencies.prototype.getFieldValue = function (field) {
 	var fld = document.getElementById(field);
 	if (fld==undefined) {
 		fld = document.getElementsByName(field).item(0);
+		if (fld==null) {
+			return '';
+		}
 	}
 	if (fld.type == 'checkbox') {
 		return (fld.checked ? '1' : '0');
@@ -424,8 +427,10 @@ FieldDependencies.prototype.fieldHideEditView = function (hideFields) {
 	var field='';
 	for (var i=0; i<hideFields.length; i++) {
 		field=hideFields[i]['field'];
-		document.getElementById('td_'+field).style.visibility='hidden';
-		document.getElementById('td_val_'+field).style.visibility='hidden';
+		if (document.getElementById('td_'+field) != null) {
+			document.getElementById('td_'+field).style.visibility='hidden';
+			document.getElementById('td_val_'+field).style.visibility='hidden';
+		}
 	}
 };
 
@@ -543,11 +548,7 @@ FieldDependencies.prototype.fieldReadonlyEditView = function (readonlyFields) {
 		}
 		let fn = document.getElementById(field);
 		if (fn) {
-			if (fn.item) {
-				fn.item(0).style.display='none';
-			} else {
-				fn.style.display='none';
-			}
+			fn.style.display='none';
 		}
 	}
 };

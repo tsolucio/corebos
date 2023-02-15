@@ -13,6 +13,7 @@ class State {
 	public $success;
 	public $result;
 	public $error;
+	public $moreinfo;
 
 	public function __construct() {
 		$this->success = false;

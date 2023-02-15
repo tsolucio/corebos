@@ -110,8 +110,8 @@ class Faq extends CRMEntity {
 	}
 
 	/** Function to insert values in vtiger_faqcomments table for the specified module,
-	 * @param $table_name -- table name:: Type varchar
-	 * @param $module -- module:: Type varchar
+	 * @param string table name
+	 * @param string module
 	 */
 	public function insertIntoFAQCommentTable($table_name, $module) {
 		global $log, $adb;
@@ -134,8 +134,8 @@ class Faq extends CRMEntity {
 	}
 
 	/** Function to get the list of comments for the given FAQ id
-	 * @param  int  $faqid - FAQ id
-	 * @return list $list - list of comments and comment informations as a html output where as these comments and comments informations will be formed in div tag.
+	 * @param integer FAQ id
+	 * @return string list of comments and comment informations as a html output where as these comments and comments informations will be formed in div tag
 	 **/
 	public function getFAQComments($faqid) {
 		global $log, $default_charset, $mod_strings, $adb;
@@ -171,10 +171,10 @@ class Faq extends CRMEntity {
 		return $list;
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = parent::setRelationTables($secmodule);

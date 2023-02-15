@@ -12,6 +12,12 @@
 	{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
 	{* Ignore block:// type custom links which are handled earlier *}
 	{if preg_match("/^block:\/\/.*/", $customlink_href)}
+		{if $CUSTOMLINK->widget_header}
+			<div>
+				<b>{$customlink_label}</b>&nbsp;
+				<img id="detailview_block_{$CUSTOMLINK->linkid}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
+			</div>
+		{/if}
 		{process_widget widgetLinkInfo=$CUSTOMLINK}
 	{else}
 		{if $customlink_label eq ''}

@@ -52,4 +52,6 @@ var alert_arr = {
 	'LBL_FILESIZEIN_MB':'Mo', // added to show filesize limit in MB
 	'LBL_FILESIZEIN_KB':'Ko', // added to show filesize limit in KB
 	'LBL_FILESIZEIN_B':'o', // added to show filesize limit in B
+	'LBL_SUCCESS':'Operation completed successfully !', // added to indicate success feedback message
+	'LBL_FAILURE':'Operation failed !', // added to indicate failure feedback message
 };
