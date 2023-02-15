@@ -2898,7 +2898,15 @@ function confirmdelete(url) {
 			method: 'POST',
 			url: url
 		}).done(function (response) {
-			location.reload();
+			let url = new URL(location.href);
+			let params = new URLSearchParams(url.search);
+			let newUrl = '';
+			if (params.has('viewname')) {
+				params.delete('viewname');
+				url.search = params.toString();
+				newUrl = url.toString();
+			}
+			window.location.replace(newUrl);
 		});
 	}
 }
