@@ -281,14 +281,14 @@ class WizardComponent {
 				if (this.el(`save-wizard-${wizard.ActiveStep}`) !== null) {
 					this.el(`save-wizard-${this.ActiveStep}`).innerHTML = `${alert_arr.JSLBL_Loading}...`;
 					this.el(`save-wizard-${this.ActiveStep}`).setAttribute('disabled', '');
-					this.CheckedRows[this.ActiveStep] = [];
-					this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
 				}
 				this.WizardSaveIsActive[this.ActiveStep] = true;
 				await this.CallCustomFunction();
 				if (this.ActiveStep+1 == this.steps || this.isSubWizard) {
 					this.FinishRequest(url, resetWizard);
 				}
+				this.CheckedRows[this.ActiveStep] = [];
+				this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
 			} else {
 				if (this.ActiveStep+1 == this.steps || this.isSubWizard) {
 					this.FinishRequest(url, resetWizard);
