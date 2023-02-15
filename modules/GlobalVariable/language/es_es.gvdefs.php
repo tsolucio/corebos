@@ -1694,7 +1694,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'Remove Related Module Label from column name',
+	'definition' => 'Remove Related Module Label from table/list view column names',
 ),
 'Security_ImageCheck' => array(
 	'valuetype' => 'Cadena',
