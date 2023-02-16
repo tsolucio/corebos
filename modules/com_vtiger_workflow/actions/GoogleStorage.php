@@ -29,9 +29,7 @@ class GoogleStorageAdapter {
 
 	public function setUp() {
 		$service = new Google_Service_Storage($this->client);
-		$adapter = new GoogleStorage($service, $this->bucket, array(
-			'acl' => 'private',
-		), true);
+		$adapter = new GoogleStorage($service, $this->bucket, array('acl' => 'private'), true);
 		$this->filesystem = new Filesystem($adapter);
 	}
 
