@@ -54,6 +54,7 @@ if ($cbMapid) {
 				'mapid' => $value['detailviewlayoutmap'],
 			);
 			$smarty->assign('WizardStep', $step);
+			$smarty->assign('WizardSuboperation', isset($value['suboperation']) ? $value['suboperation'] : '');
 			$view = $setfield->process($context);
 			$views[$key] = $view;
 			$step++;

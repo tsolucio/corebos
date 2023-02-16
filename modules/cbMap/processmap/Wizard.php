@@ -28,6 +28,7 @@
 		<description></description>
 		<sequence></sequence>
 		<detailviewlayoutmap>mapid</detailviewlayoutmap>
+		<suboperation></suboperation>
 		<filter>0|1</filter>
 		<validations>
 			<validation>
@@ -68,6 +69,7 @@ class Wizard extends processcbMap {
 			$step['description'] = (string)$s->description;
 			$step['sequence'] = (int)$s->sequence;
 			$step['detailviewlayoutmap'] = (string)$s->detailviewlayoutmap;
+			$step['suboperation'] = (string)$s->suboperation;
 			$step['filter'] = (string)$s->filter;
 			$validations = array();
 			if (isset($s->validations)) {
