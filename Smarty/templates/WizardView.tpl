@@ -92,7 +92,7 @@
 						<article class="slds-setup-assistant__step slds-m-around_medium" id="seq-{$smarty.foreach.stepwizard.index}" style="margin-top: 0% !important">
 							<div class="slds-setup-assistant__step-summary">
 								<div class="slds-media">
-									<div class="slds-media__body slds-m-top_x-small">
+									<div class="slds-media__body">
 										<div class="slds-media">
 											<div class="slds-media__body">
 												{include file='Smarty/templates/Components/Wizard/WizardActions.tpl'}

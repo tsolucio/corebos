@@ -131,8 +131,8 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	async Next(ev) {
-		let confirmstep = JSON.parse(this.WizardConfirmStep[this.ActiveStep]);
-		if (!this.isSubWizard && confirmstep.confirm && !confirm(confirmstep.message)) {
+		let confirmstep = this.WizardConfirmStep[this.ActiveStep] !== undefined ? JSON.parse(this.WizardConfirmStep[this.ActiveStep]) : '';
+		if (!this.isSubWizard && confirmstep != '' && confirmstep.confirm && !confirm(confirmstep.message)) {
 			return false;
 		}
 		let type = 'next';
@@ -1249,7 +1249,7 @@ class WizardComponent {
 		let data = Array();
 		if (this.FormFields.length > 0) {
 			for (let i in this.FormFields) {
-				let val = this.el(`${this.FormFields[i]}_formtemplate`);
+				let val = this.el(`${this.FormFields[i]}_formtemplate_${this.ActiveStep}`);
 				let block = this.el(`${this.FormFields[i]}_form_block`);
 				if (val.hasAttribute('required') && val.value == '') {
 					val.classList.add('slds-has-error');
@@ -1257,7 +1257,7 @@ class WizardComponent {
 					if (this.el(`${this.FormFields[i]}_form_error`) == null) {
 						let error = document.createElement('div');
 						error.id = `${this.FormFields[i]}_form_error`;
-						error.innerHTML = 'Complete this field';
+						error.innerHTML = `Complete <strong>${val.dataset.label}</strong> field`;
 						error.style.color = 'red';
 						block.appendChild(error);
 					}
