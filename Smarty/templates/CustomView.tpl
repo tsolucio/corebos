@@ -79,15 +79,6 @@ function mandatoryCheck() {
 }
 </script>
 
-<style>
-	.slds-input {
-		margin: 7.5px 0px;
-	}
-	.select {
-		margin: 7.5px 0px;
-	}
-</style>
-
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
  <tbody><tr>
   <td class="showPanelBg" valign="top" width="100%">
@@ -113,21 +104,21 @@ function mandatoryCheck() {
 			<table cellpadding=4 cellspacing=0 width=100% border=0>
 				<tr>
 					<td class="dvtCellInfo cblds-p_medium" width="10%" align="right"><span class="style1">*</span>{$MOD.LBL_VIEW_NAME}</td>
-					<td class="dvtCellInfo" width="30%">
+					<td class="dvtCellInfo slds-p-around_small" width="30%">
 						<input class="detailedViewTextBox slds-input" type="text" name='viewName' value="{if isset($VIEWNAME)}{$VIEWNAME}{/if}" size="40" {if $PERMITALL eq 'true'}disabled{/if}/>
 					</td>
 					<td class="dvtCellInfo" width="15%">
 					{if $CHECKED eq 'checked'}
-						<input type="checkbox" name="setDefault" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_SETDEFAULT}
+						<input type="checkbox" name="setDefault" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} /> {$MOD.LBL_SETDEFAULT}
 					{else}
-						<input type="checkbox" name="setDefault" value="0" {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_SETDEFAULT}
+						<input type="checkbox" name="setDefault" value="0" {if $PERMITALL eq 'true'}disabled{/if} /> {$MOD.LBL_SETDEFAULT}
 					{/if}
 					</td>
 					<td class="dvtCellInfo" width="15%">
 					{if $MCHECKED eq 'checked'}
-						<input type="checkbox" name="setMetrics" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_LIST_IN_METRICS}
+						<input type="checkbox" name="setMetrics" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} /> {$MOD.LBL_LIST_IN_METRICS}
 					{else}
-						<input type="checkbox" name="setMetrics" value="0" {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_LIST_IN_METRICS}
+						<input type="checkbox" name="setMetrics" value="0" {if $PERMITALL eq 'true'}disabled{/if} /> {$MOD.LBL_LIST_IN_METRICS}
 					{/if}
 					</td>
 					<td class="dvtCellInfo" width="15%">
@@ -157,10 +148,10 @@ function mandatoryCheck() {
 			<table>
 				<tr>
 					<td class="dvtCellInfo cblds-p_medium" width="10%" align="right">Sort By Field</td>
-					<td class="dvtCellInfo" width="45%">
+					<td class="dvtCellInfo slds-p-around_small" width="45%">
 						<input placeholder="{$MOD.LBL_FIRST_COLUMN}" class="detailedViewTextBox slds-input" type="text" name='sortfieldbyfirst' value="{if isset($sortfieldbyfirst)}{$sortfieldbyfirst}{/if}" size="40" {if $PERMITALL eq 'true'}disabled{/if}/>
 					</td>
-					<td class="dvtCellInfo" width="45%">
+					<td class="dvtCellInfo slds-p-around_small" width="45%">
 						<input placeholder="{$MOD.LBL_SECOND_COLUMN}" class="detailedViewTextBox slds-input" type="text" name='sortfieldbysecond' value="{if isset($sortfieldbysecond)}{$sortfieldbysecond}{/if}" size="40" {if $PERMITALL eq 'true'}disabled{/if}/>
 					</td>
 				</tr>
@@ -241,7 +232,7 @@ function mandatoryCheck() {
 			  <tr><td colspan="2" class="detailedViewHeader"><b>{$MOD.Simple_Time_Filter}</b></td></tr>
 			  <tr>
 			     <td width="75%" align="right" class="dvtCellLabel">{$MOD.LBL_Select_a_Column} :</td>
-			     <td width="25%" class="dvtCellInfo">
+			     <td width="25%" class="dvtCellInfo slds-p-around_small">
 				<select name="stdDateFilterField" class="select small slds-select" onchange="standardFilterDisplay();">
 				{foreach item=stdfilter from=$STDFILTERCOLUMNS}
 					<option {$stdfilter.selected} value={$stdfilter.value}>{$stdfilter.text}</option>
@@ -250,7 +241,7 @@ function mandatoryCheck() {
 			  </tr>
 			  <tr>
 			     <td align="right" class="dvtCellLabel">{$MOD.Select_Duration} :</td>
-			     <td class="dvtCellInfo">
+			     <td class="dvtCellInfo slds-p-around_small">
 			        <select name="stdDateFilter" id="stdDateFilter" class="select small slds-select" onchange='showDateRange(this.options[this.selectedIndex].value)'>
 				{foreach item=duration from=$STDFILTERCRITERIA}
 					<option {$duration.selected} value={$duration.value}>{$duration.text}</option>
@@ -260,7 +251,7 @@ function mandatoryCheck() {
 			  </tr>
 			  <tr>
 			     <td align="right" class="dvtCellLabel">{$MOD.Start_Date} :</td>
-			     <td width="25%" align=left class="dvtCellInfo">
+			     <td width="25%" align=left class="dvtCellInfo slds-p-around_small">
 			     {if $STDFILTERCRITERIA.0.selected eq "selected" || $CUSTOMVIEWID eq ""}
 				{assign var=img_style value="visibility:visible"}
 				{assign var=msg_style value=""}
@@ -279,7 +270,7 @@ function mandatoryCheck() {
 	            	  </tr>
 			  <tr>
 				<td align="right" class="dvtCellLabel">{$MOD.End_Date} :</td>
-				<td width="25%" align=left class="dvtCellInfo">
+				<td width="25%" align=left class="dvtCellInfo slds-p-around_small">
 				<input name="enddate" {$msg_style} id="jscal_field_date_end" type="text" size="10" class="textField small slds-input" style="width: initial;" value="{if isset($ENDDATE)}{$ENDDATE}{/if}">
 				<img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_end" style="vertical-align:middle;{$img_style}">
 				<font size=1><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
