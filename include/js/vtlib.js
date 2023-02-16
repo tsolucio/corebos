@@ -13,11 +13,20 @@
 function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname, currentID = 0) {
 	var ret = false;
 	var wodform = false;
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const params = Object.fromEntries(urlSearchParams.entries());
 	if (formname == 'ListView') {
 		var domnode_id = window.opener.document.getElementById(`txtbox_${target_fieldname}_${currentID}`);
 		var domnode_display = window.opener.document.getElementById(`txtbox_${target_fieldname}_${currentID}_display`);
 		domnode_id.value = recordid;
 		domnode_display.innerHTML = value;
+		return true;
+	}
+	if (formname == 'MasterGrid') {
+		var domnode_id = window.opener.document.getElementById(`${target_fieldname}_mastergrid_${params.index}`);
+		var domnode_display = window.opener.document.getElementById(`${target_fieldname}_display_${params.index}`);
+		domnode_id.value = recordid;
+		domnode_display.value = value;
 		return true;
 	}
 	if (window.opener.document.forms[formname]) {
@@ -35,23 +44,12 @@ function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname, 
 	}
 	if (ret) {
 		var domnode_id = wodform[target_fieldname];
-		let isMasterGrid = false;
-		const urlSearchParams = new URLSearchParams(window.location.search);
-		const params = Object.fromEntries(urlSearchParams.entries());
 		if (!domnode_id) {
 			domnode_id = window.opener.document.getElementById('txtbox_'+ target_fieldname);
-			let mastergridnode = window.opener.document.getElementById(`${target_fieldname}_mastergrid_${params.index}`);
-			if (domnode_id === null && mastergridnode !== null) {
-				domnode_id = mastergridnode;
-				isMasterGrid = true;
-			}
 		}
 		var domnode_display = wodform[target_fieldname+'_display'];
 		if (!domnode_display) {
 			domnode_display = window.opener.document.getElementById(target_fieldname+'_display');
-			if (isMasterGrid) {
-				domnode_display = window.opener.document.getElementById(`${target_fieldname}_display_${params.index}`);
-			}
 		}
 		if (domnode_id) {
 			domnode_id.value = recordid;

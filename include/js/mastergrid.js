@@ -102,13 +102,13 @@ class MasterGrid {
 				`;
 				break;
 			case '10':
-				let url = `index.php?module=${field.searchin}&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield=${field.name}&srcmodule=${this.module}&forrecord=${this.currentRow.id}&index=${this.idx}`;
+				let url = `index.php?module=${field.searchin}&action=Popup&html=Popup_picker&form=MasterGrid&forfield=${field.name}&srcmodule=${this.module}&forrecord=${this.currentRow.id}&index=${this.idx}`;
 				fld += `
 				<input ${mandatory} id="${field.name}_mastergrid_${this.idx}" name="${field.name}" type="hidden" value="${fieldvalue}">
 				<span style="display:none;" id="${field.name}_hidden"></span>
 				<div class="slds-grid slds-wrap">
-					<div class="slds-col slds-size_8-of-10" style="margin-right: -25px">
-						<input class="slds-input" value="${fieldvalueDisplay}" id="${field.name}_display_${this.idx}" name="${field.name}_display" readonly="" type="text" style="width: 85%;border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
+					<div class="slds-col slds-size_8-of-10">
+						<input class="slds-input" value="${fieldvalueDisplay}" id="${field.name}_display_${this.idx}" name="${field.name}_display" readonly="" type="text" style="border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
 					</div>
 					<div class="slds-col slds-size_2-of-10">
 						<div class="slds-grid slds-grid_vertical slds-align_absolute-center">
