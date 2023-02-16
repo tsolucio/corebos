@@ -114,14 +114,18 @@
 	</td>
 {elseif ($keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614')}
 	<!--ComboBox-->
-	{if picklistHasDependency($keyfldname,$MODULE) || fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
-				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+	{if $keyid eq '15' || $keyid eq '16'}
+		{assign var=i18nValue value=$keyval|@getTranslatedString:$MODULE}
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
-			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
-			onclick='handleEdit(event);'>
-			<span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+		{assign var=i18nValue value=$keyval|@getTranslatedString:$keyval}
+	{/if}
+	{if picklistHasDependency($keyfldname,$MODULE) || fieldHasDependency($keyfldname,$MODULE)}
+		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">
+			<span id="dtlview_{$keyfldname}">{$i18nValue}</span>
+	{else}
+		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onclick='handleEdit(event);'
+			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');">
+			<span id="dtlview_{$keyfldname}">{$i18nValue}</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small" style="width:280px;">
 					{foreach item=arr from=$keyoptions}
