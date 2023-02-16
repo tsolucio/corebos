@@ -50,12 +50,12 @@ class GridListView {
 		if (isset($_REQUEST['sortAscending'])) {
 			$this->orderBy = $_REQUEST['sortAscending'] == 'true' ? 'ASC' : 'DESC';
 		} else {
-			$this->orderBy = $sortArrayList[0]['sortOrder'];
+			$this->orderBy = count($sortArrayList) ? $sortArrayList[0]['sortOrder'] : '';
 		}
 		if ($this->sortColumn != '') {
 			$order_by = $this->sortColumn;
 		} else {
-			$order_by = $sortArrayList[0]['orderBy'];
+			$order_by = count($sortArrayList) ? $sortArrayList[0]['orderBy'] : '';
 		}
 		$queryGenerator = new QueryGenerator($this->module, $current_user);
 		try {
@@ -132,9 +132,14 @@ class GridListView {
 			coreBOS_Session::delete('export_where');
 		}
 		// Sorting
-		$list_query .= ' ORDER BY';
-		foreach ($sortArrayList as $sortObj) {
-			$list_query .= ' ' . $queryGenerator->getOrderByColumn($sortObj['orderBy']).' '.$sortObj['sortOrder'];
+		if (count($sortArrayList)) {
+			$list_query .= ' ORDER BY';
+			foreach ($sortArrayList as $index => $sortObj) {
+				$list_query .= ' ' . $queryGenerator->getOrderByColumn($sortObj['orderBy']).' '.$sortObj['sortOrder'];
+				if ($index + 1 < count($sortArrayList)) {
+					$list_query .= ',';
+				}
+			}
 		}
 		if (isset($_REQUEST['isRecycleModule'])) {
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias($this->module, true);

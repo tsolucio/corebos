@@ -3777,7 +3777,9 @@ class CRMEntity {
 		$sort_order = $this->getSortOrder();
 		$sortfieldbyfirst = cbCVManagement::getFieldValuesByCvId($viewid)['sortfieldbyfirst'];
 		$sortfieldbysecond = cbCVManagement::getFieldValuesByCvId($viewid)['sortfieldbysecond'];
-		$sortArrayList[] = array('orderBy' => $order_by, 'sortOrder' => $sort_order);
+		if (!empty($order_by)) {
+			$sortArrayList[] = array('orderBy' => $order_by, 'sortOrder' => $sort_order);
+		}
 		if (!empty($sortfieldbysecond) && $order_by == $sortfieldbyfirst) {
 			$sortArrayList[] = array('orderBy' => $sortfieldbysecond, 'sortOrder' => $sort_order);
 		}
