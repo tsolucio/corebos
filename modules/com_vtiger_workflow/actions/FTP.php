@@ -47,6 +47,7 @@ class FTPAdapter {
 			'passive'  => true,
 			'create'   => true,
 			'ssl'      => true,
+			'port'     => $port,
 		));
 		$this->filesystem = new Filesystem($adapter);
 	}
