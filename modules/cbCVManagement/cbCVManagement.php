@@ -118,6 +118,11 @@ class cbCVManagement extends CRMEntity {
 
 	private static $validationinfo = array();
 
+	public function __construct() {
+		parent::__construct();
+		self::checkcbCVManagementInstalled();
+	}
+
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
@@ -663,6 +668,44 @@ class cbCVManagement extends CRMEntity {
 			return false;
 		}
 		return $result->fields;
+	}
+
+	public static function checkcbCVManagementInstalled() {
+		global $adb, $current_user, $currentModule;
+		if (vtlib_isModuleActive('cbupdater')) {
+			$holdModule = $currentModule;
+			$columnNames = $adb->getColumnNames('vtiger_cbcvmanagement');
+			if (!in_array('setprivate', $columnNames)) {
+				$holduser = $current_user;
+				ob_start();
+				include 'modules/cbupdater/getupdatescli.php';
+				$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='addIsPrivateFieldToCbCVManagement'");
+				if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
+					$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
+					$argv[0] = 'doworkcli';
+					$argv[1] = 'apply';
+					$argv[2] = $updid;
+					include 'modules/cbupdater/doworkcli.php';
+					ob_end_clean();
+					$current_user = $holduser;
+				}
+			}
+			if (!in_array('sortfieldbyfirst', $columnNames) || !in_array('sortfieldbysecond', $columnNames)) {
+				$holduser = $current_user;
+				ob_start();
+				include 'modules/cbupdater/getupdatescli.php';
+				$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='addSortByFieldToCbCVManagement'");
+				if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
+					$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
+					$argv[0] = 'doworkcli';
+					$argv[1] = 'apply';
+					$argv[2] = $updid;
+					include 'modules/cbupdater/doworkcli.php';
+					ob_end_clean();
+					$current_user = $holduser;
+				}
+			}
+		}
 	}
 }
 ?>
