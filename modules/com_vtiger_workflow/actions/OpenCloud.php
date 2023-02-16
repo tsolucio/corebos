@@ -21,6 +21,11 @@ use Gaufrette\Filesystem;
 use OpenCloud\Rackspace;
 
 class OpenCloudAdapter {
+	public $rackspace_user = '';
+	public $rackspace_apikey = '';
+	public $rackspace_container = '';
+	public $context = '';
+	public $filesystem = null;
 
 	public function __construct($data, $workflow_context) {
 		$this->rackspace_user = $data['opencloud_username'];
