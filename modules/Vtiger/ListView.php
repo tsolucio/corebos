@@ -36,8 +36,8 @@ if (ListViewSession::hasViewChanged($currentModule)) {
 	coreBOS_Session::set($currentModule.'_Order_By', '');
 }
 $sortArrayList = $focus->getOrderByAndSortOrderList();
-$order_by = count($sortArrayList) ? $sortArrayList[0]['orderBy'] : '';
-$sorder = count($sortArrayList) ? $sortArrayList[0]['sortOrder'] : '';
+$order_by = !empty($sortArrayList) ? $sortArrayList[0]['orderBy'] : '';
+$sorder = !empty($sortArrayList) ? $sortArrayList[0]['sortOrder'] : '';
 
 coreBOS_Session::set($currentModule.'_Order_By', $order_by);
 coreBOS_Session::set($currentModule.'_Sort_Order', $sorder);
@@ -151,11 +151,11 @@ if ($sql_error) {
 	$smarty->assign('export_where', to_html($where));
 
 	// Sorting
-	if (count($sortArrayList)) {
+	if (!empty($sortArrayList)) {
 		$list_query .= ' ORDER BY';
 		foreach ($sortArrayList as $index => $sortObj) {
 			$list_query .= ' ' . $queryGenerator->getOrderByColumn($sortObj['orderBy']).' '.$sortObj['sortOrder'];
-			if ($index + 1 < count($sortArrayList)) {
+			if ($index + 1 < !empty($sortArrayList)) {
 				$list_query .= ',';
 			}
 		}
