@@ -183,7 +183,14 @@ class CBAddNotification extends VTTask {
 		$minfo = json_decode($moreinfo, true);
 		if (empty($minfo['id'])) {
 			$minfo['id'] = $remid;
-			$adb->pquery('UPDATE vtiger_activity_reminder_popup set moreinfo=? WHERE reminderid=?', [json_encode($minfo), $remid]);
+			$mact = json_decode($moreaction, true);
+			if (!empty($mact['link'])) {
+				$mact['link'] = str_replace('$ID$', $remid, $mact['link']);
+			}
+			$adb->pquery(
+				'UPDATE vtiger_activity_reminder_popup set moreinfo=?,moreaction=? WHERE reminderid=?',
+				[json_encode($minfo), json_encode($mact), $remid]
+			);
 		} else {
 			$remid = $minfo['id'];
 		}
