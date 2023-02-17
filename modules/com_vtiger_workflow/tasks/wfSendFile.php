@@ -34,12 +34,12 @@ class wfSendFile extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $site_URL, $current_language, $default_charset, $logbg, $log;
+		global $adb, $site_URL, $current_language, $default_charset, $logbg;
 		$logbg->debug('> wfSendFile');
 		$workflow_context = $entity->WorkflowContext;
 		$reportfile_context = !empty($entity->WorkflowContext['wfgenerated_file']) ? $entity->WorkflowContext['wfgenerated_file'] : array();
 		$crmentityTable = CRMEntity::getcrmEntityTableAlias('cbCredentials');
-		$query = "select * from vtiger_cbcredentials inner join $crmentityTable on vtiger_crmentity.crmid=vtiger_cbcredentials.cbcredentialsid where vtiger_crmentity.deleted=0 and vtiger_cbcredentials.cbcredentialsid='46020';";
+		$query = "select * from vtiger_cbcredentials inner join $crmentityTable on vtiger_crmentity.crmid=vtiger_cbcredentials.cbcredentialsid where vtiger_crmentity.deleted=0 and vtiger_cbcredentials.cbcredentialsid=?;";
 		$query = $adb->convert2Sql($query, array($this->credentialid));
 		$result = $adb->query($query);
         $data = $result->FetchRow();
