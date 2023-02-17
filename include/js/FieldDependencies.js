@@ -134,9 +134,12 @@ var newEvents = new Array();
 FieldDependencies.prototype.controlActions = function (sourcename) {
 	var conditions=new Array();
 	if (this.DS[sourcename]!==undefined) {
+		if (this.DS[sourcename].length>1) {
+			this.DS[sourcename] = this.sortActionsByCondtions(sourcename);
+		}
 		for (var i=0; i<this.DS[sourcename].length; i++) {
 			var responsibleConfig=this.DS[sourcename][i];
-			conditions=responsibleConfig['conditions']!=='' ?  JSON.parse(responsibleConfig['conditions']) : conditions;
+			conditions=responsibleConfig['conditions']!=='' ? JSON.parse(responsibleConfig['conditions']) : conditions;
 			var conditionResp = this.evaluateConditions(conditions);
 			if (eval(conditionResp) || conditions.length===0) {
 				if (responsibleConfig['actions']['change']!== undefined && responsibleConfig['actions']['change'].length > 0) {
@@ -259,6 +262,24 @@ FieldDependencies.prototype.evaluateConditions = function (conditions) {
 		conditionResp +='('+condArray[j]+')'+condOperatorArray[j];
 	}
 	return conditionResp;
+};
+
+FieldDependencies.prototype.sortActionsByCondtions = function (sourcename) {
+	var evaltrue = new Array();
+	var evalfalse = new Array();
+	for (var i=0; i<this.DS[sourcename].length; i++) {
+		if (this.DS[sourcename][i]['conditions']!=='') {
+			var conditionResp = this.evaluateConditions(JSON.parse(this.DS[sourcename][i]['conditions']));
+			if (eval(conditionResp)) {
+				evaltrue.push(this.DS[sourcename][i]);
+			} else {
+				evalfalse.push(this.DS[sourcename][i]);
+			}
+		} else {
+			evaltrue.push(this.DS[sourcename][i]);
+		}
+	}
+	return evalfalse.concat(evaltrue);
 };
 
 /**
