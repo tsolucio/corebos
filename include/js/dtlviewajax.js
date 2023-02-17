@@ -237,8 +237,11 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		}
 	} else if (uitype == 15 || uitype == 16 || uitype == 1613 || uitype == 1614 || uitype == 1615) {
 		var txtBox= 'txtbox_'+ fieldLabel;
+		if (document.getElementById(txtBox) === null) {
+			txtBox= 'dtlview_'+ fieldLabel;
+		}
 		var not_access =document.getElementById(txtBox);
-		if (not_access.options[not_access.selectedIndex]==undefined || not_access.options[not_access.selectedIndex].value == alert_arr.LBL_NOT_ACCESSIBLE) {
+		if (not_access.options !== undefined && (not_access.options[not_access.selectedIndex]==undefined || not_access.options[not_access.selectedIndex].value == alert_arr.LBL_NOT_ACCESSIBLE)) {
 			document.getElementById(editArea).style.display='none';
 			document.getElementById(dtlView).style.display='block';
 			itsonview=false; //to show the edit link again after hiding the editdiv.
@@ -247,6 +250,9 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		}
 	} else if (uitype == 33 || uitype == 3313 || uitype == 3314) {
 		var txtBox= 'txtbox_'+ fieldLabel;
+		if (document.getElementById(txtBox) === null) {
+			txtBox= 'dtlview_'+ fieldLabel;
+		}
 		var oMulSelect = document.getElementById(txtBox);
 		var r = new Array();
 		var notaccess_label = new Array();
@@ -258,6 +264,9 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		}
 	} else {
 		var txtBox= 'txtbox_'+ fieldLabel;
+		if (document.getElementById(txtBox) === null) {
+			txtBox= 'dtlview_'+ fieldLabel;
+		}
 	}
 
 	VtigerJS_DialogBox.showbusy();
@@ -390,6 +399,10 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 		for (var f=0; f<myFields.length; f++) {
 			sentForm[myFields[f].name] = myFields[f].value;
 		}
+		var txtBox = 'txtbox_'+ fieldLabel;
+		if (document.getElementById(txtBox) === null) {
+			txtBox = 'dtlview_'+ fieldLabel;
+		}
 		// field being edited
 		switch (uitype) {
 		case '33':
@@ -398,7 +411,6 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 		case 3313:
 		case '3314':
 		case 3314:
-			var txtBox= 'txtbox_'+ fieldLabel;
 			var oMulSelect = document.getElementById(txtBox);
 			var r = new Array();
 			var notaccess_label = new Array();
@@ -412,7 +424,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			break;
 		case '56':
 		case 56:
-			if (document.getElementById('txtbox_'+fieldName).checked) {
+			if (document.getElementById(txtBox).checked) {
 				sentForm[fieldName] = 1;
 			} else {
 				sentForm[fieldName] = 0;
@@ -420,7 +432,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			break;
 		case '50':
 		case 50:
-			sentForm[fieldName] = document.getElementById('txtbox_' + fieldName).value;
+			sentForm[fieldName] = document.getElementById(txtBox).value;
 			sentForm['timefmt_' + fieldName] = document.getElementById('inputtimefmt_' + fieldName).value;
 			break;
 		case '53':
@@ -445,7 +457,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			sentForm[fieldName] = document.getElementById(txtBox).value;
 			break;
 		default:
-			sentForm[fieldName] = document.getElementById('txtbox_'+fieldName).value;
+			sentForm[fieldName] = document.getElementById(txtBox).value;
 			break;
 		}
 		sentForm['action'] = 'DetailViewEdit';
