@@ -132,61 +132,12 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
  */
 var newEvents = new Array();
 FieldDependencies.prototype.controlActions = function (sourcename) {
-	var sourcevalue ='';
-	var field, comparator, value, columncondition, fieldName, groupid, conditionCurr, newGroup;
 	var conditions=new Array();
 	if (this.DS[sourcename]!==undefined) {
 		for (var i=0; i<this.DS[sourcename].length; i++) {
 			var responsibleConfig=this.DS[sourcename][i];
 			conditions=responsibleConfig['conditions']!=='' ?  JSON.parse(responsibleConfig['conditions']) : conditions;
-			var conditionResp='';
-			var condArray=new Array();
-			var condOperatorArray=new Array();
-			for (var j=0; j<conditions.length; j++) {
-				newGroup=false;
-				field=conditions[j]['columnname'];
-				comparator=conditions[j]['comparator'];
-				value=conditions[j]['value'];
-				columncondition=conditions[j]['columncondition'];
-				groupid=conditions[j]['groupid'];
-				fieldName=field.split(':');
-				field=fieldName[1];
-				sourcevalue=this.getFieldValue(field);
-				switch (comparator) {
-				case 'e': conditionResp+= sourcevalue===value; break;
-				case 'n': conditionResp+= sourcevalue!==value; break;
-				case 's': conditionResp+= sourcevalue.startsWith(value); break;
-				case 'Ns': conditionResp+= !sourcevalue.startsWith(value); break;
-				case 'ew': conditionResp+= sourcevalue.endsWith(value); break;
-				case 'New': conditionResp+= !sourcevalue.endsWith(value); break;
-				case 'c': conditionResp+= sourcevalue.indexOf(value)!==-1; break;
-				case 'k': conditionResp+= sourcevalue.indexOf(value)===-1; break;
-				case 'l': conditionResp+= parseInt(sourcevalue) < parseInt(value); break;
-				case 'g': conditionResp+= parseInt(sourcevalue) > parseInt(value); break;
-				case 'm': conditionResp+= parseInt(sourcevalue) <= parseInt(value); break;
-				case 'h': conditionResp+= parseInt(sourcevalue) >= parseInt(value); break;
-				default:
-					conditionResp+=false; break;
-				}
-				if (j<conditions.length - 1 && groupid!=conditions[j+1]['groupid']) {
-					condArray.push(conditionResp);
-					conditionCurr=conditions[j]['columncondition'].toLowerCase()==='or' ? ' || ' : ' && ';
-					condOperatorArray.push(conditionCurr);
-					conditionResp='';
-					newGroup=true;
-				}
-				if (columncondition!=='' && !newGroup) {
-					columncondition=conditions[j]['columncondition'].toLowerCase()==='or' ? ' || ' : ' && ';
-					conditionResp +=' '+columncondition+' ';
-				} else if (columncondition=='') {
-					condArray.push(conditionResp);
-					condOperatorArray.push('');
-				}
-			}
-			conditionResp='';
-			for (j=0; j<condArray.length; j++) {
-				conditionResp +='('+condArray[j]+')'+condOperatorArray[j];
-			}
+			var conditionResp = this.evaluateConditions(conditions);
 			if (eval(conditionResp) || conditions.length===0) {
 				if (responsibleConfig['actions']['change']!== undefined && responsibleConfig['actions']['change'].length > 0) {
 					this.fieldValueChange(responsibleConfig['actions']['change']);
@@ -254,6 +205,60 @@ FieldDependencies.prototype.controlActions = function (sourcename) {
 			}
 		}
 	}
+};
+
+FieldDependencies.prototype.evaluateConditions = function (conditions) {
+	var conditionResp = '';
+	var sourcevalue = '';
+	var condArray=new Array();
+	var condOperatorArray=new Array();
+	var field, comparator, value, columncondition, fieldName, groupid, conditionCurr, newGroup;
+	for (var j=0; j<conditions.length; j++) {
+		newGroup=false;
+		field=conditions[j]['columnname'];
+		comparator=conditions[j]['comparator'];
+		value=conditions[j]['value'];
+		columncondition=conditions[j]['columncondition'];
+		groupid=conditions[j]['groupid'];
+		fieldName=field.split(':');
+		field=fieldName[1];
+		sourcevalue=this.getFieldValue(field);
+		switch (comparator) {
+		case 'e': conditionResp+= sourcevalue===value; break;
+		case 'n': conditionResp+= sourcevalue!==value; break;
+		case 's': conditionResp+= sourcevalue.startsWith(value); break;
+		case 'Ns': conditionResp+= !sourcevalue.startsWith(value); break;
+		case 'ew': conditionResp+= sourcevalue.endsWith(value); break;
+		case 'New': conditionResp+= !sourcevalue.endsWith(value); break;
+		case 'c': conditionResp+= sourcevalue.indexOf(value)!==-1; break;
+		case 'k': conditionResp+= sourcevalue.indexOf(value)===-1; break;
+		case 'l': conditionResp+= parseInt(sourcevalue) < parseInt(value); break;
+		case 'g': conditionResp+= parseInt(sourcevalue) > parseInt(value); break;
+		case 'm': conditionResp+= parseInt(sourcevalue) <= parseInt(value); break;
+		case 'h': conditionResp+= parseInt(sourcevalue) >= parseInt(value); break;
+		default:
+			conditionResp+=false; break;
+		}
+		if (j<conditions.length - 1 && groupid!=conditions[j+1]['groupid']) {
+			condArray.push(conditionResp);
+			conditionCurr=conditions[j]['columncondition'].toLowerCase()==='or' ? ' || ' : ' && ';
+			condOperatorArray.push(conditionCurr);
+			conditionResp='';
+			newGroup=true;
+		}
+		if (columncondition!=='' && !newGroup) {
+			columncondition=conditions[j]['columncondition'].toLowerCase()==='or' ? ' || ' : ' && ';
+			conditionResp +=' '+columncondition+' ';
+		} else if (columncondition=='') {
+			condArray.push(conditionResp);
+			condOperatorArray.push('');
+		}
+	}
+	conditionResp='';
+	for (j=0; j<condArray.length; j++) {
+		conditionResp +='('+condArray[j]+')'+condOperatorArray[j];
+	}
+	return conditionResp;
 };
 
 /**
