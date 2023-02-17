@@ -422,6 +422,12 @@ FieldDependencies.prototype.getFieldElement = function (field) {
 		if (fld==undefined || fld.type==undefined) {
 			if (document.forms['EditView'] == undefined) {
 				fld = document.forms['DetailView'].querySelector('[name="'+field+'"]');
+				if (fld==undefined || fld.type==undefined) {
+					fld = document.getElementById('dtlview_'+field);
+					if (fld) {
+						return fld;
+					}
+				}
 			} else {
 				fld = document.forms['EditView'].querySelector('[name="'+field+'"]');
 			}
@@ -438,6 +444,9 @@ FieldDependencies.prototype.getFieldElement = function (field) {
 
 FieldDependencies.prototype.getFieldValue = function (field) {
 	var fld = this.getFieldElement(field);
+	if (fld!=undefined && fld.nodeName=='SPAN') {
+		return fld.innerText;
+	}
 	if (fld==undefined || fld.type==undefined) {
 		return '';
 	}
