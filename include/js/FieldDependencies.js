@@ -75,7 +75,7 @@ FieldDependencies.prototype.setup = function (sourceform, datasource) {
 		thisContext.actOnDetailViewLoad();
 	}
 
-	this.initDS(datasource);
+	this.initDS(datasource==undefined ? this.DS : datasource);
 
 	if (!this.baseform) {
 		return;
@@ -83,13 +83,16 @@ FieldDependencies.prototype.setup = function (sourceform, datasource) {
 
 	var nodelist = document.querySelectorAll('input,select');
 	for (var i = 0; i < nodelist.length; i++) {
+		if (nodelist[i].id=='') {
+			continue;
+		}
 		// we should use addEventListener here but it doesn't work on the jscalendar element nor on the initial loading of the page
 		if (nodelist[i].id.substring(0, 12)=='jscal_field_') {
 			nodelist[i].onchange = function (ev) {
 				thisContext.actOnSelectChange(ev);
 			};
 		} else {
-			jQuery('#'+nodelist[i].id).bind('change', function (ev) {
+			jQuery('#'+nodelist[i].id, this.baseform).bind('change', function (ev) {
 				thisContext.actOnSelectChange(ev);
 			});
 		}
@@ -412,13 +415,31 @@ FieldDependencies.prototype.fieldValueChange = function (targetFields) {
 	}
 };
 
-FieldDependencies.prototype.getFieldValue = function (field) {
+FieldDependencies.prototype.getFieldElement = function (field) {
 	var fld = document.getElementById(field);
-	if (fld==undefined) {
-		fld = document.getElementsByName(field).item(0);
-		if (fld==null) {
-			return '';
+	if (fld==undefined || fld.type==undefined) {
+		fld = document.getElementById('txtbox_'+field);
+		if (fld==undefined || fld.type==undefined) {
+			if (document.forms['EditView'] == undefined) {
+				fld = document.forms['DetailView'].querySelector('[name="'+field+'"]');
+			} else {
+				fld = document.forms['EditView'].querySelector('[name="'+field+'"]');
+			}
+			if (fld==undefined || fld.type==undefined) {
+				fld = document.getElementsByName(field).item(0);
+			}
+			if (fld==undefined || fld.type==undefined) {
+				return undefined;
+			}
 		}
+	}
+	return fld;
+};
+
+FieldDependencies.prototype.getFieldValue = function (field) {
+	var fld = this.getFieldElement(field);
+	if (fld==undefined || fld.type==undefined) {
+		return '';
 	}
 	if (fld.type == 'checkbox') {
 		return (fld.checked ? '1' : '0');
