@@ -609,12 +609,28 @@ FieldDependencies.prototype.fieldReadonlyEditView = function (readonlyFields) {
 	var field='';
 	for (var i=0; i<readonlyFields.length; i++) {
 		field=readonlyFields[i]['field'];
+		let isuytype10 = false;
 		let fh = document.getElementById(field+'_hidden');
 		if (fh) {
-			fh.innerHTML=document.getElementsByName(field).item(0).value;
+			let fval = document.getElementsByName(field).item(0);
+			if (fval.type=='hidden') { // uitype 10
+				fval = document.getElementById(field+'_display');
+				isuytype10 = true;
+			}
+			fh.innerHTML=fval.value;
 			fh.style.display='inline';
 		}
-		let fn = document.getElementById(field);
+		let fn = null;
+		if (isuytype10) {
+			fn = document.getElementById(field+'_display');
+			let btn = document.querySelectorAll('#'+field+'_display ~ button');
+			if (btn) {
+				btn[0].style.display='none';
+				btn[1].style.display='none';
+			}
+		} else {
+			fn = document.getElementById(field);
+		}
 		if (fn) {
 			fn.style.display='none';
 		}
