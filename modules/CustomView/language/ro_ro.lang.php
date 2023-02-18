@@ -220,10 +220,13 @@ $mod_strings = array(
 	'after' => 'After',
 	'between' => 'Between',
 	'LBL_SET_AS_PUBLIC' => 'Seteaza Public',
+	'LBL_SET_AS_PRIVATE'=>'Set as Private',
 	'LBL_NEW' => 'Nou',
 	'LBL_EDIT' => 'Editare',
 	'LBL_STATUS_PUBLIC_APPROVE' => 'Aprobare',
 	'LBL_STATUS_PUBLIC_DENY' => 'Refuz',
+	'LBL_FIRST_COLUMN'=>'First Column',
+	'LBL_SECOND_COLUMN'=>'Second Column',
 	'LBL_ADVANCED_FILTER' => 'Regula',
 );
 ?>
