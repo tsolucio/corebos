@@ -193,6 +193,7 @@ class CBAddNotification extends VTTask {
 			$mact = json_decode($moreaction, true);
 			if (!empty($mact['link'])) {
 				$mact['link'] = str_replace('$ID$', $remid, $mact['link']);
+				$moreaction = $mact;
 			}
 			$adb->pquery(
 				'UPDATE vtiger_activity_reminder_popup set moreinfo=?,moreaction=? WHERE reminderid=?',
@@ -202,7 +203,7 @@ class CBAddNotification extends VTTask {
 			$remid = $minfo['id'];
 		}
 		$entity->WorkflowContext['AddNotification_NotificationID'] = $remid;
-		$logbg->debug('< AddNotification', [$cbmodule, $cbrecord, $datetime, $ownerid, $relwith, $moreaction, $moreinfo, $remid]);
+		$logbg->debug('< AddNotification', [$cbmodule, $cbrecord, $datetime, $ownerid, $relwith, $moreaction, $minfo, $remid]);
 	}
 }
 ?>
