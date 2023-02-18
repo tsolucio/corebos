@@ -511,7 +511,7 @@ class addMapsForShopify2coreBOSIntegration extends cbupdaterWorker {
 				$focusnew->column_fields['mapname'] = 'Workflow_Shopify2SalesOrder';
 				$focusnew->column_fields['maptype'] = 'Mapping';
 				$focusnew->column_fields['targetname'] = 'SalesOrder';
-				$focusnew->column_fields['content'] = '<map
+				$focusnew->column_fields['content'] = '<map>
 					<originmodule>
 					<originname>Shopify</originname>
 					</originmodule>
