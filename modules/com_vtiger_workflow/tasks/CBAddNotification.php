@@ -189,7 +189,7 @@ class CBAddNotification extends VTTask {
 		$remid = cbCalendar::addNotificationReminder($cbmodule, $cbrecord, $datetime, $ownerid, $relwith, $moreaction, $moreinfo);
 		$minfo = json_decode($moreinfo, true);
 		if (empty($minfo['id'])) {
-			$minfo['id'] = $remid;
+			$minfo['id'] = (string)$remid;
 			$mact = json_decode($moreaction, true);
 			if (!empty($mact['link'])) {
 				$mact['link'] = str_replace('$ID$', $remid, $mact['link']);
