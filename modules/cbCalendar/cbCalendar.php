@@ -355,7 +355,7 @@ class cbCalendar extends CRMEntity {
 		} else {
 			$cbsubject = $cbactivitytype = $activity['activityimage'] = '';
 			if (!empty($cbrecord)) {
-				$cbsubject = array_values(getEntityName($cbmodule, $cbrecord));
+				$cbsubject = array_values(getEntityName(getSalesEntityType($cbrecord), $cbrecord));
 				$cbsubject = $cbsubject[0];
 				$cbactivitytype = getTranslatedString($cbmodule, $cbmodule);
 				$mod = CRMEntity::getInstance($cbmodule);
