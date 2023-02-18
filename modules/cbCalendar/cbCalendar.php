@@ -293,7 +293,8 @@ class cbCalendar extends CRMEntity {
 	 * @param string module
 	 */
 	public function insertIntoActivityReminderPopup($cbmodule) {
-		self::addNotificationReminder($cbmodule, $this->id, $this->column_fields['dtstart']);
+		global $current_user;
+		self::addNotificationReminder($cbmodule, $this->id, $this->column_fields['dtstart'], $current_user->id);
 	}
 
 	public static function addNotificationReminder($cbmodule, $cbrecord, $dtstart, $owner = 0, $relwith = 0, $action = '', $moreinfo = '') {
