@@ -118,6 +118,11 @@ class cbCVManagement extends CRMEntity {
 
 	private static $validationinfo = array();
 
+	public function __construct() {
+		parent::__construct();
+		self::checkcbCVManagementInstalled();
+	}
+
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
@@ -403,6 +408,39 @@ class cbCVManagement extends CRMEntity {
 				$allViews[] = $value['cvid'];
 			}
 		}
+
+		// push all public filters if the user is admin
+		if ($current_user->id == 1) {
+			$cvsql = 'SELECT vtiger_cbcvmanagement.cvid FROM `vtiger_cbcvmanagement` WHERE setpublic = 1 AND module_list = ?';
+			$queryResult = $adb->pquery($cvsql, array($module));
+			while ($row=$adb->fetch_array($queryResult)) {
+				$allViews[] = $row['cvid'];
+			}
+		}
+
+		// push all approved public filters
+		$cvsql = "SELECT * FROM `vtiger_customview` WHERE status = 3 AND entitytype = ?";
+		$queryResult = $adb->pquery($cvsql, array($module));
+		while ($row=$adb->fetch_array($queryResult)) {
+			$allViews[] = $row['cvid'];
+		}
+
+		// filter private records views
+		$cvsql = 'SELECT vtiger_cbcvmanagement.cvid, vtiger_customview.userid 
+			FROM `vtiger_cbcvmanagement` 
+			INNER JOIN vtiger_customview 
+			ON vtiger_cbcvmanagement.cvid = vtiger_customview.cvid 
+			WHERE setprivate = 1';
+		$queryResult = $adb->query($cvsql);
+		while ($row=$adb->fetch_array($queryResult)) {
+			for ($i=0; $i < count($allViews); $i++) {
+				if ($allViews[$i] == $row['cvid'] && $row['userid'] !== $cvuserid) {
+					unset($allViews[$i]);
+					$allViews = array_values($allViews);
+				}
+			}
+		}
+
 		VTCacheUtils::updateCachedInformation($key, $value);
 		return array_unique($allViews);
 	}
@@ -478,6 +516,23 @@ class cbCVManagement extends CRMEntity {
 		if (empty($cvuserid)) {
 			return false;
 		}
+
+		// checks if the record is Private
+		$cvsql = 'SELECT vtiger_cbcvmanagement.cvid, vtiger_customview.userid 
+			FROM `vtiger_cbcvmanagement` 
+			INNER JOIN vtiger_customview 
+			ON vtiger_cbcvmanagement.cvid = vtiger_customview.cvid 
+			WHERE setprivate = 1 AND vtiger_cbcvmanagement.cvid = ? AND vtiger_customview.userid != ?';
+		$queryResult = $adb->pquery($cvsql, array($cvid, $cvuserid));
+		if ($adb->num_rows($queryResult)) {
+			return array('C' => 0, 'R' => 0, 'U' => 0, 'D' => 0, 'A' => 0);
+		}
+
+		// giving all permissions if its the admin user
+		if ($cvuserid == 1) {
+			return array('C' => 1, 'R' => 1, 'U' => 1, 'D' => 1, 'A' => 1);
+		}
+
 		$module = $adb->query_result($cvrs, 0, 'entitytype');
 		$cvname = $adb->query_result($cvrs, 0, 'viewname');
 		$cvuid = $adb->query_result($cvrs, 0, 'userid');
@@ -604,6 +659,53 @@ class cbCVManagement extends CRMEntity {
 
 	public static function getValidationInfo() {
 		return self::$validationinfo;
+	}
+
+	public static function getFieldValuesByCvId($cvid) {
+		global $adb;
+		$result = $adb->pquery("SELECT * FROM `vtiger_cbcvmanagement` WHERE cvid = ?", array($cvid));
+		if (!$result) {
+			return false;
+		}
+		return $result->fields;
+	}
+
+	public static function checkcbCVManagementInstalled() {
+		global $adb, $current_user, $currentModule;
+		if (vtlib_isModuleActive('cbupdater')) {
+			$holdModule = $currentModule;
+			$columnNames = $adb->getColumnNames('vtiger_cbcvmanagement');
+			if (!in_array('setprivate', $columnNames)) {
+				$holduser = $current_user;
+				ob_start();
+				include 'modules/cbupdater/getupdatescli.php';
+				$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='addIsPrivateFieldToCbCVManagement'");
+				if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
+					$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
+					$argv[0] = 'doworkcli';
+					$argv[1] = 'apply';
+					$argv[2] = $updid;
+					include 'modules/cbupdater/doworkcli.php';
+					ob_end_clean();
+					$current_user = $holduser;
+				}
+			}
+			if (!in_array('sortfieldbyfirst', $columnNames) || !in_array('sortfieldbysecond', $columnNames)) {
+				$holduser = $current_user;
+				ob_start();
+				include 'modules/cbupdater/getupdatescli.php';
+				$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='addSortByFieldToCbCVManagement'");
+				if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
+					$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
+					$argv[0] = 'doworkcli';
+					$argv[1] = 'apply';
+					$argv[2] = $updid;
+					include 'modules/cbupdater/doworkcli.php';
+					ob_end_clean();
+					$current_user = $holduser;
+				}
+			}
+		}
 	}
 }
 ?>

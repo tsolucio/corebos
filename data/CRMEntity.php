@@ -3756,17 +3756,45 @@ class CRMEntity {
 		$log->debug('> getOrderBy');
 		$cmodule = get_class($this);
 		$order_by = '';
+		$customView = new CustomView($cmodule);
+		$viewid = $customView->getViewId($cmodule);
+		$sortfieldbyfirst = cbCVManagement::getFieldValuesByCvId($viewid)['sortfieldbyfirst'];
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule)) {
 			$order_by = GlobalVariable::getVariable('Application_ListView_Default_OrderField', $this->default_order_by, $cmodule);
+		} elseif (!GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule) && !empty($sortfieldbyfirst)) {
+			$order_by = $sortfieldbyfirst;
+		} elseif (!empty($_SESSION[$cmodule.'_Order_By'])) {
+			$order_by = $adb->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
 		}
 
 		if (isset($_REQUEST['order_by'])) {
 			$order_by = $adb->sql_escape_string($_REQUEST['order_by']);
-		} elseif (!empty($_SESSION[$cmodule.'_Order_By'])) {
-			$order_by = $adb->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
 		}
 		$log->debug('< getOrderBy');
 		return $order_by;
+	}
+
+	/**
+	 * Function to get all orderbys and sortOrders
+	 * @return array sortArrayList(eg: [{"orderBy": "lastname", "sortOrder": "ASC"}, {"orderBy": "firstname", "sortOrder": "ASC"}])
+	 */
+	public function getOrderByAndSortOrderList() {
+		$sortArrayList = array();
+		$currentModule = get_class($this);
+		$customView = new CustomView($currentModule);
+		$viewid = $customView->getViewId($currentModule);
+		$order_by = $this->getOrderBy();
+		$sort_order = $this->getSortOrder();
+		$fieldValues = cbCVManagement::getFieldValuesByCvId($viewid);
+		$sortfieldbyfirst = $fieldValues['sortfieldbyfirst'];
+		$sortfieldbysecond = $fieldValues['sortfieldbysecond'];
+		if (!empty($order_by)) {
+			$sortArrayList[] = array('orderBy' => $order_by, 'sortOrder' => $sort_order);
+		}
+		if (!empty($sortfieldbysecond) && $order_by == $sortfieldbyfirst) {
+			$sortArrayList[] = array('orderBy' => $sortfieldbysecond, 'sortOrder' => $sort_order);
+		}
+		return $sortArrayList;
 	}
 
 	/**

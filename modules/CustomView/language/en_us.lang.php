@@ -251,10 +251,13 @@ $mod_strings = array(
 
 //Added for Role based Custom filters
 'LBL_SET_AS_PUBLIC'=>'Set as Public ',
+'LBL_SET_AS_PRIVATE'=>'Set as Private',
 'LBL_NEW'=>'New',
 'LBL_EDIT'=>'Edit',
 'LBL_STATUS_PUBLIC_APPROVE'=>'Approve',
 'LBL_STATUS_PUBLIC_DENY'=>'Deny',
+'LBL_FIRST_COLUMN'=>'First Column',
+'LBL_SECOND_COLUMN'=>'Second Column',
 
 'LBL_ADVANCED_FILTER' => 'Rule',
 );

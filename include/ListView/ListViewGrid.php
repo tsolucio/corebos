@@ -46,20 +46,16 @@ class GridListView {
 		$viewid = isset($_SESSION['lvs'][$this->module]) ? $_SESSION['lvs'][$this->module]['viewname'] : 0;
 		$focus = new $this->module();
 		$focus->initSortbyField($this->module);
-		$gvOrderField = GlobalVariable::getVariable('Application_ListView_Default_OrderField', '', $this->module);
-		$gvSortOrder = GlobalVariable::getVariable('Application_ListView_Default_Sort_Order', '', $this->module);
-		$gvDefaultSorting = boolval(GlobalVariable::getVariable('Application_ListView_Default_Sorting', false, $this->module));
+		$sortArrayList = $focus->getOrderByAndSortOrderList();
 		if (isset($_REQUEST['sortAscending'])) {
 			$this->orderBy = $_REQUEST['sortAscending'] == 'true' ? 'ASC' : 'DESC';
-		} elseif (!empty($gvSortOrder) && $gvDefaultSorting) {
-			$this->orderBy = $gvSortOrder;
+		} else {
+			$this->orderBy = !empty($sortArrayList) ? $sortArrayList[0]['sortOrder'] : '';
 		}
 		if ($this->sortColumn != '') {
 			$order_by = $this->sortColumn;
-		} elseif (!empty($gvOrderField) && $gvDefaultSorting) {
-			$order_by = $gvOrderField;
 		} else {
-			$order_by = $focus->getOrderBy();
+			$order_by = !empty($sortArrayList) ? $sortArrayList[0]['orderBy'] : '';
 		}
 		$queryGenerator = new QueryGenerator($this->module, $current_user);
 		try {
@@ -136,8 +132,14 @@ class GridListView {
 			coreBOS_Session::delete('export_where');
 		}
 		// Sorting
-		if (!empty($order_by)) {
-			$list_query.=' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$this->orderBy;
+		if (!empty($sortArrayList)) {
+			$list_query .= ' ORDER BY';
+			foreach ($sortArrayList as $index => $sortObj) {
+				$list_query .= ' ' . $queryGenerator->getOrderByColumn($sortObj['orderBy']).' '.$sortObj['sortOrder'];
+				if ($index + 1 < !empty($sortArrayList)) {
+					$list_query .= ',';
+				}
+			}
 		}
 		if (isset($_REQUEST['isRecycleModule'])) {
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias($this->module, true);
