@@ -161,9 +161,16 @@ class CBAddNotification extends VTTask {
 			$moreinfo = $entity->WorkflowContext['AddNotification_MoreInfo'];
 		}
 		if (empty($entity->WorkflowContext['AddNotification_Owner'])) {
-			if (empty($this->ownerid) || $this->cbmodule=='wfuser') {
+			if (empty($this->ownerid) || $this->ownerid=='wfuser') {
 				global $current_user;
+				$util = new VTWorkflowUtils();
+				$hold_user = $current_user;
+				$util->loggedInUser();
+				if (is_null($current_user)) {
+					$current_user = $hold_user; // make sure current_user is defined
+				}
 				$ownerid = $current_user->id;
+				$util->revertUser();
 			} else {
 				$ownerid = vtws_getCRMID($this->ownerid);
 			}
