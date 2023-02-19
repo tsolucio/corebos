@@ -1,4 +1,5 @@
 var MDInstance = Array();
+var RecordsToDuplicate = Array();
 var ReloadScreenAfterEdit = 0;
 GlobalVariable_getVariable('MasterDetail_ReloadScreenAfterEdit', 0).then(function (response) {
 	let obj = JSON.parse(response);
@@ -216,6 +217,20 @@ var masterdetailwork = {
 	GridMounted: (ev) => {
 		if (masterdetailwork.MasterHide[ev.instance.el.id]) {
 			document.getElementById(`masterdetail__${ev.instance.el.id}`).style.display = 'none';
+		}
+	},
+
+	checkUnCheckRows: (ev) => {
+		RecordsToDuplicate = [];
+		let rows = ev.instance.getCheckedRows();
+		rows.forEach(row => {
+			RecordsToDuplicate.push(row.record_id);
+		});
+	},
+
+	DuplicateRecords: (ev, workflowid) => {
+		if (RecordsToDuplicate.length > 0) {
+			runBAWorkflow(workflowid, RecordsToDuplicate.join(';'))
 		}
 	},
 
