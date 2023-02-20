@@ -148,6 +148,8 @@ function __cb_hash($arr) {
 		return sha1($arr[0]);
 	}
 	switch ($arr[1]) {
+		case 'sha256':
+			return hash('sha256', $arr[0]);
 		case 'md5':
 			return md5($arr[0]);
 		case 'crc32':

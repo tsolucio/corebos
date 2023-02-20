@@ -1185,7 +1185,7 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'method',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'selected hashing algorithm: "md5", "sha1", "crc32"',
+			'desc' => 'selected hashing algorithm: "md5", "sha1", "crc32", "sha256"',
 		),
 	),
 	'categories' => array('Text'),
