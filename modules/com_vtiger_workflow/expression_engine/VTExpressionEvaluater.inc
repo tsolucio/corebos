@@ -82,6 +82,7 @@ class VTFieldExpressionEvaluater {
 			'floor' => '__vt_floor',
 			'modulo' => '__cb_modulo',
 			'hash' => '__cb_hash',
+			'hashFile' => '__cb_hash_file',
 			'base64encode' => '__cb_base64encode',
 			'base64decode' => '__cb_base64decode',
 			'globalvariable' => '__cb_globalvariable',

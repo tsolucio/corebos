@@ -1190,6 +1190,28 @@ $WFExpressionFunctionDefinitons = array(
 		"hash('admin', 'sha1')",
 	),
 ),
+'hashFile' => array(
+	'name' => 'hashFile(filePath, method)',
+	'desc' => 'This function generates a hash from a file content.',
+	'params' => array(
+		array(
+			'name' => 'filePath',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'file to be hashed',
+		),
+		array(
+			'name' => 'method',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'selected hashing algorithm: "md5", "sha1", "crc32", "sha256", etc...',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"hashFile(getimageurl(imagename), 'sha256')",
+	),
+),
 'globalvariable' => array(
 	'name' => 'globalvariable(gvname)',
 	'desc' => 'Devuelve el valor de una variable global.',

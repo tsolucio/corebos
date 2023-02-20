@@ -160,6 +160,13 @@ function __cb_hash($arr) {
 	}
 }
 
+function __cb_hash_file($arr) {
+	if (empty($arr) || count($arr)>2) {
+		return -1;
+	}
+	return hash_file($arr[1], urldecode($arr[0]));
+}
+
 function __cb_jsonencode($arr) {
 	return json_encode($arr[0], JSON_NUMERIC_CHECK);
 }
