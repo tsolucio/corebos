@@ -452,4 +452,5 @@ var alert_arr = {
 	'SelectField': 'Select field',
 	'MoveFile': 'Move file',
 	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
+	'LBL_COPY_ROWS': 'Copy Rows',
 };

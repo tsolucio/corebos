@@ -489,4 +489,5 @@ var alert_arr = {
 	'currentuser': 'Current User',
 	'wfmodule': 'Workflow Module',
 	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
+	'LBL_COPY_ROWS': 'Copy Rows',
 };
