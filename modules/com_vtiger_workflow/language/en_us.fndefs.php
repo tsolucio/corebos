@@ -1192,6 +1192,7 @@ $WFExpressionFunctionDefinitons = array(
 	'examples' => array(
 		"hash('admin', 'sha1')",
 	),
+),
 'hashFile' => array(
 	'name' => 'hashFile(filePath, method)',
 	'desc' => 'This function generates a hash from a file content.',

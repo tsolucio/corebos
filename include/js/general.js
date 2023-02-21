@@ -1459,7 +1459,7 @@ function runBAScript(scripturi) {
 	return void(0);
 }
 
-function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false) {
+function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false, redirectTo = '') {
 	if (typeof workflowid == 'undefined' || workflowid == '') {
 		return false;
 	}
@@ -1474,27 +1474,52 @@ function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false) {
 	}
 	VtigerJS_DialogBox.block();
 	const dataset = document.activeElement.dataset;
-	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids+'&ctx='+encodeURIComponent(context)).then(function (data) {
-		const response = JSON.parse(data);
-		if (response) {
-			if (dataset.success !== undefined && dataset.success != '') {
-				ldsPrompt.show(dataset.title, dataset.success, 'success');
+	if (typeof workflowid == 'number') {
+		workflowid = [workflowid];
+	}
+	let wferrors = [];
+	for (let i in workflowid) {
+		ExecuteFunctions('execwf', 'wfid='+workflowid[i]+'&ids='+crmids+'&ctx='+encodeURIComponent(context)).then(function (data) {
+			const response = JSON.parse(data);
+			if (workflowid.length == 1) {
+				if (response) {
+					if (dataset.success !== undefined && dataset.success != '') {
+						ldsPrompt.show(dataset.title, dataset.success, 'success');
+					} else {
+						ldsPrompt.show(alert_arr.Okay, alert_arr.Okay, 'success');
+					}
+				} else { //Error
+					if (dataset.error !== undefined && dataset.error != '') {
+						ldsPrompt.show(dataset.title, dataset.error);
+					} else {
+						ldsPrompt.show(alert_arr['ERROR'], alert_arr.ERROR);
+					}
+				}
 			} else {
-				ldsPrompt.show(alert_arr.Okay, alert_arr.Okay, 'success');
+				if (response) {
+					if (dataset.success !== undefined && dataset.success != '') {
+						ldsNotification.show(dataset.title, dataset.success, 'success');
+					} else {
+						ldsNotification.show(alert_arr.Okay, alert_arr.Okay, 'success');
+					}
+				} else { //Error
+					if (dataset.error !== undefined && dataset.error != '') {
+						ldsNotification.show(dataset.title, dataset.error, 'error');
+					} else {
+						ldsNotification.show(alert_arr['ERROR'], alert_arr.ERROR, 'error');
+					}
+				}
 			}
-		} else { //Error
-			if (dataset.error !== undefined && dataset.error != '') {
-				ldsPrompt.show(dataset.title, dataset.error);
-			} else {
-				ldsPrompt.show(alert_arr['ERROR'], alert_arr.ERROR);
+			VtigerJS_DialogBox.unblock();
+			corebosjshook_runBAWorkflow(workflowid[i], crmids, context, refreshDV, response);
+			if (refreshDV) {
+				dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
 			}
-		}
-		VtigerJS_DialogBox.unblock();
-		corebosjshook_runBAWorkflow(workflowid, crmids, context, refreshDV, response);
-		if (refreshDV) {
-			dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
-		}
-	});
+			if (redirectTo!='') {
+				gotourl(redirectTo);
+			}
+		});
+	}
 	return void(0);
 }
 
