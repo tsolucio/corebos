@@ -231,7 +231,7 @@ class WizardComponent {
 				return false;
 			}
 			let res = await this.SaveForm();
-			if (this.Suboperation[this.ActiveStep+1] == 'CalendarView') {
+			if (res && this.Suboperation[this.ActiveStep+1] == 'CalendarView') {
 				this.el(`seq-${this.ActiveStep+1}`).style.display = 'block';
 				await this.CalendarView();
 				this.Interval[this.ActiveStep+1] = setInterval(function () {
