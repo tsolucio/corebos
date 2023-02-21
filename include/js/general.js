@@ -1459,7 +1459,7 @@ function runBAScript(scripturi) {
 	return void(0);
 }
 
-function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false) {
+function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false, redirectTo = '') {
 	if (typeof workflowid == 'undefined' || workflowid == '') {
 		return false;
 	}
@@ -1514,6 +1514,9 @@ function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false) {
 			corebosjshook_runBAWorkflow(workflowid[i], crmids, context, refreshDV, response);
 			if (refreshDV) {
 				dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
+			}
+			if (redirectTo!='') {
+				gotourl(redirectTo);
 			}
 		});
 	}
