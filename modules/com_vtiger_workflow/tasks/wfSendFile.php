@@ -89,16 +89,14 @@ class wfSendFile extends VTTask {
 			#$ftp->writeFile();
 
 			if (!filter_var($data['ftp_host'], FILTER_VALIDATE_IP)) {
-				return;
+				$logbg->debug('(wfSendFile) not called: ftp_host invalid');
 			} else {
 				$sftp = new \phpseclib\Net\SFTP($data['ftp_host'], intval($data['ftp_port']));
 				$sftp->login($data['ftp_username'], $data['ftp_password']);
 				$adapter = new Gaufrette\Adapter\PhpseclibSftp($sftp);
 				$filesystem = new Gaufrette\Filesystem($adapter);
-				
 				$workflow_filename = $workflow_context['wfgenerated_file'][0]['dest_name'];
 				$workflow_content = $workflow_context['wfgenerated_file'][0]['content'];
-						
 				$filesystem->write($workflow_filename, $workflow_content);
 			}
 		} elseif ($adapter == 'AzureBlobStorage') {
