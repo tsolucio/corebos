@@ -109,7 +109,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 				$Wizard[$module['name']] = $module['wizard'];
 			}
 			$NextStep[$module['name']] = false;
-			if (isset($module['wizard'])) {
+			if (isset($module['nextstep'])) {
 				$NextStep[$module['name']] = boolval($module['nextstep']);
 			}
 			if (isset($module['workflows'])) {
