@@ -740,6 +740,7 @@ class ListViewController {
 		$change_sorder = array('ASC'=>'DESC','DESC'=>'ASC');
 		$arrow_gif = array('ASC'=>'arrow_down.gif','DESC'=>'arrow_up.gif');
 		$default_sort_order = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_Sort_Order', 'ASC', $module));
+		$Application_Filter_Remove_RelatedModule_Label = GlobalVariable::getVariable('Application_Filter_Remove_RelatedModule_Label', '0', '', $current_user->id);
 		foreach ($listViewFields as $fieldName) {
 			if (!empty($moduleFields[$fieldName])) {
 				$field = $moduleFields[$fieldName];
@@ -750,6 +751,11 @@ class ListViewController {
 				}
 			}
 			$fieldLabel = $field->getFieldLabelKey();
+			$fieldModule = getTabModuleName($field->getTabId());
+			if ($fieldModule != $module && !$Application_Filter_Remove_RelatedModule_Label) {
+				$fieldModuleLabel = getTranslatedString($fieldModule, $fieldModule);
+				$fieldLabel = $field->getFieldLabelKey() . " (" . $fieldModuleLabel . ")";
+			}
 			if (in_array($field->getColumnName(), $focus->sortby_fields)) {
 				if ($orderBy == $field->getFieldName() || ($orderBy == 'title' && $field->getFieldName() == 'notes_title')) {
 					$temp_sorder = $change_sorder[$sorder];

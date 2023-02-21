@@ -1182,12 +1182,34 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'method',
 			'type' => 'Texto',
 			'optional' => false,
-			'desc' => 'algoritmo hash a aplicar: "md5", "sha1", "crc32"',
+			'desc' => 'algoritmo hash a aplicar: "md5", "sha1", "crc32", "sha256"',
 		),
 	),
 	'categories' => array('Text'),
 	'examples' => array(
 		"hash('admin', 'sha1')",
+	),
+),
+'hashFile' => array(
+	'name' => 'hashFile(filePath, method)',
+	'desc' => 'This function generates a hash from a file content.',
+	'params' => array(
+		array(
+			'name' => 'filePath',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'file to be hashed',
+		),
+		array(
+			'name' => 'method',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'selected hashing algorithm: "md5", "sha1", "crc32", "sha256", etc...',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"hashFile(getimageurl(imagename), 'sha256')",
 	),
 ),
 'globalvariable' => array(
@@ -2771,6 +2793,24 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"EUVATValidation('IT16816050114')"
+	),
+),
+'AutoNumberDec' => array(
+	'name' => 'AutoNumberDec(ANPid)',
+	'desc' => 'Decrementa el contador del registro de autonumber dado.',
+	'params' => array(
+		array(
+			'name' => 'ANPid',
+			'type' => 'Número/Texto',
+			'optional' => false,
+			'desc' => 'CRMID o valor AutoNumber del registro a decrementar. Opcionalmente, puede ser el nombre de un módulo activo, en cuyo caso encontrará el registro de autonumeración predeterminado actualmente activo para el módulo dado.',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		'AutoNumberDec(999)',
+		"AutoNumberDec('ANPx-00001')",
+		"AutoNumberDec('Accounts')",
 	),
 ),
 );

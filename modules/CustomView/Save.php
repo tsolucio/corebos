@@ -451,13 +451,16 @@ if ($cvmodule != '') {
 		'cvdefault' => $setdefault,
 		'cvapprove' =>'0',
 		'setpublic' => $setpublic,
+		'setprivate' => isset($_REQUEST['setPrivate']) ? 1 : 0,
+		'sortfieldbyfirst' => $_REQUEST['sortfieldbyfirst'],
+		'sortfieldbysecond' => $_REQUEST['sortfieldbysecond'],
 		'mandatory' => '0',
 		'module_list' => $cvmodule,
 		'assigned_user_id' => vtws_getEntityId('Users').'x'.$current_user->id,
 		'cvrole' => $subrole
 	);
 	$searchOn = 'cvid';
-	$updatedfields = 'cvdefault,setpublic';
+	$updatedfields = 'cvdefault,setpublic,setprivate,sortfieldbyfirst,sortfieldbysecond';
 	vtws_upsert('cbCVManagement', $default_values, $searchOn, $updatedfields, $current_user);
 }
 

@@ -18,6 +18,7 @@ if ({$MasterDetail_Pagination} > 0) {
 function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'] = new tui.Grid({
 		el: document.getElementById('{$MasterDetailLayoutMap.mapname}'), // Container element
+		rowHeaders: ['checkbox'],
 		columns: [
 			{foreach from=$MasterDetailLayoutMap.listview.fields item=mdfield name=mdhdr}
 			{
@@ -67,6 +68,10 @@ function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 	tui.Grid.applyTheme('striped');
 	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('editingFinish', masterdetailwork.inlineedit);
 	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('onGridMounted', masterdetailwork.GridMounted);
+	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('check', masterdetailwork.checkUnCheckRows);
+	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('uncheck', masterdetailwork.checkUnCheckRows);
+	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('checkAll', masterdetailwork.checkUnCheckRows);
+	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('uncheckAll', masterdetailwork.checkUnCheckRows);
 }
 loadMDGrid{$MasterDetailLayoutMap.mapname}();
 </script>

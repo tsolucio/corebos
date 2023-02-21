@@ -82,6 +82,7 @@ class VTFieldExpressionEvaluater {
 			'floor' => '__vt_floor',
 			'modulo' => '__cb_modulo',
 			'hash' => '__cb_hash',
+			'hashFile' => '__cb_hash_file',
 			'base64encode' => '__cb_base64encode',
 			'base64decode' => '__cb_base64decode',
 			'globalvariable' => '__cb_globalvariable',
@@ -160,6 +161,7 @@ class VTFieldExpressionEvaluater {
 			'getCurrentConfiguredTaxValues' => '__cb_getCurrentConfiguredTaxValues',
 			'getCurrencyConversionValue' => '__cb_getCurrencyConversionValue',
 			'EUVATValidation' => '__cb_euvatvalidation',
+			'AutoNumberDec' => '__cb_autonumber_dec',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',

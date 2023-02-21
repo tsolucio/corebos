@@ -20,6 +20,13 @@ use Gaufrette\Adapter\Ftp;
 use Gaufrette\Filesystem;
 
 class FTPAdapter {
+	public $host = '';
+	public $port = '';
+	public $user = '';
+	public $password = '';
+	public $path = '';
+	public $context = '';
+	public $filesystem = null;
 
 	public function __construct($data, $workflow_context) {
 		$this->host = $data['ftp_host'];
@@ -47,6 +54,7 @@ class FTPAdapter {
 			'passive'  => true,
 			'create'   => true,
 			'ssl'      => true,
+			'port'     => $port,
 		));
 		$this->filesystem = new Filesystem($adapter);
 	}

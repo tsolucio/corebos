@@ -973,6 +973,8 @@ $mod_strings = array (
 	'LBL_MB_NEWBLOCK' => 'Nuevo Bloque',
 	'LBL_MB_ADDFIELD' => 'AÑADIR CAMPO',
 	'LBL_MB_ALLMODULES' => 'Todos los Módulos',
+	'LBL_MB_STARTMODULE' => 'Empezar módulo nuevo',
+	'LBL_NEWFIELDHELP' => 'Campos predeterminados para el módulo <i>assigned_user_id</i>, <i>created_user_id</i>, <i>createdtime</i>, <i>modifiedtime</i> y <i>description </i> se crean automáticamente!',
 	'LBL_MB_PROGRESS' => 'Progreso',
 	'LBL_MB_STATUS' => 'Estado',
 	'LBL_MB_CVS' => 'Filtros',
@@ -1003,5 +1005,12 @@ $mod_strings = array (
 	'LBL_EXPORT' => 'Exportar',
 	'LBL_RELATED_MODULE' => 'Módulo Relacionado',
 	'LBL_RL_LABEL' => 'Etiqueta',
+	//email language translation
+	'LBL_EMAIL_TRANSLATE' => 'Este es un correo de prueba enviado para confirmar si realmente se está enviando un correo a través del servidor smtp que ha configurado.',
+	'LBL_EMAIL_END' => 'Siéntete libre de borrar este correo.',
+    'LBL_EMAIL_SUBJECT' => 'Prueba de correo sobre la configuración del servidor de correo.',
+    'LBL_DEAR' => 'Estimado ',
+    'LBL_THANKS' => 'Gracias y saludos,',
+
 );
 ?>

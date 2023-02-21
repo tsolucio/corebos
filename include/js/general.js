@@ -1576,7 +1576,7 @@ function getProcessInfo(edit_type, formName, action, callback, parameters) {
 	let module = ps.shift();
 	let forrecord = ps.shift();
 	let fparams = encodeURIComponent(ps.join('|'));
-	let params='&minfo='+minfo+'&bpmmodule='+module+'&pflowid=0&bpmrecord='+forrecord+'&params='+fparams+'&formName='+formName+'&actionName='+action;
+	let params='&minfo='+minfo+'&bpmmodule='+module+'&pflowid=0&cbfromid='+forrecord+'&bpmrecord='+forrecord+'&params='+fparams+'&formName='+formName+'&actionName='+action;
 	if (callback!='') {
 		params = params + '&savefn=' + callback;
 	}
@@ -2896,7 +2896,15 @@ function confirmdelete(url) {
 			method: 'POST',
 			url: url
 		}).done(function (response) {
-			location.reload();
+			let url = new URL(location.href);
+			let params = new URLSearchParams(url.search);
+			let newUrl = '';
+			if (params.has('viewname')) {
+				params.delete('viewname');
+				url.search = params.toString();
+				newUrl = url.toString();
+			}
+			window.location.replace(newUrl);
 		});
 	}
 }
@@ -7153,7 +7161,7 @@ function initSelect2() {
 	* @return: (bool)
 	*/
 	cbVal.isInt = function (val) {
-		return (cbNumber.isInt(val));
+		return cbNumber.isInt(val);
 	};
 
 	/*
@@ -7164,7 +7172,8 @@ function initSelect2() {
 	* @return: (bool)
 	*/
 	cbVal.isValidCheckBoxVal = function (val) {
-		return cbVal.validCheckBoxVals.indexOf(val) > -1 ? true : false;
+		cbVal.validCheckBoxVals.push(alert_arr.YES, alert_arr.NO);
+		return cbVal.validCheckBoxVals.indexOf(val) > -1;
 	};
 
 	/*
@@ -7630,6 +7639,35 @@ function openWizard(mapid) {
 		});
 	}, 100);
 }
+
+async function handleDrawClick(checkmodule, checkaction, recordid, doc2edit = '') {
+	const response = await ExecuteFunctions('ispermitted', `checkmodule=${checkmodule}&checkaction=${checkaction}&checkrecord=${recordid}`);
+
+	if (!response) {
+		try {
+		  ldsModal.close(true);
+		} catch (error) {
+			
+		}
+		ldsModal.show(alert_arr.JSLBL_DRAW_MODAL_TITLE, alert_arr.JSLBL_DRAW_MODAL_MESSAGE);
+		return;
+	  }
+  
+	const urlParams = new URLSearchParams();
+	urlParams.set('module', 'Utilities');
+	urlParams.set('action', 'UtilitiesAjax');
+	urlParams.set('file', 'Paint2Document');
+	urlParams.set('formodule', checkmodule);
+	urlParams.set('forrecord', recordid);
+	urlParams.set('inwindow', '1');
+	if (doc2edit) {
+	  urlParams.set('doc2edit', doc2edit);
+	}
+  
+	const url = `index.php?${urlParams.toString()}`;
+	window.open(url, 'photo2doc', 'width=1416,height=830');
+  
+  }
 
 window.addEventListener('DOMContentLoaded', () => {
 	AutocompleteSetup();

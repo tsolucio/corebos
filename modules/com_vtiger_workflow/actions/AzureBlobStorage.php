@@ -20,6 +20,13 @@ use Gaufrette\Adapter\GoogleCloudStorage as GoogleStorage;
 use Gaufrette\Filesystem;
 
 class AzureAdapter {
+	public $azure_account = '';
+	public $azure_key = '';
+	public $azure_container = '';
+	public $context = '';
+	public $container = null;
+	public $adapter = null;
+	public $filesystem = null;
 
 	public function __construct($data, $workflow_context) {
 		$this->azure_account = $data['azure_account'];

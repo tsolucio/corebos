@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 08-06-2021 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 09-02-2023 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 $mod_strings = array (
 'SINGLE_ModTracker' => 'Controle de mudanças',
@@ -23,7 +23,7 @@ $mod_strings = array (
 'LBL_Earlier' => 'Valor anterior',
 'LBL_Present' => 'Valor atual',
 'LBL_YOUR_CHANGES'  => 'Suas mudanças',
-'LBL_NOT_PERMITTED_TO_ACCESS_INFORMATION' => 'Você não tem permissão para acessar esta informação.',
+'LBL_NOT_PERMITTED_TO_ACCESS_INFORMATION' => 'Você não tem mais permissão para acessar esta informação.',
 'LBL_ACCESS_RESTRICTED' => 'Acesso negado',
 'LBL_REPORTNAME'=>'Nome relatório',
 'LBL_EXPORTPDF_BUTTON' => 'Exportar p/PDF',

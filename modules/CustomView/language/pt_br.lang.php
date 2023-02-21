@@ -256,10 +256,13 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 
 //Added for Role based Custom filters
 'LBL_SET_AS_PUBLIC'=>'Definir como público',
+'LBL_SET_AS_PRIVATE'=>'Set as Private',
 'LBL_NEW'=>'Novo',
 'LBL_EDIT'=>'Editar',
 'LBL_STATUS_PUBLIC_APPROVE'=>'Aprovar',
 'LBL_STATUS_PUBLIC_DENY'=>'Negar',
+'LBL_FIRST_COLUMN'=>'First Column',
+'LBL_SECOND_COLUMN'=>'Second Column',
 
 'LBL_ADVANCED_FILTER' => 'Regra',
 );

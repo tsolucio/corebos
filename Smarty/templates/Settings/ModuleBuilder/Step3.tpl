@@ -41,7 +41,7 @@
                                     <div>
                                       <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="field-help" style="position:fixed;display: none;overflow:hidden">
                                         <div class="slds-popover__body">
-                                            Default fields for module <i>assigned_user_id</i>, <i>created_user_id</i>, <i>createdtime</i>, <i>modifiedtime</i> and <i>description</i> are created automatically!
+                                          {$MOD.LBL_NEWFIELDHELP}
                                         </div>
                                       </div>
                                     </div>

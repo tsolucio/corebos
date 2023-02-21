@@ -1690,6 +1690,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Permitir la edición del filtro "Todos". Por defecto es 1',
 ),
+'Application_Filter_Remove_RelatedModule_Label' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Remove Related Module Label from table/list view column names',
+),
 'Security_ImageCheck' => array(
 	'valuetype' => 'Cadena',
 	'category' => 'Aplicación',
@@ -1869,6 +1875,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'mostrar o esconder la pestaña de más información',
+),
+'Application_ImageSlider_Mode' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'documents | fields | both',
+	'definition' => 'selecciona qué imágenes mostrar en el control deslizante de imágenes: documents mostrará imágenes de documentos relacionados, fields mostrará campos de imágenes en el registro y both mostrará ambos tipos',
 ),
 );
 

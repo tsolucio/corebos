@@ -180,6 +180,7 @@ class VTExpressionsManager {
 			'floor' => 'floor(numericfield)',
 			'modulo' => 'modulo(numericfield,numericfield)',
 			'hash' => 'hash(field, method)',
+			'hashFile' => 'hashFile(filePath, method)',
 			'base64encode' => 'base64encode(string)',
 			'base64decode' => 'base64decode(string)',
 			'globalvariable' => 'globalvariable(gvname)',
@@ -253,6 +254,7 @@ class VTExpressionsManager {
 			'getCurrentConfiguredTaxValues' => 'getCurrentConfiguredTaxValues(taxname)',
 			'getCurrencyConversionValue' => 'getCurrencyConversionValue(currency_code)',
 			'EUVATValidation' => 'EUVATValidation(vat)',
+			'AutoNumberDec' => 'AutoNumberDec(ANPid)',
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

@@ -1412,6 +1412,7 @@ $app_strings = array (
 	'LBL_PAINT2DOCUMENT' => 'Dibujo a Documento',
 	'Slider' => 'Carrusel',
 	'LBL_WIZARD' => 'Asistente',
+	'LBL_ROW' => 'Fila',
 );
 
 // Translation for currency names

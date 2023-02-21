@@ -42,7 +42,7 @@ if ($number==0) {
 	echo "<select class='small' size=8 style='width:280px;overflow:auto;' id='gendoctemplate' name='gendoctemplate'>";
 	$firsttime = true;
 	foreach ($tpls as $nid => $tname) {
-		echo "<option value='".$nid."' title='".$tname."' ". ($firsttime ? 'selected' : '') .">".$tname.'</option>';
+		echo "<option value='".$nid."' title='".$tname."' ". ($firsttime ? 'selected' : '') .'>'.$tname.'</option>';
 		$firsttime = false;
 	}
 	$gendoc_pdfactive = coreBOS_Settings::getSetting('cbgendoc_active', 0);

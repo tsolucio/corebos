@@ -17,23 +17,37 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
+function __cb_autonumber_get($tosearch) {
+	global $adb;
+	if (is_numeric($tosearch)) {
+		$check = $adb->pquery(
+			'select autonumberprefixid,current,prefix,format,isworkflowexpression from vtiger_autonumberprefix where autonumberprefixid=? FOR UPDATE',
+			array($tosearch)
+		);
+	} elseif (vtlib_isModuleActive($tosearch)) { // default record for module
+		$check = $adb->pquery(
+			'select autonumberprefixid,current,prefix,format,isworkflowexpression
+				from vtiger_autonumberprefix
+				inner join vtiger_crmentity on crmid=autonumberprefixid
+				where deleted=0 and semodule=? and active=1 order by default1 DESC LIMIT 1 FOR UPDATE',
+			array($tosearch)
+		);
+	} else {
+		$check = $adb->pquery(
+			'select autonumberprefixid,current,prefix,format,isworkflowexpression
+				from vtiger_autonumberprefix
+				inner join vtiger_crmentity on crmid=autonumberprefixid
+				where deleted=0 and autonumberprefixno=? FOR UPDATE',
+			array($tosearch)
+		);
+	}
+	return $check;
+}
+
 function __cb_autonumber_inc($arr) {
 	if (!empty($arr[0])) {
 		global $adb, $default_charset;
-		if (is_numeric($arr[0])) {
-			$check = $adb->pquery(
-				'select autonumberprefixid,current,prefix,format,isworkflowexpression from vtiger_autonumberprefix where autonumberprefixid=? FOR UPDATE',
-				array($arr[0])
-			);
-		} else {
-			$check = $adb->pquery(
-				'select autonumberprefixid,current,prefix,format,isworkflowexpression
-					from vtiger_autonumberprefix
-					inner join vtiger_crmentity on crmid=autonumberprefixid
-					where deleted=0 and autonumberprefixno=? FOR UPDATE',
-				array($arr[0])
-			);
-		}
+		$check = __cb_autonumber_get($arr[0]);
 		if ($check && $adb->num_rows($check)>0) {
 			$anpid = $adb->query_result($check, 0, 'autonumberprefixid');
 			$prefix = $adb->query_result($check, 0, 'prefix');
@@ -60,6 +74,18 @@ function __cb_autonumber_inc($arr) {
 			}
 			$adb->pquery('UPDATE vtiger_autonumberprefix SET current=current+1 where autonumberprefixid=?', array($anpid));
 			return decode_html($prev_inv_no);
+		}
+	}
+	return '';
+}
+
+function __cb_autonumber_dec($arr) {
+	if (!empty($arr[0])) {
+		global $adb;
+		$check = __cb_autonumber_get($arr[0]);
+		if ($check && $adb->num_rows($check)>0) {
+			$anpid = $adb->query_result($check, 0, 'autonumberprefixid');
+			$adb->pquery('UPDATE vtiger_autonumberprefix SET current=current-1 where autonumberprefixid=?', array($anpid));
 		}
 	}
 	return '';

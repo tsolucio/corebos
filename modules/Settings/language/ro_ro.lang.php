@@ -922,6 +922,8 @@ $mod_strings = array(
 	'LBL_MB_NEWBLOCK' => 'New Block',
 	'LBL_MB_ADDFIELD' => 'ADD FIELD',
 	'LBL_MB_ALLMODULES' => 'All modules',
+	'LBL_MB_STARTMODULE' => 'Start new module',
+	'LBL_NEWFIELDHELP' => 'Default fields for module <i>assigned_user_id</i>, <i>created_user_id</i>, <i>createdtime</i>, <i>modifiedtime</i> and <i>description</i> are created automatically!',
 	'LBL_MB_PROGRESS' => 'Progress',
 	'LBL_MB_STATUS' => 'Status',
 	'LBL_MODULE_BUILDER' => 'Module Builder',
@@ -937,5 +939,11 @@ $mod_strings = array(
 	'LBL_EXPORT' => 'Export',
 	'LBL_RELATED_MODULE' => 'Related Module',
 	'LBL_RL_LABEL' => 'Label',
+	//email language translate
+    'LBL_EMAIL_TRANSLATE' => 'Acesta este un e-mail de test trimis pentru a confirma dacă un e-mail este de fapt trimis prin serverul smtp pe care l-ați configurat.',
+    'LBL_EMAIL_END' => 'Simțiți-vă liber să ștergeți acest e-mail.',
+    'LBL_EMAIL_SUBJECT' => 'Testați e-mailul despre configurația serverului de e-mail.',
+    'LBL_DEAR' => 'Dragă ',
+    'LBL_THANKS' => 'Multumesc si Salutari,',
 );
 ?>
