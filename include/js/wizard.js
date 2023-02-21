@@ -54,6 +54,9 @@ class WizardComponent {
 		this.FormFields = [];
 		this.FormModule = [];
 		this.FormIDS = [];
+		this.Suboperation = [];
+		this.Interval = [];
+		this.Calendar = [];
 	}
 
 	Init() {
@@ -218,9 +221,24 @@ class WizardComponent {
 			return this.MassCreateGrid(ev, this.Operation);
 		case 'FORMTEMPLATE':
 			if (type == 'back') {
+				clearInterval(this.Interval[this.ActiveStep]);
+				this.HideEvents();
 				return true;
 			}
-			return await this.SaveForm();
+			if (this.steps == this.ActiveStep+1) {
+				clearInterval(this.Interval[this.ActiveStep]);
+				this.CloseModal();
+				return false;
+			}
+			let res = await this.SaveForm();
+			if (this.Suboperation[this.ActiveStep+1] == 'CalendarView') {
+				this.el(`seq-${this.ActiveStep+1}`).style.display = 'block';
+				await this.CalendarView();
+				this.Interval[this.ActiveStep+1] = setInterval(function () {
+					wizard.RenderEvents();
+				}, 5000);
+			}
+			return res;
 			break;
 		default:
 		}
@@ -312,6 +330,10 @@ class WizardComponent {
 		this.GroupData = [];
 		this.gridInstance = [];
 		this.WizardInstance = [];
+		this.FormFields = [];
+		this.FormModule = [];
+		this.FormIDS = [];
+		this.Suboperation = [];
 		localStorage.removeItem('currentWizardActive');
 	}
 
@@ -1289,6 +1311,146 @@ class WizardComponent {
 			recordid: this.FormIDS[this.ActiveStep] !== undefined ? this.FormIDS[this.ActiveStep] : 0,
 			modulename: this.FormModule[this.ActiveStep]
 		});
+	}
+
+	CalendarView() {
+		const container = document.getElementById(`calendar-${this.ActiveStep+1}`);
+		this.Calendar[this.ActiveStep+1] = new FullCalendar.Calendar(container, {
+			initialView: 'timeGridWeek',
+			allDaySlot: false,
+			slotDuration: '00:30:00',
+			slotLabelInterval: '00:30:00',
+			headerToolbar: {
+				left: 'prev,next',
+				center: 'title',
+				right: 'timeGridWeek,timeGridDay'
+			},
+			editable: true,
+			eventResizableFromStart: false,
+			eventResize: function (ev, dayDelta, revertFunc) {
+				const url_ = `${wizard.url}&wizardaction=UpdateEvent&subaction=UpdateEvent`;
+				wizard.Request(url_, 'post', {
+					'eventId': ev.event._def.publicId,
+					'dateStart': wizard.ConvertDate(ev.event._instance.range.start),
+					'dateEnd': wizard.ConvertDate(ev.event._instance.range.end),
+				}).then(function () {
+					wizard.RenderEvents();
+				});
+			},
+			eventDrop: function (ev, dayDelta, revertFunc) {
+				const url_ = `${wizard.url}&wizardaction=UpdateEvent&subaction=UpdateEvent`;
+				wizard.Request(url_, 'post', {
+					'eventId': ev.event._def.publicId,
+					'dateStart': wizard.ConvertDate(ev.event._instance.range.start),
+					'dateEnd': wizard.ConvertDate(ev.event._instance.range.end),
+				}).then(function () {
+					wizard.RenderEvents();
+				});
+			},
+			eventClick: function(ev, jsEvent, view) {
+				let eurl = `index.php?module=cbCalendar&action=EditView&Module_Popup_Edit=1&record=${ev.event._def.publicId}&cbfromid=${ev.event._def.publicId}`;
+				window.open(eurl, null, cbPopupWindowSettings + ',dependent=yes');
+			},
+			dateClick: function(info) {
+				let template = `
+				<div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" style="margin-left: -18%;">
+					<button onclick="wizard.HideEvents()" class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="Hide">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#hide"></use>
+						</svg>
+						<span class="slds-assistive-text">Hide</span>
+					</button>
+					<div class="slds-dropdown slds-dropdown_left slds-dropdown_small">
+						<ul class="slds-dropdown__list" role="menu">
+							<li class="slds-dropdown__item" role="presentation">
+								<a onclick="wizard.CreateEvent('${info.dateStr}', 'Call')" role="menuitem" tabindex="0">
+									<span class="slds-truncate">
+										<svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-right_x-small" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#call"></use>
+										</svg>
+										Call
+									</span>
+								</a>
+							</li>
+							<li class="slds-dropdown__item" role="presentation">
+								<a onclick="wizard.CreateEvent('${info.dateStr}', 'Meeting')" role="menuitem" tabindex="0">
+									<span class="slds-truncate">
+										<svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-right_x-small" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#meet_focus_presenter"></use>
+										</svg>
+										Meeting
+									</span>
+								</a>
+							</li>
+							<li class="slds-dropdown__item" role="presentation">
+								<a onclick="wizard.CreateEvent('${info.dateStr}', 'Task')" role="menuitem" tabindex="0">
+									<span class="slds-truncate">
+										<svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-right_x-small" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#user"></use>
+										</svg>
+										Task
+									</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				`;
+				wizard.el('global-modal-eventcreator').innerHTML = template;
+			}
+		});
+		this.Calendar[this.ActiveStep+1].render();
+		return true;
+	}
+
+	CreateEvent(dateStr, type) {
+		this.HideEvents();
+		let url = `index.php?action=EditView&module=cbCalendar&Module_Popup_Edit=1&dtstart=${this.ConvertDate(dateStr)}&dtend=${this.ConvertDate(dateStr)}&activitytype=${type}&rel_id=${this.FormIDS[this.ActiveStep-1]}`;
+		window.open(url, null, cbPopupWindowSettings + ',dependent=yes');
+	}
+
+	HideEvents() {
+		this.el('global-modal-eventcreator').innerHTML = '';
+	}
+
+	async RenderEvents() {
+		const url = `${this.url}&wizardaction=GetEvents&subaction=GetEvents`;
+		let res = await this.Request(url, 'post', {
+			recordid: this.FormIDS[this.ActiveStep-1]
+		});
+		this.Calendar[this.ActiveStep].removeAllEvents();
+		for (let i in res) {
+			let backgroundColor = 'blue';
+			let activitytype = res[i].activitytype;
+			if (activitytype == 'Meeting') {
+				backgroundColor = 'orange';
+			} else if (activitytype == 'Task') {
+				backgroundColor = 'green';
+			} else if (activitytype == 'Call') {
+				backgroundColor = 'brown';
+			}
+			this.Calendar[this.ActiveStep].addEvent({
+				id: res[i].activityid,
+				title: res[i].subject,
+				start: new Date(`${res[i].date_start}T${res[i].time_start}`),
+				end: new Date(`${res[i].due_date}T${res[i].time_end}`),
+				backgroundColor: backgroundColor,
+				borderColor: backgroundColor,
+				color: 'black',
+			});			
+		}
+	}
+
+	ConvertDate(dateStr) {
+		const date = new Date(dateStr);
+		const yyyy = date.getFullYear();
+		const mm = String(date.getMonth() + 1).padStart(2, '0');
+		const dd = String(date.getDate()).padStart(2, '0');
+		const h = String(date.getHours()).padStart(2, '0');
+		const i = String(date.getMinutes()).padStart(2, '0');
+		const s = String(date.getSeconds()).padStart(2, '0');
+		const formattedDate = `${yyyy}-${mm}-${dd} ${h}:${i}:${s}`;
+		return formattedDate;
 	}
 }
 

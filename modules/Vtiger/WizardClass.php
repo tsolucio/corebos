@@ -638,4 +638,46 @@ class WizardActions extends WizardCustomFunctions {
 		$focus->saveentity($modulename);
 		return $focus->id;
 	}
+
+	public function GetEvents() {
+		global $adb;
+		$data = json_decode($_REQUEST['data'], true);
+		$sql = $adb->pquery('select * from vtiger_activity
+			inner join vtiger_crmentity on crmid=activityid where deleted=0 and rel_id=?', array($data['recordid']));
+		$noOfRows = $adb->num_rows($sql);
+		if ($noOfRows > 0) {
+			$res = array();
+			for ($i=0; $i < $noOfRows; $i++) { 
+				$res[] = array(
+					'activityid' => $adb->query_result($sql, $i, 'activityid'),
+					'subject' => $adb->query_result($sql, $i, 'subject'),
+					'date_start' => $adb->query_result($sql, $i, 'date_start'),
+					'due_date' => $adb->query_result($sql, $i, 'due_date'),
+					'time_start' => $adb->query_result($sql, $i, 'time_start'),
+					'time_end' => $adb->query_result($sql, $i, 'time_end'),
+					'activitytype' => $adb->query_result($sql, $i, 'activitytype'),
+				);
+			}
+			return $res;
+		}
+		return array();
+	}
+
+	public function UpdateEvent() {
+		require_once 'modules/cbCalendar/cbCalendar.php';
+		global $current_user;
+		$data = json_decode($_REQUEST['data'], true);
+		$start = explode(' ', $data['dateStart']);
+		$end = explode(' ', $data['dateEnd']);
+		$focus = new cbCalendar();
+		$focus->id = $data['eventId'];
+		$focus->mode = 'edit';
+		$focus->retrieve_entity_info($data['eventId'], 'cbCalendar');
+		$focus->column_fields['dtstart'] = $data['dateStart'];
+		$focus->column_fields['dtend'] = $data['dateEnd'];
+		$handler = vtws_getModuleHandlerFromName('cbCalendar', $current_user);
+		$meta = $handler->getMeta();
+		$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+		$focus->saveentity('cbCalendar');
+	}
 }

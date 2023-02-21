@@ -87,6 +87,7 @@
 								</li>
 								{/foreach}
 							</ul>
+							<div id="global-modal-eventcreator"></div>
 						</div>
 						{foreach from=$wizardSteps item=step name=stepwizard}
 						<article class="slds-setup-assistant__step slds-m-around_medium" id="seq-{$smarty.foreach.stepwizard.index}" style="margin-top: 0% !important">

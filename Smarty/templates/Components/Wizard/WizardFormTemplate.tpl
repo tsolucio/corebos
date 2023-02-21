@@ -7,6 +7,7 @@ window.addEventListener('onWizardModal', () => {
 	wizard.FormModule.push('{$ModuleName}');
 	wizard.loader('hide');
 });
+wizard.Suboperation[{$WizardStep}] = '{$WizardSuboperation}';
 document.getElementById('codewithhbtnswitch').remove();
 </script>
 <style type="text/css">
@@ -19,7 +20,7 @@ document.getElementById('codewithhbtnswitch').remove();
     	box-shadow: none !important;
 	}
 </style>
-<div class="slds-p-horizontal_medium">
+<div class="slds-p-horizontal_medium" style="margin-top: -3%;">
 {if isset($WizardSuboperation) && $WizardSuboperation eq 'CalendarView'}
 	{include file='Smarty/templates/Components/Wizard/CalendarView.tpl'}
 {else}

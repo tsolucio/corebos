@@ -31,6 +31,8 @@ switch ($wizardaction) {
 	case 'Duplicate':
 	case 'CustomCreate':
 	case 'CreateForm':
+	case 'GetEvents':
+	case 'UpdateEvent':
 		echo json_encode($wizard->HandleRequest());
 		break;
 	case 'listview':
