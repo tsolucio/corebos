@@ -83,10 +83,24 @@ class wfSendFile extends VTTask {
 		}
 		$logbg->debug('(wfSendFile)', [$this->exptype, $this->credentialid, $adapter, $filename]);
 		if ($adapter == 'FTP') {
-			require_once 'modules/com_vtiger_workflow/actions/FTP.php';
-			$ftp = new FTPAdapter($data, $workflow_context);
-			$ftp->setUp();
-			$ftp->writeFile();
+			#require_once 'modules/com_vtiger_workflow/actions/FTP.php';
+			#$ftp = new FTPAdapter($data, $workflow_context);
+			#$ftp->setUp();
+			#$ftp->writeFile();
+
+			if (!filter_var($data['ftp_host'], FILTER_VALIDATE_IP)) {
+				return;
+			} else {
+				$sftp = new \phpseclib\Net\SFTP($data['ftp_host'], intval($data['ftp_port']));
+				$sftp->login($data['ftp_username'], $data['ftp_password']);
+				$adapter = new Gaufrette\Adapter\PhpseclibSftp($sftp);
+				$filesystem = new Gaufrette\Filesystem($adapter);
+				
+				$workflow_filename = $workflow_context['wfgenerated_file'][0]['dest_name'];
+				$workflow_content = $workflow_context['wfgenerated_file'][0]['content'];
+						
+				$filesystem->write($workflow_filename, $workflow_content);
+			}
 		} elseif ($adapter == 'AzureBlobStorage') {
 			require_once 'modules/com_vtiger_workflow/actions/AzureBlobStorage.php';
 			$azure = new AzureAdapter($data, $workflow_context);
