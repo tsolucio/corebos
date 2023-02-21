@@ -180,6 +180,7 @@ class VTExpressionsManager {
 			'floor' => 'floor(numericfield)',
 			'modulo' => 'modulo(numericfield,numericfield)',
 			'hash' => 'hash(field, method)',
+			'hashFile' => 'hashFile(filePath, method)',
 			'base64encode' => 'base64encode(string)',
 			'base64decode' => 'base64decode(string)',
 			'globalvariable' => 'globalvariable(gvname)',
