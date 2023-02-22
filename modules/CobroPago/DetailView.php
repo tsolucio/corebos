@@ -16,7 +16,10 @@ $smarty = new vtigerCRM_Smarty();
 require_once 'modules/Vtiger/DetailView.php';
 
 if ($focus->permissiontoedit()) {
-	$smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
+	$Application_DetailView_Inline_Edit = GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1, $currentModule, $current_user->id);
+	$Application_Inline_Edit = GlobalVariable::getVariable('Application_Inline_Edit', 1, $currentModule, $current_user->id, $_REQUEST['action']);
+	$Application_Inline_Edit_Boolean = !(!$Application_DetailView_Inline_Edit || !$Application_Inline_Edit);
+	$smarty->assign('DETAILVIEW_AJAX_EDIT', $Application_Inline_Edit_Boolean);
 } else {
 	$smarty->assign('DETAILVIEW_AJAX_EDIT', false); // no permission
 }

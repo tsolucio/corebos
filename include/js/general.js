@@ -13,7 +13,7 @@ if (window.coreBOSEvents == undefined) {
 window.coreBOSSearching = false;
 window.coreBOSSearchingText = '';
 
-function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
+function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid, viewtype = '') {
 	if (typeof coreBOS_runningUnitTests != 'undefined') {
 		return Promise.resolve(gvdefault);
 	}
@@ -35,7 +35,7 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 	} // current module
 	// Return a new promise avoiding jquery and prototype
 	return new Promise(function (resolve, reject) {
-		var url = baseurl + '&gvname='+gvname+'&gvuserid='+gvuserid+'&gvmodule='+gvmodule+'&gvdefault='+gvdefault+'&returnvalidation=0';
+		var url = baseurl + '&gvname='+gvname+'&gvuserid='+gvuserid+'&gvmodule='+gvmodule+'&gvdefault='+gvdefault+'&returnvalidation=0'+`${viewtype ? '&viewtype='+viewtype : ''}`;
 		var req = new XMLHttpRequest();
 		req.open('GET', url, true);  // make call asynchronous
 
