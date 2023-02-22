@@ -21,6 +21,7 @@ let SearchColumns = 0;
 let ListViewCopy = 0;
 let Application_Filter_All_Edit = 1;
 let Application_DetailView_Inline_Edit = 1;
+let Application_Inline_Edit = 1;
 let DocumentFolderView = 1;
 let Application_MassAction_Multipage = 0;
 let lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
@@ -28,6 +29,10 @@ let urlParams = new URLSearchParams(window.location.search);
 GlobalVariable_getVariable('Application_DetailView_Inline_Edit', 1).then(function (response) {
 	let obj = JSON.parse(response);
 	Application_DetailView_Inline_Edit = parseInt(obj.Application_DetailView_Inline_Edit);
+});
+GlobalVariable_getVariable('Application_Inline_Edit', 1, gVTModule, gVTUserID, viewType).then(function (response) {
+	let obj = JSON.parse(response);
+	Application_Inline_Edit = parseInt(obj.Application_Inline_Edit);
 });
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, gVTModule, '').then(function (response) {
 	let obj = JSON.parse(response);
@@ -196,7 +201,8 @@ const ListView = {
 				edit = false;
 				sortable = false;
 			}
-			if (edit && Application_DetailView_Inline_Edit) {
+			Application_Inline_Edit_boolean = !(!Application_DetailView_Inline_Edit || !Application_Inline_Edit);
+			if (edit && Application_Inline_Edit_boolean) {
 				if (uitype == 10) {
 					ListView.RelatedModule = headerObj[index].relatedModule;
 				}

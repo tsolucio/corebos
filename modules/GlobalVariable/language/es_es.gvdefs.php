@@ -1882,6 +1882,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'documents | fields | both',
 	'definition' => 'selecciona qué imágenes mostrar en el control deslizante de imágenes: documents mostrará imágenes de documentos relacionados, fields mostrará campos de imágenes en el registro y both mostrará ambos tipos',
 ),
+'Application_Inline_Edit' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activates inline edit depending on the View type. The default is 1',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {
