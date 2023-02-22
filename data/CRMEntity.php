@@ -3737,9 +3737,12 @@ class CRMEntity {
 		global $log, $adb;
 		$cmodule = get_class($this);
 		$log->debug('> getSortOrder');
-		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $cmodule));
+		$Application_ListView_Default_OrderDirection = GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', '', $cmodule);
+		$sorder = '';
 		if (isset($_REQUEST['sorder'])) {
 			$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
+		} elseif (!empty($Application_ListView_Default_OrderDirection)) {
+			$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', '', $cmodule));
 		} elseif (!empty($_SESSION[$cmodule.'_Sort_Order'])) {
 			$sorder = $adb->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
 		}
