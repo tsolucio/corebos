@@ -25,6 +25,7 @@ var gServiceWorkermd5 = '{$SW_MD5}';
 var gcbpageisdirty = false;
 var gcbpagewhyisdirty = '';
 var goldcorebos_browsertabID = '{$corebos_browsertabID}';
+var viewType = '{$viewType}';
 if (typeof(Storage) !== "undefined") {ldelim}
 	if (sessionStorage.corebos_browsertabID) {
 		var corebos_browsertabID = sessionStorage.corebos_browsertabID;
