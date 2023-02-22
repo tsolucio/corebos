@@ -30,7 +30,7 @@ GlobalVariable_getVariable('Application_DetailView_Inline_Edit', 1).then(functio
 	let obj = JSON.parse(response);
 	Application_DetailView_Inline_Edit = parseInt(obj.Application_DetailView_Inline_Edit);
 });
-GlobalVariable_getVariable('Application_Inline_Edit', 1, gVTModule, gVTUserID, viewType).then(function (response) {
+GlobalVariable_getVariable('Application_Inline_Edit', 1, gVTModule, gVTUserID, gVTviewType).then(function (response) {
 	let obj = JSON.parse(response);
 	Application_Inline_Edit = parseInt(obj.Application_Inline_Edit);
 });
