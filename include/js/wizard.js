@@ -12,6 +12,8 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
+loadJS('index.php?module=Settings&action=SettingsAjax&file=getjslanguage');
+
 class WizardComponent {
 
 	constructor() {
@@ -1316,6 +1318,7 @@ class WizardComponent {
 	CalendarView() {
 		const container = document.getElementById(`calendar-${this.ActiveStep+1}`);
 		this.Calendar[this.ActiveStep+1] = new FullCalendar.Calendar(container, {
+			locale: gVTuserLanguage.split('_')[0],
 			initialView: 'timeGridWeek',
 			allDaySlot: false,
 			slotDuration: '00:30:00',
@@ -1324,6 +1327,10 @@ class WizardComponent {
 				left: 'prev,next',
 				center: 'title',
 				right: 'timeGridWeek,timeGridDay'
+			},
+			buttonText: {
+				today: mod_alert_arr.LBL_TODAY,
+				week: mod_alert_arr.LBL_WEEK				
 			},
 			editable: true,
 			eventResizableFromStart: false,
@@ -1368,7 +1375,7 @@ class WizardComponent {
 										<svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-right_x-small" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#call"></use>
 										</svg>
-										Call
+										${mod_alert_arr.LBL_CALL}
 									</span>
 								</a>
 							</li>
@@ -1378,7 +1385,7 @@ class WizardComponent {
 										<svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-right_x-small" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#meet_focus_presenter"></use>
 										</svg>
-										Meeting
+										${mod_alert_arr.LBL_MEETING}
 									</span>
 								</a>
 							</li>
@@ -1388,7 +1395,7 @@ class WizardComponent {
 										<svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-m-right_x-small" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#user"></use>
 										</svg>
-										Task
+										${mod_alert_arr.LBL_TASK}
 									</span>
 								</a>
 							</li>
