@@ -116,7 +116,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('USER_LANGUAGE', $current_language);
 		$smarty->assign('SW_MD5', $swmd5);
 		$smarty->assign('corebos_browsertabID', $corebos_browsertabID);
-		$smarty->assign('viewType', $_REQUEST['action']);
+		$smarty->assign('viewType', vtlib_purify($_REQUEST['action']));
 	}
 }
 
