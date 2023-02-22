@@ -3,9 +3,9 @@
 		<div class="slds-page-header__col-title">
 			<div class="slds-media">
 				<div class="slds-media__figure">
-					<span class="slds-icon_container slds-icon-standard-procedure">
+					<span class="slds-icon_container slds-icon-standard-{$WizardIcon[$smarty.foreach.stepwizard.index]}">
 						<svg class="slds-icon slds-page-header__icon" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#procedure"></use>
+							<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#{$WizardIcon[$smarty.foreach.stepwizard.index]}"></use>
 						</svg>
 					</span>
 				</div>
@@ -13,7 +13,7 @@
 					<div class="slds-page-header__name">
 						<div class="slds-page-header__name-title">
 							<h1>
-								<span>Wizard</span>
+								<span>{$APP.LBL_WIZARD}</span>
 								<span class="slds-page-header__title slds-truncate">{$step.title}</span>
 							</h1>
 						</div>
