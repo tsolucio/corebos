@@ -307,6 +307,8 @@ if (!$Application_ListView_FilterPanel_Open) {
 if ((isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') || (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'ajax')) {
 	$smarty->display('DocumentsListViewEntries.tpl');
 } else {
+	$smarty->assign('Application_ListView_Mass_Edit_Show', GlobalVariable::getVariable('Application_ListView_Mass_Edit_Show', 1));
+	$smarty->assign('Application_ListView_Mass_Delete_Show', GlobalVariable::getVariable('Application_ListView_Mass_Delete_Show', 1));
 	$smarty->display('DocumentsListView.tpl');
 }
 ?>

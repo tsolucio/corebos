@@ -267,8 +267,6 @@ $smarty->assign('Apache_Tika_URL', GlobalVariable::getVariable('Apache_Tika_URL'
 $smarty->assign('ShowCreateMessage', GlobalVariable::getVariable('Application_ListView_Show_Create_Message', '0'));
 $smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
 $smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
-$smarty->assign('Application_ListView_Mass_Edit_Show', GlobalVariable::getVariable('Application_ListView_Mass_Edit_Show', 1));
-$smarty->assign('Application_ListView_Mass_Delete_Show', GlobalVariable::getVariable('Application_ListView_Mass_Delete_Show', 1));
 
 // send advancedSearch business map data to the frontEnd
 $advancedSearchMapResult = 'MAP_NOT_FOUND';
