@@ -462,6 +462,10 @@ class WizardComponent {
 		ev.instance.setPerPage(parseInt(20));
 	}
 
+	/**
+	 * Clear active filter in Wizard Listview.
+	 * @param {String} step to clear the filter
+	 */
 	ClearFilter(step) {
 		this.WizardInstance[`wzgrid${step}`].clear();
 		this.WizardInstance[`wzgrid${step}`].setRequestParams({
@@ -471,9 +475,12 @@ class WizardComponent {
 		});
 		this.WizardInstance[`wzgrid${step}`].setPerPage(parseInt(20));
 		this.CheckedRows[step] = [];
-		//this.CheckRows(this.WizardInstance[`wzgrid${step}`].getPagination()._options);
 	}
 
+	/**
+	 * Perform an inline edit in backend.
+	 * @param {Object} tuigrid object
+	 */
 	InlineEdit(ev) {
 		let rowkey = ev.rowKey;
 		let fieldName = ev.columnName;
@@ -505,6 +512,10 @@ class WizardComponent {
 		}
 	}
 
+	/**
+	 * Duplicate a selected row in a specified step.
+	 * @param {Object} button instance
+	 */
 	async DuplicateRow(ev = '') {
 		let type = 'next';
 		if (ev != '') {
@@ -754,6 +765,11 @@ class WizardComponent {
 		this.CheckedRows[this.ActiveStep][page] = rows;
 	}
 
+	/**
+	 * Edit or Duplicate a record.
+	 * @param {String} id to upsert
+	 * @param {String} mode edit | duplicate
+	 */
 	Upsert(id, action = '') {
 		let url = `&step=${this.ActiveStep}&WizardView=true`;
 		if (action == 'edit') {
@@ -765,6 +781,10 @@ class WizardComponent {
 		window.open('index.php?module='+module+'&action=EditView&record='+id+url+'&cbfromid='+id, null, cbPopupWindowSettings + ',dependent=yes');
 	}
 
+	/**
+	 * Delete a selected row in Wizard Listview.
+	 * @param {String} id to delete
+	 */
 	Delete(id) {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
 			const module = this.WizardCurrentModule[this.ActiveStep];
@@ -902,6 +922,10 @@ class WizardComponent {
 		this.WizardInstance[`wzgrid${step}`].removeRows(rowKeys);
 	}
 
+	/**
+	 * Call custom functions defined in the Wizard map.
+	 * @param {Object} button instance
+	 */
 	async CallCustomFunction(ev = '') {
 		let type = 'next';
 		if (ev != '') {
@@ -1321,6 +1345,10 @@ class WizardComponent {
 		return false;
 	}
 
+	/**
+	 * Create a new row from Form in the Wizard Form Template
+	 * @param {Array}
+	 */
 	async CreateFormRow(data) {
 		const url = `${this.url}&wizardaction=CreateForm&subaction=CreateForm`;
 		const array = Object.entries(data).map(([key, value]) => ({ key, value }));
@@ -1331,6 +1359,9 @@ class WizardComponent {
 		});
 	}
 
+	/**
+	 * Init calendar view
+	 */
 	CalendarView() {
 		const container = document.getElementById(`calendar-${this.ActiveStep+1}`);
 		this.Calendar[this.ActiveStep+1] = new FullCalendar.Calendar(container, {
@@ -1426,6 +1457,11 @@ class WizardComponent {
 		return true;
 	}
 
+	/**
+	 * Create an event in the Calendar.
+	 * @param {String} date
+	 * @param {String} event type
+	 */
 	CreateEvent(dateStr, type) {
 		this.HideEvents();
 		let url = `index.php?action=EditView&module=cbCalendar&Module_Popup_Edit=1&dtstart=${this.ConvertDate(dateStr)}&dtend=${this.ConvertDate(dateStr)}&activitytype=${type}&rel_id=${this.FormIDS[this.ActiveStep-1]}`;
@@ -1436,6 +1472,9 @@ class WizardComponent {
 		this.el('global-modal-eventcreator').innerHTML = '';
 	}
 
+	/**
+	 * Renders all created events in Calendar.
+	 */
 	async RenderEvents() {
 		if (this.Calendar[this.ActiveStep] == undefined) {
 			return true;

@@ -161,6 +161,10 @@ class WizardView {
 		}
 	}
 
+
+	/**
+	 * This function generates a list of columns for  tuigrid view based on a provided map ID.
+	 */
 	private function RenderListViewColumns() {
 		$cbMap = cbMap::getMapByID($this->mapid);
 		$fieldlist = $cbMap->MassUpsertGridView();
@@ -179,6 +183,9 @@ class WizardView {
 		return $columns;
 	}
 
+	/**
+	 * Retrieves related fields from the database for a specified module.
+	 */
 	public function RelatedFields() {
 		global $adb;
 		$rs = $adb->pquery('select vtiger_field.fieldid, fieldname, module, columnname, relmodule from vtiger_fieldmodulerel inner join vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid where module=?', array(
@@ -206,6 +213,9 @@ class WizardActions extends WizardCustomFunctions {
 		$this->module = $module;
 	}
 
+	/**
+	 * Retrieve results for tuigrid view in Wizard.
+	 */
 	public function Grid() {
 		require_once 'modules/'.$this->module.'/'.$this->module.'.php';
 		global $current_user, $adb;
@@ -387,6 +397,13 @@ class WizardActions extends WizardCustomFunctions {
 		);
 	}
 
+	/**
+	 * Process a row of data retrieved from a database query.
+	 * @param array of data
+	 * @param array of module fields
+	 * @param string module name
+	 * @param string primary field(key) of module
+	 */
 	private function processRows($row, $cachedModuleFields, $module, $table_index) {
 		$crow = array();
 		$fieldinfo = array();
@@ -410,6 +427,11 @@ class WizardActions extends WizardCustomFunctions {
 		return $crow;
 	}
 
+	/**
+	 * Return field informations for a specief field.
+	 * @param array of module fields
+	 * @param string field to process
+	 */
 	private function FieldInfo($cachedModuleFields, $field) {
 		$fieldinfo = array();
 		foreach ($cachedModuleFields as $key) {
@@ -429,6 +451,9 @@ class WizardActions extends WizardCustomFunctions {
 		return $fieldinfo;
 	}
 
+	/**
+	 * Handles requests and call the specified method in the class.
+	 */
 	public function HandleRequest() {
 		$subaction = isset($_REQUEST['subaction']) ? vtlib_purify($_REQUEST['subaction']) : '';
 		$response = false;
@@ -438,6 +463,9 @@ class WizardActions extends WizardCustomFunctions {
 		return $response;
 	}
 
+	/**
+	 * Return rows based on TuiGrid Tree view.
+	 */
 	public function Mapping() {
 		global $currentModule;
 		$data = json_decode($_REQUEST['data'], true);
@@ -474,6 +502,11 @@ class WizardActions extends WizardCustomFunctions {
 		);
 	}
 
+	/**
+	 * Return formatted rows.
+	 * @param array data to be formatted
+	 * @param string module name
+	 */
 	private function FormatValues($data, $module) {
 		$arr = array();
 		$formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
@@ -513,6 +546,10 @@ class WizardActions extends WizardCustomFunctions {
 		return $arr;
 	}
 
+	/**
+	 * Masscreate rows.
+	 * @param array all the data to create
+	 */
 	public function MassCreate($target = array()) {
 		require_once 'include/Webservices/MassCreate.php';
 		global $current_user;
@@ -550,6 +587,9 @@ class WizardActions extends WizardCustomFunctions {
 		return coreBOS_Session::get('DuplicatedRecords');
 	}
 
+	/**
+	 * Delete a specified record.
+	 */
 	public function DeleteRecords() {
 		$data = json_decode($_REQUEST['data'], true);
 		$id = $data['recordid'];
@@ -603,6 +643,9 @@ class WizardActions extends WizardCustomFunctions {
 		return false;
 	}
 
+	/**
+	 * Duplicate a record based on recordid given.
+	 */
 	public function Duplicate() {
 		global $current_user;
 		$data = json_decode($_REQUEST['data'], true);
@@ -634,6 +677,9 @@ class WizardActions extends WizardCustomFunctions {
 		}
 	}
 
+	/**
+	 * Create a new row from the FormTemplate mode in wizard.
+	 */
 	public function CreateForm() {
 		global $current_user;
 		require_once 'modules/Vtiger/ExecuteFunctionsfromphp.php';
@@ -663,6 +709,9 @@ class WizardActions extends WizardCustomFunctions {
 		return $focus->id;
 	}
 
+	/**
+	 * Get all event created in Calendar. Wizard.
+	 */
 	public function GetEvents() {
 		global $adb;
 		$data = json_decode($_REQUEST['data'], true);
@@ -687,6 +736,9 @@ class WizardActions extends WizardCustomFunctions {
 		return array();
 	}
 
+	/**
+	 * Update an event in Calendar. Wizard.
+	 */
 	public function UpdateEvent() {
 		require_once 'modules/cbCalendar/cbCalendar.php';
 		global $current_user;
@@ -705,6 +757,9 @@ class WizardActions extends WizardCustomFunctions {
 		$focus->saveentity('cbCalendar');
 	}
 
+	/**
+	 * Return data in tree view format for TuiGrid.
+	 */
 	public function TreeView() {
 		global $current_user, $adb;
 		$data = array();
