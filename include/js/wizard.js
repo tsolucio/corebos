@@ -181,6 +181,11 @@ class WizardComponent {
 				this.CallCustomFunction(ev);
 			}
 		}
+		//suboperation: TreeView. Get records from backend.
+		console.log(this.Suboperation[this.ActiveStep+1])
+		if (this.Suboperation[this.ActiveStep+1] == 'TreeView') {
+			return true;
+		}
 		switch (this.Operation) {
 		case 'CREATEPRODUCTCOMPONENTS':
 			if (this.WizardMode[this.ActiveStep] == 'SELECTPRODUCT') {
@@ -223,12 +228,10 @@ class WizardComponent {
 			return this.MassCreateGrid(ev, this.Operation);
 		case 'FORMTEMPLATE':
 			if (type == 'back') {
-				clearInterval(this.Interval[this.ActiveStep]);
 				this.HideEvents();
 				return true;
 			}
 			if (this.steps == this.ActiveStep+1) {
-				clearInterval(this.Interval[this.ActiveStep]);
 				this.CloseModal();
 				return false;
 			}
@@ -1421,6 +1424,9 @@ class WizardComponent {
 	}
 
 	async RenderEvents() {
+		if (this.Calendar[this.ActiveStep] == undefined) {
+			return true;
+		}
 		const url = `${this.url}&wizardaction=GetEvents&subaction=GetEvents`;
 		let res = await this.Request(url, 'post', {
 			recordid: this.FormIDS[this.ActiveStep-1]
