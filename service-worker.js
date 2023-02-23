@@ -11486,7 +11486,7 @@ precacheAndRoute([{
   "revision": "99d7cc5dc9a03da6255e50f1a86fb2ee"
 }, {
   "url": "include/js/general.js",
-  "revision": "150267c0427c1e3689c2fd148c863393"
+  "revision": "f8b3a436af94f73250a4607499574fc6"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "fe62afe35d100644ebdd3892abf12f8f"
@@ -11504,7 +11504,7 @@ precacheAndRoute([{
   "revision": "809c270ede538f7efaca311327419d12"
 }, {
   "url": "include/js/ListViewJSON.js",
-  "revision": "159df7964f61d988879fb5dcc2ff8410"
+  "revision": "3f22ef1e38ce5411e9cf8eb36e961857"
 }, {
   "url": "include/js/ListViewRenderes.js",
   "revision": "6dcdffbcdeaa9c23ef3ff7aede29243e"
@@ -11552,7 +11552,7 @@ precacheAndRoute([{
   "revision": "89ad8ae2e8972f6085b6728624061ac2"
 }, {
   "url": "include/js/relatedlistgrid.js",
-  "revision": "6d6cbc4ae71a33fbec5367e2efa51e44"
+  "revision": "bd82a2299bcf25124d76bc3e4adb7d2c"
 }, {
   "url": "include/js/relatedlists.js",
   "revision": "a8cdd7881bfe429adf56b26da96cd63b"
@@ -11597,7 +11597,7 @@ precacheAndRoute([{
   "revision": "dcff6c137f5d5a9669c75dd4a719f2b0"
 }, {
   "url": "include/components/listview/listview.css",
-  "revision": "d5bc7cbc72b82825240b3ce8de3dad0a"
+  "revision": "f3487103e8ec1715a3fe2cf5dc5e91e8"
 }, {
   "url": "include/components/loadjs.js",
   "revision": "03a39dd327aca956ea9448782aca04eb"
