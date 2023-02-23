@@ -8,6 +8,7 @@ window.addEventListener('onWizardModal', () => {
 	wizard.loader('hide');
 });
 wizard.Suboperation[{$WizardStep}] = '{$WizardSuboperation}';
+wizard.Module[{$WizardStep}] = '{$WizardModule}';
 document.getElementById('codewithhbtnswitch').remove();
 </script>
 <div class="slds-p-horizontal_medium" style="margin-top: -3%;">

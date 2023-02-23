@@ -44,6 +44,7 @@ class WizardComponent {
 		this.WizardSaveIsActive = [];
 		this.WizardFilterFromContext = [];
 		this.WizardConfirmStep = [];
+		this.Module = [];
 		this.Context = {};
 		this.Operation = '';
 		this.ProceedToNextStep = false;
@@ -59,6 +60,7 @@ class WizardComponent {
 		this.Suboperation = [];
 		this.Interval = [];
 		this.Calendar = [];
+		this.TreeViewID = [];//used for Parent ID in TreeView mode
 	}
 
 	Init() {
@@ -182,7 +184,6 @@ class WizardComponent {
 			}
 		}
 		//suboperation: TreeView. Get records from backend.
-		console.log(this.Suboperation[this.ActiveStep+1])
 		if (this.Suboperation[this.ActiveStep+1] == 'TreeView') {
 			return true;
 		}
@@ -1302,6 +1303,7 @@ class WizardComponent {
 			let id = await this.CreateFormRow(data);
 			if (id) {
 				this.FormIDS[this.ActiveStep] = id;
+				this.TreeViewID[this.ActiveStep] = id;
 			}
 			return id;
 		}

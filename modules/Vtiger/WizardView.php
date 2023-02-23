@@ -58,6 +58,7 @@ if ($cbMapid) {
 			$icon = isset($value['suboperation']) && $value['suboperation'] == 'CalendarView' ? 'event' : 'procedure';
 			$WizardIcon[$step] = $icon;
 			$smarty->assign('WizardIcon', $WizardIcon);
+			$smarty->assign('WizardModule', isset($value['module']) ? $value['module'] : '');
 			$view = $setfield->process($context);
 			$views[$key] = $view;
 			$step++;
