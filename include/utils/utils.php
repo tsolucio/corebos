@@ -193,7 +193,7 @@ function get_assigned_user_name($assigned_user_id) {
 	return '';
 }
 
-/** Function returns the user key in user array
+/** Function returns the user key in user array for all users the current user can assign a record to
  * @param boolean add blank picklist entry
  * @param string user status to retrieve
  * @param string assigned_user id must always add this user
