@@ -98,6 +98,8 @@ $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('BUTTONS', $other_text);
 $smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
 $smarty->assign('Document_Folder_View', 1);
+$smarty->assign('Application_ListView_Mass_Edit_Show', GlobalVariable::getVariable('Application_ListView_Mass_Edit_Show', 1));
+$smarty->assign('Application_ListView_Mass_Delete_Show', GlobalVariable::getVariable('Application_ListView_Mass_Delete_Show', 1));
 //<<<<<<<<<customview>>>>>>>>>
 global $current_user;
 $queryGenerator = new QueryGenerator($currentModule, $current_user);
@@ -307,8 +309,6 @@ if (!$Application_ListView_FilterPanel_Open) {
 if ((isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') || (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'ajax')) {
 	$smarty->display('DocumentsListViewEntries.tpl');
 } else {
-	$smarty->assign('Application_ListView_Mass_Edit_Show', GlobalVariable::getVariable('Application_ListView_Mass_Edit_Show', 1));
-	$smarty->assign('Application_ListView_Mass_Delete_Show', GlobalVariable::getVariable('Application_ListView_Mass_Delete_Show', 1));
 	$smarty->display('DocumentsListView.tpl');
 }
 ?>
