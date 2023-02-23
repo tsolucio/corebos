@@ -254,6 +254,9 @@ function __vt_sub_days($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime($baseDate);
+	if (!is_numeric($noOfDays)) {
+		$noOfDays = 0;
+	}
 	return strftime('%Y-%m-%d', $baseDate - ($noOfDays * 24 * 60 * 60));
 }
 
