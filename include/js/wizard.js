@@ -185,6 +185,13 @@ class WizardComponent {
 		}
 		//suboperation: TreeView. Get records from backend.
 		if (this.Suboperation[this.ActiveStep+1] == 'TreeView') {
+			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].clear();
+			this.WizardInstance[`wzgrid${wizard.ActiveStep+1}`].setRequestParams({
+				parentid: this.TreeViewID[this.ActiveStep-1],
+				child: this.Module[this.ActiveStep],
+			});
+			this.WizardInstance[`wzgrid${wizard.ActiveStep+1}`].setPerPage(parseInt(20));
+			this.WizardInstance[`wzgrid${wizard.ActiveStep+1}`].reloadData();
 			return true;
 		}
 		switch (this.Operation) {
@@ -340,6 +347,7 @@ class WizardComponent {
 		this.FormModule = [];
 		this.FormIDS = [];
 		this.Suboperation = [];
+		this.TreeViewID = [];
 		localStorage.removeItem('currentWizardActive');
 	}
 
@@ -1303,7 +1311,10 @@ class WizardComponent {
 			let id = await this.CreateFormRow(data);
 			if (id) {
 				this.FormIDS[this.ActiveStep] = id;
-				this.TreeViewID[this.ActiveStep] = id;
+				if (this.TreeViewID[this.ActiveStep] === undefined) {
+					this.TreeViewID[this.ActiveStep] = [];
+				}
+				this.TreeViewID[this.ActiveStep].push(id);
 			}
 			return id;
 		}

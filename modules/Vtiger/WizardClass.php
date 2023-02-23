@@ -161,7 +161,7 @@ class WizardView {
 		}
 	}
 
-	private function RenderListViewColumns () {
+	private function RenderListViewColumns() {
 		$cbMap = cbMap::getMapByID($this->mapid);
 		$fieldlist = $cbMap->MassUpsertGridView();
 		$fields = $fieldlist->getColumns();
@@ -366,46 +366,12 @@ class WizardActions extends WizardCustomFunctions {
 		$rs = $adb->query($sql);
 		$data = array();
 		$columns = array();
-		$fieldinfo = array();
 		$tabid = getTabid($this->module);
 		$focus = new $this->module;
 		$table_index = $focus->table_index;
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($this->module);
 		while ($row = $rs->FetchRow()) {
-			$crow = array();
-			foreach ($row as $field => $value) {
-				if (is_numeric($field)) {
-					continue;
-				}
-				if ($field == 'smownerid') {
-					$field = 'assigned_user_id';
-				}
-				if (!isset($fieldinfo[$field])) {
-					foreach ($cachedModuleFields as $key) {
-						if ($key['fieldname'] == $field) {
-							$fieldinfo[$field] = array(
-								'fieldtype' => 'corebos',
-								'fieldinfo' => [
-									'name' => $field,
-									'uitype' => $key['uitype'],
-								],
-								'name' => $field,
-								'uitype' => $key['uitype'],
-								'fieldid' => $key['fieldid']
-							);
-						}
-					}
-				}
-				if (!isset($fieldinfo[$field])) {
-					continue;
-				}
-				$gridvalue = getDataGridValue($this->module, $row[$table_index], $fieldinfo[$field], $value, 'Wizard');
-				$crow[$field] = $gridvalue[0];
-				$crow['id'] = $row[$table_index];
-				$crow[$fieldinfo[$field]['name'].'_raw'] = $value;
-				$crow['__modulename'] = $this->module;
-			}
-			$data[] = $crow;
+			$data[] = self::processRows($row, $cachedModuleFields, $this->module, $table_index);
 		}
 		return json_encode(
 			array(
@@ -419,6 +385,48 @@ class WizardActions extends WizardCustomFunctions {
 				'result' => true,
 			)
 		);
+	}
+
+	private function processRows($row, $cachedModuleFields, $module, $table_index) {
+		$crow = array();
+		$fieldinfo = array();
+		foreach ($row as $field => $value) {
+			if (is_numeric($field)) {
+				continue;
+			}
+			if ($field == 'smownerid') {
+				$field = 'assigned_user_id';
+			}
+			$fieldinfo[$field] = self::FieldInfo($cachedModuleFields, $field);
+			if (!isset($fieldinfo[$field])) {
+				continue;
+			}
+			$gridvalue = getDataGridValue($module, $row[$table_index], $fieldinfo[$field], $value, 'Wizard');
+			$crow[$field] = $gridvalue[0];
+			$crow['id'] = $row[$table_index];
+			$crow[$fieldinfo[$field]['name'].'_raw'] = $value;
+			$crow['__modulename'] = $module;
+		}
+		return $crow;
+	}
+
+	private function FieldInfo($cachedModuleFields, $field) {
+		$fieldinfo = array();
+		foreach ($cachedModuleFields as $key) {
+			if ($key['fieldname'] == $field) {
+				$fieldinfo = array(
+					'fieldtype' => 'corebos',
+					'fieldinfo' => [
+						'name' => $field,
+						'uitype' => $key['uitype'],
+					],
+					'name' => $field,
+					'uitype' => $key['uitype'],
+					'fieldid' => $key['fieldid']
+				);
+			}
+		}
+		return $fieldinfo;
 	}
 
 	public function HandleRequest() {
@@ -695,5 +703,51 @@ class WizardActions extends WizardCustomFunctions {
 		$meta = $handler->getMeta();
 		$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
 		$focus->saveentity('cbCalendar');
+	}
+
+	public function TreeView() {
+		global $current_user, $adb;
+		$data = array();
+		$fieldinfo = array();
+		$childmodule = vtlib_purify($_REQUEST['child']);
+		$parentid = array_unique($_REQUEST['parentid']);
+		$parentmodule = getSalesEntityType($parentid[0]);
+		$focus = CRMEntity::getInstance($parentmodule);
+		$relfocus = CRMEntity::getInstance($childmodule);
+		$relatedField = getFieldNameByFieldId(getRelatedFieldId($parentmodule, $childmodule));
+		$qg = new QueryGenerator($childmodule, $current_user);
+		$qg->setFields(array('*'));
+		$cachedModuleChild = VTCacheUtils::lookupFieldInfo_Module($childmodule);
+		$cachedModuleParent = VTCacheUtils::lookupFieldInfo_Module($parentmodule);
+		foreach ($parentid as $id) {
+			$entity = getEntityName($parentmodule, $id);
+			$focus->retrieve_entity_info($id, $parentmodule);
+			$focus->column_fields = self::processRows($focus->column_fields, $cachedModuleParent, $parentmodule, $focus->table_index);
+			$focus->column_fields['parentaction'] = $entity[$id];
+			$qg->addReferenceModuleFieldCondition($parentmodule, $relatedField, 'id', $id, 'e');
+			$sql = $qg->getQuery();
+			$result = $adb->pquery($sql, array());
+			if ($adb->num_rows($result) > 0) {
+				$crow = array();
+				while ($row = $result->FetchRow()) {
+					$crow[] = self::processRows($row, $cachedModuleChild, $childmodule, $relfocus->table_index);
+				}
+				$focus->column_fields['_children'] = $crow;
+			}
+			$focus->column_fields['_attributes'] = array(
+				'expanded' => true
+			);
+			$data[] = $focus->column_fields;
+		}
+		return array(
+			'data' => array(
+				'contents' => $data,
+				'pagination' => array(
+					'page' => (int)1,
+					'totalCount' => (int)0,
+				),
+			),
+			'result' => true,
+		);
 	}
 }

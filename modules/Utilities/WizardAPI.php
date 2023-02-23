@@ -35,6 +35,24 @@ switch ($wizardaction) {
 	case 'UpdateEvent':
 		echo json_encode($wizard->HandleRequest());
 		break;
+	case 'TreeView':
+		if (empty($_REQUEST['parentid']) || empty($_REQUEST['child'])) {
+			echo json_encode(
+				array(
+					'data' => array(
+						'contents' => [],
+						'pagination' => array(
+							'page' => (int)1,
+							'totalCount' => (int)0,
+						),
+					),
+					'result' => true,
+				)
+			);
+		} else {
+			echo json_encode($wizard->TreeView());
+		}
+		break;
 	case 'listview':
 	default:
 		echo $wizard->Grid();

@@ -1,3 +1,6 @@
+<!--*+********************************************************************************
+ * NOTE: TreeView retrive the values from 2 previous steps. step 1: Parent. step 2: Child
+ *********************************************************************************/-->
 <script type="text/javascript">
 window.addEventListener('DOMContentLoaded', () => {
 	wizard.loader('hide');
@@ -6,6 +9,7 @@ window.addEventListener('onWizardModal', () => {
 	wizard.loader('hide');
 });
 wizard.Suboperation[{$WizardStep}] = '{$WizardSuboperation}';
+wizard.Module[{$WizardStep}] = '{$WizardModule}';
 document.getElementById('codewithhbtnswitch').remove();
 </script>
 <div id="treeview-{$WizardStep}"></div>
@@ -33,12 +37,12 @@ wizard.WizardInstance[`wzgrid{$WizardStep}`] = new tui.Grid({
 	data: {
 		api: {
 			readData: {
-				url: '',
+				url: wizard.url+'&wizardaction=TreeView',
 				method: 'GET'
 			}
 		}
 	},
-	useClientSort: false,
+	useClientSort: true,
 	rowHeight: 60,
 	bodyHeight: 'auto',
 	scrollX: false,
