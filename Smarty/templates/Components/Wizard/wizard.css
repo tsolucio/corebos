@@ -57,3 +57,11 @@
 	margin-top: 0% !important;
 	min-height: 500px
 }
+.slds-input__custom {
+	border-top: 0px !important;
+	border-left: 0px !important;
+	border-right: 0px !important;
+	border-radius: 0px !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+}
