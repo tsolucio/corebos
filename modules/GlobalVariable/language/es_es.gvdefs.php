@@ -1883,10 +1883,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'selecciona qué imágenes mostrar en el control deslizante de imágenes: documents mostrará imágenes de documentos relacionados, fields mostrará campos de imágenes en el registro y both mostrará ambos tipos',
 ),
 'Application_Inline_Edit' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'Activates inline edit depending on the View type. The default is 1',
+	'definition' => 'Activa la edición en línea según el tipo de vista. El valor predeterminado es 1',
 ),
 );
 
