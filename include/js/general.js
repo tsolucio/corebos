@@ -7378,7 +7378,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		if (cbdzClearDrag!=null) {
 			window.clearTimeout(cbdzClearDrag);
 		}
-		cbdzClearDrag = window.setTimeout(cbdzdragFinish, 120);
+		cbdzClearDrag = window.setTimeout(cbdzdragFinish, 8000);
 	});
 	AutocompleteSetup();
 	initSelect2();
