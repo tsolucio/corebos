@@ -102,6 +102,16 @@ class WizardView {
 		global $smarty;
 		$smarty->assign('formodule', $this->module);
 		$smarty->assign('GroupBy', $this->groupby);
+		$WizardSuboperation = $smarty->getTemplateVars('WizardSuboperation');
+		//suboperation support into steps
+		if (!empty($WizardSuboperation)) {
+			if ($this->mapid != 0) {
+				$columns = self::RenderListViewColumns();
+				$smarty->assign('Columns', $columns);
+			}
+			return $smarty->fetch('Smarty/templates/Components/Wizard/'.$WizardSuboperation.'.tpl');
+		}
+		//GLOBAL: Form Template
 		if ($smarty->getTemplateVars('wizardOperation') == 'FORMTEMPLATE') {
 			$Rows = array();
 			if ($this->mapid != 0) {
@@ -112,21 +122,9 @@ class WizardView {
 			$smarty->assign('ModuleName', $Rows['module']);
 			return $smarty->fetch('Smarty/templates/Components/Wizard/WizardFormTemplate.tpl');
 		}
+		//GLOBAL: ListView, MassCreate
 		if ($this->mapid != 0) {
-			$cbMap = cbMap::getMapByID($this->mapid);
-			$fieldlist = $cbMap->MassUpsertGridView();
-			$fields = $fieldlist->getColumns();
-			foreach ($fields as $label => $name) {
-				$fieldname = array_values($name)[0];
-				if ($fieldname == 'smownerid') {
-					$fieldname = 'assigned_user_id';
-				}
-				$columns[] = array(
-					'header' => $label,
-					'name' => $fieldname,
-					'uitype' => getUItype($this->module, $fieldname)
-				);
-			}
+			$columns = self::RenderListViewColumns();
 			$smarty->assign('Columns', $columns);
 			$smarty->assign('relatedmodules', $this->RelatedFields());
 			$smarty->assign('entitynames', getEntityFieldNames($this->module));
@@ -161,6 +159,24 @@ class WizardView {
 			$smarty->assign('WizardConditionQuery', $query);
 			return $smarty->fetch('Smarty/templates/Components/Wizard/WizardListView.tpl');
 		}
+	}
+
+	private function RenderListViewColumns () {
+		$cbMap = cbMap::getMapByID($this->mapid);
+		$fieldlist = $cbMap->MassUpsertGridView();
+		$fields = $fieldlist->getColumns();
+		foreach ($fields as $label => $name) {
+			$fieldname = array_values($name)[0];
+			if ($fieldname == 'smownerid') {
+				$fieldname = 'assigned_user_id';
+			}
+			$columns[] = array(
+				'header' => $label,
+				'name' => $fieldname,
+				'uitype' => getUItype($this->module, $fieldname)
+			);
+		}
+		return $columns;
 	}
 
 	public function RelatedFields() {
