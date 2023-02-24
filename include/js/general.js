@@ -13,7 +13,7 @@ if (window.coreBOSEvents == undefined) {
 window.coreBOSSearching = false;
 window.coreBOSSearchingText = '';
 
-function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
+function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid, viewtype = '') {
 	if (typeof coreBOS_runningUnitTests != 'undefined') {
 		return Promise.resolve(gvdefault);
 	}
@@ -35,7 +35,7 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 	} // current module
 	// Return a new promise avoiding jquery and prototype
 	return new Promise(function (resolve, reject) {
-		var url = baseurl + '&gvname='+gvname+'&gvuserid='+gvuserid+'&gvmodule='+gvmodule+'&gvdefault='+gvdefault+'&returnvalidation=0';
+		var url = baseurl + '&gvname='+gvname+'&gvuserid='+gvuserid+'&gvmodule='+gvmodule+'&gvdefault='+gvdefault+'&returnvalidation=0'+`${viewtype ? '&viewtype='+viewtype : ''}`;
 		var req = new XMLHttpRequest();
 		req.open('GET', url, true);  // make call asynchronous
 
@@ -7694,7 +7694,44 @@ async function handleDrawClick(checkmodule, checkaction, recordid, doc2edit = ''
   
   }
 
+function cbdzdropHandler(event) {
+	console.log('File(s) dropped');
+	// Prevent default behavior (Prevent file from being opened)
+	event.preventDefault();
+	cbdzdragFinish();
+}
+
+function cbdzdragOverHandler(event) {
+	console.log('drag over');
+	// Prevent default behavior (Prevent file from being opened)
+	event.preventDefault();
+	//cbdzdragStart();
+}
+
+function cbdzdragStart() {
+	document.body.classList.add('cblds-drag_info');
+	document.getElementById('corebosdropzonemsg').style.display = 'block';
+}
+
+function cbdzdragFinish() {
+	document.body.classList.remove('cblds-drag_info');
+	document.getElementById('corebosdropzonemsg').style.display = 'none';
+}
+
+var cbdzClearDrag = null;
+
 window.addEventListener('DOMContentLoaded', () => {
+	document.body.addEventListener('dragenter', (event) => {
+		console.log('dragenter');
+		cbdzdragStart();
+	});
+	document.body.addEventListener('dragleave', (event) => {
+		console.log('dragleave');
+		if (cbdzClearDrag!=null) {
+			window.clearTimeout(cbdzClearDrag);
+		}
+		cbdzClearDrag = window.setTimeout(cbdzdragFinish, 8000);
+	});
 	AutocompleteSetup();
 	initSelect2();
 	if (Application_Menu_Direction == 'Vertical') {

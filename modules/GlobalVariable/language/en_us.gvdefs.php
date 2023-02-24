@@ -1882,6 +1882,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'documents | fields | both',
 	'definition' => 'select which images to show on the image slider: documents will show images from related documents, fields will show image fields in the record and both will show, well... both types :-)',
 ),
+'Application_Inline_Edit' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activates inline edit depending on the View type. The default is 1',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {

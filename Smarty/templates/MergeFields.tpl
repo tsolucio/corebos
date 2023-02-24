@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{$USER} - {$MODULENAME|@getTranslatedString:$MODULENAME} - {$coreBOS_app_name}</title>
+	<title>{$MODULENAME|@getTranslatedString:$MODULENAME} - {$APP.LBL_MERGE}</title>
 	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
 	<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
 	<!-- ActivityReminder customization for callback -->
@@ -29,6 +29,7 @@
 {if $EDIT_DUPLICATE eq 'permitted'}
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
+<script src="include/js/vtlib.js" type="text/javascript"></script>
 <script src="include/js/general.js" type="text/javascript"></script>
 <script src="include/js/{$LANGUAGE}.lang.js" type="text/javascript"></script>
 <form name="merge" method="POST" action="index.php" id="form" onsubmit="if(validate_merge('{$MODULENAME}')){ldelim}VtigerJS_DialogBox.block(); return true;{rdelim} else {ldelim} return false; {rdelim};">

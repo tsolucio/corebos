@@ -63,4 +63,11 @@
 	<classname>addSortByFieldToCbCVManagement</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>ketlinapuci</author>
+	<description>add two fields to the Survey Question module</description>
+	<filename>build/changeSets/2023/addYesNoFieldsToCbSurveyQuestion.php</filename>
+	<classname>addYesNoFieldsToCbSurveyQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
