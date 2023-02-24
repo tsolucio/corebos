@@ -965,6 +965,7 @@ $app_strings = array (
 	'LBL_EXPORT_TYPE_2' => 'Tipo de Exportación 2:',
 	'LBL_SEARCH_CRITERIA_RECORDS' => 'Exportar registros asociados a la búsqueda',
 	'LBL_EXPORT_RECORDS' => 'Exportar Tipo de Registro',
+	'LBL_NOTICE_SEARCH_CRITERIA'=>'Notice: You are exporting your search results. If you want to export the default list, please clear your search criteria first.',
 	'LBL_WITH_SEARCH' => 'Exportar con Registros de Búsqueda',
 	'LBL_WITHOUT_SEARCH' => 'Exportar sin Registros de Búsqueda',
 	'LBL_SEARCH_CRITERIA_COLUMNS'=>'Exportar Columnas del Filtro',

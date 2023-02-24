@@ -443,53 +443,6 @@ class SalesOrder extends CRMEntity {
 		undoLastImport($obj, $user);
 	}
 
-	/** Function to export the lead records in CSV Format
-	* @param string reference variable - where condition is passed when the query is executed
-	* @return string Export SalesOrder Query
-	*/
-	public function create_export_query($where) {
-		global $log, $current_user;
-		$log->debug('> create_export_query '.$where);
-
-		include_once 'include/utils/ExportUtils.php';
-
-		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery('SalesOrder', 'detail_view');
-		$fields_list = getFieldsListFromQuery($sql);
-		$fields_list .= getInventoryFieldsForExport($this->table_name);
-
-		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
-			FROM ".$this->crmentityTableAlias
-			." INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
-			LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
-			LEFT JOIN vtiger_sobillads ON vtiger_sobillads.sobilladdressid = vtiger_salesorder.salesorderid
-			LEFT JOIN vtiger_soshipads ON vtiger_soshipads.soshipaddressid = vtiger_salesorder.salesorderid
-			LEFT JOIN vtiger_inventoryproductrel ON vtiger_inventoryproductrel.id = vtiger_salesorder.salesorderid
-			LEFT JOIN vtiger_products ON vtiger_products.productid = vtiger_inventoryproductrel.productid
-			LEFT JOIN vtiger_service ON vtiger_service.serviceid = vtiger_inventoryproductrel.productid
-			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_salesorder.contactid
-			LEFT JOIN vtiger_invoice_recurring_info ON vtiger_invoice_recurring_info.salesorderid = vtiger_salesorder.salesorderid
-			LEFT JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_salesorder.potentialid
-			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_salesorder.accountid
-			LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_salesorder.currency_id
-			LEFT JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_salesorder.quoteid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
-			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
-
-		$query .= $this->getNonAdminAccessControlQuery('SalesOrder', $current_user);
-		$where_auto = ' vtiger_crmentity.deleted=0';
-
-		if ($where != '') {
-			$query .= " where ($where) AND ".$where_auto;
-		} else {
-			$query .= ' where '.$where_auto;
-		}
-
-		$log->debug('< create_export_query');
-		return $query;
-	}
-
 	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
 		if ($basemodule=='Invoice' && $fieldname=='salesorder_id') {
 			return 'selectSalesOrder';

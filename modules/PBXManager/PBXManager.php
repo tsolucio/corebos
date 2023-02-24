@@ -98,56 +98,6 @@ class PBXManager extends CRMEntity {
 	}
 
 	/**
-	 * Create query to export the records.
-	 */
-	public function create_export_query($where) {
-		global $current_user;
-		$thismodule = $_REQUEST['module'];
-
-		include_once 'include/utils/ExportUtils.php';
-
-		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery($thismodule, 'detail_view');
-
-		$fields_list = getFieldsListFromQuery($sql);
-
-		$query = "SELECT $fields_list, 'vtiger_groups_groupname as Assigned To Group',
-			CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END AS user_name
-			FROM $this->table_name ";
-		if ($this->denormalized) {
-			$query.= 'INNER JOIN '.$this->crmentityTable." as vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
-		} else {
-			$query.= "INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
-		}
-		if (!empty($this->customFieldTable)) {
-			$query.=" INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1]." = $this->table_name.$this->table_index";
-		}
-
-		$query .=
-			//"LEFT JOIN " . $this->groupTable[0] . " ON " . $this->groupTable[0].'.'.$this->groupTable[1] . " = $this->table_name.$this->table_index
-			"LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
-		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
-
-		$where_auto = ' vtiger_crmentity.deleted=0';
-
-		if ($where != '') {
-			$query .= " WHERE ($where) AND $where_auto";
-		} else {
-			$query .= " WHERE $where_auto";
-		}
-
-		$userprivs = $current_user->getPrivileges();
-
-		// Security Check for Field Access
-		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing(getTabid('Leads'))) {
-			//Added security check to get the permitted records only
-			$query = $query." ".getListViewSecurityParameter($thismodule);
-		}
-		return $query;
-	}
-
-	/**
 	* Invoked when special actions are performed on the module.
 	* @param string Module name
 	* @param string Event Type

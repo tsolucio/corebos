@@ -419,40 +419,6 @@ class Emails extends CRMEntity {
 	}
 
 	/**
-	 * Returns a list of the Emails to be exported
-	 */
-	public function create_export_query($where) {
-		global $log, $current_user;
-		$log->debug('> create_export_query '.$where);
-
-		include_once 'include/utils/ExportUtils.php';
-
-		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery('Emails', 'detail_view');
-		$fields_list = getFieldsListFromQuery($sql);
-
-		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Emails');
-		$query = "SELECT $fields_list FROM vtiger_activity
-			INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid=vtiger_activity.activityid
-			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
-			LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
-			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_seactivityrel.crmid
-			LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
-				AND vtiger_cntactivityrel.contactid = vtiger_cntactivityrel.contactid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_salesmanactivityrel ON vtiger_salesmanactivityrel.activityid = vtiger_activity.activityid
-			LEFT JOIN vtiger_emaildetails ON vtiger_emaildetails.emailid = vtiger_activity.activityid
-			LEFT JOIN vtiger_seattachmentsrel ON vtiger_activity.activityid=vtiger_seattachmentsrel.crmid
-			LEFT JOIN vtiger_attachments ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid";
-		$query .= getNonAdminAccessControlQuery('Emails', $current_user);
-		$query .= "WHERE vtiger_activity.activitytype='Emails' AND vtiger_crmentity.deleted=0 ";
-
-		$log->debug('< create_export_query');
-		return $query;
-	}
-
-	/**
 	 * Used to releate email and contacts -- Outlook Plugin
 	 */
 	public function set_emails_contact_invitee_relationship($email_id, $contact_id) {

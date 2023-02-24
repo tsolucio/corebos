@@ -25,62 +25,6 @@ class com_vtiger_workflow extends CRMEntity {
 	public function track_view($user_id, $current_module, $id = '') {
 	}
 
-	public function create_export_query($where) {
-		global $adb;
-		$search_type = vtlib_purify($_REQUEST['search_type']);
-		$filters = isset($_REQUEST['filters']) ? vtlib_purify($_REQUEST['filters']) : '';
-		if ($search_type=='includesearch' && $filters!='') {
-			$filters = json_decode($filters, true);
-			$conds = '';
-			if (json_last_error() == JSON_ERROR_NONE && count($filters)>0) {
-				$conds = $params = array();
-				foreach ($filters as $filter) {
-					switch ($filter['path']) {
-						case 'Module':
-							if (!empty($filter['value']) && $filter['value'] != 'all') {
-								$conds[] = 'module_name=?';
-								$params[] = $filter['value'];
-							}
-							break;
-						case 'Description':
-							if (!empty($filter['value'])) {
-								$conds[] = 'summary like ?';
-								$params[] = '%' . $filter['value'] . '%';
-							}
-							break;
-						case 'Purpose':
-							if (!empty($filter['value'])) {
-								$conds[] = 'purpose like ?';
-								$params[] = '%' . $filter['value'] . '%';
-							}
-							break;
-						case 'Trigger':
-							if (!empty($filter['value']) && $filter['value'] != 'all') {
-								$conds[] = 'execution_condition=?';
-								$params[] = $filter['value'];
-							}
-							break;
-						case 'Status':
-							if (!empty($filter['value']) && $filter['value'] != 'all') {
-								$conds[] = 'active=?';
-								$params[] = $filter['value'];
-							}
-							break;
-						default:
-					}
-				}
-				if (empty($conds)) {
-					$conds = '';
-				} else {
-					$conds = 'where '.$adb->convert2Sql(implode(' and ', $conds), $params);
-				}
-			}
-			return 'select * from com_vtiger_workflows '.$conds;
-		} else {
-			return 'select * from com_vtiger_workflows where 1 ';
-		}
-	}
-
 	/**
 	 * @param string $module - module name for which query needs to be generated.
 	 * @param Users $user - user for which query needs to be generated.

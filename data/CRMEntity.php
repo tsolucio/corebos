@@ -1760,81 +1760,6 @@ class CRMEntity {
 	}
 
 	/**
-	 * Create query to export the records.
-	 */
-	public function create_export_query($where) {
-		global $current_user, $adb;
-		$thismodule = $_REQUEST['module'];
-
-		include_once 'include/utils/ExportUtils.php';
-
-		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery($thismodule, 'detail_view');
-
-		$fields_list = getFieldsListFromQuery($sql);
-		if ($thismodule=='Faq') {
-			$fields_list = str_replace(",vtiger_faqcomments.comments as 'Add Comment'", ' ', $fields_list);
-		}
-		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name
-			FROM ".$this->crmentityTableAlias." INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
-
-		if (!empty($this->customFieldTable)) {
-			$query .= ' INNER JOIN '.$this->customFieldTable[0].' ON '.$this->customFieldTable[0].'.'.$this->customFieldTable[1]."= $this->table_name.$this->table_index";
-		}
-
-		$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
-		$query .= " LEFT JOIN vtiger_users ON ".$this->crmentityTable.".smownerid = vtiger_users.id and vtiger_users.status='Active'";
-		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON ".$this->crmentityTable.".smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
-
-		$linkedModulesQuery = $adb->pquery('SELECT distinct fieldname, tablename, columnname, relmodule FROM vtiger_field' .
-			' INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid' .
-			" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
-		$linkedFieldsCount = $adb->num_rows($linkedModulesQuery);
-
-		$rel_mods = array();
-		$rel_mods[$this->table_name] = 1;
-		for ($i=0; $i<$linkedFieldsCount; $i++) {
-			$related_module = $adb->query_result($linkedModulesQuery, $i, 'relmodule');
-			$columnname = $adb->query_result($linkedModulesQuery, $i, 'columnname');
-			$tablename = $adb->query_result($linkedModulesQuery, $i, 'tablename');
-
-			$other = CRMEntity::getInstance($related_module);
-
-			if (!empty($rel_mods[$other->table_name])) {
-				$rel_mods[$other->table_name] = $rel_mods[$other->table_name] + 1;
-				$alias = $other->table_name.$rel_mods[$other->table_name];
-				$query_append = "as $alias";
-			} else {
-				$alias = $other->table_name;
-				$query_append = '';
-				$rel_mods[$other->table_name] = 1;
-			}
-
-			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $tablename.$columnname";
-		}
-
-		include_once 'include/fields/metainformation.php';
-		$tabid = getTabid($thismodule);
-		$result = $adb->pquery('select tablename, fieldname, columnname from vtiger_field where tabid=? and uitype=?', array($tabid, Field_Metadata::UITYPE_ACTIVE_USERS));
-		while ($row = $adb->fetchByAssoc($result)) {
-			$tableName = $row['tablename'];
-			$fieldName = $row['fieldname'];
-			$columName = $row['columnname'];
-			$query .= ' LEFT JOIN vtiger_users as vtiger_users'.$fieldName.' ON vtiger_users'.$fieldName.'.id='.$tableName.'.'.$columName;
-		}
-		$query .= $this->getNonAdminAccessControlQuery($thismodule, $current_user);
-		$where_auto = ' '.$this->crmentityTable.'.deleted=0';
-
-		if ($where != '') {
-			$query .= " WHERE ($where) AND $where_auto";
-		} else {
-			$query .= " WHERE $where_auto";
-		}
-
-		return $query;
-	}
-
-	/**
 	 * Initialize this instance for importing.
 	 */
 	public function initImport($module) {
@@ -3758,7 +3683,7 @@ class CRMEntity {
 		$order_by = '';
 		$customView = new CustomView($cmodule);
 		$viewid = $customView->getViewId($cmodule);
-		$sortfieldbyfirst = cbCVManagement::getFieldValuesByCvId($viewid)['sortfieldbyfirst'];
+		$sortfieldbyfirst = !empty(cbCVManagement::getFieldValuesByCvId($viewid)) ? cbCVManagement::getFieldValuesByCvId($viewid)['sortfieldbyfirst'] : '';
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule)) {
 			$order_by = GlobalVariable::getVariable('Application_ListView_Default_OrderField', $this->default_order_by, $cmodule);
 		} elseif (!GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule) && !empty($sortfieldbyfirst)) {

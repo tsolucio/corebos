@@ -575,50 +575,6 @@ class Contacts extends CRMEntity {
 		return $return_value;
 	}
 
-	/** Function to export the contact records in CSV Format
-	* @param string reference variable - where condition is passed when the query is executed
-	* @return string Export Contacts Query
-	*/
-	public function create_export_query($where) {
-		global $log, $current_user, $adb;
-		$log->debug('> create_export_query '.$where);
-
-		include_once 'include/utils/ExportUtils.php';
-
-		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery('Contacts', 'detail_view');
-		$fields_list = getFieldsListFromQuery($sql);
-		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
-		$query = "SELECT vtiger_contactdetails.salutation as 'Salutation',$fields_list,
-				case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
-			FROM vtiger_contactdetails
-			inner join ".$crmEntityTable." on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
-			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id and vtiger_users.status='Active'
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
-			LEFT JOIN vtiger_account on vtiger_contactdetails.accountid=vtiger_account.accountid
-			left join vtiger_contactaddress on vtiger_contactaddress.contactaddressid=vtiger_contactdetails.contactid
-			left join vtiger_contactsubdetails on vtiger_contactsubdetails.contactsubscriptionid=vtiger_contactdetails.contactid
-			left join vtiger_contactscf on vtiger_contactscf.contactid=vtiger_contactdetails.contactid
-			left join vtiger_customerdetails on vtiger_customerdetails.customerid=vtiger_contactdetails.contactid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_contactdetails vtiger_contactdetails2 ON vtiger_contactdetails2.contactid = vtiger_contactdetails.reportsto";
-		include_once 'include/fields/metainformation.php';
-		$tabid = getTabid('Contacts');
-		$result = $adb->pquery('select tablename, fieldname, columnname from vtiger_field where tabid=? and uitype=?', array($tabid, Field_Metadata::UITYPE_ACTIVE_USERS));
-		while ($row = $adb->fetchByAssoc($result)) {
-			$query .= ' LEFT JOIN vtiger_users as vtiger_users'.$row['fieldname'].' ON vtiger_users'.$row['fieldname'].'.id='.$row['tablename'].'.'.$row['columnname'];
-		}
-		$query .= getNonAdminAccessControlQuery('Contacts', $current_user);
-		$where_auto = ' vtiger_crmentity.deleted = 0 ';
-		if ($where != '') {
-			$query .= " WHERE ($where) AND ".$where_auto;
-		} else {
-			$query .= ' WHERE '.$where_auto;
-		}
-		$log->debug('< create_export_query');
-		return $query;
-	}
-
 	/** Function to get the Columnnames of the Contacts
 	* Used By vtigerCRM Word Plugin
 	* Returns the Merge Fields for Word Plugin

@@ -444,44 +444,6 @@ class Accounts extends CRMEntity {
 		return $return_value;
 	}
 
-	/** Function to export the account records in CSV Format
-	* @param string reference variable - where condition is passed when the query is executed
-	* @return string Export Accounts Query
-	*/
-	public function create_export_query($where) {
-		global $log, $current_user;
-		$log->debug('> create_export_query '.$where);
-
-		include_once 'include/utils/ExportUtils.php';
-
-		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery('Accounts', 'detail_view');
-		$fields_list = getFieldsListFromQuery($sql);
-		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
-				FROM ".$this->crmentityTableAlias."
-				INNER JOIN vtiger_account ON vtiger_account.accountid = vtiger_crmentity.crmid
-				LEFT JOIN vtiger_accountbillads ON vtiger_accountbillads.accountaddressid = vtiger_account.accountid
-				LEFT JOIN vtiger_accountshipads ON vtiger_accountshipads.accountaddressid = vtiger_account.accountid
-				LEFT JOIN vtiger_accountscf ON vtiger_accountscf.accountid = vtiger_account.accountid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid and vtiger_users.status = 'Active'
-				LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
-				LEFT JOIN vtiger_account vtiger_account2 ON vtiger_account2.accountid = vtiger_account.parentid
-				LEFT JOIN vtiger_account vtiger_accountaccount_id ON vtiger_account.parentid = vtiger_accountaccount_id.accountid";
-				// vtiger_account2 is added to get the Member of account
-		$query .= $this->getNonAdminAccessControlQuery('Accounts', $current_user);
-		$where_auto = ' vtiger_crmentity.deleted = 0 ';
-
-		if ($where != '') {
-			$query .= " WHERE ($where) AND ".$where_auto;
-		} else {
-			$query .= ' WHERE '.$where_auto;
-		}
-
-		$log->debug('< create_export_query');
-		return $query;
-	}
-
 	/** Function to get the column names of the Account Record
 	* Used By vtigerCRM Word Plugin
 	* Returns the Merge Fields for Word Plugin

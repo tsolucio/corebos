@@ -2995,13 +2995,7 @@ function selectedRecords(module) {
 }
 
 function record_export(module, exform, idstring) {
-	var searchType = document.getElementsByName('search_type');
 	var exportData = document.getElementsByName('export_data');
-	for (var i=0; i<2; i++) {
-		if (searchType[i].checked) {
-			var sel_type = searchType[i].value;
-		}
-	}
 	for (i=0; i<3; i++) {
 		if (exportData[i].checked) {
 			var exp_type = exportData[i].value;
@@ -3009,7 +3003,7 @@ function record_export(module, exform, idstring) {
 	}
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module='+module+'&action=ExportAjax&export_record=true&search_type='+sel_type+'&export_data='+exp_type+'&idstring='+idstring
+		url: 'index.php?module='+module+'&action=ExportAjax&export_record=true&export_data='+exp_type+'&idstring='+idstring
 	}).done(function (response) {
 		if (response == 'NOT_SEARCH_WITHSEARCH_ALL') {
 			document.getElementById('not_search').style.display = 'block';

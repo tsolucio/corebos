@@ -127,12 +127,15 @@ if ($sql_error) {
 	$smarty->assign('LISTHEADER', '');
 	$smarty->assign('LISTENTITY', array());
 } else {
-// Enabling Module Search
+	// Enabling Module Search
 	$url_string = '';
 	if (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true') {
+		coreBOS_Session::set('Search_Criteria_exists', true);
 		$queryGenerator->addUserSearchConditions($_REQUEST);
 		$ustring = getSearchURL($_REQUEST);
 		$url_string .= "&query=true$ustring";
+	} else {
+		coreBOS_Session::set('Search_Criteria_exists', false);
 	}
 	$smarty->assign('SEARCH_URL', $url_string);
 	if (!empty($order_by)) {
@@ -160,15 +163,18 @@ if ($sql_error) {
 			}
 		}
 	}
+	coreBOS_Session::set('list_query', $list_query);
 	if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
 		echo '<br>'.$list_query.'<br>';
 	}
+	$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
+	$start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, $viewid, $queryMode);
+	$limit_start_rec = ($start-1) * $list_max_entries_per_page;
+	$limitQuery = " LIMIT $limit_start_rec, $list_max_entries_per_page";
+	coreBOS_Session::set('limitQuery', $limitQuery);
 	try {
 		if ($layout != 'tuigrid') {
-			$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
-			$start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, $viewid, $queryMode);
-			$limit_start_rec = ($start-1) * $list_max_entries_per_page;
-			$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+			$list_result = $adb->pquery($list_query. $limitQuery, array());
 			if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 				$count_result = $adb->query(mkCountQuery($list_query));
 				$noofrows = $adb->query_result($count_result, 0, 0);

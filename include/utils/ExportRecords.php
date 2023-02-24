@@ -25,7 +25,6 @@ $idstring = getSelectedRecords(
 );
 $idstring = join(';', $idstring);
 
-$smarty->assign('SESSION_WHERE', (isset($_SESSION['export_where']) ? $_SESSION['export_where'] : ''));
 $tool_buttons = array(
 	'EditView' => 'no',
 	'CreateView' => 'no',
@@ -48,6 +47,10 @@ $smarty->assign('MODULE', $currentModule);
 $smarty->assign('MODULELABEL', getTranslatedString($currentModule));
 $smarty->assign('IDSTRING', $idstring);
 $smarty->assign('PERPAGE', $list_max_entries_per_page);
+global $log;
+$log->fatal('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWw');
+$log->fatal($_SESSION['Search_Criteria_exists']);
+$smarty->assign('Search_Criteria_exists', isset($_SESSION['Search_Criteria_exists']) ? $_SESSION['Search_Criteria_exists'] : "");
 
 if (!is_admin($current_user) && (isPermitted($currentModule, 'Export') != 'yes')) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));

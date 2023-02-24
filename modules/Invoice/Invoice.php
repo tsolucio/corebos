@@ -694,50 +694,6 @@ class Invoice extends CRMEntity {
 		undoLastImport($obj, $user);
 	}
 
-	/** Function to export the lead records in CSV Format
-	* @param string reference variable - where condition is passed when the query is executed
-	* @return string Export Invoice Query.
-	*/
-	public function create_export_query($where) {
-		global $log, $current_user;
-		$log->debug('> create_export_query '.$where);
-
-		include_once 'include/utils/ExportUtils.php';
-
-		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery('Invoice', 'detail_view');
-		$fields_list = getFieldsListFromQuery($sql);
-		$fields_list .= getInventoryFieldsForExport($this->table_name);
-		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
-		$query = "SELECT $fields_list FROM ".$crmEntityTable
-			." INNER JOIN vtiger_invoice ON vtiger_invoice.invoiceid = vtiger_crmentity.crmid
-			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
-			LEFT JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_invoice.salesorderid
-			LEFT JOIN vtiger_invoicebillads ON vtiger_invoicebillads.invoicebilladdressid = vtiger_invoice.invoiceid
-			LEFT JOIN vtiger_invoiceshipads ON vtiger_invoiceshipads.invoiceshipaddressid = vtiger_invoice.invoiceid
-			LEFT JOIN vtiger_inventoryproductrel ON vtiger_inventoryproductrel.id = vtiger_invoice.invoiceid
-			LEFT JOIN vtiger_products ON vtiger_products.productid = vtiger_inventoryproductrel.productid
-			LEFT JOIN vtiger_service ON vtiger_service.serviceid = vtiger_inventoryproductrel.productid
-			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_invoice.contactid
-			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_invoice.accountid
-			LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_invoice.currency_id
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
-			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
-
-		$query .= $this->getNonAdminAccessControlQuery('Invoice', $current_user);
-		$where_auto = ' vtiger_crmentity.deleted=0';
-
-		if ($where != '') {
-			$query .= " where ($where) AND ".$where_auto;
-		} else {
-			$query .= ' where '.$where_auto;
-		}
-
-		$log->debug('< create_export_query');
-		return $query;
-	}
-
 	/**
 	 * Handle saving related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).

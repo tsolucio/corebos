@@ -346,60 +346,6 @@ class Quotes extends CRMEntity {
 		undoLastImport($obj, $user);
 	}
 
-	/** Function to export the lead records in CSV Format
-	* @param string reference variable - where condition is passed when the query is executed
-	* @return string Export Quotes Query
-	*/
-	public function create_export_query($where) {
-		global $log, $current_user, $adb;
-		$log->debug('> create_export_query '.$where);
-
-		include_once 'include/utils/ExportUtils.php';
-
-		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery('Quotes', 'detail_view');
-		$fields_list = getFieldsListFromQuery($sql);
-		$fields_list .= getInventoryFieldsForExport($this->table_name);
-
-		$query = "SELECT $fields_list FROM ".$this->crmentityTableAlias
-			." INNER JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_crmentity.crmid
-			LEFT JOIN vtiger_quotescf ON vtiger_quotescf.quoteid = vtiger_quotes.quoteid
-			LEFT JOIN vtiger_quotesbillads ON vtiger_quotesbillads.quotebilladdressid = vtiger_quotes.quoteid
-			LEFT JOIN vtiger_quotesshipads ON vtiger_quotesshipads.quoteshipaddressid = vtiger_quotes.quoteid
-			LEFT JOIN vtiger_inventoryproductrel ON vtiger_inventoryproductrel.id = vtiger_quotes.quoteid
-			LEFT JOIN vtiger_products ON vtiger_products.productid = vtiger_inventoryproductrel.productid
-			LEFT JOIN vtiger_service ON vtiger_service.serviceid = vtiger_inventoryproductrel.productid
-			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_quotes.contactid
-			LEFT JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_quotes.potentialid
-			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_quotes.accountid
-			LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_quotes.currency_id
-			LEFT JOIN vtiger_users AS vtiger_inventoryManager ON vtiger_inventoryManager.id = vtiger_quotes.inventorymanager
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
-			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
-
-		include_once 'include/fields/metainformation.php';
-		$tabid = getTabid('Quotes');
-		$result = $adb->pquery('select tablename, fieldname, columnname from vtiger_field where tabid=? and uitype=?', array($tabid, Field_Metadata::UITYPE_ACTIVE_USERS));
-		while ($row = $adb->fetchByAssoc($result)) {
-			$tableName = $row['tablename'];
-			$fieldName = $row['fieldname'];
-			$columName = $row['columnname'];
-			$query .= ' LEFT JOIN vtiger_users as vtiger_users'.$fieldName.' ON vtiger_users'.$fieldName.'.id='.$tableName.'.'.$columName;
-		}
-		$query .= $this->getNonAdminAccessControlQuery('Quotes', $current_user);
-		$where_auto = ' vtiger_crmentity.deleted=0';
-
-		if ($where != '') {
-			$query .= " where ($where) AND ".$where_auto;
-		} else {
-			$query .= ' where '.$where_auto;
-		}
-
-		$log->debug('< create_export_query');
-		return $query;
-	}
-
 	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
 		if ($basemodule=='SalesOrder' && $fieldname=='quote_id') {
 			return 'selectQuote';

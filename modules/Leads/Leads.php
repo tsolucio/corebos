@@ -99,43 +99,6 @@ class Leads extends CRMEntity {
 		}
 	}
 
-	/** Function to export the lead records in CSV Format
-	* @param string reference variable - where condition is passed when the query is executed
-	* @return string Export Leads Query
-	*/
-	public function create_export_query($where) {
-		global $log, $current_user;
-		$log->debug('> create_export_query '.$where);
-
-		include_once 'include/utils/ExportUtils.php';
-
-		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery('Leads', 'detail_view');
-		$fields_list = getFieldsListFromQuery($sql);
-
-		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
-		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name
-			FROM ".$crmEntityTable
-			." INNER JOIN vtiger_leaddetails ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
-			LEFT JOIN vtiger_leadsubdetails ON vtiger_leaddetails.leadid = vtiger_leadsubdetails.leadsubscriptionid
-			LEFT JOIN vtiger_leadaddress ON vtiger_leaddetails.leadid=vtiger_leadaddress.leadaddressid
-			LEFT JOIN vtiger_leadscf ON vtiger_leadscf.leadid=vtiger_leaddetails.leadid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
-			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
-		$query .= $this->getNonAdminAccessControlQuery('Leads', $current_user);
-		$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
-		$where_auto = " vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted =$val_conv";
-
-		if ($where != '') {
-			$query .= " where ($where) AND ".$where_auto;
-		} else {
-			$query .= ' where '.$where_auto;
-		}
-		$log->debug('< create_export_query');
-		return $query;
-	}
-
 	/** Returns a list of the associated Campaigns
 	 * @param integer campaign id
 	 * @return array list of campaigns
