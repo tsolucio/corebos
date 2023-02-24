@@ -18,19 +18,26 @@
  *************************************************************************************************
  * The accepted format is:
 <map>
-<module>cbBCase</module>
+<module>Contacts</module>
 <rows>
 	<row>
-		<field>businesscase_name</field>
-		<field>businesscase_from</field>
+		<name>Informazioni Contatto</name>
+		<fields>
+			<field>firstname</field>
+			<field>lastname</field>
+		</fields>
 	</row>
 	<row>
-		<field>businesscasestatus</field>
-		<field>businesscase_to</field>
-		<field>cf_2191</field>
+		<fields>
+			<field>assistant</field>
+			<field>assistantphone</field>
+			<field>cf_2191</field>
+		</fields>
 	</row>
 	<row>
-		<field>budgetcost</field>
+		<fields>
+			<field>template_language</field>
+		</fields>
 	</row>
 </rows>
 </map>
@@ -56,7 +63,11 @@ class WizardForms extends processcbMap {
 			foreach ($r->fields->field as $field) {
 				$row[] = $this->getFieldInfo((string)$field);
 			}
-			$rows[(string)$r->name] = $row;
+			if (empty((string)$r->name)) {
+				$rows[] = $row;
+			} else {
+				$rows[(string)$r->name] = $row;
+			}
 		}
 		$this->mapping['rows'] = $rows;
 		return $this->mapping;

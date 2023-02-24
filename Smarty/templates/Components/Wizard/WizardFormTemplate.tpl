@@ -13,7 +13,7 @@ document.getElementById('codewithhbtnswitch').remove();
 </script>
 <div class="slds-p-horizontal_medium" style="margin-top: -3%;">
 {foreach from=$Rows item=$row key=$k}
-	{if !empty($k)}
+	{if !empty($k) && !is_numeric($k)}
 	<div class="slds-section slds-is-open">
 		<h3 class="slds-section__title slds-theme_shade">
 			<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
