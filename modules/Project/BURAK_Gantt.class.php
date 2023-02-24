@@ -770,7 +770,7 @@ class BURAK_Gantt {
 		$months = array();
 		$s = $this->gantt_start;
 		while($s <= ($this->gantt_end+1)){
-			$label = gmstrftime("%b %Y",$s);
+			$label = gmdate("M Y",$s);
 			if(!array_key_exists($label,$months)){
 				$months[$label] = 1;
 			}else{
