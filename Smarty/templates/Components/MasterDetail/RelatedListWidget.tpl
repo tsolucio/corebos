@@ -30,7 +30,7 @@
 							</button>
 							{/if}
 							<button type="button" class="slds-button slds-button_neutral" onclick="relatedlistgrid.upsert('{$functionName}', '{$MainModule}', '', {$CurrentRecord}, '{$MainRelateField}')">
-								{$APP.LBL_CREATE_BUTTON_LABEL} {$MainModule}
+								{$APP.LBL_CREATE_BUTTON_LABEL} {$APP.LBL_ROW}
 							</button>
 						</div>
 						</div>

@@ -161,9 +161,16 @@ class CBAddNotification extends VTTask {
 			$moreinfo = $entity->WorkflowContext['AddNotification_MoreInfo'];
 		}
 		if (empty($entity->WorkflowContext['AddNotification_Owner'])) {
-			if (empty($this->ownerid) || $this->cbmodule=='wfuser') {
+			if (empty($this->ownerid) || $this->ownerid=='wfuser') {
 				global $current_user;
+				$util = new VTWorkflowUtils();
+				$hold_user = $current_user;
+				$util->loggedInUser();
+				if (is_null($current_user)) {
+					$current_user = $hold_user; // make sure current_user is defined
+				}
 				$ownerid = $current_user->id;
+				$util->revertUser();
 			} else {
 				$ownerid = vtws_getCRMID($this->ownerid);
 			}
@@ -182,13 +189,21 @@ class CBAddNotification extends VTTask {
 		$remid = cbCalendar::addNotificationReminder($cbmodule, $cbrecord, $datetime, $ownerid, $relwith, $moreaction, $moreinfo);
 		$minfo = json_decode($moreinfo, true);
 		if (empty($minfo['id'])) {
-			$minfo['id'] = $remid;
-			$adb->pquery('UPDATE vtiger_activity_reminder_popup set moreinfo=? WHERE reminderid=?', [json_encode($minfo), $remid]);
+			$minfo['id'] = (string)$remid;
+			$mact = json_decode($moreaction, true);
+			if (!empty($mact['link'])) {
+				$mact['link'] = str_replace('$ID$', $remid, $mact['link']);
+				$moreaction = $mact;
+			}
+			$adb->pquery(
+				'UPDATE vtiger_activity_reminder_popup set moreinfo=?,moreaction=? WHERE reminderid=?',
+				[json_encode($minfo), json_encode($mact), $remid]
+			);
 		} else {
 			$remid = $minfo['id'];
 		}
 		$entity->WorkflowContext['AddNotification_NotificationID'] = $remid;
-		$logbg->debug('< AddNotification', [$cbmodule, $cbrecord, $datetime, $ownerid, $relwith, $moreaction, $moreinfo, $remid]);
+		$logbg->debug('< AddNotification', [$cbmodule, $cbrecord, $datetime, $ownerid, $relwith, $moreaction, $minfo, $remid]);
 	}
 }
 ?>

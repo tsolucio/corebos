@@ -68,6 +68,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_DetailView_Sticky_BlockStatus',
 				'Application_DetailView_PageHeader_Message',
 				'Application_Filter_All_Edit',
+				'Application_Filter_Remove_RelatedModule_Label',
 				'Application_EditView_Submit_Form_WithEnter',
 				'Application_TrackerMaxHistory',
 				'Application_Announcement',
@@ -140,6 +141,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Header_Buttons_Position',
 				'Application_Hide_Related_List',
 				'Application_ImageSlider_Mode',
+				'Application_Inline_Edit',
 
 				'Graph_DataLabels',
 				'Graph_DataLabels_Color',

@@ -2853,8 +2853,8 @@ function getrecurringObjValue() {
  */
 function getTranslatedString($str, $module = '') {
 	global $app_strings, $mod_strings, $current_language;
-	$temp_mod_strings = ($module != '' ) ? return_module_language($current_language, $module) : $mod_strings;
-	return (!empty($temp_mod_strings[$str]) ? $temp_mod_strings[$str] : (!empty($app_strings[$str]) ? $app_strings[$str] : cbtranslation::get($str, $module)));
+	$temp_mod_strings = ($module != '') ? return_module_language($current_language, $module) : $mod_strings;
+	return (empty($temp_mod_strings[$str]) ? (empty($app_strings[$str]) ? cbtranslation::get($str, $module) : $app_strings[$str]) : $temp_mod_strings[$str]);
 }
 
 /**

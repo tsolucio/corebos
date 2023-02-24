@@ -119,7 +119,7 @@ var relatedlistgrid = {
 					</dl>`;
 			}
 			const el = `
-			<div class="cbds-tooltip__wrapper--inner">
+			<div class="cbds-tooltip__wrapper--inner cbds-tooltip__margin--left">
 				<section class="slds-popover slds-nubbin_bottom" role="dialog">
 					<header class="slds-popover__header" style="background: #1589ee;color: white">
 						<div class="slds-media slds-media_center slds-has-flexi-truncate">

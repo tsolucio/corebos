@@ -39,7 +39,7 @@
 	<ul>
 		{foreach from=$images item=$i key=$seq}
 		<li>
-			<img src="{$i.path}" data-sequence="{$seq}" onclick="Slider.showFullImage('{$i.path}', '{$i.title}', {$i.id})" style="cursor: pointer;{$customstyle}">
+			<img src="{$i.path}" data-sequence="{$seq}" onclick="Slider.showFullImage('{$i.path}', '{$i.title}', {$i.id}, '{$recordid}', '{$currentmodule}')" style="cursor: pointer;{$customstyle}">
 		</li>
 		{/foreach}
 	</ul>

@@ -23,7 +23,7 @@ class AutoNumberPrefix extends CRMEntity {
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
-	public $customFieldTable = array('vtiger_autonumberprefix', 'autonumberprefixid');
+	public $customFieldTable = array('vtiger_autonumberprefixcf', 'autonumberprefixid');
 	// Uncomment the line below to support custom field columns on related lists
 	// public $related_tables = array('vtiger_autonumberprefix'=>array('autonumberprefixid','vtiger_autonumberprefix', 'autonumberprefixid'));
 

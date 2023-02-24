@@ -936,5 +936,11 @@ $mod_strings = array(
 	'LBL_EXPORT' => 'Export',
 	'LBL_RELATED_MODULE' => 'Related Module',
 	'LBL_RL_LABEL' => 'Label',
+	//email language translate
+    'LBL_EMAIL_TRANSLATE' => 'This is a test mail sent to confirm if a mail is actually being sent through the smtp server that you have configured.',
+    'LBL_EMAIL_END' => 'Feel free to delete this mail.',
+    'LBL_EMAIL_SUBJECT' => 'Test mail about the mail server configuration.',
+    'LBL_DEAR' => 'Dear ',
+    'LBL_THANKS' => 'Thanks and Regards,',
 );
 ?>

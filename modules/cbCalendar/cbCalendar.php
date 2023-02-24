@@ -293,7 +293,8 @@ class cbCalendar extends CRMEntity {
 	 * @param string module
 	 */
 	public function insertIntoActivityReminderPopup($cbmodule) {
-		self::addNotificationReminder($cbmodule, $this->id, $this->column_fields['dtstart']);
+		global $current_user;
+		self::addNotificationReminder($cbmodule, $this->id, $this->column_fields['dtstart'], $current_user->id);
 	}
 
 	public static function addNotificationReminder($cbmodule, $cbrecord, $dtstart, $owner = 0, $relwith = 0, $action = '', $moreinfo = '') {
@@ -302,9 +303,8 @@ class cbCalendar extends CRMEntity {
 		if (isset($cbmodule) && isset($cbrecord)) {
 			list($cbdate,$cbtime) = explode(' ', $dtstart);
 
-			$reminder_query = 'SELECT reminderid FROM vtiger_activity_reminder_popup WHERE recordid=?';
-			$reminder_params = array($cbrecord);
-			$reminderidres = $adb->pquery($reminder_query, $reminder_params);
+			$reminder_query = 'SELECT reminderid FROM vtiger_activity_reminder_popup WHERE recordid=? and (ownerid=? or ownerid=0) and status<2';
+			$reminderidres = $adb->pquery($reminder_query, array($cbrecord, $owner));
 
 			$reminderid = null;
 			if ($adb->num_rows($reminderidres) > 0) {
@@ -355,7 +355,7 @@ class cbCalendar extends CRMEntity {
 		} else {
 			$cbsubject = $cbactivitytype = $activity['activityimage'] = '';
 			if (!empty($cbrecord)) {
-				$cbsubject = array_values(getEntityName($cbmodule, $cbrecord));
+				$cbsubject = array_values(getEntityName(getSalesEntityType($cbrecord), $cbrecord));
 				$cbsubject = $cbsubject[0];
 				$cbactivitytype = getTranslatedString($cbmodule, $cbmodule);
 				$mod = CRMEntity::getInstance($cbmodule);

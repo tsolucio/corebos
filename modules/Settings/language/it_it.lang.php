@@ -932,5 +932,11 @@ $mod_strings = array (
 	'LBL_EXPORT' => 'Esportare',
 	'LBL_RELATED_MODULE' => 'Related Module',
 	'LBL_RL_LABEL' => 'Label',
+	//email language translate
+	'LBL_EMAIL_TRANSLATE' => 'Questa è una mail di prova inviata per confermare se una mail viene effettivamente inviata attraverso il server smtp che hai configurato.',
+    'LBL_EMAIL_END' => 'Sentiti libero di cancellare questa mail.',
+    'LBL_EMAIL_SUBJECT' => 'Testare la posta sulla configurazione del server di posta.',
+    'LBL_DEAR' => 'Caro ',
+    'LBL_THANKS' => 'Grazie e saluti,',
 	);
 ?>

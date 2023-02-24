@@ -557,3 +557,14 @@ symbol#search {
 .tooltip:hover .tooltiptextright {
   visibility: visible;
 }
+
+/* drag over zone */
+.cblds-drag_info {
+  background-color:#747474;
+}
+
+#corebosdropzone {
+  padding-top: 1px;
+  padding-bottom: 8px;
+  z-index: 99;
+}

@@ -381,6 +381,10 @@ var alert_arr = {
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Attachment could not be deleted',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!',
 	'JSLBL_DRAW': 'Draw',
+	'JSLBL_DRAW_MODAL_TITLE': 'Error while drawing',
+	'JSLBL_DRAW_MODAL_MESSAGE': 'No permission to Draw/Edit',
+	'JSLBL_LEFT': 'Left',
+	'JSLBL_RIGHT': 'Right',
 	'JSLBL_CANCEL': 'Cancel',
 	'JSLBL_SAVEAS': 'Save as',
 	'JSLBL_SAVE': 'Save',
@@ -454,4 +458,5 @@ var alert_arr = {
 	'SelectField': 'Select field',
 	'MoveFile': 'Move file',
 	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
+	'LBL_COPY_ROWS': 'Copy Rows',
 };

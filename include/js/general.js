@@ -13,7 +13,7 @@ if (window.coreBOSEvents == undefined) {
 window.coreBOSSearching = false;
 window.coreBOSSearchingText = '';
 
-function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
+function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid, viewtype = '') {
 	if (typeof coreBOS_runningUnitTests != 'undefined') {
 		return Promise.resolve(gvdefault);
 	}
@@ -35,7 +35,7 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 	} // current module
 	// Return a new promise avoiding jquery and prototype
 	return new Promise(function (resolve, reject) {
-		var url = baseurl + '&gvname='+gvname+'&gvuserid='+gvuserid+'&gvmodule='+gvmodule+'&gvdefault='+gvdefault+'&returnvalidation=0';
+		var url = baseurl + '&gvname='+gvname+'&gvuserid='+gvuserid+'&gvmodule='+gvmodule+'&gvdefault='+gvdefault+'&returnvalidation=0'+`${viewtype ? '&viewtype='+viewtype : ''}`;
 		var req = new XMLHttpRequest();
 		req.open('GET', url, true);  // make call asynchronous
 
@@ -1459,7 +1459,7 @@ function runBAScript(scripturi) {
 	return void(0);
 }
 
-function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false) {
+function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false, redirectTo = '') {
 	if (typeof workflowid == 'undefined' || workflowid == '') {
 		return false;
 	}
@@ -1474,27 +1474,52 @@ function runBAWorkflow(workflowid, crmids, context = '', refreshDV = false) {
 	}
 	VtigerJS_DialogBox.block();
 	const dataset = document.activeElement.dataset;
-	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids+'&ctx='+encodeURIComponent(context)).then(function (data) {
-		const response = JSON.parse(data);
-		if (response) {
-			if (dataset.success !== undefined && dataset.success != '') {
-				ldsPrompt.show(dataset.title, dataset.success, 'success');
+	if (typeof workflowid == 'number') {
+		workflowid = [workflowid];
+	}
+	let wferrors = [];
+	for (let i in workflowid) {
+		ExecuteFunctions('execwf', 'wfid='+workflowid[i]+'&ids='+crmids+'&ctx='+encodeURIComponent(context)).then(function (data) {
+			const response = JSON.parse(data);
+			if (workflowid.length == 1) {
+				if (response) {
+					if (dataset.success !== undefined && dataset.success != '') {
+						ldsPrompt.show(dataset.title, dataset.success, 'success');
+					} else {
+						ldsPrompt.show(alert_arr.Okay, alert_arr.Okay, 'success');
+					}
+				} else { //Error
+					if (dataset.error !== undefined && dataset.error != '') {
+						ldsPrompt.show(dataset.title, dataset.error);
+					} else {
+						ldsPrompt.show(alert_arr['ERROR'], alert_arr.ERROR);
+					}
+				}
 			} else {
-				ldsPrompt.show(alert_arr.Okay, alert_arr.Okay, 'success');
+				if (response) {
+					if (dataset.success !== undefined && dataset.success != '') {
+						ldsNotification.show(dataset.title, dataset.success, 'success');
+					} else {
+						ldsNotification.show(alert_arr.Okay, alert_arr.Okay, 'success');
+					}
+				} else { //Error
+					if (dataset.error !== undefined && dataset.error != '') {
+						ldsNotification.show(dataset.title, dataset.error, 'error');
+					} else {
+						ldsNotification.show(alert_arr['ERROR'], alert_arr.ERROR, 'error');
+					}
+				}
 			}
-		} else { //Error
-			if (dataset.error !== undefined && dataset.error != '') {
-				ldsPrompt.show(dataset.title, dataset.error);
-			} else {
-				ldsPrompt.show(alert_arr['ERROR'], alert_arr.ERROR);
+			VtigerJS_DialogBox.unblock();
+			corebosjshook_runBAWorkflow(workflowid[i], crmids, context, refreshDV, response);
+			if (refreshDV) {
+				dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
 			}
-		}
-		VtigerJS_DialogBox.unblock();
-		corebosjshook_runBAWorkflow(workflowid, crmids, context, refreshDV, response);
-		if (refreshDV) {
-			dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
-		}
-	});
+			if (redirectTo!='') {
+				gotourl(redirectTo);
+			}
+		});
+	}
 	return void(0);
 }
 
@@ -2896,7 +2921,15 @@ function confirmdelete(url) {
 			method: 'POST',
 			url: url
 		}).done(function (response) {
-			location.reload();
+			let url = new URL(location.href);
+			let params = new URLSearchParams(url.search);
+			let newUrl = '';
+			if (params.has('viewname')) {
+				params.delete('viewname');
+				url.search = params.toString();
+				newUrl = url.toString();
+			}
+			window.location.replace(newUrl);
 		});
 	}
 }
@@ -7632,7 +7665,73 @@ function openWizard(mapid) {
 	}, 100);
 }
 
+async function handleDrawClick(checkmodule, checkaction, recordid, doc2edit = '') {
+	const response = await ExecuteFunctions('ispermitted', `checkmodule=${checkmodule}&checkaction=${checkaction}&checkrecord=${recordid}`);
+
+	if (!response) {
+		try {
+		  ldsModal.close(true);
+		} catch (error) {
+			
+		}
+		ldsModal.show(alert_arr.JSLBL_DRAW_MODAL_TITLE, alert_arr.JSLBL_DRAW_MODAL_MESSAGE);
+		return;
+	  }
+  
+	const urlParams = new URLSearchParams();
+	urlParams.set('module', 'Utilities');
+	urlParams.set('action', 'UtilitiesAjax');
+	urlParams.set('file', 'Paint2Document');
+	urlParams.set('formodule', checkmodule);
+	urlParams.set('forrecord', recordid);
+	urlParams.set('inwindow', '1');
+	if (doc2edit) {
+	  urlParams.set('doc2edit', doc2edit);
+	}
+  
+	const url = `index.php?${urlParams.toString()}`;
+	window.open(url, 'photo2doc', 'width=1416,height=830');
+  
+  }
+
+function cbdzdropHandler(event) {
+	console.log('File(s) dropped');
+	// Prevent default behavior (Prevent file from being opened)
+	event.preventDefault();
+	cbdzdragFinish();
+}
+
+function cbdzdragOverHandler(event) {
+	console.log('drag over');
+	// Prevent default behavior (Prevent file from being opened)
+	event.preventDefault();
+	//cbdzdragStart();
+}
+
+function cbdzdragStart() {
+	document.body.classList.add('cblds-drag_info');
+	document.getElementById('corebosdropzonemsg').style.display = 'block';
+}
+
+function cbdzdragFinish() {
+	document.body.classList.remove('cblds-drag_info');
+	document.getElementById('corebosdropzonemsg').style.display = 'none';
+}
+
+var cbdzClearDrag = null;
+
 window.addEventListener('DOMContentLoaded', () => {
+	document.body.addEventListener('dragenter', (event) => {
+		console.log('dragenter');
+		cbdzdragStart();
+	});
+	document.body.addEventListener('dragleave', (event) => {
+		console.log('dragleave');
+		if (cbdzClearDrag!=null) {
+			window.clearTimeout(cbdzClearDrag);
+		}
+		cbdzClearDrag = window.setTimeout(cbdzdragFinish, 8000);
+	});
 	AutocompleteSetup();
 	initSelect2();
 	if (Application_Menu_Direction == 'Vertical') {
