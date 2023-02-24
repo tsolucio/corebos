@@ -106,8 +106,6 @@ function export($type, $format = 'CSV') {
 		$query .= $_SESSION['limitQuery'];
 	} elseif ($export_data == 'selecteddata') {
 		$idsArray = explode(';', vtlib_purify($_REQUEST['idstring']));
-		global $log;
-		$log->fatal('this is the place man');
 		$where = '';
 		$entityField= getEntityField(vtlib_purify($_REQUEST['module']));
 		foreach ($idsArray as $key => $value) {
