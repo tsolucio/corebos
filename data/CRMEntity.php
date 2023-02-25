@@ -3758,7 +3758,8 @@ class CRMEntity {
 		$order_by = '';
 		$customView = new CustomView($cmodule);
 		$viewid = $customView->getViewId($cmodule);
-		$sortfieldbyfirst = cbCVManagement::getFieldValuesByCvId($viewid)['sortfieldbyfirst'];
+		$cvFields = cbCVManagement::getFieldValuesByCvId($viewid);
+		$sortfieldbyfirst = (empty($cvFields) || empty($cvFields['sortfieldbyfirst']) ? '' : $cvFields['sortfieldbyfirst']);
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule)) {
 			$order_by = GlobalVariable::getVariable('Application_ListView_Default_OrderField', $this->default_order_by, $cmodule);
 		} elseif (!GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule) && !empty($sortfieldbyfirst)) {
