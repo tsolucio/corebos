@@ -124,8 +124,8 @@ class PBXManager extends CRMEntity {
 		}
 
 		$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid';
-		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
-		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
+		$query .= ' LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id';
+		$query .= ' LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid=vtigerCreatedBy.id';
 
 		$where_auto = ' vtiger_crmentity.deleted=0';
 
