@@ -3477,7 +3477,7 @@ function getOwnerName($id) {
 
 /** Function to get owner name either user or group */
 function getOwnerNameList($idList) {
-	if (!is_array($idList) || count($idList) == 0) {
+	if (!is_array($idList) || empty($idList)) {
 		return array();
 	}
 
