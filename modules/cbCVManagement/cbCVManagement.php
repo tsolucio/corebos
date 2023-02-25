@@ -663,7 +663,7 @@ class cbCVManagement extends CRMEntity {
 
 	public static function getFieldValuesByCvId($cvid) {
 		global $adb;
-		$result = $adb->pquery("SELECT * FROM `vtiger_cbcvmanagement` WHERE cvid = ?", array($cvid));
+		$result = $adb->pquery('SELECT * FROM vtiger_cbcvmanagement WHERE cvid=?', array($cvid));
 		if (!$result) {
 			return false;
 		}

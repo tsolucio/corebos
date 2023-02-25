@@ -120,12 +120,10 @@ class PBXManager extends CRMEntity {
 			$query.= "INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 		}
 		if (!empty($this->customFieldTable)) {
-			$query.=" INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1]." = $this->table_name.$this->table_index";
+			$query.=' INNER JOIN '.$this->customFieldTable[0].' ON '.$this->customFieldTable[0].'.'.$this->customFieldTable[1]."=$this->table_name.$this->table_index";
 		}
 
-		$query .=
-			//"LEFT JOIN " . $this->groupTable[0] . " ON " . $this->groupTable[0].'.'.$this->groupTable[1] . " = $this->table_name.$this->table_index
-			"LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid';
 		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
 		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
 
