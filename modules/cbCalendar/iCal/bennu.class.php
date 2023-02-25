@@ -17,14 +17,14 @@ class Bennu {
 		if ($t === null) {
 			$t = time();
 		}
-		return gmstrftime('%Y%m%dT%H%M%SZ', $t);
+		return gmdate('Ymd\THis\Z', $t);
 	}
 
 	public static function timestamp_to_date($t = null) {
 		if ($t === null) {
 			$t = time();
 		}
-		return gmstrftime('%Y%m%d', $t);
+		return gmdate('Ymd', $t);
 	}
 
 	public static function generate_guid() {
