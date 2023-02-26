@@ -7,20 +7,20 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s) - Brazilian Portuguese Translator: Valmir Carlos Trindade | TTCA Soluções - www.ttcasolucoes.com.br - 19/12/2011.
- * Contributor(s) - Brazilian Portuguese Translator: Ranieri Slemer |  www.slemernet.com.br - 20/03/2020.
+ * Contributor(s) - Brazilian Portuguese Translator: Ranieri Slemer |  www.slemernet.com.br - 26/02/2023.
  ************************************************************************************/
 
 $mod_strings = array(
-'CobroPago'=>'Contas Pagar/Receber',
-'SINGLE_CobroPago'=>'Contas Pagar/Receber',
-'LBL_MODULE_TITLE'=>'Contas Pagar/Receber: Principal',
-'LBL_SEARCH_FORM_TITLE'=>'Pesquisar Contas Pagar/Receber',
-'LBL_LIST_FORM_TITLE'=>'Lista Contas Pagar/Receber',
-'LBL_COBROPAGO_NAME'=>'Ref.Contas Pagar/Receber:',
-'LBL_COBROPAGO'=>'Contas Pagar/Receber:',
-'LBL_NAME'=>'Ref. Contas Pagar/Receber',
+'CobroPago'=>'Val. pagar/receber',
+'SINGLE_CobroPago'=>'Val. pagar/receber',
+'LBL_MODULE_TITLE'=>'Val. pagar/receber: Principal',
+'LBL_SEARCH_FORM_TITLE'=>'Pesquisar val. pagar/receber',
+'LBL_LIST_FORM_TITLE'=>'Lista Val. pagar/receber',
+'LBL_COBROPAGO_NAME'=>'Ref.val. pagar/receber:',
+'LBL_COBROPAGO'=>'Val. pagar/receber:',
+'LBL_NAME'=>'Ref. Val. pagar/receber',
 'LBL_INVITEE'=>'Contatos',
-'LBL_LIST_COBROPAGO_NAME'=>'Contas Pagar/Receber',
+'LBL_LIST_COBROPAGO_NAME'=>'Val. pagar/receber',
 'LBL_LIST_ACCOUNT_NAME'=>'Nome de conta',
 'LBL_PRODUCT_NAME'=>'Nome do produto',
 'LBL_LIST_AMOUNT'=>'Valor',
@@ -30,27 +30,27 @@ $mod_strings = array(
 'LBL_TYPE'=>'Tipo:',
 'LBL_PROBABILITY'=>'Probabilidade (%):',
 'LBL_DESCRIPTION'=>'Descrição:',
-'LBL_COBROPAGO_INFORMATION'=>'Informação contas Pagar/Receber:',
+'LBL_COBROPAGO_INFORMATION'=>'Informação val. pagar/receber:',
 'LBL_DESCRIPTION_INFORMATION'=>'Descrição:',
 'LBL_CUSTOM_INFORMATION'=>'Informação customizada',
 
-'LBL_NEW_FORM_TITLE'=>'Novo Contas Pagar/Receber',
+'LBL_NEW_FORM_TITLE'=>'Nova Val. pagar/receber',
 
-'ERR_DELETE_RECORD'=>'Um número de registro deve ser definido para apagar Contas Pagar/Receber.',
-'LBL_TOP_PAYMENTS'=>'Principais contas Pagar/Receber Abertas',
+'ERR_DELETE_RECORD'=>'Um número de registro deve ser definido para apagar val. pagar/receber.',
+'LBL_TOP_PAYMENTS'=>'Principais val. pagar/receber abertos',
 
 'NTC_NONE_SCHEDULED'=>'Nada agendado.',
 
-'LBL_SELECT_COBROPAGO'=>'Selecionar Contas Pagar/Receber',
+'LBL_SELECT_COBROPAGO'=>'Selecionar Val. pagar/receber',
 'LBL_GENERAL_INFORMATION'=>'Informação geral',
 
-'LBL_NEW_CobroPago'=>'Novo Contas Pagar/Receber',
-'LBL_CobroPago_TITLE'=>'Contas Pagar/Receber',
+'LBL_NEW_CobroPago'=>'Novo Val. pagar/receber',
+'LBL_CobroPago_TITLE'=>'Val. pagar/receber',
 
-'LBL_TOOL_FORM_TITLE'=>'Ferramentas contas Pagar/Receber',
-'CobroPago Name'=>'Ref. Contas Pagar/Receber',
-'Reference'=>'Ref. Contas Pagar/Receber',
-'Register'=>'Data Registro',
+'LBL_TOOL_FORM_TITLE'=>'Ferramentas contas pagar/receber',
+'CobroPago Name'=>'Ref. Val. pagar/receber',
+'Reference'=>'Ref. Val. pagar/Receber',
+'Register'=>'Data do Registro',
 'Paid'=>'Pago',
 'Credit'=>'Crédito',
 'Amount'=>'Valor',
@@ -59,23 +59,23 @@ $mod_strings = array(
 'Account Name'=>'Nome de conta',
 'Parent'=>'Credor/Devedor',
 'Currency'=>'Moeda',
-'RelatedTo'=>'Entidade relacionada',
+'RelatedTo'=>'Relacionado à',
 'PaymentMode'=>'Forma pagamento',
-'Category'=>'Categoria Contas Pagar/Receber',
-'CobroPago Type'=>'Tipo Contas Pagar/Receber',
+'Category'=>'Categoria val. pagar/receber',
+'CobroPago Type'=>'Tipo Val. pagar/receber',
 'Type'=>'Tipo',
 'Probability'=>'Probabilidade (%)',
-'CobroPago ID'=>'Cód. Contas Pagar/Receber',
-'cobropagoid'=>'Cód. Contas Pagar/Receber',
-'DueDate'=>'Data de vencimento',
+'CobroPago ID'=>'Cód. val. pagar/receber',
+'cobropagoid'=>'Cód. Val. pagar/receber',
+'DueDate'=>'Data do vencimento',
 'Comercial'=>'Usuário comissionado',
 'Recibo'=>'Recibo',
-'Historico de Cobros y Pagos'=>'Histórico de contas Pagar/Receber',
-'Payment Paid'=>'Contas Pagar/Receber marcadas como PAGO por ',
+'Historico de Cobros y Pagos'=>'Histórico de val. pagar/receber',
+'Payment Paid'=>'Val. pagar/receber marcado como PAGO por ',
 'PaidOn'=>' em ',
 'RecieptOpen'=>'Recibo aberto para impressão por ',
 'CyP No'=>'Pagar/Receber No',
-'PaymentDate'=>'Data Pagamento',
+'PaymentDate'=>'Data do pagamento',
 
 //Added for Existing Picklist Strings
 
