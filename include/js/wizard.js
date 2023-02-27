@@ -770,24 +770,31 @@ class WizardComponent {
 	 * @param {String} id to upsert
 	 * @param {String} mode edit | duplicate
 	 */
-	Upsert(id, action = '') {
+	Upsert(id, action = '', moduleName = '') {
 		let url = `&step=${this.ActiveStep}&WizardView=true`;
 		if (action == 'edit') {
 			url += `&Module_Popup_Edit=1&wizardaction=${action}`;
 		} else if (action == 'duplicate') {
 			url += `&Module_Popup_Edit=1&isDuplicate=true&wizardaction=${action}`;
 		}
-		const module = this.WizardCurrentModule[this.ActiveStep];
+		let module = this.WizardCurrentModule[this.ActiveStep];
+		if (moduleName != '') {
+			module = moduleName;
+		}
 		window.open('index.php?module='+module+'&action=EditView&record='+id+url+'&cbfromid='+id, null, cbPopupWindowSettings + ',dependent=yes');
 	}
 
 	/**
 	 * Delete a selected row in Wizard Listview.
 	 * @param {String} id to delete
+	 * @param {String} module name
 	 */
-	Delete(id) {
+	Delete(id, modulename = '') {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
-			const module = this.WizardCurrentModule[this.ActiveStep];
+			let module = this.WizardCurrentModule[this.ActiveStep];
+			if (modulename != '' && module == null) {
+				module = modulename;
+			}
 			var url = `${this.url}&wizardaction=Delete&subaction=DeleteRecords`;
 			this.Request(url, 'post', {
 				recordid: id,
@@ -796,9 +803,15 @@ class WizardComponent {
 				if (response) {
 					ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_DELETE_SUCCESS, 'success');
 					let page = wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].getPagination();
-					wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].readData(page._currentPage, {
-						page: page._currentPage
-					}, true);
+					if (page === null) {
+						wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].readData(1, {
+							page: 1
+						}, true);
+					} else {
+						wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].readData(page._currentPage, {
+							page: page._currentPage
+						}, true);
+					}
 				} else {
 					ldsNotification.show(alert_arr.ERROR, alert_arr.Failed, 'error');
 				}
@@ -831,11 +844,19 @@ class WizardComponent {
 				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams(reqParams);
 				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
 			} else {
-				wizard.WizardInstance[`wzgrid${step}`].readData(page._currentPage, {
-					page: page._currentPage
-				}, true);
+				if (page === null) {
+					wizard.WizardInstance[`wzgrid${step}`].readData(1, {
+						page: 1
+					}, true);
+				} else {
+					wizard.WizardInstance[`wzgrid${step}`].readData(page._currentPage, {
+						page: page._currentPage
+					}, true);
+				}
 			}
-			wizard.CheckRows(page._options);
+			if (page !== null) {
+				wizard.CheckRows(page._options);
+			}
 		}, 1000);
 	}
 
@@ -1573,6 +1594,66 @@ class WizardActions {
 			}
 			el. innerHTML += '</div>';
 		}
+		this.el = el;
+		this.render(props);
+	}
+
+	getElement() {
+		return this.el;
+	}
+
+	render(props) {
+		this.el.value = String(props.value);
+	}
+}
+
+class TreeViewActions {
+
+	constructor(props) {
+		let el;
+		let deleteRow = '';
+		let rowKey = props.rowKey;
+		let recordid = props.grid.getValue(rowKey, 'record_id') || '';
+		let module = props.grid.getValue(rowKey, 'record_module');
+		let parent = props.grid.getValue(rowKey, '__parent') || false;
+		el = document.createElement('span');
+		if (!parent) {
+			deleteRow = `
+			<li class="slds-dropdown__item" role="presentation">
+				<a onclick="wizard.Delete(${recordid}, '${module}')" title="${alert_arr['JSLBL_Delete']}">
+					<svg class="slds-button__icon slds-button__icon_left cbds-color-compl-red--sober" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					<span class="slds-truncate cbds-color-compl-red--sober">${alert_arr['JSLBL_Delete']}</span>
+				</a>
+			</li>
+			`;
+		}
+		let actions = `
+		<div class="slds-button-group" role="group">
+			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open">
+				<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
+					</svg>
+					<span class="slds-assistive-text">${alert_arr.LBL_SHOW_MORE}</span>
+				</button>
+				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" style="width: 9rem;">
+					<ul class="slds-dropdown__list" role="menu">
+						<li class="slds-dropdown__item" role="presentation">
+							<a onclick="wizard.Upsert(${recordid}, 'edit', '${module}')" title="${alert_arr['JSLBL_Edit']}">
+								<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+								</svg>
+								<span class="slds-truncate">${alert_arr['JSLBL_Edit']}</span>
+							</a>
+						</li>
+						${deleteRow}
+					</ul>
+				</div>
+			</div>
+		</div>`;
+		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);
 	}

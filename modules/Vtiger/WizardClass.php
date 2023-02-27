@@ -107,6 +107,12 @@ class WizardView {
 		if (!empty($WizardSuboperation)) {
 			if ($this->mapid != 0) {
 				$columns = self::RenderListViewColumns();
+				$treeactions = array(
+					'edit' => true,
+					'delete' => true,
+				);
+				$cbgridactioncol = str_replace('"TreeViewActions"', 'TreeViewActions', json_encode(gridGetActionColumn('TreeViewActions', $treeactions)));
+				$smarty->assign('cbgridactioncol', $cbgridactioncol);
 				$smarty->assign('Columns', $columns);
 			}
 			return $smarty->fetch('Smarty/templates/Components/Wizard/'.$WizardSuboperation.'.tpl');
@@ -404,7 +410,7 @@ class WizardActions extends WizardCustomFunctions {
 	 * @param string module name
 	 * @param string primary field(key) of module
 	 */
-	private function processRows($row, $cachedModuleFields, $module, $table_index) {
+	private function processRows($row, $cachedModuleFields, $module, $table_index, $type = '') {
 		$crow = array();
 		$fieldinfo = array();
 		foreach ($row as $field => $value) {
@@ -421,6 +427,13 @@ class WizardActions extends WizardCustomFunctions {
 			$gridvalue = getDataGridValue($module, $row[$table_index], $fieldinfo[$field], $value, 'Wizard');
 			$crow[$field] = $gridvalue[0];
 			$crow['id'] = $row[$table_index];
+			if (!empty($row[$table_index])) {
+				$crow['record_id'] = $row[$table_index];
+				$crow['record_module'] = $module;
+			}
+			if ($type == 'parent') {
+				$crow['__parent'] = true;
+			}
 			$crow[$fieldinfo[$field]['name'].'_raw'] = $value;
 			$crow['__modulename'] = $module;
 		}
@@ -777,7 +790,7 @@ class WizardActions extends WizardCustomFunctions {
 		foreach ($parentid as $id) {
 			$entity = getEntityName($parentmodule, $id);
 			$focus->retrieve_entity_info($id, $parentmodule);
-			$focus->column_fields = self::processRows($focus->column_fields, $cachedModuleParent, $parentmodule, $focus->table_index);
+			$focus->column_fields = self::processRows($focus->column_fields, $cachedModuleParent, $parentmodule, $focus->table_index, 'parent');
 			$focus->column_fields['parentaction'] = $entity[$id];
 			$qg->addReferenceModuleFieldCondition($parentmodule, $relatedField, 'id', $id, 'e');
 			$sql = $qg->getQuery();

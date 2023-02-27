@@ -33,6 +33,9 @@ wizard.WizardInstance[`wzgrid{$WizardStep}`] = new tui.Grid({
 			whiteSpace: 'normal',
 		},
 		{/foreach}
+		{if !empty($cbgridactioncol)}
+			{$cbgridactioncol}
+		{/if}
 	],
 	data: {
 		api: {
