@@ -120,7 +120,7 @@ var relatedlistgrid = {
 			}
 			const el = `
 			<div class="cbds-tooltip__wrapper--inner cbds-tooltip__margin--left">
-				<section class="slds-popover slds-nubbin_bottom" role="dialog">
+				<section class="slds-popover slds-nubbin_bottom-left" role="dialog">
 					<header class="slds-popover__header" style="background: #1589ee;color: white">
 						<div class="slds-media slds-media_center slds-has-flexi-truncate">
 						<div class="slds-media__figure">
@@ -509,7 +509,7 @@ class RLActionRender {
 						relatedfield: popupactions[related_child].conditions.relatedfield,
 						values: popupactions[related_child].conditions.popup.values,
 					}).then(function (popupid) {
-						if (popupid !== false) {
+						if (popupid !== 'false') {
 							actions += `
 							<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupid}|${related_child}|${recordid}')">
 								<svg class="slds-button__icon" aria-hidden="true">
