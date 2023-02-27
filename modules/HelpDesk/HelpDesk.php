@@ -390,17 +390,17 @@ class HelpDesk extends CRMEntity {
 		$crmEntityTable = $this->denormalized ? 'vtiger_troubletickets as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name
 			FROM ".$crmEntityTable.
-			" INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid =vtiger_crmentity.crmid
+			' INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid=vtiger_crmentity.crmid
 			LEFT JOIN vtiger_crmentity vtiger_crmentityRelatedTo ON vtiger_crmentityRelatedTo.crmid = vtiger_troubletickets.parent_id
 			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_troubletickets.parent_id
 			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_troubletickets.parent_id
 			LEFT JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid=vtiger_troubletickets.ticketid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid and vtiger_users.status='Active'
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
+			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
+			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid=vtigerCreatedBy.id
 			LEFT JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid =vtiger_troubletickets.ticketid
 			LEFT JOIN vtiger_attachments ON vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
-			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_troubletickets.product_id";
+			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_troubletickets.product_id';
 		$query .= getNonAdminAccessControlQuery('HelpDesk', $current_user);
 		$where_auto=' vtiger_crmentity.deleted=0 ';
 

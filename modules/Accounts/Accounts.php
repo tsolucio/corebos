@@ -458,16 +458,16 @@ class Accounts extends CRMEntity {
 		$sql = getPermittedFieldsQuery('Accounts', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
-				FROM ".$this->crmentityTableAlias."
-				INNER JOIN vtiger_account ON vtiger_account.accountid = vtiger_crmentity.crmid
+				FROM ".$this->crmentityTableAlias
+				.' INNER JOIN vtiger_account ON vtiger_account.accountid = vtiger_crmentity.crmid
 				LEFT JOIN vtiger_accountbillads ON vtiger_accountbillads.accountaddressid = vtiger_account.accountid
 				LEFT JOIN vtiger_accountshipads ON vtiger_accountshipads.accountaddressid = vtiger_account.accountid
 				LEFT JOIN vtiger_accountscf ON vtiger_accountscf.accountid = vtiger_account.accountid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid and vtiger_users.status = 'Active'
-				LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
+				LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid=vtigerCreatedBy.id
 				LEFT JOIN vtiger_account vtiger_account2 ON vtiger_account2.accountid = vtiger_account.parentid
-				LEFT JOIN vtiger_account vtiger_accountaccount_id ON vtiger_account.parentid = vtiger_accountaccount_id.accountid";
+				LEFT JOIN vtiger_account vtiger_accountaccount_id ON vtiger_account.parentid=vtiger_accountaccount_id.accountid';
 				// vtiger_account2 is added to get the Member of account
 		$query .= $this->getNonAdminAccessControlQuery('Accounts', $current_user);
 		$where_auto = ' vtiger_crmentity.deleted = 0 ';

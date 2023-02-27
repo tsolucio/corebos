@@ -305,6 +305,7 @@ if (!$Application_ListView_FilterPanel_Open) {
 } else {
 	$smarty->assign('Application_ListView_FilterPanel_Open', '');
 }
+$smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
 
 if ((isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') || (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'ajax')) {
 	$smarty->display('DocumentsListViewEntries.tpl');

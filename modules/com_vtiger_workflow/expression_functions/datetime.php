@@ -237,7 +237,7 @@ function __vt_add_days($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime($baseDate);
-	return strftime('%Y-%m-%d', $baseDate + ($noOfDays * 24 * 60 * 60));
+	return date('Y-m-d', $baseDate + ($noOfDays * 24 * 60 * 60));
 }
 
 function __vt_sub_days($arr) {
@@ -257,7 +257,7 @@ function __vt_sub_days($arr) {
 	if (!is_numeric($noOfDays)) {
 		$noOfDays = 0;
 	}
-	return strftime('%Y-%m-%d', $baseDate - ($noOfDays * 24 * 60 * 60));
+	return date('Y-m-d', $baseDate - ($noOfDays * 24 * 60 * 60));
 }
 
 function __vt_add_months($arr) {
@@ -274,7 +274,7 @@ function __vt_add_months($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime("+$noOfMonths months", strtotime($baseDate));
-	return strftime('%Y-%m-%d', $baseDate);
+	return date('Y-m-d', $baseDate);
 }
 
 function __vt_sub_months($arr) {
@@ -291,7 +291,7 @@ function __vt_sub_months($arr) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	$baseDate = strtotime("-$noOfMonths months", strtotime($baseDate));
-	return strftime('%Y-%m-%d', $baseDate);
+	return date('Y-m-d', $baseDate);
 }
 
 function __vt_get_date($arr) {

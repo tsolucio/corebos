@@ -710,7 +710,7 @@ class Invoice extends CRMEntity {
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
 		$crmEntityTable = $this->denormalized ? $this->crmentityTable.' as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = "SELECT $fields_list FROM ".$crmEntityTable
-			." INNER JOIN vtiger_invoice ON vtiger_invoice.invoiceid = vtiger_crmentity.crmid
+			.' INNER JOIN vtiger_invoice ON vtiger_invoice.invoiceid=vtiger_crmentity.crmid
 			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
 			LEFT JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_invoice.salesorderid
 			LEFT JOIN vtiger_invoicebillads ON vtiger_invoicebillads.invoicebilladdressid = vtiger_invoice.invoiceid
@@ -722,8 +722,8 @@ class Invoice extends CRMEntity {
 			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_invoice.accountid
 			LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_invoice.currency_id
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
-			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid=vtigerCreatedBy.id
+			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid';
 
 		$query .= $this->getNonAdminAccessControlQuery('Invoice', $current_user);
 		$where_auto = ' vtiger_crmentity.deleted=0';
