@@ -333,8 +333,48 @@ class RLActionRender {
 		if (parent_module == module) {
 			className = 'slds-button_icon-brand';
 		}
+		let popupbutton = '';
+		let popupactions = JSON.parse(relatedlistgrid.PopupAction[`${props.grid.el.id}`]);
+		if (parent_module == '' && popupactions[related_child] !== undefined) {
+			if (popupactions[related_child].conditions.fieldname != '') {
+				let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=PopupAction';
+				if (popupactions[related_child].conditions.fieldname.indexOf('.') === -1) {
+					//access direct record values
+					let popupid = 0;
+					let fieldname = popupactions[related_child].conditions.fieldname;
+					let popup = popupactions[related_child].conditions.popup;
+					let fldvalue = props.grid.getValue(rowKey, `${fieldname}`);
+					let fldvalue_raw = props.grid.getValue(rowKey, `${fieldname}_raw`);
+					if (fldvalue != null && popup != '') {
+						for (let i in popup.values) {
+							if (popup.values[i].value == fldvalue || popup.values[i].value == fldvalue_raw) {
+								popupid = popup.values[i].id;
+								break;
+							}
+						}
+						if (popupid > 0) {
+							popupbutton += `
+							<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupid}|${related_child}|${recordid}')">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+								</svg>
+							</button>`;
+						}
+					}
+				}
+			} else {
+				//no conditions: show action in evey row
+				popupbutton += `
+				<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+					</svg>
+				</button>`;
+			}
+		}
 		let actions = `
 		<div class="slds-button-group" role="group">
+			${popupbutton}
 			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
 				<button type="button" class="slds-button slds-button_icon ${className}" aria-haspopup="true" aria-expanded="true">
 					<svg class="slds-button__icon" aria-hidden="true">
@@ -368,6 +408,7 @@ class RLActionRender {
 			if (relatedlistgrid.findRelatedField(related_child, props.grid.el.id) == '') {
 				actions = `
 				<div class="slds-button-group" role="group">
+				${popupbutton}
 				<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
 					<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true">
 						<svg class="slds-button__icon" aria-hidden="true">
@@ -454,11 +495,10 @@ class RLActionRender {
 			</li>
 			`;
 		}
-		let popupactions = JSON.parse(relatedlistgrid.PopupAction[`${props.grid.el.id}`]);
 		if (parent_module == '' && popupactions[related_child] !== undefined) {
 			if (popupactions[related_child].conditions.fieldname != '') {
 				let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=PopupAction';
-				if (popupactions[related_child].conditions.fieldname.indexOf('.') !== -1) {
+				if (popupactions[related_child].conditions.fieldname.indexOf('.') !== -1 && popupactions[related_child].conditions.popup != '') {
 					//get the value in a related module
 					let minfo = popupactions[related_child].conditions.fieldname.split('.');
 					relatedlistgrid.Request(url, 'post', {
@@ -467,11 +507,11 @@ class RLActionRender {
 						relatedmodule: minfo[0],
 						fieldname: minfo[1],
 						relatedfield: popupactions[related_child].conditions.relatedfield,
-						values: popupactions[related_child].conditions.values,
-					}).then(function (response) {
-						if (response == 'true') {
+						values: popupactions[related_child].conditions.popup.values,
+					}).then(function (popupid) {
+						if (popupid !== false) {
 							actions += `
-							<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
+							<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupid}|${related_child}|${recordid}')">
 								<svg class="slds-button__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 								</svg>
@@ -479,34 +519,7 @@ class RLActionRender {
 							el.innerHTML = actions;
 						}
 					});
-				} else {
-					//access direct record values
-					let fieldname = popupactions[related_child].conditions.fieldname;
-					let values = popupactions[related_child].conditions.values;
-					let fldvalue = props.grid.getValue(rowKey, `${fieldname}`);
-					let fldvalue_raw = props.grid.getValue(rowKey, `${fieldname}_raw`);
-					if (fldvalue != null) {
-						if (typeof values.value == 'string') {
-							values.value = [values.value];
-						}
-						if (values.value.includes(fldvalue) || values.value.includes(fldvalue_raw)) {
-							actions += `
-							<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
-								<svg class="slds-button__icon" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-								</svg>
-							</button>`;
-						}
-					}
 				}
-			} else {
-				//no conditions: show action in evey row
-				actions += `
-				<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
-					<svg class="slds-button__icon" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-					</svg>
-				</button>`;
 			}
 		}
 		actions += `</ul></div></div></div>`;
