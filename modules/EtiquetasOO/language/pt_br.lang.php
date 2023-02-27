@@ -6,22 +6,23 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Contributor(s) - Brazilian Portuguese Translator: Ranieri Slemer | Brazil/Sao Paulo -  www.ecrm360.com.br - 27/02/2023.
  ************************************************************************************/
 
 $mod_strings = array(
-	'SINGLE_EtiquetasOO' => "Fundir Etiquetas",
-	'EtiquetasOO' => 'Fundir Etiquetas',
-	'OOMerge Labels'=>'Fundir Etiquetas',
-	'EOO_Title'=>'OpenOffice Documento Fundir Etiquetas',
+	'SINGLE_EtiquetasOO' => "Mesclar campos",
+	'EtiquetasOO' => 'Mesclar campos',
+	'OOMerge Labels'=>'Mesclar campos',
+	'EOO_Title'=>'Mesclar campos com OpenOffice Documento',
 	'ElijaModulo'=>'Escolher módulo:',
 	'RelatedModules'=>'Módulos Relacionados',
-	'OneEntity'=>'Com uma entidade:',
-	'VariosEntity'=>'Com várias entidades:',
+	'OneEntity'=>'Com um relacionamento:',
+	'VariosEntity'=>'Com vários relacionamentos:',
 	'Back'=>'Voltar',
 	'Up'=>'Topo',
-	'SpecialVars' => 'Variáveis Especiais',
+	'SpecialVars' => 'Variáveis especiais',
 	'LBL_COPY_BUTTON'=>'Cópia',
-	'WorkflowExpresion' => 'Expressão do fluxo de trabalho',
+	'WorkflowExpresion' => 'Workflow - expressão',
 	'format' => 'Formato',
 	'field' => 'Campo',
 );
