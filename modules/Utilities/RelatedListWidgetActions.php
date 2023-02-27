@@ -24,6 +24,10 @@ switch ($_REQUEST['rlaction']) {
 				$relatedvalue = $focus->column_fields[$data['relatedfield']];
 				if (!empty($relatedvalue)) {
 					$relfocus = CRMEntity::getInstance($data['relatedmodule']);
+					if ($relfocus->isDeleted($relatedvalue)) {
+						echo json_encode(false);
+						exit;
+					}
 					$relfocus->retrieve_entity_info($relatedvalue, $data['relatedmodule']);
 					$values = array_values($data['values']);
 					$res = false;
