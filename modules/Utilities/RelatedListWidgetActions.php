@@ -26,12 +26,12 @@ switch ($_REQUEST['rlaction']) {
 					$relfocus = CRMEntity::getInstance($data['relatedmodule']);
 					$relfocus->retrieve_entity_info($relatedvalue, $data['relatedmodule']);
 					$values = array_values($data['values']);
-					if (is_string($values[0])) {
-						$values[0] = (array)$values[0];
-					}
 					$res = false;
-					if (!empty($values) && in_array($relfocus->column_fields[$data['fieldname']], $values[0])) {
-						$res = true;
+					foreach ($values as $key) {
+						if ($key['value'] == $relfocus->column_fields[$data['fieldname']]) {
+							$res = (int)$key['id'];
+							break;
+						}
 					}
 				}
 			}
