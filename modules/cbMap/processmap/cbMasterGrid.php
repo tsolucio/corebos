@@ -17,7 +17,24 @@
  *  Version      : 1.0
  *************************************************************************************************
  * The accepted format is:
-
+<map>
+<module>Quotes</module>
+<relatedfield>account_id</relatedfield>
+<fields>
+	<field>
+		<name>subject</name>
+		<readonly>1</readonly>
+	</field>
+	<field>
+		<name>quotestage</name>
+		<readonly>0</readonly>
+	</field>
+	<field>
+		<name>potential_id</name>
+	</field>
+	...
+</fields>
+</map>
  *************************************************************************************************/
 include_once 'include/Webservices/DescribeObject.php';
 
@@ -36,8 +53,15 @@ class cbMasterGrid extends processcbMap {
 		$this->mapping['module'] = (string)$xml->module;
 		$this->mapping['relatedfield'] = (string)$xml->relatedfield;
 		$this->detailModule = $this->mapping['module'];
-		foreach ((array)$xml->fields->name as $fld => $name) {
-			$this->mapping['fields'][] = $this->getFieldInfo($name);
+		$fields = (array)$xml->fields;
+		foreach ($fields as $field) {
+			foreach ($field as $fld) {
+				$finfo = $this->getFieldInfo((string)$fld->name);
+				if (isset($fld->readonly)) {
+					$finfo['editable'] = !boolval((string)$fld->readonly);
+				}
+				$this->mapping['fields'][] = $finfo;
+			}
 		}
 		return $this->mapping;
 	}
