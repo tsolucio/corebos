@@ -261,9 +261,10 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 'LBL_EDIT'=>'Editar',
 'LBL_STATUS_PUBLIC_APPROVE'=>'Aprovar',
 'LBL_STATUS_PUBLIC_DENY'=>'Negar',
-'LBL_FIRST_COLUMN'=>'First Column',
-'LBL_SECOND_COLUMN'=>'Second Column',
+'LBL_FIRST_COLUMN'=>'Primeira coluna',
+'LBL_SECOND_COLUMN'=>'Segunda coluna',
 
 'LBL_ADVANCED_FILTER' => 'Regra',
+'LBL_SORT_BY_FIELD' => 'Classificar por campo',
 );
 ?>
