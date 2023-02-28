@@ -225,8 +225,9 @@ $mod_strings = array(
 	'LBL_EDIT' => 'Editare',
 	'LBL_STATUS_PUBLIC_APPROVE' => 'Aprobare',
 	'LBL_STATUS_PUBLIC_DENY' => 'Refuz',
-	'LBL_FIRST_COLUMN'=>'First Column',
-	'LBL_SECOND_COLUMN'=>'Second Column',
+	'LBL_FIRST_COLUMN'=>'Prima coloană',
+	'LBL_SECOND_COLUMN'=>'A doua coloană',
 	'LBL_ADVANCED_FILTER' => 'Regula',
+	'LBL_SORT_BY_FIELD' => 'Sortați după câmp',
 );
 ?>

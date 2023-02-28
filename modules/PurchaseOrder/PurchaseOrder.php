@@ -362,7 +362,7 @@ class PurchaseOrder extends CRMEntity {
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
 
 		$query = "SELECT $fields_list FROM ".$this->crmentityTableAlias
-			." INNER JOIN vtiger_purchaseorder ON vtiger_purchaseorder.purchaseorderid = vtiger_crmentity.crmid
+			.' INNER JOIN vtiger_purchaseorder ON vtiger_purchaseorder.purchaseorderid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_purchaseordercf ON vtiger_purchaseordercf.purchaseorderid = vtiger_purchaseorder.purchaseorderid
 			LEFT JOIN vtiger_pobillads ON vtiger_pobillads.pobilladdressid = vtiger_purchaseorder.purchaseorderid
 			LEFT JOIN vtiger_poshipads ON vtiger_poshipads.poshipaddressid = vtiger_purchaseorder.purchaseorderid
@@ -373,8 +373,8 @@ class PurchaseOrder extends CRMEntity {
 			LEFT JOIN vtiger_vendor ON vtiger_vendor.vendorid = vtiger_purchaseorder.vendorid
 			LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_purchaseorder.currency_id
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
-			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid=vtigerCreatedBy.id
+			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid';
 
 		$query .= $this->getNonAdminAccessControlQuery('PurchaseOrder', $current_user);
 		$where_auto = ' vtiger_crmentity.deleted=0';

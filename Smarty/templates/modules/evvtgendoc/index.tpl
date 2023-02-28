@@ -9,9 +9,7 @@
 	<div class="slds-select_container">
 		<select name="recordval_type" id="recordval_type" onchange="this.form.recordval.value=''; this.form.recordval_display.value='';" class="slds-select slds-page-header__meta-text" required="">
 		{foreach item=arr from=$MODULES}
-			{if $arr neq 'Documents'}
-				<option value="{$arr}">{$arr|@getTranslatedString:$arr}</option>
-			{/if}
+			<option value="{$arr}">{$arr|@getTranslatedString:$arr}</option>
 		{/foreach}
 		</select>
 	</div>

@@ -460,7 +460,7 @@ class SalesOrder extends CRMEntity {
 
 		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
 			FROM ".$this->crmentityTableAlias
-			." INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
+			.' INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
 			LEFT JOIN vtiger_sobillads ON vtiger_sobillads.sobilladdressid = vtiger_salesorder.salesorderid
 			LEFT JOIN vtiger_soshipads ON vtiger_soshipads.soshipaddressid = vtiger_salesorder.salesorderid
@@ -474,8 +474,8 @@ class SalesOrder extends CRMEntity {
 			LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_salesorder.currency_id
 			LEFT JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_salesorder.quoteid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
-			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid=vtigerCreatedBy.id
+			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid';
 
 		$query .= $this->getNonAdminAccessControlQuery('SalesOrder', $current_user);
 		$where_auto = ' vtiger_crmentity.deleted=0';

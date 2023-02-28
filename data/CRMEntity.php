@@ -1783,8 +1783,8 @@ class CRMEntity {
 		}
 
 		$query .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = '.$this->crmentityTable.'.smownerid';
-		$query .= " LEFT JOIN vtiger_users ON ".$this->crmentityTable.".smownerid = vtiger_users.id and vtiger_users.status='Active'";
-		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON ".$this->crmentityTable.".smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
+		$query .= ' LEFT JOIN vtiger_users ON '.$this->crmentityTable.'.smownerid=vtiger_users.id';
+		$query .= ' LEFT JOIN vtiger_users as vtigerCreatedBy ON '.$this->crmentityTable.'.smcreatorid=vtigerCreatedBy.id';
 
 		$linkedModulesQuery = $adb->pquery('SELECT distinct fieldname, tablename, columnname, relmodule FROM vtiger_field' .
 			' INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid' .
@@ -3758,7 +3758,8 @@ class CRMEntity {
 		$order_by = '';
 		$customView = new CustomView($cmodule);
 		$viewid = $customView->getViewId($cmodule);
-		$sortfieldbyfirst = cbCVManagement::getFieldValuesByCvId($viewid)['sortfieldbyfirst'];
+		$cvFields = cbCVManagement::getFieldValuesByCvId($viewid);
+		$sortfieldbyfirst = (empty($cvFields) || empty($cvFields['sortfieldbyfirst']) ? '' : $cvFields['sortfieldbyfirst']);
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule)) {
 			$order_by = GlobalVariable::getVariable('Application_ListView_Default_OrderField', $this->default_order_by, $cmodule);
 		} elseif (!GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule) && !empty($sortfieldbyfirst)) {

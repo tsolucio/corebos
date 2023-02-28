@@ -220,5 +220,6 @@ $mod_strings = array(
 	'LBL_FIRST_COLUMN'=>'First Column',
 	'LBL_SECOND_COLUMN'=>'Second Column',
 	'LBL_ADVANCED_FILTER' => 'Rule',
+	'LBL_SORT_BY_FIELD' => 'Sort by field',
 );
 ?>

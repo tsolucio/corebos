@@ -663,7 +663,7 @@ class cbCVManagement extends CRMEntity {
 
 	public static function getFieldValuesByCvId($cvid) {
 		global $adb;
-		$result = $adb->pquery("SELECT * FROM `vtiger_cbcvmanagement` WHERE cvid = ?", array($cvid));
+		$result = $adb->pquery('SELECT * FROM vtiger_cbcvmanagement WHERE cvid=?', array($cvid));
 		if (!$result) {
 			return false;
 		}
@@ -671,9 +671,8 @@ class cbCVManagement extends CRMEntity {
 	}
 
 	public static function checkcbCVManagementInstalled() {
-		global $adb, $current_user, $currentModule;
+		global $adb, $current_user;
 		if (vtlib_isModuleActive('cbupdater')) {
-			$holdModule = $currentModule;
 			$columnNames = $adb->getColumnNames('vtiger_cbcvmanagement');
 			if (!in_array('setprivate', $columnNames)) {
 				$holduser = $current_user;

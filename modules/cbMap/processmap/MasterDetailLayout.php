@@ -33,8 +33,14 @@
 	<title></title>
 	<expandall>1</expandall>
 	<create>1</create>
-	<duplicate></duplicate>
-	<workflowid></workflowid>
+	<actions>
+		<action>
+			<label></label>
+			<workflow>
+				<id></id>
+			</workflow>
+		</action>
+	</actions>
   </toolbar>
   <listview>
 	<toolbar>
@@ -127,13 +133,21 @@ class MasterDetailLayout extends processcbMap {
 		);
 		$mapping_arr['sortfield'] = (string)$xml->sortfield;
 		$mapping_arr['defaultorder'] = (string)$xml->defaultorder;
+		$actions = array();
+		if (isset($xml->toolbar->actions)) {
+			foreach ($xml->toolbar->actions->action as $action) {
+				$actions[] = array(
+					'label' => (string)$action->label,
+					'workflow' => implode(',', (array)$action->workflow->id)
+				);
+			}
+		}
 		$mapping_arr['toolbar'] = array(
 			'title' => (string)$xml->toolbar->title,
 			'icon' => (string)$xml->toolbar->icon,
 			'expandall' => (string)$xml->toolbar->expandall,
 			'create' => (string)$xml->toolbar->create,
-			'duplicate' => (string)$xml->toolbar->duplicate,
-			'workflowid' => (string)$xml->toolbar->workflowid,
+			'actions' => $actions
 		);
 		$mapping_arr['listview'] = array();
 		if (isset($xml->listview->datasource)) {
