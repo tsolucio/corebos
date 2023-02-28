@@ -235,9 +235,11 @@ $mod_strings = array (
 	'LBL_EDIT' => 'Modifica',
 	'LBL_STATUS_PUBLIC_APPROVE' => 'Approva',
 	'LBL_STATUS_PUBLIC_DENY' => 'Nega',
-	'LBL_FIRST_COLUMN'=>'First Column',
-	'LBL_SECOND_COLUMN'=>'Second Column',
+	'LBL_FIRST_COLUMN'=>'Prima Colonna',
+	'LBL_SECOND_COLUMN'=>'Seconda Colonna',
 
 	'LBL_ADVANCED_FILTER' => 'Ruolo',
+	'LBL_SORT_BY_FIELD' => 'Ordina per campo',
+
 );
 ?>

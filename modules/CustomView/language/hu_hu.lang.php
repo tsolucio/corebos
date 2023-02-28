@@ -222,8 +222,8 @@ $mod_strings = array(
 	'LBL_EDIT' => 'Szerkeszt',
 	'LBL_STATUS_PUBLIC_APPROVE' => 'Elfogad',
 	'LBL_STATUS_PUBLIC_DENY' => 'Visszautasít',
-	'LBL_FIRST_COLUMN'=>'First Column',
-	'LBL_SECOND_COLUMN'=>'Second Column',
+	'LBL_FIRST_COLUMN'=>'Első oszlop',
+	'LBL_SECOND_COLUMN'=>'Második oszlop',
 	'LBL_ADVANCED_FILTER' => 'Munkakör',
 	'None' => 'üres',
 	'yyyy-mm-dd' => 'éééé-hh-nn',
@@ -234,6 +234,8 @@ $mod_strings = array(
 	'greater_than' => 'nagyobb mint',
 	'less_or_equal' => 'kisebb vagy egyenlő',
 	'greater_or_equal' => 'nagyobb vagy egyenlő',
-	'Product Code' => 'Termék kód'
+	'Product Code' => 'Termék kód',
+	'LBL_SORT_BY_FIELD' => 'Rendezés mező szerint',
+
 );
 ?>
