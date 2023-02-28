@@ -499,6 +499,7 @@ class WizardComponent {
 		let fieldValue = ev.value;
 		let recordid = ev.instance.getValue(rowkey, 'id');
 		let modulename = ev.instance.getValue(rowkey, '__modulename');
+		let page = wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].getPagination()._currentPage;
 		if (modulename != '' && recordid != null) {
 			let fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=inline_edit&recordid='+recordid+'&rec_module='+modulename+'&fldName='+fieldName+'&fieldValue='+encodeURIComponent(fieldValue);
 			if (recordid != '') {
@@ -510,7 +511,7 @@ class WizardComponent {
 						}).done(function (response) {
 							let res = JSON.parse(response);
 							if (res.success) {
-								ev.instance.readData(1);
+								ev.instance.readData(page);
 								wizard.CheckRows(wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].getPagination()._options);
 							} else {
 								ldsNotification.show(alert_arr.ERROR, alert_arr.Failed, 'error');
