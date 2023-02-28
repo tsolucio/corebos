@@ -21,6 +21,7 @@
 <map>
   <originmodule>DesignQuotes</originmodule>
   <targetmodule>DesignQuotesLines</targetmodule>
+  <mastergridid></mastergridid>
   <linkfields>
   <originfield>designquotesid</originfield>
   <targetfield>designquotesid</targetfield>
@@ -122,6 +123,7 @@ class MasterDetailLayout extends processcbMap {
 		$mapping_arr['mapname'] = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $mapping_arr['mapnameraw'])); // Removes special chars.
 		$mapping_arr['originmodule'] = (string)$xml->originmodule;
 		$mapping_arr['targetmodule'] = (string)$xml->targetmodule;
+		$mapping_arr['mastergridid'] = (string)$xml->mastergridid;
 		$mapping_arr['condition'] = (string)$xml->condition;
 		$mapping_arr['hide'] = boolval((string)$xml->hide);
 		$this->detailModule = $mapping_arr['targetmodule'];
