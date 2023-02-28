@@ -498,6 +498,12 @@ FieldDependencies.prototype.fieldHideEditView = function (hideFields) {
 		if (document.getElementById('td_'+field) != null) {
 			document.getElementById('td_'+field).style.visibility='hidden';
 			document.getElementById('td_val_'+field).style.visibility='hidden';
+			let parentRow = document.getElementById('td_'+field).parentElement;
+			let allGone = [...parentRow.getElementsByTagName('TD')].filter(cell => cell.style.visibility === 'hidden');
+			if (allGone.length == 4) {
+				parentRow.style.visibility = 'collapse';
+				parentRow.style.height = '0px';
+			}
 		}
 	}
 };
@@ -508,6 +514,12 @@ FieldDependencies.prototype.fieldHideDetailView = function (hideFields) {
 		field=hideFields[i]['field'];
 		document.getElementById('mouseArea_'+field).style.visibility='hidden';
 		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.style.visibility='hidden';
+		let parentRow = document.getElementById('mouseArea_'+field).parentElement;
+		let allGone = [...parentRow.getElementsByTagName('TD')].filter(cell => cell.style.visibility === 'hidden');
+		if (allGone.length == 4) {
+			parentRow.style.visibility = 'collapse';
+			parentRow.style.height = '0px';
+		}
 	}
 };
 
@@ -525,6 +537,9 @@ FieldDependencies.prototype.fieldShowEditView = function (hideFields) {
 		field=hideFields[i]['field'];
 		document.getElementById('td_'+field).style.visibility='visible';
 		document.getElementById('td_val_'+field).style.visibility='visible';
+		let parentRow = document.getElementById('td_'+field).parentElement;
+		parentRow.style.visibility = 'visible';
+		parentRow.style.height = '25px';
 	}
 };
 
@@ -534,6 +549,9 @@ FieldDependencies.prototype.fieldShowDetailView = function (hideFields) {
 		field=hideFields[i]['field'];
 		document.getElementById('mouseArea_'+field).style.visibility='visible';
 		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.style.visibility='visible';
+		let parentRow = document.getElementById('mouseArea_'+field).parentElement
+		parentRow.style.visibility = 'visible';
+		parentRow.style.height = '25px';
 	}
 };
 
