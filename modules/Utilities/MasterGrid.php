@@ -52,7 +52,7 @@ class mastergrid_EditViewBlock extends DeveloperBlock {
 		$smarty->assign('relatedfield', $MapMG['relatedfield']);
 		$smarty->assign('GridFields', $MapMG['fields']);
 		$rows = array();
-		if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'EditView') {
+		if (isset($_REQUEST['action']) && isset($_REQUEST['record']) && $_REQUEST['action'] == 'EditView') {
 			$qfields = array('id');
 			$matchFields = array();
 			foreach ($MapMG['fields'] as $r) {
