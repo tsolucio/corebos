@@ -48,7 +48,7 @@
 		<tbody id="mastergrid-{$linkid}"></tbody>
 	</table>
 </form>
-<button type="button" data-id="{$linkid}" class="slds-button slds-button_brand slds-float_right slds-m-top_x-small" onclick="mg[{$linkid}].EmptyRow()">
+<button type="button" data-id="{$linkid}" class="slds-button slds-button_brand slds-float_right slds-m-top_x-small" onclick="mg[{$linkid}].EmptyRow(true)">
 	<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 	</svg>

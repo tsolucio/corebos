@@ -20,7 +20,10 @@ class MasterGrid {
 		}
 	}
 
-	EmptyRow() {
+	EmptyRow(add = false) {
+		if (this.id != this.currentRow['__mastergridid'] && !add) {
+			return;
+		}
 		const flds = JSON.parse(this.fields);
 		let row = document.createElement('tr');
 		row.id = `grid-id-${this.id}-${this.idx}`;
@@ -64,6 +67,7 @@ class MasterGrid {
 					}
 				}
 				rowdata['id'] = cRow.querySelector(`[name=mastergrid-rowid]`).value;
+				rowdata['__mastergridid'] = this.id;
 				data.push(rowdata);
 			}
 		}
