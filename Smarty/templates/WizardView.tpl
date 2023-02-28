@@ -77,7 +77,7 @@
 								{if $smarty.foreach.stepwizard.index eq 0}
 									{assign var="slds_active" value="slds-is-active"}
 								{/if}
-								{if $wizardInstantShow}
+								{if $wizardInstantShow || $WizardSuboperationArray[{$smarty.foreach.stepwizard.index}] == 'ThankYou'}
 								<li class="slds-path__item slds-is-incomplete {$slds_active}" role="presentation" id="header-{$smarty.foreach.stepwizard.index}" onclick="wizard.GoTo({$currentStep})">
 								{else}
 								<li class="slds-path__item slds-is-incomplete {$slds_active}" role="presentation" id="header-{$smarty.foreach.stepwizard.index}">

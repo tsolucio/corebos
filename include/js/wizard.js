@@ -89,6 +89,9 @@ class WizardComponent {
 
 	GoTo(step) {
 		this.isSubWizard = true;
+		if (!this.CheckSelection('')) {
+			return false;
+		}
 		this.ActiveStep = step-1;
 		for (let i = 0; i < this.steps; i++) {
 			if (step >= i) {
@@ -290,6 +293,7 @@ class WizardComponent {
 					}, 1000);
 				}
 			} else {
+				document.activeElement.innerHTML = alert_arr.JSLBL_FINISH;
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 			}
 			if (wizard.el(`save-wizard-${wizard.ActiveStep}`) !== null) {
