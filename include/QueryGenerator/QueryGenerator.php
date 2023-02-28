@@ -1490,8 +1490,25 @@ class QueryGenerator {
 			if ($this->isNumericType($field->getFieldDataType())) {
 				if (empty($value)) {
 					$value = '0';
-				} elseif (strpos((string)$value, ',')>0  || (!is_numeric($value) && strpos($value, "'") === false)) {
+				} elseif (strpos((string)$value, ',')>0) {
 					$value = "'$value'";
+				} elseif (!is_numeric($value) && strpos($value, "'") === false) {
+					// we have to try to understand if the value is a real string or another field
+					// this is extremely difficult at this point of the code without more context
+					$mid = getTabModuleName($field->getTabId());
+					$qgmod = CRMEntity::getInstance($mid);
+					if (strpos($value, '.')>0) {
+						list($tname, $cname) = explode('.', $value);
+					} else {
+						$tname = '';
+						$cname = $value;
+					}
+					if ($tname==$qgmod->table_name || in_array($cname, array_keys($qgmod->column_fields))) {
+						// it looks like a field on the main module
+					} else {
+						// search for tablename and columnname on all related modules then return quoted value
+						$value = "'$value'";
+					}
 				}
 			}
 			if ($this->requiresSoundex($operator)) {

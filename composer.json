@@ -6,6 +6,7 @@
         "knplabs/gaufrette": "0.9.0",
         "gaufrette/azure-blob-storage-adapter": "0.6.0",
         "gaufrette/ftp-adapter": "0.4.0",
+        "gaufrette/phpseclib-sftp-adapter": "0.4.0",
         "guzzlehttp/psr7": "1.6.1",
         "guzzlehttp/promises": "1.3.1",
         "guzzlehttp/guzzle": "6.4.1",

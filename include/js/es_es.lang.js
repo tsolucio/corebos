@@ -415,6 +415,10 @@ var alert_arr = {
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'No se ha podido eliminar el adjunto',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Límite de carga excedida!!',
 	'JSLBL_DRAW': 'Dibujar',
+	'JSLBL_DRAW_MODAL_TITLE': 'Error while drawing',
+	'JSLBL_DRAW_MODAL_MESSAGE': 'No permission to Draw/Edit',
+	'JSLBL_LEFT': 'Left',
+	'JSLBL_RIGHT': 'Right',
 	'JSLBL_CANCEL': 'Cancelar',
 	'JSLBL_SAVEAS': 'Guardar como',
 	'JSLBL_SAVE': 'Guardar',
@@ -488,4 +492,5 @@ var alert_arr = {
 	'SelectField': 'Selecciona campo',
 	'MoveFile': 'Mover fichero',
 	'GENDOC_CONFIRM_ACTION': '¿Estás seguro que quieres ejecutar esta operación?',
+	'LBL_COPY_ROWS': 'Copiar Registros',
 };

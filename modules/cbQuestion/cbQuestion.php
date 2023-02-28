@@ -473,7 +473,10 @@ class cbQuestion extends CRMEntity {
 				$meta = $handler->getMeta();
 				$queryRelatedModules = array(); // this has to be filled in with all the related modules in the query
 				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
-				$modOp = new VtigerModuleOperation($webserviceObject, $current_user, $adb, $log);
+				$handlerPath = $webserviceObject->getHandlerPath();
+				$handlerClass = $webserviceObject->getHandlerClass();
+				require_once $handlerPath;
+				$modOp = new $handlerClass($webserviceObject, $current_user, $adb, $log);
 				$sql_query = cbQuestion::getSQL($qid, $params);
 				if (!empty($q->column_fields['groupby'])) {
 					$groupinginfo = cbQuestion::getGroupingInfo($sql_query, $q->column_fields['groupby'], $q->column_fields['qmodule']);
@@ -498,7 +501,7 @@ class cbQuestion extends CRMEntity {
 				}
 				return array(
 					'module' => $q->column_fields['qmodule'],
-					'columns' => $q->column_fields['qcolumns'],
+					'columns' => html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
 					'groupings' => $groupinginfo,
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),

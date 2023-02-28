@@ -463,4 +463,5 @@ var alert_arr = {
 	'currentuser': 'Current User',
 	'wfmodule': 'Workflow Module',
 	'GENDOC_SAVE_PDF': 'Are you sure you want to override template?',
+	'LBL_COPY_ROWS': 'Copy Rows',
 };

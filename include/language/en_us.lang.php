@@ -599,6 +599,7 @@ $app_strings = array(
 'LBL_SCROLL' => '[Scroll to Top]',
 'LBL_EXPAND_COLLAPSE' => 'Expand/Collapse',
 'LBL_COLLAPSE' => 'Collapse',
+'LBL_COPY_ROWS' => 'Copy Rows',
 'LBL_RCPY_ADDRESS' => 'Copy Shipping address',
 'LBL_LCPY_ADDRESS' => 'Copy Billing address',
 'LBL_RECORD_ID' => 'Record ID',
@@ -1421,6 +1422,7 @@ $app_strings = array(
 'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 'Slider' => 'Slider',
 'LBL_WIZARD' => 'Wizard',
+'LBL_ROW' => 'Row',
 );
 
 // Translation for currency names

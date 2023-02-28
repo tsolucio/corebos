@@ -2211,11 +2211,11 @@ function Button_Check($module) {
 }
 
 /**
- * 	Retrieve the display or entity name of a list of CRMIDs
- * 	@param string $module -- module name
- * 	@param array $ids_list -- Record id
- * 	@return array of display/entity name of records indexed by ID
- * */
+ * Retrieve the display or entity name of a list of CRMIDs
+ * @param string module name
+ * @param array record IDs
+ * @return array of display/entity name of records indexed by ID
+ */
 function getEntityName($module, $ids_list) {
 	global $log;
 	$log->debug('> getEntityName '.$module);
@@ -2244,11 +2244,11 @@ function getEntityName($module, $ids_list) {
 }
 
 /**
- * 	Retrieve the display or entity name of a list of Workflow IDs
- * 	@param string $module -- module name
- * 	@param array $ids_list -- Record id
- * 	@return array of display/entity name of records indexed by ID
- * */
+ * Retrieve the display or entity name of a list of Workflow IDs
+ * @param string module name
+ * @param array record IDs
+ * @return array of display/entity name of records indexed by ID
+ */
 function getEntityNameWorkflow($ids_list) {
 	global $log;
 	$log->debug('> getEntityNameWorkflow');
@@ -2848,8 +2848,8 @@ function getrecurringObjValue() {
  */
 function getTranslatedString($str, $module = '') {
 	global $app_strings, $mod_strings, $current_language;
-	$temp_mod_strings = ($module != '' ) ? return_module_language($current_language, $module) : $mod_strings;
-	return (!empty($temp_mod_strings[$str]) ? $temp_mod_strings[$str] : (!empty($app_strings[$str]) ? $app_strings[$str] : cbtranslation::get($str, $module)));
+	$temp_mod_strings = ($module != '') ? return_module_language($current_language, $module) : $mod_strings;
+	return (empty($temp_mod_strings[$str]) ? (empty($app_strings[$str]) ? cbtranslation::get($str, $module) : $app_strings[$str]) : $temp_mod_strings[$str]);
 }
 
 /**
@@ -3477,7 +3477,7 @@ function getOwnerName($id) {
 
 /** Function to get owner name either user or group */
 function getOwnerNameList($idList) {
-	if (!is_array($idList) || count($idList) == 0) {
+	if (!is_array($idList) || empty($idList)) {
 		return array();
 	}
 

@@ -210,7 +210,7 @@ class addMapsForShopify2coreBOSIntegration extends cbupdaterWorker {
 					</map>';
 				$focusnew->save($module_name);
 				$focusnew->column_fields['assigned_user_id'] = Users::getActiveAdminID();
-				$focusnew->column_fields['mapname'] = 'Getchallente_maincorebos';
+				$focusnew->column_fields['mapname'] = 'Getchallenge_maincorebos';
 				$focusnew->column_fields['maptype'] = 'Webservice Mapping';
 				$focusnew->column_fields['targetname'] = 'SalesOrders';
 				$focusnew->column_fields['content'] = '<map>
@@ -511,7 +511,7 @@ class addMapsForShopify2coreBOSIntegration extends cbupdaterWorker {
 				$focusnew->column_fields['mapname'] = 'Workflow_Shopify2SalesOrder';
 				$focusnew->column_fields['maptype'] = 'Mapping';
 				$focusnew->column_fields['targetname'] = 'SalesOrder';
-				$focusnew->column_fields['content'] = '<map
+				$focusnew->column_fields['content'] = '<map>
 					<originmodule>
 					<originname>Shopify</originname>
 					</originmodule>

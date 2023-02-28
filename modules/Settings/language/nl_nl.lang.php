@@ -1047,5 +1047,11 @@ $mod_strings = array(
 'LBL_EXPORT' => 'Export',
 'LBL_RELATED_MODULE' => 'Related Module',
 'LBL_RL_LABEL' => 'Label',
+//email language translate
+'LBL_EMAIL_TRANSLATE' => 'Dit is een testmail die wordt verzonden om te bevestigen of er daadwerkelijk een mail is verzonden via de smtp-server die u hebt geconfigureerd.',
+'LBL_EMAIL_END' => 'Verwijder deze mail gerust.',
+'LBL_EMAIL_SUBJECT' => 'Test mail over de configuratie van de mailserver.',
+'LBL_DEAR' => 'Beste ',
+'LBL_THANKS' => 'Bedankt en groeten,',
 );
 ?>

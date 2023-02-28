@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************/
+// DetailViewWidget: module=Documents&action=DocumentsAjax&file=ShareLink&ID=$RECORD$
 require_once 'modules/Vtiger/DeveloperWidget.php';
 global $currentModule;
 

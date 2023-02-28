@@ -25,9 +25,10 @@ if (empty($_REQUEST['gvname'])) {
 	$gvname = vtlib_purify($_REQUEST['gvname']);
 	$gvuserid = isset($_REQUEST['gvuserid']) ? vtlib_purify($_REQUEST['gvuserid']) : '';
 	$gvmod = isset($_REQUEST['gvmodule']) ? vtlib_purify($_REQUEST['gvmodule']) : '';
+	$viewtype = isset($_REQUEST['viewtype']) ? vtlib_purify($_REQUEST['viewtype']) : '';
 	$retval = isset($_REQUEST['returnvalidation']) ? vtlib_purify($_REQUEST['returnvalidation']) : false;
 	$startTime = microtime(true);
-	$rdo = GlobalVariable::getVariable($gvname, $defval, $gvmod, $gvuserid);
+	$rdo = GlobalVariable::getVariable($gvname, $defval, $gvmod, $gvuserid, $viewtype);
 	$counter = (microtime(true) - $startTime);
 	$ret = array($gvname=>$rdo);
 	if ($retval) {

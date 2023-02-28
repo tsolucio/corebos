@@ -68,6 +68,8 @@
 				{if $keyid eq '1615' && $keyval!=''}
 					{assign var=plinfo value='::'|explode:$keyval}
 					{$plinfo[0]|@getTranslatedString:$plinfo[0]} {$plinfo[1]|@getTranslatedString:$plinfo[0]}
+				{elseif $keyid eq '15' || $keyid eq '16'}
+					{$keyval|@getTranslatedString:$MODULE}
 				{else}
 					{$keyval|@getTranslatedString:$keyval}
 				{/if}

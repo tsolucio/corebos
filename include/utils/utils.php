@@ -116,6 +116,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('USER_LANGUAGE', $current_language);
 		$smarty->assign('SW_MD5', $swmd5);
 		$smarty->assign('corebos_browsertabID', $corebos_browsertabID);
+		$smarty->assign('gVTviewType', isset($_REQUEST['action']) ? vtlib_purify($_REQUEST['action']) : '');
 	}
 }
 
@@ -192,7 +193,7 @@ function get_assigned_user_name($assigned_user_id) {
 	return '';
 }
 
-/** Function returns the user key in user array
+/** Function returns the user key in user array for all users the current user can assign a record to
  * @param boolean add blank picklist entry
  * @param string user status to retrieve
  * @param string assigned_user id must always add this user
@@ -2491,22 +2492,33 @@ function deleteExactDuplicates($dup_records, $module) {
 	$delete_fail_status=false;
 	foreach ($dup_records as $records_group) {
 		$record_position=0;
+		$mergeid = 0;
 		foreach ($records_group as $records) {
-			if ($record_position!=0) {
-				array_push($dup_records_ids, $records['recordid']);
+			if ($record_position==0) {
+				$mergeid = $records['recordid'];
+				$dup_records_ids[$mergeid] = [];
+			} else {
+				array_push($dup_records_ids[$mergeid], $records['recordid']);
 			}
 			$record_position++;
 		}
 	}
 	$focus = CRMEntity::getInstance($module);
-	foreach ($dup_records_ids as $id) {
-		if (isPermitted($module, 'Delete', $id) == 'yes') {
-			$del_response=DeleteEntity($module, $module, $focus, $id, '');
-			if ($del_response[0]) {
+	$canTransfer = method_exists($focus, 'transferRelatedRecords');
+	foreach ($dup_records_ids as $mergeid => $ids) {
+		foreach ($ids as $id) {
+			if (isPermitted($module, 'Delete', $id) == 'yes') {
+				// Transfer the related lists of the records to be deleted, to the primary record's related list
+				if ($canTransfer) {
+					$focus->transferRelatedRecords($module, [$id], $mergeid);
+				}
+				$del_response=DeleteEntity($module, $module, $focus, $id, '');
+				if ($del_response[0]) {
+					$delete_fail_status = true;
+				}
+			} else {
 				$delete_fail_status = true;
 			}
-		} else {
-			$delete_fail_status = true;
 		}
 	}
 	return $delete_fail_status;

@@ -38,6 +38,10 @@ class UserPrivileges {
 	private $subordinate_roles_users = null;
 	private $defaultOrgSharingPermission = null;
 	private $nosharingarray = array('ROLE'=>array(),'GROUP'=>array());
+	private $is_admin = null;
+	private $roles = null;
+	private $user_info = null;
+	private $related_module_share = null;
 
 	public function __construct($userid) {
 		global $cbodUserPrivilegesStorage;

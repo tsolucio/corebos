@@ -2895,7 +2895,7 @@ class OpenDocument {
 			}
 			file_put_contents($topath, $post);
 		} elseif (GlobalVariable::getVariable('GenDoc_Convert_URL_UnoServer', '', 'evvtgendoc')!='') {
-			$client = new Vtiger_Net_Client(GlobalVariable::getVariable('GenDoc_Convert_URL_UnoServer', '', 'evvtgendoc').'/convert/'.$format);
+			$client = new Vtiger_Net_Client(trim(GlobalVariable::getVariable('GenDoc_Convert_URL_UnoServer', '', 'evvtgendoc'), '/').'/convert/'.$format);
 			$client->setFileUpload('file', $frompath, 'file.odt');
 			$retries = GlobalVariable::getVariable('GenDoc_PDFConversion_Retries', 1, 'evvtgendoc');
 			for ($x = 1; $x <= $retries; $x++) {

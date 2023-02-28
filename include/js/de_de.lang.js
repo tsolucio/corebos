@@ -415,6 +415,10 @@ var alert_arr = {
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Der Anhang konnte nicht gelöscht werden',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Upload-Limit erreicht!',
 	'JSLBL_DRAW': 'Draw',
+	'JSLBL_DRAW_MODAL_TITLE': 'Error while drawing',
+	'JSLBL_DRAW_MODAL_MESSAGE': 'No permission to Draw/Edit',
+	'JSLBL_LEFT': 'Left',
+	'JSLBL_RIGHT': 'Right',
 	'JSLBL_CANCEL': 'Abbrechen',
 	'JSLBL_SAVEAS': 'Speichern als',
 	'JSLBL_SAVE': 'Speichern',
@@ -485,4 +489,5 @@ var alert_arr = {
 	'currentuser': 'Current User',
 	'wfmodule': 'Workflow Module',
 	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
+	'LBL_COPY_ROWS': 'Copy Rows',
 };

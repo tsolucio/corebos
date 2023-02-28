@@ -1070,5 +1070,11 @@ $mod_strings = array(
 	'LBL_EXPORT' => 'Export',
 	'LBL_RELATED_MODULE' => 'Related Module',
 	'LBL_RL_LABEL' => 'Label',
+	//email language translate
+	'LBL_EMAIL_TRANSLATE' => 'Dies ist eine Test-E-Mail, die gesendet wird, um zu bestätigen, ob eine E-Mail tatsächlich über den von Ihnen konfigurierten SMTP-Server gesendet wird.',
+    'LBL_EMAIL_END' => 'Sie können diese Mail gerne löschen.',
+    'LBL_EMAIL_SUBJECT' => 'Testmail über die Konfiguration des Mailservers.',
+    'LBL_DEAR' => 'Liebling ',
+    'LBL_THANKS' => 'Danke und Grüße,',
 );
 ?>

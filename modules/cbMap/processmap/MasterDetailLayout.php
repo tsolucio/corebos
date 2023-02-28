@@ -33,6 +33,8 @@
 	<title></title>
 	<expandall>1</expandall>
 	<create>1</create>
+	<duplicate></duplicate>
+	<workflowid></workflowid>
   </toolbar>
   <listview>
 	<toolbar>
@@ -130,6 +132,8 @@ class MasterDetailLayout extends processcbMap {
 			'icon' => (string)$xml->toolbar->icon,
 			'expandall' => (string)$xml->toolbar->expandall,
 			'create' => (string)$xml->toolbar->create,
+			'duplicate' => (string)$xml->toolbar->duplicate,
+			'workflowid' => (string)$xml->toolbar->workflowid,
 		);
 		$mapping_arr['listview'] = array();
 		if (isset($xml->listview->datasource)) {
