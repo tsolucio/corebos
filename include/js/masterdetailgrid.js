@@ -228,9 +228,9 @@ var masterdetailwork = {
 		});
 	},
 
-	DuplicateRecords: (ev, workflowid) => {
+	CallToAction: (ev, workflowid) => {
 		if (RecordsToDuplicate.length > 0) {
-			runBAWorkflow(workflowid, RecordsToDuplicate.join(';'))
+			runBAWorkflow(workflowid.split(','), RecordsToDuplicate.join(';'))
 		}
 	},
 

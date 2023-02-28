@@ -26,10 +26,12 @@
 <div class="slds-page-header__controls">
 <div class="slds-page-header__control">
 <div class="slds-button-group" role="group">
-{if !empty($MasterDetailLayoutMap.toolbar.duplicate) && !empty($MasterDetailLayoutMap.toolbar.workflowid)}
-<button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_COPY_ROWS}" onclick="masterdetailwork.DuplicateRecords(this, {$MasterDetailLayoutMap.toolbar.workflowid})" data-id="{$MasterDetailLayoutMap.mapname}--duplicate" id="btn-{$MasterDetailLayoutMap.mapname}--duplicate">
-	{$APP.LBL_COPY_ROWS}
-</button>
+{if !empty($MasterDetailLayoutMap.toolbar.actions)}
+{foreach from=$MasterDetailLayoutMap.toolbar.actions item=$i}
+	<button type="button" class="slds-button slds-button_neutral" title="{$i.label}" onclick="masterdetailwork.CallToAction(this, '{$i.workflow}')" data-id="{$MasterDetailLayoutMap.mapname}--actions" id="btn-{$MasterDetailLayoutMap.mapname}--actions">
+		{$i.label}
+	</button>
+{/foreach}
 {/if}
 {if !empty($MasterDetailLayoutMap.toolbar.expandall)}
 <button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_EXPAND_COLLAPSE}" onclick="masterdetailwork.MDToggle(this)" data-id="{$MasterDetailLayoutMap.mapname}" id="btn-{$MasterDetailLayoutMap.mapname}">
