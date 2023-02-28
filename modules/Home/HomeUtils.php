@@ -117,7 +117,7 @@ function getActivityEntries($open_activity_list) {
 			}
 			$entries[$event['id']] = array(
 				'0' => '<a href="index.php?action=DetailView&module='.$event["module"].'&record='.$event["id"].'" style="'.$font_color.';">'.$event["name"].'</a>',
-				'1' => getTranslatedString( $event["type"]),
+				'1' => getTranslatedString($event["type"]),
 			);
 		}
 		$values = array('noofactivities'=>count($open_activity_list),'Header'=>$header,'Entries'=>$entries);

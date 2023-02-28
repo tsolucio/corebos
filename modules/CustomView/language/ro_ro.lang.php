@@ -229,6 +229,5 @@ $mod_strings = array(
 	'LBL_SECOND_COLUMN'=>'A doua coloană',
 	'LBL_ADVANCED_FILTER' => 'Regula',
 	'LBL_SORT_BY_FIELD' => 'Sortați după câmp',
-
 );
 ?>

@@ -266,7 +266,5 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 
 'LBL_ADVANCED_FILTER' => 'Regra',
 'LBL_SORT_BY_FIELD' => 'Classificar por campo',
-
-
 );
 ?>

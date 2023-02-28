@@ -276,6 +276,5 @@ $mod_strings = array(
 'LBL_SECOND_COLUMN'=>'Tweede colonne',
 'LBL_ADVANCED_FILTER' => 'Rule',
 'LBL_SORT_BY_FIELD' => 'Sorteer op veld',
-
 );
 ?>

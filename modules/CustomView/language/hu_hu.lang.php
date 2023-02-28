@@ -236,6 +236,5 @@ $mod_strings = array(
 	'greater_or_equal' => 'nagyobb vagy egyenlő',
 	'Product Code' => 'Termék kód',
 	'LBL_SORT_BY_FIELD' => 'Rendezés mező szerint',
-
 );
 ?>

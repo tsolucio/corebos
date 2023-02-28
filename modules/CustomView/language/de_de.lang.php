@@ -265,6 +265,5 @@ $mod_strings = array(
 
 	'LBL_ADVANCED_FILTER' => 'Regel',
 	'LBL_SORT_BY_FIELD' => 'Nach Feld sortieren',
-
 );
 ?>

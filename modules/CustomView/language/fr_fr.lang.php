@@ -221,6 +221,5 @@ $mod_strings = array (
 	'LBL_SECOND_COLUMN'=>'Deuxième colonne',
 	'LBL_ADVANCED_FILTER' => 'Règle',
 	'LBL_SORT_BY_FIELD' => 'Trier par champ',
-
 );
 ?>

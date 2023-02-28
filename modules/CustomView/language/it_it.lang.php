@@ -240,6 +240,5 @@ $mod_strings = array (
 
 	'LBL_ADVANCED_FILTER' => 'Ruolo',
 	'LBL_SORT_BY_FIELD' => 'Ordina per campo',
-
 );
 ?>
