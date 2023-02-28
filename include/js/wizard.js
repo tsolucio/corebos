@@ -300,13 +300,21 @@ class WizardComponent {
 	}
 
 	async Finish(resetWizard = true) {
+		//decrement steps and active step with 1 because ThankYou template is a "fake" step
+		if (this.Suboperation[this.ActiveStep] == 'ThankYou') {
+			this.ActiveStep = this.ActiveStep-1;
+			this.steps = this.steps-1;
+			document.activeElement.innerHTML = `${alert_arr.JSLBL_Loading}...`;
+		}
 		switch (this.Operation) {
 		case 'CREATEPRODUCTCOMPONENTS':
 			const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
-			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
-			if (checkedRows.length == 0 && !resetWizard) {
-				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
-				return false;
+			if (this.WizardInstance[`wzgrid${this.ActiveStep}`] != undefined) {
+				const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep}`].getCheckedRows();
+				if (checkedRows.length == 0 && !resetWizard) {
+					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_SELECT_MORE_ROWS, 'error');
+					return false;
+				}
 			}
 			if (this.WizardCustomFunction[this.ActiveStep] != '') {
 				if (this.el(`save-wizard-${wizard.ActiveStep}`) !== null) {
@@ -629,6 +637,12 @@ class WizardComponent {
 			default:
 			//
 			}
+		}
+		if (this.Suboperation[this.ActiveStep] == 'ThankYou') {
+			this.el('btn-next').style.display = 'none';
+			this.el('btn-back').style.display = 'none';
+			document.getElementsByClassName('slds-modal__close')[0].style.display = 'none';
+			return true;
 		}
 		if (this.el('btn-back')) {
 			if (this.ActiveStep >= 1) {

@@ -43,6 +43,7 @@ if ($cbMapid) {
 		$smarty->assign('wizardInstantShow', $cbMapWz['instantshow']);
 		$smarty->assign('wizardTotal', $cbMapWz['totalsteps']);
 		$smarty->assign('wizardSteps', $cbMapWz['steps']);
+		$smarty->assign('COMPANY_DETAILS', retrieveCompanyDetails());
 		$views = array();
 		$step = 0;
 		foreach ($cbMapWz['steps'] as $key => $value) {
@@ -54,10 +55,13 @@ if ($cbMapid) {
 				'mapid' => $value['detailviewlayoutmap'],
 			);
 			$smarty->assign('WizardStep', $step);
-			$smarty->assign('WizardSuboperation', isset($value['suboperation']) ? $value['suboperation'] : '');
 			$icon = isset($value['suboperation']) && $value['suboperation'] == 'CalendarView' ? 'event' : 'procedure';
+			$suboperation = isset($value['suboperation']) ? $value['suboperation'] : '';
 			$WizardIcon[$step] = $icon;
+			$WizardSuboperation[$step] = $suboperation;
 			$smarty->assign('WizardIcon', $WizardIcon);
+			$smarty->assign('WizardSuboperation', $suboperation);
+			$smarty->assign('WizardSuboperationArray', $WizardSuboperation);
 			$smarty->assign('WizardModule', isset($value['module']) ? $value['module'] : '');
 			$view = $setfield->process($context);
 			$views[$key] = $view;

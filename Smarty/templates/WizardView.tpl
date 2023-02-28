@@ -29,6 +29,7 @@
 		wizard.SubWizardInfoMainId = '{$SubWizardInfo}';
 		wizard.isSubWizard = '{$isSubWizard}';
 		wizard.IsDuplicatedFromProduct = [];
+		wizard.Suboperation[{$WizardStep}] = '{$WizardSuboperation}';
 		wizard.DeleteSession().then(function() {
 			window.addEventListener('DOMContentLoaded', () => {
 				wizard.Init();
@@ -96,15 +97,19 @@
 									<div class="slds-media__body">
 										<div class="slds-media">
 											<div class="slds-media__body">
-												{include file='Smarty/templates/Components/Wizard/WizardActions.tpl'}
 												<script type="text/javascript">
 													wizard.ApplyFilter[{$smarty.foreach.stepwizard.index}] = '{$step.filter}';
 												</script>
-												<div class="slds-tabs_scoped">
-													<div class="slds-tabs_scoped__content slds-show" role="tabpanel">
-														{$wizardViews[$smarty.foreach.stepwizard.index]}
+												{if $WizardSuboperationArray[{$smarty.foreach.stepwizard.index}] != 'ThankYou'}
+													{include file='Smarty/templates/Components/Wizard/WizardActions.tpl'}
+													<div class="slds-tabs_scoped">
+														<div class="slds-tabs_scoped__content slds-show" role="tabpanel">
+															{$wizardViews[$smarty.foreach.stepwizard.index]}
+														</div>
 													</div>
-												</div>
+												{else}
+													{$wizardViews[$smarty.foreach.stepwizard.index]}
+												{/if}
 											</div>
 										</div>
 									</div>
