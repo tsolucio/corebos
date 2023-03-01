@@ -4498,7 +4498,7 @@ function submitFormForAction(formName, action) {
 	let isValid = true;
 	if (corebosjshook_submitFormForAction(formName, action)) {
 		//check for MasterGridWidget if is available
-		if (typeof MasterGridInsances !== 'undefined') {
+		if (typeof MasterGridInsances !== 'undefined' && gVTviewType != 'DetailView') {
 			let data = submitMasterGrid();
 			for (let i in data[2]) {
 				if (!data[2][i]) {
