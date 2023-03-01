@@ -42,7 +42,9 @@ switch ($data['method']) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$MapMG = $cbMap->cbMasterGrid();
 			foreach ($MasterGridValues as $key => $row) {
-				$MasterInstance = $row[0];
+				if ($data['__mastergridid'] != $row[0]) {
+					continue;
+				}
 				$MasterModule = $MasterGridModule[$key][1]['module'];
 				$MasterRelatedField = $MasterGridRelatedField[$key][1]['relatedfield'];
 				foreach ($row[1] as $r) {

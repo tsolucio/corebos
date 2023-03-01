@@ -45,7 +45,7 @@ class MasterGrid {
 		this.idx++;
 	}
 
-	TableData(instance) {
+	async TableData(instance) {
 		let data = new Array();
 		let fields = JSON.parse(mg[instance].fields);
 		let isValid = new Array();
@@ -107,13 +107,13 @@ class MasterGrid {
 				`;
 				break;
 			case '10':
-				let url = `index.php?module=${field.searchin}&action=Popup&html=Popup_picker&form=MasterGrid&forfield=${field.name}&srcmodule=${this.module}&forrecord=${this.currentRow.id}&index=${this.idx}`;
+				let url = `index.php?module=${field.searchin}&action=Popup&html=Popup_picker&form=MasterGrid&forfield=${field.name}&srcmodule=${this.module}&forrecord=${this.currentRow.id}&index=${this.idx}&instance=${this.id}`;
 				fld += `
-				<input ${mandatory} id="${field.name}_mastergrid_${this.idx}" name="${field.name}" type="hidden" value="${fieldvalue}">
+				<input ${mandatory} id="${field.name}_mastergrid_${this.idx}_${this.id}" name="${field.name}" type="hidden" value="${fieldvalue}">
 				<span style="display:none;" id="${field.name}_hidden"></span>
 				<div class="slds-grid slds-wrap">
 					<div class="slds-col slds-size_8-of-10">
-						<input class="slds-input" value="${fieldvalueDisplay}" id="${field.name}_display_${this.idx}" name="${field.name}_display" readonly="" type="text" style="border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
+						<input class="slds-input" value="${fieldvalueDisplay}" id="${field.name}_display_${this.idx}_${this.id}" name="${field.name}_display" readonly="" type="text" style="border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
 					</div>
 					<div class="slds-col slds-size_2-of-10">
 						<div class="slds-grid slds-grid_vertical slds-align_absolute-center">
@@ -224,21 +224,21 @@ class MasterGrid {
 	}
 
 	async Save() {
-		let isValid = true;
-		let data = submitMasterGrid(this.id);
-		for (let i in data[2]) {
-			if (!data[2][i]) {
-				VtigerJS_DialogBox.unblock();
-				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_REQUIRED_FIELDS);
-				isValid = false;
-				break;
-			}
-		}
+		MasterGridData = [];
+		let modules = [];
+		let relatedfield = [];
+		let isValid = await this.TableData(this.id);
 		if (isValid) {
+			modules[this.id] = {
+				module: mg[this.id].module,
+			};
+			relatedfield[this.id] = {
+				relatedfield: mg[this.id].relatedfield,
+			};
 			let newdata = await Request(this.url, 'post', {
 				'MasterGridValues': JSON.stringify(Object.entries(MasterGridData)),
-				'MasterGridModule': JSON.stringify(Object.entries(data[0])),
-				'MasterGridRelatedField': JSON.stringify(Object.entries(data[1])),
+				'MasterGridModule': JSON.stringify(Object.entries(modules)),
+				'MasterGridRelatedField': JSON.stringify(Object.entries(relatedfield)),
 				'module': this.module,
 				'method': 'save',
 				'id': document.getElementById('record').value,
@@ -249,6 +249,8 @@ class MasterGrid {
 			this.data = JSON.stringify(JSON.parse(newdata)[0]);
 			document.getElementById(`mastergrid-${this.id}`).innerHTML = '';
 			this.Init();
+		} else {
+			ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_REQUIRED_FIELDS);
 		}
 	}
 
