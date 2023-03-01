@@ -98,6 +98,7 @@ function export($type, $format = 'CSV') {
 	$log = LoggerManager::getLogger('export_'.$type);
 
 	$export_data = vtlib_purify($_REQUEST['export_data']);
+	$entityField= getEntityField(vtlib_purify($_REQUEST['module']));
 
 	if (isset($_SESSION['list_query'])) {
 		$query = $_SESSION['list_query'];
@@ -107,7 +108,6 @@ function export($type, $format = 'CSV') {
 	} elseif ($export_data == 'selecteddata') {
 		$idsArray = explode(';', vtlib_purify($_REQUEST['idstring']));
 		$where = '';
-		$entityField= getEntityField(vtlib_purify($_REQUEST['module']));
 		foreach ($idsArray as $key => $value) {
 			if (!empty($value)) {
 				$or = $key ? "OR " : " ";
@@ -127,9 +127,25 @@ function export($type, $format = 'CSV') {
 		}
 	}
 	if (empty($_REQUEST['visiblecolumns'])) {
-		$query = preg_replace("/(SELECT\s+)/", "SELECT " . $focus->table_name . ".*, ", $query);
+		$currentModuleTables = $focus->tab_name_index;
+		$currentModuleTableName = $entityField['tablename'];
+		$currentModuleEntityId = $entityField['entityid'];
+		$selectQuery = '';
+		$queryWordsForCondition = preg_split('/[\s\.]+/', $query);
+		$queryWords = preg_split('/\s+/', $query);
+		foreach ($currentModuleTables as $tableName => $idName) {
+			// selecting all fields of all module related tables
+			$selectQuery .= $tableName . ".*, ";
+			// joining those tables
+			if (!in_array($tableName, $queryWordsForCondition)) {
+				$addNewElementIndex = array_search('FROM', $queryWords) + 2;
+				$innerJoinSql = "INNER JOIN $tableName ON $currentModuleTableName.$currentModuleEntityId = $tableName.$idName";
+				array_splice($queryWords, $addNewElementIndex, 0, array($innerJoinSql));
+			}
+		}
+		$query = implode(' ', $queryWords);
+		$query = preg_replace("/(SELECT\s+)/", "SELECT " . $selectQuery, $query);
 	}
-
 	$result = $adb->pquery($query, null, true, "Error exporting $type: <BR>$query");
 	$fields_array = $adb->getFieldsArray($result);
 	$fields_array = array_diff($fields_array, array('user_name'));
