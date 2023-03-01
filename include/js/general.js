@@ -4489,7 +4489,7 @@ function submitFormForActionWithConfirmation(formName, action, confirmationMsg) 
 	return false;
 }
 
-function submitFormForAction(formName, action) {
+async function submitFormForAction(formName, action) {
 	var form = document.forms[formName];
 	if (!form) {
 		return false;
@@ -4499,7 +4499,7 @@ function submitFormForAction(formName, action) {
 	if (corebosjshook_submitFormForAction(formName, action)) {
 		//check for MasterGridWidget if is available
 		if (typeof MasterGridInsances !== 'undefined' && gVTviewType != 'DetailView') {
-			let data = submitMasterGrid();
+			let data = await submitMasterGrid();
 			for (let i in data[2]) {
 				if (!data[2][i]) {
 					VtigerJS_DialogBox.unblock();
@@ -4519,7 +4519,7 @@ function submitFormForAction(formName, action) {
 	return true;
 }
 
-function submitMasterGrid(forInstance = 0) {
+async function submitMasterGrid(forInstance = 0) {
 	let modules = [];
 	let relatedfields = [];
 	let isValid = [];
@@ -4527,7 +4527,7 @@ function submitMasterGrid(forInstance = 0) {
 		if (forInstance != 0 && MasterGridInsances[i] != forInstance) {
 			continue;
 		}
-		isValid[MasterGridInsances[i]] = mg[MasterGridInsances[i]].TableData(MasterGridInsances[i]);
+		isValid[MasterGridInsances[i]] = await mg[MasterGridInsances[i]].TableData(MasterGridInsances[i]);
 		modules[MasterGridInsances[i]] = {
 			module: mg[MasterGridInsances[i]].module,
 		};
