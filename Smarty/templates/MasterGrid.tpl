@@ -33,6 +33,15 @@
 		mg[{$linkid}].Init();
 	});
 </script>
+{if $GridAction == 'DetailView'}
+<div class="slds-section slds-is-open">
+	<h3 class="slds-section__title slds-theme_alt-inverse">
+		<span class="slds-truncate slds-p-horizontal_small">
+			{$BAInfo.linklabel}
+		</span>
+	</h3>
+</div>
+{/if}
 <form id="fake__form"></form>
 <form id="mastergridform__{$linkid}">
 	<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
@@ -50,7 +59,7 @@
 	</table>
 </form>
 {if $GridAction == 'DetailView'}
-<button type="button" data-id="{$linkid}" class="slds-button slds-button_success slds-float_right slds-m-top_x-small" onclick="mg[{$linkid}].Save()">
+<button type="button" data-id="{$linkid}" class="slds-button slds-button_success slds-float_right slds-m-top_x-small slds-m-left_x-small" onclick="mg[{$linkid}].Save()">
 	<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 	</svg>
@@ -61,5 +70,5 @@
 	<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 	</svg>
-	{$APP.LBL_NEW_BUTTON_LABEL} {$module_label}
+	{$APP.LBL_CREATE_BUTTON_LABEL} {$APP.LBL_ROW}
 </button>

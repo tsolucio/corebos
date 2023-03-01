@@ -54,6 +54,7 @@ class mastergrid_EditViewBlock extends DeveloperBlock {
 		$smarty->assign('GridFields', $MapMG['fields']);
 		$smarty->assign('GridAction', $_REQUEST['action']);
 		$smarty->assign('GridMap', $bmapname);
+		$smarty->assign('BAInfo', $BAInfo);
 		$rows = array();
 		if (isset($_REQUEST['action']) && isset($_REQUEST['record']) && in_array($_REQUEST['action'], ['DetailView', 'EditView'])) {
 			$record = $_REQUEST['record'];
