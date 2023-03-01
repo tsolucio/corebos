@@ -3977,7 +3977,7 @@ function CreateMasterRecord($data, $module, $relatedfield, $related_id) {
 	$masterfocus->saveentity($module);
 }
 
-function getMasterGridData($module, $currentModule, $relatedfield, $record, $MapMG, $__mastergridid = 0) {
+function getMasterGridData($relatedModule, $currentModule, $relatedfield, $record, $MapMG, $__mastergridid = 0) {
 	global $current_user, $adb;
 	$rows = array();
 	$qfields = array('id');
@@ -3991,7 +3991,7 @@ function getMasterGridData($module, $currentModule, $relatedfield, $record, $Map
 		);
 	}
 	$qfields[] = '__mastergridid';
-	$qg = new QueryGenerator($module, $current_user);
+	$qg = new QueryGenerator($relatedModule, $current_user);
 	$qg->setFields(array('*'));
 	$qg->addReferenceModuleFieldCondition($currentModule, $relatedfield, 'id', $record, 'e', 'and');
 	if ($__mastergridid != 0) {
@@ -4001,7 +4001,7 @@ function getMasterGridData($module, $currentModule, $relatedfield, $record, $Map
 	$results = $adb->pquery($sql, array());
 	$noOfRows = $adb->num_rows($results);
 	if ($noOfRows > 0) {
-		$entityField = getEntityField($module);
+		$entityField = getEntityField($relatedModule);
 		while ($row = $adb->fetch_array($results)) {
 			if (!isset($row['__mastergridid'])) {
 				continue;
