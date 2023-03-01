@@ -3976,4 +3976,60 @@ function CreateMasterRecord($data, $module, $relatedfield, $related_id) {
 	$masterfocus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($masterfocus->column_fields, $meta);
 	$masterfocus->saveentity($module);
 }
+
+function getMasterGridData($module, $currentModule, $relatedfield, $record, $MapMG, $__mastergridid = 0) {
+	global $current_user, $adb;
+	$rows = array();
+	$qfields = array('id');
+	$matchFields = array();
+	foreach ($MapMG['fields'] as $r) {
+		$qfields[] = $r['name'];
+		$matchFields[$r['columnname']] = array(
+			$r['name'],
+			$r['uitype'],
+			isset($r['searchin']) ? $r['searchin'] : ''
+		);
+	}
+	$qfields[] = '__mastergridid';
+	$qg = new QueryGenerator($module, $current_user);
+	$qg->setFields(array('*'));
+	$qg->addReferenceModuleFieldCondition($currentModule, $relatedfield, 'id', $record, 'e', 'and');
+	if ($__mastergridid != 0) {
+		$qg->addCondition('__mastergridid', $__mastergridid, 'e', QueryGenerator::$AND);
+	}
+	$sql = $qg->getQuery();
+	$results = $adb->pquery($sql, array());
+	$noOfRows = $adb->num_rows($results);
+	if ($noOfRows > 0) {
+		$entityField = getEntityField($module);
+		while ($row = $adb->fetch_array($results)) {
+			if (!isset($row['__mastergridid'])) {
+				continue;
+			}
+			$currentRow = array();
+			if (isset($row['smownerid'])) {
+				$currentRow['assigned_user_id'] = $row['smownerid'];
+				$currentRow['assigned_user_id_displayValue'] = getUserFullName($row['smownerid']);
+			}
+			foreach ($row as $key => $value) {
+				if (isset($matchFields[$key])) {
+					$currentRow[$matchFields[$key][0]] = $value;
+				}
+				if (!empty($matchFields[$key][2])) {
+					$displayValue = getEntityName($matchFields[$key][2], $value);
+					if (isset($displayValue[$value])) {
+						$currentRow[$matchFields[$key][0].'_displayValue'] = $displayValue[$value];
+					} else {
+						$currentRow[$matchFields[$key][0].'_displayValue'] = '';
+						$currentRow[$matchFields[$key][0]] = 0;
+					}
+				}
+			}
+			$currentRow['id'] = $row[$entityField['entityid']];
+			$currentRow['__mastergridid'] = intval($row['__mastergridid']);
+			$rows[] = $currentRow;
+		}
+	}
+	return $rows;
+}
 ?>

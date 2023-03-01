@@ -4519,11 +4519,14 @@ function submitFormForAction(formName, action) {
 	return true;
 }
 
-function submitMasterGrid() {
+function submitMasterGrid(forInstance = 0) {
 	let modules = [];
 	let relatedfields = [];
 	let isValid = [];
 	for (let i in MasterGridInsances) {
+		if (forInstance != 0 && MasterGridInsances[i] != forInstance) {
+			continue;
+		}
 		isValid[MasterGridInsances[i]] = mg[MasterGridInsances[i]].TableData(MasterGridInsances[i]);
 		modules[MasterGridInsances[i]] = {
 			module: mg[MasterGridInsances[i]].module,

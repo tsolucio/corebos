@@ -28,6 +28,7 @@
 	mg[{$linkid}].relatedfield = '{$relatedfield}';
 	mg[{$linkid}].fields = '{$GridFields|json_encode}';
 	mg[{$linkid}].data = '{$GridData}';
+	mg[{$linkid}].mapname = '{$GridMap}';
 	window.addEventListener('DOMContentLoaded', (event) => {
 		mg[{$linkid}].Init();
 	});
@@ -48,6 +49,14 @@
 		<tbody id="mastergrid-{$linkid}"></tbody>
 	</table>
 </form>
+{if $GridAction == 'DetailView'}
+<button type="button" data-id="{$linkid}" class="slds-button slds-button_success slds-float_right slds-m-top_x-small" onclick="mg[{$linkid}].Save()">
+	<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+	</svg>
+	{$APP.LBL_SAVE_BUTTON_LABEL}
+</button>
+{/if}
 <button type="button" data-id="{$linkid}" class="slds-button slds-button_brand slds-float_right slds-m-top_x-small" onclick="mg[{$linkid}].EmptyRow(true)">
 	<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>

@@ -46,60 +46,18 @@ class mastergrid_EditViewBlock extends DeveloperBlock {
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$MapMG = $cbMap->cbMasterGrid();
 		$ID = $this->getFromContext('RECORDID');
-		$smarty->assign('linkid', $BAInfo['linkid']);
+		$mastergridid = $this->getFromContext('__mastergridid');
+		$smarty->assign('linkid', empty($mastergridid) ? $BAInfo['linkid'] : $mastergridid);
 		$smarty->assign('module', $MapMG['module']);
 		$smarty->assign('module_label', getTranslatedString($MapMG['module'], $MapMG['module']));
 		$smarty->assign('relatedfield', $MapMG['relatedfield']);
 		$smarty->assign('GridFields', $MapMG['fields']);
+		$smarty->assign('GridAction', $_REQUEST['action']);
+		$smarty->assign('GridMap', $bmapname);
 		$rows = array();
-		if (isset($_REQUEST['action']) && isset($_REQUEST['record']) && $_REQUEST['action'] == 'EditView') {
-			$qfields = array('id');
-			$matchFields = array();
-			foreach ($MapMG['fields'] as $r) {
-				$qfields[] = $r['name'];
-				$matchFields[$r['columnname']] = array(
-					$r['name'],
-					$r['uitype'],
-					isset($r['searchin']) ? $r['searchin'] : ''
-				);
-			}
-			$qfields[] = '__mastergridid';
+		if (isset($_REQUEST['action']) && isset($_REQUEST['record']) && in_array($_REQUEST['action'], ['DetailView', 'EditView'])) {
 			$record = $_REQUEST['record'];
-			$qg = new QueryGenerator($MapMG['module'], $current_user);
-			$qg->setFields($qfields);
-			$qg->addReferenceModuleFieldCondition($currentModule, $MapMG['relatedfield'], 'id', $record, 'e', 'and');
-			$sql = $qg->getQuery();
-			$results = $adb->pquery($sql, array());
-			$noOfRows = $adb->num_rows($results);
-			if ($noOfRows > 0) {
-				$entityField = getEntityField($MapMG['module']);
-				while ($row = $adb->fetch_array($results)) {
-					if (!isset($row['__mastergridid'])) {
-						continue;
-					}
-					$currentRow = array();
-					if (isset($row['smownerid'])) {
-						$currentRow['assigned_user_id'] = $row['smownerid'];
-						$currentRow['assigned_user_id_displayValue'] = getUserFullName($row['smownerid']);
-					}
-					foreach ($row as $key => $value) {
-						if (!empty($matchFields[$key][2])) {
-							$displayValue = getEntityName($matchFields[$key][2], $value);
-							if (isset($displayValue[$value])) {
-								$currentRow[$matchFields[$key][0].'_displayValue'] = $displayValue[$value];
-							} else {
-								$currentRow[$matchFields[$key][0].'_displayValue'] = '';
-							}
-						}
-						if (isset($matchFields[$key])) {
-							$currentRow[$matchFields[$key][0]] = $value;
-						}
-					}
-					$currentRow['id'] = $row[$entityField['entityid']];
-					$currentRow['__mastergridid'] = intval($row['__mastergridid']);
-					$rows[] = $currentRow;
-				}
-			}
+			$rows = getMasterGridData($MapMG['module'], $currentModule, $MapMG['relatedfield'], $record, $MapMG);
 		}
 		$smarty->assign('GridData', json_encode($rows));
 		return $smarty->fetch('MasterGrid.tpl');

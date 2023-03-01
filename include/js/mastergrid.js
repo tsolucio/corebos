@@ -5,6 +5,7 @@ class MasterGrid {
 		this.idx = 0;
 		this.module = null;
 		this.relatedfield = '';
+		this.mapname = '';
 		this.fields = [];
 		this.data = [];
 		this.currentRow = {};
@@ -220,6 +221,35 @@ class MasterGrid {
 		newrow.appendChild(actions);
 		grid.appendChild(newrow);
 		this.idx++;
+	}
+
+	async Save() {
+		let isValid = true;
+		let data = submitMasterGrid(this.id);
+		for (let i in data[2]) {
+			if (!data[2][i]) {
+				VtigerJS_DialogBox.unblock();
+				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_REQUIRED_FIELDS);
+				isValid = false;
+				break;
+			}
+		}
+		if (isValid) {
+			let newdata = await Request(this.url, 'post', {
+				'MasterGridValues': JSON.stringify(Object.entries(MasterGridData)),
+				'MasterGridModule': JSON.stringify(Object.entries(data[0])),
+				'MasterGridRelatedField': JSON.stringify(Object.entries(data[1])),
+				'module': this.module,
+				'method': 'save',
+				'id': document.getElementById('record').value,
+				'currentModule': document.getElementById('module').value,
+				'mapname': this.mapname,
+				'__mastergridid': this.id
+			});
+			this.data = JSON.stringify(JSON.parse(newdata)[0]);
+			document.getElementById(`mastergrid-${this.id}`).innerHTML = '';
+			this.Init();
+		}
 	}
 
 	GenerateActions() {

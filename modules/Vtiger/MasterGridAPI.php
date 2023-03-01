@@ -28,6 +28,30 @@ switch ($data['method']) {
 			}
 		}
 		break;
+	case 'save':
+		$ret = false;
+		if (isset($data['MasterGridValues']) && !empty($data['MasterGridValues'])) {
+			$MasterGridValues = json_decode($data['MasterGridValues'], true);
+			$MasterGridModule = json_decode($data['MasterGridModule'], true);
+			$MasterGridRelatedField = json_decode($data['MasterGridRelatedField'], true);
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$data['mapname'], cbMap::getMapIdByName($data['mapname']), $data['currentModule']);
+			if (!$cbMapid) {
+				echo json_encode(false);
+				return false;
+			}
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$MapMG = $cbMap->cbMasterGrid();
+			foreach ($MasterGridValues as $key => $row) {
+				$MasterInstance = $row[0];
+				$MasterModule = $MasterGridModule[$key][1]['module'];
+				$MasterRelatedField = $MasterGridRelatedField[$key][1]['relatedfield'];
+				foreach ($row[1] as $r) {
+					CreateMasterRecord($r, $MasterModule, $MasterRelatedField, $data['id']);
+				}
+				$ret[] = getMasterGridData($MasterModule, $data['currentModule'], $MasterRelatedField, $data['id'], $MapMG, $data['__mastergridid']);
+			}
+		}
+		break;
 	default:
 		$ret = false;
 		break;
