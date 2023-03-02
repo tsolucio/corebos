@@ -123,7 +123,7 @@ class MasterGrid {
 								</svg>
 								<span class="slds-assistive-text">Select</span>
 							</button>
-							<button class="slds-button slds-button_icon" type="button" onclick="mg[${this.id}].ClearValues('${field.name}');">
+							<button class="slds-button slds-button_icon" type="button" onclick="mg[${this.id}].ClearValues('${field.name}', ${this.idx}, ${this.id});">
 								<svg class="slds-button__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 								</svg>
@@ -191,9 +191,9 @@ class MasterGrid {
 		return fld;
 	}
 
-	ClearValues(column) {
-		document.getElementById(`${column}_mastergrid`).value = '';
-		document.getElementById(`${column}_display`).value = '';
+	ClearValues(column, idx, id) {
+		document.getElementById(`${column}_mastergrid_${idx}_${id}`).value = '';
+		document.getElementById(`${column}_display_${idx}_${id}`).value = '';
 	}
 
 	DeleteRow(idx) {
