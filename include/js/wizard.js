@@ -141,13 +141,13 @@ class WizardComponent {
 	 * @param {Object} event
 	 */
 	async Next(ev) {
-		let confirmstep = this.WizardConfirmStep[this.ActiveStep] !== undefined ? JSON.parse(this.WizardConfirmStep[this.ActiveStep]) : '';
-		if (!this.isSubWizard && confirmstep != '' && confirmstep.confirm && !confirm(confirmstep.message)) {
-			return false;
-		}
 		let type = 'next';
 		if (ev != '') {
 			type = ev.target.dataset.type;
+		}
+		let confirmstep = this.WizardConfirmStep[this.ActiveStep] !== undefined ? JSON.parse(this.WizardConfirmStep[this.ActiveStep]) : '';
+		if (!this.isSubWizard && confirmstep != '' && confirmstep.confirm && !confirm(confirmstep.message) && type == 'next') {
+			return false;
 		}
 		if (this.WizardInstance[`wzgrid${this.ActiveStep+1}`] !== undefined) {
 			const checkedRows = this.WizardInstance[`wzgrid${this.ActiveStep+1}`].getCheckedRows();
@@ -218,7 +218,9 @@ class WizardComponent {
 					await this.Finish();
 				} else {
 					const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
-					await this.FinishRequest(url, false);
+					if (type == 'next') {
+						await this.FinishRequest(url, false);
+					}
 					return true;
 				}
 			}
@@ -554,9 +556,7 @@ class WizardComponent {
 				this.MainSelectedId = response.id;
 			}
 			if (this.WizardCustomFunction[this.ActiveStep] != '') {
-				this.ActiveStep = this.ActiveStep-1;
 				this.CallCustomFunction();
-				this.ActiveStep = this.ActiveStep+1;
 			}
 			this.IsDuplicatedFrom[this.ActiveStep] = 1;
 			this.CheckedRows[this.ActiveStep][1]= [response];
@@ -981,7 +981,7 @@ class WizardComponent {
 		}
 		if (this.Context.id === undefined) {
 			this.Context['id'] = this.MainSelectedId;
-		}
+		}console.log(this.WizardCustomFunction, this.ActiveStep)
 		if (this.WizardCustomFunction[this.ActiveStep] == '') {
 			return true;
 		}
