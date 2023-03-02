@@ -1413,7 +1413,7 @@ $app_strings = array (
 	'Slider' => 'Carrusel',
 	'LBL_WIZARD' => 'Asistente',
 	'LBL_ROW' => 'Fila',
-	'LBL_WIZARD_COMPLETED' => 'The process has been completed successfully.',
+	'LBL_WIZARD_COMPLETED' => 'El proceso ha termiando correctamente.',
 );
 
 // Translation for currency names
