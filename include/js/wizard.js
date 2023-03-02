@@ -981,7 +981,7 @@ class WizardComponent {
 		}
 		if (this.Context.id === undefined) {
 			this.Context['id'] = this.MainSelectedId;
-		}console.log(this.WizardCustomFunction, this.ActiveStep)
+		}
 		if (this.WizardCustomFunction[this.ActiveStep] == '') {
 			return true;
 		}
@@ -1406,7 +1406,7 @@ class WizardComponent {
 			},
 			buttonText: {
 				today: mod_alert_arr.LBL_TODAY,
-				week: mod_alert_arr.LBL_WEEK				
+				week: mod_alert_arr.LBL_WEEK
 			},
 			editable: true,
 			eventResizableFromStart: false,
@@ -1531,7 +1531,7 @@ class WizardComponent {
 				backgroundColor: backgroundColor,
 				borderColor: backgroundColor,
 				color: 'black',
-			});			
+			});
 		}
 	}
 
