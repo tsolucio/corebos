@@ -3,7 +3,7 @@ var mod_alert_arr = {
 	'LBL_CHOOSECUSTOMVIEW': 'Choose fields for filter',
 	'LBL_MB_PROGRESS': 'Progreso',
 	'RecordDeleted': 'El registro se eliminó con éxito.',
-	'RecordSaved': 'The record was successfully saved',
+	'RecordSaved': 'Se guardó el registro correctamente',
 	'Field': 'Campo',
 	'WasSaved': 'fue guardado con éxito',
 	'LBL_MB_SAVEFIELD': 'Guardar campo',
@@ -95,4 +95,9 @@ var mod_alert_arr = {
 	'generatedtype': 'Tipo Generado',
 	'fieldlength': 'Longitud',
 	'FunctionName': 'Nombre función',
+	'LBL_TODAY': 'Hoy',
+	'LBL_WEEK': 'Semana',
+	'LBL_CALL': 'Llamada',
+	'LBL_MEETING': 'Reunión',
+	'LBL_TASK': 'Tarea',
 };

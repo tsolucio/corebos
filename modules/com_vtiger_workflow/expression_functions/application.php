@@ -54,17 +54,19 @@ function __cbwf_getimageurl($arr) {
 			where vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?';
 		$image_res = $adb->pquery($sql, array(str_replace(' ', '_', $arr[0]),$crmid));
 	}
+	$imageurl = '';
 	if ($adb->num_rows($image_res)>0) {
 		$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
 		$image_path = $adb->query_result($image_res, 0, 'path');
 		$image_name = decode_html($adb->query_result($image_res, 0, 'name'));
 		if ($image_name != '') {
 			$imageurl = $image_path . $image_id . '_' . urlencode($image_name);
-		} else {
-			$imageurl = '';
 		}
 	} else {
-		$imageurl = '';
+		$crmid = vtws_getCRMID($arr[0]);
+		if ($crmid && is_numeric($crmid)) { // it is a direct foreign key to a document record (we hope)
+			$imageurl = Documents::getAttachmentPath($crmid);
+		}
 	}
 	return $imageurl;
 }

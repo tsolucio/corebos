@@ -147,7 +147,8 @@ function mandatoryCheck() {
 			</table>
 			<table>
 				<tr>
-					<td class="dvtCellInfo cblds-p_medium" width="10%" align="right">Sort By Field</td>
+					<td class="dvtCellInfo cblds-p_medium" width="10%" align="right">{$MOD.LBL_SORT_BY_FIELD}
+					</td>
 					<td class="dvtCellInfo slds-p-around_small" width="45%">
 						<input placeholder="{$MOD.LBL_FIRST_COLUMN}" class="detailedViewTextBox slds-input" type="text" name='sortfieldbyfirst' value="{if isset($sortfieldbyfirst)}{$sortfieldbyfirst}{/if}" size="40" {if $PERMITALL eq 'true'}disabled{/if}/>
 					</td>

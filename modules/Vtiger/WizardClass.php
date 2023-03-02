@@ -28,6 +28,8 @@ class WizardView {
 	private $validate = true;
 	private $required_action = '';
 	private $custom_function = '';
+	private $confirmstep = '';
+	private $confirmmsg = '';
 	private $reset_wizard = true;
 
 	public $conditions = '';
@@ -85,6 +87,14 @@ class WizardView {
 		if (isset($this->params['filter_context'])) {
 			$this->filtercontext = $this->params['filter_context'];
 		}
+		//start: ask user to confirm the step before proceed
+		if (isset($this->params['confirm_step'])) {
+			$this->confirmstep = $this->params['confirm_step'];
+		}
+		if (isset($this->params['confirm_message'])) {
+			$this->confirmmsg = $this->params['confirm_message'];
+		}
+		//end confirm
 	}
 
 	public function Init() {
@@ -92,6 +102,22 @@ class WizardView {
 		global $smarty;
 		$smarty->assign('formodule', $this->module);
 		$smarty->assign('GroupBy', $this->groupby);
+		$WizardSuboperation = $smarty->getTemplateVars('WizardSuboperation');
+		//suboperation support into steps
+		if (!empty($WizardSuboperation)) {
+			if ($this->mapid != 0) {
+				$columns = self::RenderListViewColumns();
+				$treeactions = array(
+					'edit' => true,
+					'delete' => true,
+				);
+				$cbgridactioncol = str_replace('"TreeViewActions"', 'TreeViewActions', json_encode(gridGetActionColumn('TreeViewActions', $treeactions)));
+				$smarty->assign('cbgridactioncol', $cbgridactioncol);
+				$smarty->assign('Columns', $columns);
+			}
+			return $smarty->fetch('Smarty/templates/Components/Wizard/'.$WizardSuboperation.'.tpl');
+		}
+		//GLOBAL: Form Template
 		if ($smarty->getTemplateVars('wizardOperation') == 'FORMTEMPLATE') {
 			$Rows = array();
 			if ($this->mapid != 0) {
@@ -99,26 +125,14 @@ class WizardView {
 				$Rows = $cbMap->WizardForms();
 			}
 			$smarty->assign('Rows', isset($Rows['rows']) ? $Rows['rows'] : array());
+			$smarty->assign('ModuleName', $Rows['module']);
 			return $smarty->fetch('Smarty/templates/Components/Wizard/WizardFormTemplate.tpl');
 		}
+		//GLOBAL: ListView, MassCreate
 		if ($this->mapid != 0) {
-			$cbMap = cbMap::getMapByID($this->mapid);
-			$fieldlist = $cbMap->MassUpsertGridView();
-			$fields = $fieldlist->getColumns();
-			foreach ($fields as $label => $name) {
-				$fieldname = array_values($name)[0];
-				if ($fieldname == 'smownerid') {
-					$fieldname = 'assigned_user_id';
-				}
-				$columns[] = array(
-					'header' => $label,
-					'name' => $fieldname,
-					'uitype' => getUItype($this->module, $fieldname)
-				);
-			}
+			$columns = self::RenderListViewColumns();
 			$smarty->assign('Columns', $columns);
 			$smarty->assign('relatedmodules', $this->RelatedFields());
-			$smarty->assign('step', $this->step);
 			$smarty->assign('entitynames', getEntityFieldNames($this->module));
 			$smarty->assign('WizardMode', $this->mode);
 			//ListView, Create_{ModuleName}, MassCreate_{ModuleName}
@@ -128,7 +142,11 @@ class WizardView {
 			$smarty->assign('WizardRequiredAction', $this->required_action);
 			$smarty->assign('WizardCustomFunction', $this->custom_function);
 			$smarty->assign('WizardModuleEditor', $this->module);
-			$smarty->assign('WizardContext', $this->filtercontext);
+			$smarty->assign('WizardConfirmStep', array(
+				'confirm' => boolval($this->confirmstep),
+				'message' => $this->confirmmsg
+			));
+			$smarty->assign('WizardContext', isset($this->filtercontext) ? $this->filtercontext : '');
 			$WizardSaveAction = false;
 			if (!empty($this->save_action)) {
 				$WizardSaveAction = boolval($this->save_action);
@@ -149,6 +167,31 @@ class WizardView {
 		}
 	}
 
+
+	/**
+	 * This function generates a list of columns for  tuigrid view based on a provided map ID.
+	 */
+	private function RenderListViewColumns() {
+		$cbMap = cbMap::getMapByID($this->mapid);
+		$fieldlist = $cbMap->MassUpsertGridView();
+		$fields = $fieldlist->getColumns();
+		foreach ($fields as $label => $name) {
+			$fieldname = array_values($name)[0];
+			if ($fieldname == 'smownerid') {
+				$fieldname = 'assigned_user_id';
+			}
+			$columns[] = array(
+				'header' => $label,
+				'name' => $fieldname,
+				'uitype' => getUItype($this->module, $fieldname)
+			);
+		}
+		return $columns;
+	}
+
+	/**
+	 * Retrieves related fields from the database for a specified module.
+	 */
 	public function RelatedFields() {
 		global $adb;
 		$rs = $adb->pquery('select vtiger_field.fieldid, fieldname, module, columnname, relmodule from vtiger_fieldmodulerel inner join vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid where module=?', array(
@@ -176,6 +219,9 @@ class WizardActions extends WizardCustomFunctions {
 		$this->module = $module;
 	}
 
+	/**
+	 * Retrieve results for tuigrid view in Wizard.
+	 */
 	public function Grid() {
 		require_once 'modules/'.$this->module.'/'.$this->module.'.php';
 		global $current_user, $adb;
@@ -336,46 +382,12 @@ class WizardActions extends WizardCustomFunctions {
 		$rs = $adb->query($sql);
 		$data = array();
 		$columns = array();
-		$fieldinfo = array();
 		$tabid = getTabid($this->module);
 		$focus = new $this->module;
 		$table_index = $focus->table_index;
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($this->module);
 		while ($row = $rs->FetchRow()) {
-			$crow = array();
-			foreach ($row as $field => $value) {
-				if (is_numeric($field)) {
-					continue;
-				}
-				if ($field == 'smownerid') {
-					$field = 'assigned_user_id';
-				}
-				if (!isset($fieldinfo[$field])) {
-					foreach ($cachedModuleFields as $key) {
-						if ($key['fieldname'] == $field) {
-							$fieldinfo[$field] = array(
-								'fieldtype' => 'corebos',
-								'fieldinfo' => [
-									'name' => $field,
-									'uitype' => $key['uitype'],
-								],
-								'name' => $field,
-								'uitype' => $key['uitype'],
-								'fieldid' => $key['fieldid']
-							);
-						}
-					}
-				}
-				if (!isset($fieldinfo[$field])) {
-					continue;
-				}
-				$gridvalue = getDataGridValue($this->module, $row[$table_index], $fieldinfo[$field], $value, 'Wizard');
-				$crow[$field] = $gridvalue[0];
-				$crow['id'] = $row[$table_index];
-				$crow[$fieldinfo[$field]['name'].'_raw'] = $value;
-				$crow['__modulename'] = $this->module;
-			}
-			$data[] = $crow;
+			$data[] = self::processRows($row, $cachedModuleFields, $this->module, $table_index);
 		}
 		return json_encode(
 			array(
@@ -391,6 +403,70 @@ class WizardActions extends WizardCustomFunctions {
 		);
 	}
 
+	/**
+	 * Process a row of data retrieved from a database query.
+	 * @param array of data
+	 * @param array of module fields
+	 * @param string module name
+	 * @param string primary field(key) of module
+	 */
+	private function processRows($row, $cachedModuleFields, $module, $table_index, $type = '') {
+		$crow = array();
+		$fieldinfo = array();
+		foreach ($row as $field => $value) {
+			if (is_numeric($field)) {
+				continue;
+			}
+			if ($field == 'smownerid') {
+				$field = 'assigned_user_id';
+			}
+			$fieldinfo[$field] = self::FieldInfo($cachedModuleFields, $field);
+			if (!isset($fieldinfo[$field])) {
+				continue;
+			}
+			$gridvalue = getDataGridValue($module, $row[$table_index], $fieldinfo[$field], $value, 'Wizard');
+			$crow[$field] = $gridvalue[0];
+			$crow['id'] = $row[$table_index];
+			if (!empty($row[$table_index])) {
+				$crow['record_id'] = $row[$table_index];
+				$crow['record_module'] = $module;
+			}
+			if ($type == 'parent') {
+				$crow['__parent'] = true;
+			}
+			$crow[$fieldinfo[$field]['name'].'_raw'] = $value;
+			$crow['__modulename'] = $module;
+		}
+		return $crow;
+	}
+
+	/**
+	 * Return field informations for a specief field.
+	 * @param array of module fields
+	 * @param string field to process
+	 */
+	private function FieldInfo($cachedModuleFields, $field) {
+		$fieldinfo = array();
+		foreach ($cachedModuleFields as $key) {
+			if ($key['fieldname'] == $field) {
+				$fieldinfo = array(
+					'fieldtype' => 'corebos',
+					'fieldinfo' => [
+						'name' => $field,
+						'uitype' => $key['uitype'],
+					],
+					'name' => $field,
+					'uitype' => $key['uitype'],
+					'fieldid' => $key['fieldid']
+				);
+			}
+		}
+		return $fieldinfo;
+	}
+
+	/**
+	 * Handles requests and call the specified method in the class.
+	 */
 	public function HandleRequest() {
 		$subaction = isset($_REQUEST['subaction']) ? vtlib_purify($_REQUEST['subaction']) : '';
 		$response = false;
@@ -400,6 +476,9 @@ class WizardActions extends WizardCustomFunctions {
 		return $response;
 	}
 
+	/**
+	 * Return rows based on TuiGrid Tree view.
+	 */
 	public function Mapping() {
 		global $currentModule;
 		$data = json_decode($_REQUEST['data'], true);
@@ -426,7 +505,7 @@ class WizardActions extends WizardCustomFunctions {
 		}
 		return array(
 			'data' => array(
-				'contents' => $mapping,
+				'contents' => $this->FormatValues($mapping, $data[0]['module']),
 				'pagination' => array(
 					'page' => 1,
 					'totalCount' => count($data[1]['id']),
@@ -436,12 +515,63 @@ class WizardActions extends WizardCustomFunctions {
 		);
 	}
 
+	/**
+	 * Return formatted rows.
+	 * @param array data to be formatted
+	 * @param string module name
+	 */
+	private function FormatValues($data, $module) {
+		$arr = array();
+		$formodule = isset($_REQUEST['formodule']) ? vtlib_purify($_REQUEST['formodule']) : '';
+		if (!empty($formodule)) {
+			$lv = new GridListView($formodule);
+			$lv->tabid = getTabid($formodule);
+		}
+		foreach ($data as $values) {
+			$tmparr = $values;
+			foreach ($values as $fld => $val) {
+				if ($val == 0) {
+					continue;
+				}
+				$uitype = getUItypeByFieldName($module, $fld);
+				if ($uitype != Field_Metadata::UITYPE_RECORD_RELATION) {
+					//check for uitype 10 in related modules
+					if (isset($lv)) {
+						$relmod = $lv->findRelatedModule($fld);
+						if (empty($relmod)) {
+							continue;
+						}
+					} else {
+						continue;
+					}
+				}
+				if (!isset($relmod[0])) {
+					$setype = getSalesEntityType($val);
+				} else {
+					$setype = $relmod[0];
+				}
+				$displayValue = getEntityName($setype, $val);
+				$tmparr[$fld.'_raw'] = $tmparr[$fld];
+				$tmparr[$fld] = $displayValue[$val];
+			}
+			$arr[] = $tmparr;
+		}
+		return $arr;
+	}
+
+	/**
+	 * Masscreate rows.
+	 * @param array all the data to create
+	 */
 	public function MassCreate($target = array()) {
 		require_once 'include/Webservices/MassCreate.php';
 		global $current_user;
 		$subaction = isset($_REQUEST['subaction']) ? vtlib_purify($_REQUEST['subaction']) : '';
 		if (!empty($subaction)) {
 			$target = $this->$subaction();
+		}
+		if ($target == '__MassCreateSuccess__') {
+			return true;
 		}
 		if (!empty($target)) {
 			$response = MassCreate($target, $current_user);
@@ -470,6 +600,9 @@ class WizardActions extends WizardCustomFunctions {
 		return coreBOS_Session::get('DuplicatedRecords');
 	}
 
+	/**
+	 * Delete a specified record.
+	 */
 	public function DeleteRecords() {
 		$data = json_decode($_REQUEST['data'], true);
 		$id = $data['recordid'];
@@ -485,6 +618,7 @@ class WizardActions extends WizardCustomFunctions {
 	}
 
 	public function CreateRecords() {
+		require_once 'include/Webservices/Create.php';
 		global $current_user, $adb;
 		$UsersTabid = vtws_getEntityId('Users');
 		$data = json_decode($_REQUEST['data'], true);
@@ -514,19 +648,17 @@ class WizardActions extends WizardCustomFunctions {
 							$row[$fieldname] = $relid;
 						}
 					}
-					$target[] = array(
-						'elementType' => $createmodule,
-						'referenceId' => '',
-						'searchon' => '',
-						'element' => $row
-					);
+					vtws_create($createmodule, $row, $current_user);
 				}
-				return $target;
+				return '__MassCreateSuccess__';
 			}
 		}
 		return false;
 	}
 
+	/**
+	 * Duplicate a record based on recordid given.
+	 */
 	public function Duplicate() {
 		global $current_user;
 		$data = json_decode($_REQUEST['data'], true);
@@ -556,5 +688,134 @@ class WizardActions extends WizardCustomFunctions {
 				return 0;
 			}
 		}
+	}
+
+	/**
+	 * Create a new row from the FormTemplate mode in wizard.
+	 */
+	public function CreateForm() {
+		global $current_user;
+		require_once 'modules/Vtiger/ExecuteFunctionsfromphp.php';
+		$data = json_decode($_REQUEST['data'], true);
+		$row = $data['data'];
+		$modulename = $data['modulename'];
+		$recordid = $data['recordid'];
+		$row = json_decode($row, true);
+		$focus = CRMEntity::getInstance($modulename);
+		if ($recordid > 0) {
+			$focus->id = $recordid;
+			$focus->mode = 'edit';
+		} else {
+			$focus->mode = '';
+		}
+		foreach ($row as $k) {
+			$focus->column_fields[$k['key']] = $k['value'];
+		}
+		$vals = executefunctionsvalidate('ValidationLoad', $modulename, json_encode($focus->column_fields));
+		if ($vals != '%%%OK%%%') {
+			return false;
+		}
+		$handler = vtws_getModuleHandlerFromName($modulename, $current_user);
+		$meta = $handler->getMeta();
+		$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+		$focus->saveentity($modulename);
+		return $focus->id;
+	}
+
+	/**
+	 * Get all event created in Calendar. Wizard.
+	 */
+	public function GetEvents() {
+		global $adb;
+		$data = json_decode($_REQUEST['data'], true);
+		$sql = $adb->pquery('select * from vtiger_activity
+			inner join vtiger_crmentity on crmid=activityid where deleted=0 and rel_id=?', array($data['recordid']));
+		$noOfRows = $adb->num_rows($sql);
+		if ($noOfRows > 0) {
+			$res = array();
+			for ($i=0; $i < $noOfRows; $i++) { 
+				$res[] = array(
+					'activityid' => $adb->query_result($sql, $i, 'activityid'),
+					'subject' => $adb->query_result($sql, $i, 'subject'),
+					'date_start' => $adb->query_result($sql, $i, 'date_start'),
+					'due_date' => $adb->query_result($sql, $i, 'due_date'),
+					'time_start' => $adb->query_result($sql, $i, 'time_start'),
+					'time_end' => $adb->query_result($sql, $i, 'time_end'),
+					'activitytype' => $adb->query_result($sql, $i, 'activitytype'),
+				);
+			}
+			return $res;
+		}
+		return array();
+	}
+
+	/**
+	 * Update an event in Calendar. Wizard.
+	 */
+	public function UpdateEvent() {
+		require_once 'modules/cbCalendar/cbCalendar.php';
+		global $current_user;
+		$data = json_decode($_REQUEST['data'], true);
+		$start = explode(' ', $data['dateStart']);
+		$end = explode(' ', $data['dateEnd']);
+		$focus = new cbCalendar();
+		$focus->id = $data['eventId'];
+		$focus->mode = 'edit';
+		$focus->retrieve_entity_info($data['eventId'], 'cbCalendar');
+		$focus->column_fields['dtstart'] = $data['dateStart'];
+		$focus->column_fields['dtend'] = $data['dateEnd'];
+		$handler = vtws_getModuleHandlerFromName('cbCalendar', $current_user);
+		$meta = $handler->getMeta();
+		$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+		$focus->saveentity('cbCalendar');
+	}
+
+	/**
+	 * Return data in tree view format for TuiGrid.
+	 */
+	public function TreeView() {
+		global $current_user, $adb;
+		$data = array();
+		$fieldinfo = array();
+		$childmodule = vtlib_purify($_REQUEST['child']);
+		$parentid = array_unique($_REQUEST['parentid']);
+		$parentmodule = getSalesEntityType($parentid[0]);
+		$focus = CRMEntity::getInstance($parentmodule);
+		$relfocus = CRMEntity::getInstance($childmodule);
+		$relatedField = getFieldNameByFieldId(getRelatedFieldId($parentmodule, $childmodule));
+		$qg = new QueryGenerator($childmodule, $current_user);
+		$qg->setFields(array('*'));
+		$cachedModuleChild = VTCacheUtils::lookupFieldInfo_Module($childmodule);
+		$cachedModuleParent = VTCacheUtils::lookupFieldInfo_Module($parentmodule);
+		foreach ($parentid as $id) {
+			$entity = getEntityName($parentmodule, $id);
+			$focus->retrieve_entity_info($id, $parentmodule);
+			$focus->column_fields = self::processRows($focus->column_fields, $cachedModuleParent, $parentmodule, $focus->table_index, 'parent');
+			$focus->column_fields['parentaction'] = $entity[$id];
+			$qg->addReferenceModuleFieldCondition($parentmodule, $relatedField, 'id', $id, 'e');
+			$sql = $qg->getQuery();
+			$result = $adb->pquery($sql, array());
+			if ($adb->num_rows($result) > 0) {
+				$crow = array();
+				while ($row = $result->FetchRow()) {
+					$crow[] = self::processRows($row, $cachedModuleChild, $childmodule, $relfocus->table_index);
+				}
+				$focus->column_fields['_children'] = $crow;
+			}
+			$focus->column_fields['_attributes'] = array(
+				'expanded' => true
+			);
+			$data[] = $focus->column_fields;
+		}
+		return array(
+			'data' => array(
+				'contents' => $data,
+				'pagination' => array(
+					'page' => (int)1,
+					'totalCount' => (int)0,
+				),
+			),
+			'result' => true,
+		);
 	}
 }

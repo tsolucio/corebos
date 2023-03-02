@@ -555,6 +555,11 @@ class Validations extends processcbMap {
 					}
 				}
 			}
+			foreach ($meta->getImageFields() as $imageField) {
+				if (empty($screen_values[$imageField])) {
+					$screen_values[$imageField] = $screen_values['current_'.$imageField];
+				}
+			}
 		}
 		$valmaps = array();
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');

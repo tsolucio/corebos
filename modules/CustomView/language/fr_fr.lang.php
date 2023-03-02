@@ -217,8 +217,9 @@ $mod_strings = array (
 	'LBL_EDIT' => 'Editer',
 	'LBL_STATUS_PUBLIC_APPROVE' => 'Accepter',
 	'LBL_STATUS_PUBLIC_DENY' => 'Interdire',
-	'LBL_FIRST_COLUMN'=>'First Column',
-	'LBL_SECOND_COLUMN'=>'Second Column',
+	'LBL_FIRST_COLUMN'=>'Première colonne',
+	'LBL_SECOND_COLUMN'=>'Deuxième colonne',
 	'LBL_ADVANCED_FILTER' => 'Règle',
+	'LBL_SORT_BY_FIELD' => 'Trier par champ',
 );
 ?>
