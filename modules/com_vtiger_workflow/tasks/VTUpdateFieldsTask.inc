@@ -69,6 +69,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$focusrel[]=array();
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
+				$fieldinfo = VTCacheUtils::lookupFieldInfo(getTabid($moduleName), $fieldName);
 				$fieldmodule='';
 				$fldrelname='';
 				$fieldValueType = $fieldInfo['valuetype'];
@@ -110,6 +111,9 @@ class VTUpdateFieldsTask extends VTTask {
 					$fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMeta);
 				} else {
 					$fieldValue=$util->fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta);
+					$fieldValue = str_replace(' ', '_', $fieldValue);
+					$_REQUEST[$fieldName.'_hidden'] = $fieldValue;
+					$_REQUEST['__cbisduplicatedfromrecordid'] = $focus->column_fields['account'];
 				}
 				if ($fieldmodule=='') {
 					$focus->column_fields[$fieldName] = $fieldValue;
