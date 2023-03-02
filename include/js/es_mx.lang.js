@@ -485,6 +485,7 @@ var alert_arr = {
 	'RelatedList': 'Lista Relacionada',
 	'SelectField': 'Selecciona campo',
 	'MoveFile': 'Mover fichero',
+	'JSLBL_BACK': 'Back',
 	'GENDOC_CONFIRM_ACTION': '¿Estás seguro que quieres ejecutar esta operación?',
 	'LBL_COPY_ROWS': 'Copiar Registros',
 };

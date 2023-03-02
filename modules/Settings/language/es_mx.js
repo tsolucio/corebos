@@ -95,4 +95,9 @@ var mod_alert_arr = {
 	'generatedtype': 'Tipo Generado',
 	'fieldlength': 'Longitud',
 	'FunctionName': 'Nombre función',
+	'LBL_TODAY': 'Today',
+	'LBL_WEEK': 'Week',
+	'LBL_CALL': 'Call',
+	'LBL_MEETING': 'Meeting',
+	'LBL_TASK': 'Task',
 };

@@ -488,6 +488,7 @@ var alert_arr = {
 	'LBL_EXPAND': 'Mehr',
 	'currentuser': 'Current User',
 	'wfmodule': 'Workflow Module',
+	'JSLBL_BACK': 'Back',
 	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 	'LBL_COPY_ROWS': 'Copy Rows',
 };

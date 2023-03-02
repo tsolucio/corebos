@@ -493,6 +493,7 @@ var alert_arr = {
 	'RelatedList': 'Related List',
 	'SelectField': 'Select field',
 	'MoveFile': 'Move file',
+	'JSLBL_BACK': 'Back',
 	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 	'LBL_COPY_ROWS': 'Copy Rows',
 };

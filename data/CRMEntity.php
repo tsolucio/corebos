@@ -4020,5 +4020,13 @@ class CRMEntity {
 		}
 		return (($modObj->crmentityTable != 'vtiger_crmentity') ? $modObj->crmentityTable. ' as vtiger_crmentity':'vtiger_crmentity');
 	}
+
+	public function isDeleted($id) {
+		global $adb;
+		$result = $adb->pquery("select deleted from $this->crmentityTable where crmid=?", array(
+			$id
+		));
+		return boolval($adb->query_result($result, 0, 'deleted'));
+	}
 }
 ?>

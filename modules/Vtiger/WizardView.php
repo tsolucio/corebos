@@ -40,9 +40,12 @@ if ($cbMapid) {
 		$smarty->assign('showDesert', false);
 		$smarty->assign('wizardTitle', $cbMapWz['title']);
 		$smarty->assign('wizardOperation', $cbMapWz['operation']);
+		$smarty->assign('wizardInstantShow', $cbMapWz['instantshow']);
 		$smarty->assign('wizardTotal', $cbMapWz['totalsteps']);
 		$smarty->assign('wizardSteps', $cbMapWz['steps']);
+		$smarty->assign('COMPANY_DETAILS', retrieveCompanyDetails());
 		$views = array();
+		$step = 0;
 		foreach ($cbMapWz['steps'] as $key => $value) {
 			if (!is_numeric($value['detailviewlayoutmap'])) {
 				$views[$key] = '';
@@ -51,13 +54,31 @@ if ($cbMapid) {
 			$context = array(
 				'mapid' => $value['detailviewlayoutmap'],
 			);
+			$smarty->assign('WizardStep', $step);
+			$icon = isset($value['suboperation']) && $value['suboperation'] == 'CalendarView' ? 'event' : 'procedure';
+			$suboperation = isset($value['suboperation']) ? $value['suboperation'] : '';
+			$WizardIcon[$step] = $icon;
+			$WizardSuboperation[$step] = $suboperation;
+			$smarty->assign('WizardIcon', $WizardIcon);
+			$smarty->assign('WizardSuboperation', $suboperation);
+			$smarty->assign('WizardSuboperationArray', $WizardSuboperation);
+			$smarty->assign('WizardModule', isset($value['module']) ? $value['module'] : '');
 			$view = $setfield->process($context);
 			$views[$key] = $view;
+			$step++;
 		}
 		$smarty->assign('wizardViews', $views);
 		$smarty->assign('isModal', empty($data) ? 0 : true);
 		$smarty->assign('gridInstance', !empty($data) ? $data['grid'] : '');
 		$smarty->assign('RecordID', !empty($data) ? $data['recordid'] : 0);
+		$smarty->assign('SubWizardInfo', '');
+		$smarty->assign('isSubWizard', '');
+		if ($cbMapWz['instantshow'] && !empty($data['modname']) && !empty($cbMapWz['subwizardmainfield'])) {
+			$focus = CRMEntity::getInstance($data['modname']);
+			$focus->retrieve_entity_info($data['recordid'], $data['modname']);
+			$smarty->assign('SubWizardInfo', $focus->column_fields[$cbMapWz['subwizardmainfield']]);
+			$smarty->assign('isSubWizard', true);
+		}
 	}
 } else {
 	$smarty->assign('showDesert', true);

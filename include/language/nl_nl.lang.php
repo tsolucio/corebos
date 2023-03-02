@@ -1320,6 +1320,7 @@ $app_strings = array(
 	'Slider' => 'Slider',
 	'LBL_WIZARD' => 'Wizard',
 	'LBL_ROW' => 'Row',
+	'LBL_WIZARD_COMPLETED' => 'The process has been completed successfully.',
 );
 
 // Translation for currency names
