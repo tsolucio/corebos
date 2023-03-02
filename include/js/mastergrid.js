@@ -111,8 +111,8 @@ class MasterGrid {
 				fld += `
 				<input ${mandatory} id="${field.name}_mastergrid_${this.idx}_${this.id}" name="${field.name}" type="hidden" value="${fieldvalue}">
 				<span style="display:none;" id="${field.name}_hidden"></span>
-				<div class="slds-grid slds-wrap">
-					<div class="slds-col slds-size_8-of-10" style="width: 85%">
+				<div class="slds-grid">
+					<div class="slds-col slds-size_8-of-10" style="width: 90%">
 						<input class="slds-input" value="${fieldvalueDisplay}" id="${field.name}_display_${this.idx}_${this.id}" name="${field.name}_display" readonly="" type="text" style="border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
 					</div>
 					<div class="slds-col slds-size_2-of-10">

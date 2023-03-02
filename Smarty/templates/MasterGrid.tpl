@@ -33,42 +33,48 @@
 		mg[{$linkid}].Init();
 	});
 </script>
-{if $GridAction == 'DetailView'}
-<div class="slds-section slds-is-open">
-	<h3 class="slds-section__title slds-theme_alt-inverse">
-		<span class="slds-truncate slds-p-horizontal_small">
-			{$BAInfo.linklabel}
-		</span>
-	</h3>
-</div>
-{/if}
-<form id="fake__form"></form>
-<form id="mastergridform__{$linkid}">
-	<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
-		<thead>
-			<tr class="slds-line-height_reset">
-				{foreach from=$GridFields item=$i}
-				<th data-name="{$i.name}">
-					{$i.label} {if $i.mandatory}<span class="slds-required">*</span>{/if}
-				</th>
-				{/foreach}
-				<th data-name="gridaction">{$APP.LBL_ACTIONS}</th>
-			</tr>
-		</thead>
-		<tbody id="mastergrid-{$linkid}"></tbody>
-	</table>
-</form>
-{if $GridAction == 'DetailView'}
-<button type="button" data-id="{$linkid}" class="slds-button slds-button_success slds-float_right slds-m-top_x-small slds-m-left_x-small" onclick="mg[{$linkid}].Save()">
-	<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
-	</svg>
-	{$APP.LBL_SAVE_BUTTON_LABEL}
-</button>
-{/if}
-<button type="button" data-id="{$linkid}" class="slds-button slds-button_brand slds-float_right slds-m-top_x-small" onclick="mg[{$linkid}].EmptyRow(true)">
-	<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
-	</svg>
-	{$APP.LBL_CREATE_BUTTON_LABEL} {$APP.LBL_ROW}
-</button>
+<article class="slds-card slds-m-top_x-small">
+	<div class="slds-card__header slds-grid">
+		<div class="slds-media__body">
+		{if $GridAction == 'DetailView'}
+		<div class="slds-section slds-is-open">
+			<h3 class="slds-section__title slds-theme_alt-inverse">
+				<span class="slds-truncate slds-p-horizontal_small">
+					{$BAInfo.linklabel}
+				</span>
+			</h3>
+		</div>
+		{/if}
+		<form id="fake__form"></form>
+		<form id="mastergridform__{$linkid}">
+			<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+				<thead>
+					<tr class="slds-line-height_reset">
+						{foreach from=$GridFields item=$i}
+						<th data-name="{$i.name}">
+							{$i.label} {if $i.mandatory}<span class="slds-required">*</span>{/if}
+						</th>
+						{/foreach}
+						<th data-name="gridaction">{$APP.LBL_ACTIONS}</th>
+					</tr>
+				</thead>
+				<tbody id="mastergrid-{$linkid}"></tbody>
+			</table>
+		</form>
+		{if $GridAction == 'DetailView'}
+		<button type="button" data-id="{$linkid}" class="slds-button slds-button_success slds-float_right slds-m-top_x-small slds-m-left_x-small" onclick="mg[{$linkid}].Save()">
+			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+			</svg>
+			{$APP.LBL_SAVE_BUTTON_LABEL}
+		</button>
+		{/if}
+		<button type="button" data-id="{$linkid}" class="slds-button slds-button_brand slds-float_right slds-m-top_x-small" onclick="mg[{$linkid}].EmptyRow(true)">
+			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+			</svg>
+			{$APP.LBL_CREATE_BUTTON_LABEL} {$APP.LBL_ROW}
+		</button>
+		</div>
+	</div>
+</article>
