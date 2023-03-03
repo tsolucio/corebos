@@ -30,14 +30,7 @@
 									<td border="0" cellpadding="5" cellspacing="0" width="50%" class="cblds-p_large">
 										<table>
 											{if !empty($Search_Criteria_exists)}
-												<div class="slds-notify slds-notify_alert slds-theme_warning slds-m-around_large" role="alert">
-													<div class="slds-icon_container slds-icon-utility-warning" title="Warning">
-														<svg class="slds-icon slds-icon_small" aria-hidden="true">
-															<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#warning"></use>
-														</svg>
-													</div>
-													<p>{$APP.LBL_NOTICE_SEARCH_CRITERIA}</p>
-												</div>
+												{include file='applicationmessage.tpl'}
 											{/if}
 											<tr>
 												<td colspan="2" align="left" valign="top" style="padding-left:40px;">

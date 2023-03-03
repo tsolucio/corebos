@@ -47,7 +47,12 @@ $smarty->assign('MODULE', $currentModule);
 $smarty->assign('MODULELABEL', getTranslatedString($currentModule));
 $smarty->assign('IDSTRING', $idstring);
 $smarty->assign('PERPAGE', $list_max_entries_per_page);
-$smarty->assign('Search_Criteria_exists', isset($_SESSION['Search_Criteria_exists']) ? $_SESSION['Search_Criteria_exists'] : "");
+
+if (isset($_SESSION['Search_Criteria_exists'])) {
+	$smarty->assign('Search_Criteria_exists', $_SESSION['Search_Criteria_exists']);
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+	$smarty->assign('ERROR_MESSAGE', getTranslatedString('LBL_NOTICE_SEARCH_CRITERIA', $currentModule));
+}
 
 if (!is_admin($current_user) && (isPermitted($currentModule, 'Export') != 'yes')) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
