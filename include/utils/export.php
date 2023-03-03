@@ -107,13 +107,7 @@ function export($type, $format = 'CSV') {
 		$query .= $_SESSION['limitQuery'];
 	} elseif ($export_data == 'selecteddata') {
 		$idsArray = explode(';', vtlib_purify($_REQUEST['idstring']));
-		$where = '';
-		foreach ($idsArray as $key => $value) {
-			if (!empty($value)) {
-				$or = $key ? "OR " : " ";
-				$where .= $or . $entityField['tablename'] . '.' . $entityField['entityid'] . " = " . $value . " ";
-			}
-		}
+		$where = $entityField['tablename'] . '.' . $entityField['entityid'] . " IN (" . generateQuestionMarks($idsArray) . ")";
 		$order_by_pos = strpos($query, "ORDER BY");
 		if ($order_by_pos !== false) {
 			$query = substr_replace($query, " AND ( $where ) ", $order_by_pos, 0);
@@ -146,7 +140,7 @@ function export($type, $format = 'CSV') {
 		$query = implode(' ', $queryWords);
 		$query = preg_replace("/(SELECT\s+)/", "SELECT " . $selectQuery, $query);
 	}
-	$result = $adb->pquery($query, null, true, "Error exporting $type: <BR>$query");
+	$result = $adb->pquery($query, $idsArray, true, "Error exporting $type: <BR>$query");
 	$fields_array = $adb->getFieldsArray($result);
 	$fields_array = array_diff($fields_array, array('user_name'));
 
