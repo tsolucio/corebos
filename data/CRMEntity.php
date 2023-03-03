@@ -3683,11 +3683,11 @@ class CRMEntity {
 		$order_by = '';
 		$customView = new CustomView($cmodule);
 		$viewid = $customView->getViewId($cmodule);
-		$sortfieldbyfirst = !empty(cbCVManagement::getFieldValuesByCvId($viewid)) ? cbCVManagement::getFieldValuesByCvId($viewid)['sortfieldbyfirst'] : '';
+		$sortfieldbyfirst = !empty(cbCVManagement::getFieldValuesByCvId($viewid)) ? cbCVManagement::getFieldValuesByCvId($viewid) : '';
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule)) {
 			$order_by = GlobalVariable::getVariable('Application_ListView_Default_OrderField', $this->default_order_by, $cmodule);
-		} elseif (!GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule) && !empty($sortfieldbyfirst)) {
-			$order_by = $sortfieldbyfirst;
+		} elseif (!GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule) && !empty($sortfieldbyfirst['sortfieldbyfirst'])) {
+			$order_by = $sortfieldbyfirst['sortfieldbyfirst'];
 		} elseif (!empty($_SESSION[$cmodule.'_Order_By'])) {
 			$order_by = $adb->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
 		}
