@@ -47,16 +47,11 @@ class GridListView {
 		$focus = new $this->module();
 		$focus->initSortbyField($this->module);
 		$sortArrayList = $focus->getOrderByAndSortOrderList();
-		if (isset($_REQUEST['sortAscending'])) {
-			$this->orderBy = $_REQUEST['sortAscending'] == 'true' ? 'ASC' : 'DESC';
-		} else {
-			$this->orderBy = !empty($sortArrayList) ? $sortArrayList[0]['sortOrder'] : '';
+		if (!empty($_REQUEST['sortAscending']) && !empty($_REQUEST['sortColumn'])) {
+			$sortOrder = filter_var($_REQUEST['sortAscending'], FILTER_VALIDATE_BOOLEAN) ? 'ASC' : 'DESC';
+			$sortArrayList = [array('orderBy' => $_REQUEST['sortColumn'], 'sortOrder' => $sortOrder)];
 		}
-		if ($this->sortColumn != '') {
-			$order_by = $this->sortColumn;
-		} else {
-			$order_by = !empty($sortArrayList) ? $sortArrayList[0]['orderBy'] : '';
-		}
+		$order_by = !empty($sortArrayList) ? $sortArrayList[0]['orderBy'] : '';
 		$queryGenerator = new QueryGenerator($this->module, $current_user);
 		try {
 			if ($viewid != '0') {
