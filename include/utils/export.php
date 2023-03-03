@@ -98,16 +98,20 @@ function export($type, $format = 'CSV') {
 	$log = LoggerManager::getLogger('export_'.$type);
 
 	$export_data = vtlib_purify($_REQUEST['export_data']);
-	$entityField= getEntityField(vtlib_purify($_REQUEST['module']));
+	$currentModuleTableName = $focus->table_name;
+	$currentModuleTableIndex = $focus->table_index;
 
 	if (isset($_SESSION['list_query'])) {
 		$query = $_SESSION['list_query'];
+	} elseif (method_exists($focus, 'create_export_query')) {
+		$query = $focus->create_export_query('');
 	}
+	$idsArray = array();
 	if ($export_data == 'currentpage') {
 		$query .= $_SESSION['limitQuery'];
 	} elseif ($export_data == 'selecteddata') {
 		$idsArray = explode(';', vtlib_purify($_REQUEST['idstring']));
-		$where = $entityField['tablename'] . '.' . $entityField['entityid'] . " IN (" . generateQuestionMarks($idsArray) . ")";
+		$where = $currentModuleTableName . '.' . $currentModuleTableIndex . " IN (" . generateQuestionMarks($idsArray) . ")";
 		$order_by_pos = strpos($query, "ORDER BY");
 		if ($order_by_pos !== false) {
 			$query = substr_replace($query, " AND ( $where ) ", $order_by_pos, 0);
@@ -122,8 +126,7 @@ function export($type, $format = 'CSV') {
 	}
 	if (empty($_REQUEST['visiblecolumns'])) {
 		$currentModuleTables = $focus->tab_name_index;
-		$currentModuleTableName = $entityField['tablename'];
-		$currentModuleEntityId = $entityField['entityid'];
+		$currentModuleEntityId = $currentModuleTableIndex;
 		$selectQuery = '';
 		$queryWordsForCondition = preg_split('/[\s\.]+/', $query);
 		$queryWords = preg_split('/\s+/', $query);
