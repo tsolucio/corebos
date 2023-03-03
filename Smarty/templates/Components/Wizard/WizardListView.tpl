@@ -18,6 +18,7 @@ wizard.ResetWizard[{$WizardStep}] = {$ResetWizard};
 wizard.WizardConfirmStep[{$WizardStep}] = '{$WizardConfirmStep|json_encode}';
 wizard.Suboperation[{$WizardStep}] = '{$WizardSuboperation}';
 wizard.Module[{$WizardStep}] = '{$WizardModule}';
+wizard.WizardInfoFields[{$WizardStep}] = '{$WizardInfoFields[{$WizardStep}]|json_encode}';
 function WizardGrid{$formodule}{$WizardStep}() {
 	if (wizard.WizardInstance['wzgrid{$WizardStep}'] !== undefined)  {
 		wizard.WizardInstance['wzgrid{$WizardStep}'].destroy();

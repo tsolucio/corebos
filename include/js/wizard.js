@@ -21,6 +21,7 @@ class WizardComponent {
 		this.MCModule = '';
 		this.ActiveStep = 0;
 		this.CheckedRows = [];
+		this.CreatedRows = [];
 		this.GroupByField = '';
 		this.GridData = [];
 		this.GroupData = [];
@@ -44,6 +45,7 @@ class WizardComponent {
 		this.WizardSaveIsActive = [];
 		this.WizardFilterFromContext = [];
 		this.WizardConfirmStep = [];
+		this.WizardInfoFields = [];
 		this.Module = [];
 		this.Context = {};
 		this.Operation = '';
@@ -174,7 +176,7 @@ class WizardComponent {
 				const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
 				await this.DuplicateRow(ev);
 				if (this.ActiveStep == 0) {
-					return await this.FinishRequest(url, false);
+					return this.FinishRequest(url, false);
 				}
 				return true;
 			}
@@ -213,13 +215,20 @@ class WizardComponent {
 				return this.FilterRows(ev);
 			}
 			if (this.WizardMode[this.ActiveStep] == 'CREATEPRODUCTCOMPONENT') {
+				if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length != 0) {
+					if (this.CreatedRows[this.ActiveStep] == undefined) {
+						this.CreatedRows[this.ActiveStep] = [];
+					}
+					this.CreatedRows[this.ActiveStep].push(this.CheckedRows[this.ActiveStep]);
+				}
+				this.Info(type);
 				await this.Create_ProductComponent(ev);
 				if (this.steps == this.ActiveStep+1) {
 					await this.Finish();
 				} else {
 					const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
 					if (type == 'next') {
-						await this.FinishRequest(url, false);
+						this.FinishRequest(url, false);
 					}
 					return true;
 				}
@@ -265,6 +274,44 @@ class WizardComponent {
 		default:
 		}
 		return true;
+	}
+
+	Info(type) {
+		if (this.el(`wizard-info-${this.ActiveStep}`) === null) {
+			return true;
+		}
+		let list = '';
+		if (type == 'next') {
+			let flds = JSON.parse(this.WizardInfoFields[this.ActiveStep]);
+			for (let i in this.CreatedRows[this.ActiveStep]) {
+				this.CreatedRows[this.ActiveStep][i].forEach(function(row, index) {
+					for (let j in row) {
+						let fields = '';
+						for (let k in flds) {
+							fields += `
+							<div class="slds-col">
+								<strong>${flds[k].label}</strong>
+							</div>
+							<div class="slds-col">
+								${row[j][flds[k].name]}
+							</div>`;
+						}
+						list += `
+						<li class="slds-dropdown__item" role="presentation">
+							<a role="menuitem" tabindex="0">
+								<span class="slds-truncate">
+									<div class="slds-grid slds-gutters">
+										${fields}
+									</div>
+								</span>
+							</a>
+						</li>
+						`;
+					}
+				});
+			}
+			this.el(`wizard-info-${this.ActiveStep}`).innerHTML = list;
+		}
 	}
 
 	async FinishRequest(url, resetWizard) {
@@ -994,8 +1041,15 @@ class WizardComponent {
 			}
 			rows.push(ids);
 		}
+		if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length != 0) {
+			if (this.CreatedRows[this.ActiveStep] == undefined) {
+				this.CreatedRows[this.ActiveStep] = [];
+			}
+			this.CreatedRows[this.ActiveStep].push(this.CheckedRows[this.ActiveStep]);
+		}
 		await this.Request(url, 'post', rows).then(function (response) {
 			if (response) {
+				wizard.Info(type);
 				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 			} else {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
