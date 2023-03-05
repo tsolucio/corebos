@@ -7076,15 +7076,6 @@ function initSelect2() {
 			}
 		}
 	}
-	//init basic search
-	const basicSearch = document.getElementById('bas_searchfield');
-	if (basicSearch !== undefined && basicSearch !== null) {
-		if (basicSearch !== undefined && basicSearch !== null) {
-			$(`#bas_searchfield`).select2({
-				width: '100%',
-			});
-		}
-	}
 }
 
 /****
