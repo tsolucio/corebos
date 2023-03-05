@@ -484,12 +484,7 @@ function vtlib_purify($input, $ignore = false) {
 		}
 	}
 	if (is_array($value)) {
-		$value = array_map(
-			function ($v) {
-				return str_replace('&amp;', '&', $v);
-			},
-			$value
-		);
+		$value = changeHTMLAmpersandsInArray($value);
 	} elseif (is_string($value)) {
 		$value = str_replace('&amp;', '&', $value);
 	}
@@ -497,6 +492,13 @@ function vtlib_purify($input, $ignore = false) {
 		$purified_cache[$md5OfInput] = $value;
 	}
 	return $value;
+}
+
+function changeHTMLAmpersandsInArray($v) {
+	if (is_array($v)) {
+		return array_map('changeHTMLAmpersandsInArray', $v);
+	}
+	return str_replace('&amp;', '&', $v);
 }
 
 /**
