@@ -40,11 +40,11 @@
 		</module>
 		<module>
 			<name>Assets</name>
-			//show popup in every row. no condtions
+			//show popup in every row. no conditions
 			<popupaction>
 				<id></id>
 			</popupaction>
-			//show popup with condtions
+			//show popup with conditions
 			<popupaction>
 				<conditions>
 					<fieldname>field | Module.field</fieldname>
