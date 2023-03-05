@@ -23,10 +23,37 @@
   <maxresults>10</maxresults>
   <searchin>
 	<module>
-	  <name>Potentials</name>
-	  <searchfields>field1,field2,...,fieldn</searchfields>
-	  <searchcondition>startswith|contains</searchcondition>
-	  <showfields>field1,field2,...,fieldn</showfields>
+		<name>Potentials</name>
+		<searchfields>field1,field2,...,fieldn</searchfields>
+		<searchcondition>startswith|contains</searchcondition>
+		<showfields>field1,field2,...,fieldn</showfields>
+		<conditions>
+			<group>
+				<conditions>
+					<condition>
+						<fieldname>Subject</fieldname>
+						<operator>eq</operator>
+						<value>xx</value>
+					</condition>
+					<condition>
+						<join>and</join>
+						<fieldname>Subject</fieldname>
+						<operator>eq</operator>
+						<value>xx</value>
+					</condition>
+				</conditions>
+			</group>
+			<group>
+				<groupjoin>and</groupjoin>
+				<conditions>
+					<condition>
+						<fieldname>Campaign Name</fieldname>
+						<operator>eq</operator>
+						<value>xx</value>
+					</condition>
+				</conditions>
+			</group>
+		</conditions>
 	</module>
    ...
   </searchin>
@@ -60,7 +87,29 @@ class GlobalSearchAutocomplete extends processcbMap {
 				'searchfields' => $searchfields,
 				'showfields' => $showfields,
 				'searchcondition' => (isset($v->searchcondition) ? (string)$v->searchcondition : 'startswith'),
+				'conditions' => '',
 			);
+			if (isset($v->conditions)) {
+				$conds = array();
+				foreach ($v->conditions->group as $group) {
+					$grouparray = array();
+					if (isset($group->groupjoin)) {
+						$grouparray['groupjoin'] = (string)$group->groupjoin;
+					}
+					$cgroups = array();
+					foreach ($group->conditions->condition as $gcond) {
+						$cgroups[] = array(
+							'join' => (isset($gcond->join) ? (string)$gcond->join : ''),
+							'fieldname' => (string)$gcond->fieldname,
+							'operator' => (string)$gcond->operator,
+							'value' => (string)$gcond->value,
+						);
+					}
+					$grouparray['conditions'] = $cgroups;
+					$conds[] = $grouparray;
+				}
+				$searchin[(string)$v->name]['conditions'] = $conds;
+			}
 		}
 		$mapping['searchin'] = $searchin;
 		return $mapping;
