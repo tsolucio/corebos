@@ -585,6 +585,17 @@ function __cb_readMessage($arr) {
 	return $msg['information'];
 }
 
+function __cb_evaluateExpression($arr) {
+	global $current_user;
+	$env = $arr[1];
+	$data = $env->getData();
+	$entity = new VTWorkflowEntity($current_user, $data['id']);
+	$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($arr[0])));
+	$expression = $parser->expression();
+	$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+	return $exprEvaluater->evaluate($entity);
+}
+
 function __cb_evaluateRule($arr) {
 	global $logbg;
 	if (count($arr)<2 || empty($arr[0])) {

@@ -2311,6 +2311,22 @@ $WFExpressionFunctionDefinitons = array(
 		"evaluateRule(ruleID)",
 	),
 ),
+'evaluateExpression' => array(
+	'name' => 'evaluateExpression(expression)',
+	'desc' => 'This function evaluates a workflow expression, which can be given as a string or a field.',
+	'params' => array(
+		array(
+			'name' => 'expression',
+			'type' => 'String|Field',
+			'optional' => false,
+			'desc' => 'string or field that holds the expression',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"evaluateExpression(expression)",
+	),
+),
 'executeSQL' => array(
 	'name' => 'executeSQL(query, parameters...)',
 	'desc' => 'Execute an SQL statement.',

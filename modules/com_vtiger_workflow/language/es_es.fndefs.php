@@ -2308,6 +2308,22 @@ $WFExpressionFunctionDefinitons = array(
 		"evaluateRule(ruleID)",
 	),
 ),
+'evaluateExpression' => array(
+	'name' => 'evaluateExpression(expression)',
+	'desc' => 'Esta función evalúa una expresión de flujo de trabajo, que se puede proporcionar como una cadena o un campo.',
+	'params' => array(
+		array(
+			'name' => 'expression',
+			'type' => 'Texto|Campo',
+			'optional' => false,
+			'desc' => 'texto o campo que contiene la expresión',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"evaluateExpression(expression)",
+	),
+),
 'executeSQL' => array(
 	'name' => 'executeSQL(query, parameters...)',
 	'desc' => 'Ejecuta una consulta SQL.',
