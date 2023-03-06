@@ -1844,7 +1844,7 @@ function setObjectValuesFromRequest($focus) {
 			$focus->column_fields[$fieldname] = $value;
 		} elseif (isset($_REQUEST[$fieldname.'_hidden'])) {
 			if ($editing) {
-				$focus->column_fields[$fieldname] = trim(vt_suppressHTMLTags($_REQUEST[$fieldname.'_hidden'], true));
+				$value = trim(vt_suppressHTMLTags($_REQUEST[$fieldname.'_hidden'], true));
 			} else {
 				$value = trim($_REQUEST[$fieldname.'_hidden']);
 			}
