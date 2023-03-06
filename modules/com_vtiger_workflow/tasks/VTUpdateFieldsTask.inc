@@ -112,8 +112,8 @@ class VTUpdateFieldsTask extends VTTask {
 					$fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMeta);
 				} else {
 					$fieldValue=$util->fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta);
-					$fieldValue = str_replace(' ', '_', $fieldValue);
 					if ($UITYPE_IMAGE) {
+						$fieldValue = str_replace(' ', '_', $fieldValue);
 						$_REQUEST[$fieldName.'_hidden'] = $fieldValue;
 						$_REQUEST['__cbisduplicatedfromrecordid'] = $focus->column_fields[$matches[1]];
 					}
