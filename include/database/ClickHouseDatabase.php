@@ -520,6 +520,11 @@ class ClickHouseDatabase extends PearDatabase {
 			$this->lastResult = $rsf;
 			return false;
 		}
+		$rspk = $this->chdatabase->select("SELECT name FROM system.columns WHERE table='$tablename' and is_in_primary_key=1;");
+		$pks = array();
+		while ($pk = $rspk->FetchRow()) {
+			$pks[] = $pk['name'];
+		}
 		$field_array = array();
 		while ($meta = $rsf->FetchRow()) {
 			$mf = new ADOFieldObject();
@@ -528,7 +533,7 @@ class ClickHouseDatabase extends PearDatabase {
 			$mf->type = $meta['type'];
 			$mf->scale = null;
 			$mf->not_null = true;
-			$mf->primary_key = false;
+			$mf->primary_key = in_array($meta['name'], $pks);
 			$mf->auto_increment = false;
 			$mf->binary = false;
 			$mf->unsigned = false;
