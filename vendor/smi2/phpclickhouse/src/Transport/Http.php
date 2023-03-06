@@ -480,7 +480,7 @@ class Http
      */
     public function getRequestRead(Query $query, $whereInFile = null, $writeToFile = null): CurlerRequest
     {
-        $urlParams = ['readonly' => 2];
+        $urlParams = ['readonly' => 0];
         $query_as_string = false;
         // ---------------------------------------------------------------------------------
         if ($whereInFile instanceof WhereInFile && $whereInFile->size()) {
