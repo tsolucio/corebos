@@ -1478,6 +1478,31 @@ class Users extends CRMEntity {
 		return $cbodTimeToSessionLogout < $time_noact;
 	}
 
+	/** Function to export the Users records in CSV Format
+	* @param string where condition is passed when the query is executed
+	* @return string Users SQL Query.
+	*/
+	public function create_export_query($where) {
+		global $log, $current_user;
+		$log->debug('> create_export_query '.$where);
+		$query = '';
+		if (is_admin($current_user)) {
+			include_once 'include/utils/ExportUtils.php';
+			$sql = getPermittedFieldsQuery('Users', 'detail_view');
+			$fields_list = getFieldsListFromQuery($sql);
+			$query = "SELECT $fields_list
+				FROM vtiger_users
+				INNER JOIN vtiger_user2role ON vtiger_user2role.userid = vtiger_users.id
+				LEFT JOIN vtiger_asteriskextensions ON vtiger_asteriskextensions.userid = vtiger_users.id";
+			$query .= $this->getNonAdminAccessControlQuery('Users', $current_user);
+			if ($where != '') {
+				$query .= " WHERE ($where)";
+			}
+			$log->debug('< create_export_query');
+		}
+		return $query;
+	}
+
 	/**
 	 * Function to get the Headers of Users Information like User ID, Name, Role, Email.
 	 * @return array Header Values like User ID, Email etc

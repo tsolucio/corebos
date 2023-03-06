@@ -38,6 +38,8 @@ setCurrentLanguage();
 
 global $app_strings;
 
+$currentModuleName = vtlib_purify($_REQUEST['module']);
+
 $current_user = new Users();
 
 if (isset($_SESSION['authenticated_user_id'])) {
@@ -85,7 +87,7 @@ function obtainVisibleColumnNames(&$l, $k) {
  * Return type text
  */
 function export($type, $format = 'CSV') {
-	global $log, $adb;
+	global $log, $adb, $currentModuleName;
 	$log->debug('> export '.$type);
 
 	$focus = 0;
@@ -101,10 +103,10 @@ function export($type, $format = 'CSV') {
 	$currentModuleTableName = $focus->table_name;
 	$currentModuleTableIndex = $focus->table_index;
 
-	if (isset($_SESSION['list_query'])) {
-		$query = $_SESSION['list_query'];
-	} elseif (method_exists($focus, 'create_export_query')) {
+	if (method_exists($focus, 'create_export_query')) {
 		$query = $focus->create_export_query('');
+	} elseif (isset($_SESSION['list_query'])) {
+		$query = $_SESSION['list_query'];
 	}
 	$idsArray = array();
 	if ($export_data == 'currentpage') {
@@ -136,7 +138,7 @@ function export($type, $format = 'CSV') {
 			// joining those tables
 			if (!in_array($tableName, $queryWordsForCondition)) {
 				$addNewElementIndex = array_search('FROM', $queryWords) + 2;
-				$innerJoinSql = "INNER JOIN $tableName ON $currentModuleTableName.$currentModuleEntityId = $tableName.$idName";
+				$innerJoinSql = "LEFT JOIN $tableName ON $currentModuleTableName.$currentModuleEntityId = $tableName.$idName";
 				array_splice($queryWords, $addNewElementIndex, 0, array($innerJoinSql));
 			}
 		}
@@ -181,9 +183,9 @@ function export($type, $format = 'CSV') {
 if (isset($_REQUEST['exportfile']) && $_REQUEST['exportfile']=='exportexcelfile') {
 	global $root_directory, $cache_dir;
 	$fname = tempnam($root_directory.$cache_dir, 'excel.xls');
-	$xlsobject = export(vtlib_purify($_REQUEST['module']), 'XLS');
+	$xlsobject = export($currentModuleName, 'XLS');
 	$xlsobject->save($fname);
-	$moduleName = getTranslatedString($_REQUEST['module'], $_REQUEST['module']);
+	$moduleName = getTranslatedString($currentModuleName, $currentModuleName);
 	header('Content-Type: application/x-msexcel');
 	header('Content-Length: '.@filesize($fname));
 	header('Content-disposition: attachment; filename="'.$moduleName.'.xls"');
@@ -191,7 +193,7 @@ if (isset($_REQUEST['exportfile']) && $_REQUEST['exportfile']=='exportexcelfile'
 	fpassthru($fh);
 } else {
 	/** Send the output header and invoke function for contents output */
-	$moduleName = vtlib_purify($_REQUEST['module']);
+	$moduleName = vtlib_purify($currentModuleName);
 	$moduleName = getTranslatedString($moduleName, $moduleName);
 	$moduleName = str_replace(' ', '_', $moduleName);
 	header("Content-Disposition:attachment;filename=$moduleName.csv");
@@ -199,7 +201,7 @@ if (isset($_REQUEST['exportfile']) && $_REQUEST['exportfile']=='exportexcelfile'
 	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 	header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 	header('Cache-Control: post-check=0, pre-check=0', false);
-	export(vtlib_purify($_REQUEST['module']), 'CSV');
+	export(vtlib_purify($currentModuleName), 'CSV');
 }
 exit;
 

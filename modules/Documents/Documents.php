@@ -326,6 +326,43 @@ class Documents extends CRMEntity {
 		return $order_by;
 	}
 
+	/** Function to export the notes in CSV Format
+	* @param string where condition is passed when the query is executed
+	* @return string Export Documents Query
+	*/
+	public function create_export_query($where) {
+		global $log,$current_user;
+		$log->debug('> create_export_query '. $where);
+
+		include_once 'include/utils/ExportUtils.php';
+		//To get the Permitted fields query and the permitted fields list
+		$sql = getPermittedFieldsQuery('Documents', 'detail_view');
+		$fields_list = getFieldsListFromQuery($sql);
+		$query = "SELECT $fields_list, foldername, filename,
+					concat(path,vtiger_attachments.attachmentsid,'_',filename) as storagename,
+					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact,vtiger_senotesrel.crmid as relatedid
+				FROM vtiger_notes
+				inner join ".$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_notes.notesid
+				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
+				left join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+				LEFT JOIN vtiger_attachmentsfolder on vtiger_notes.folderid=vtiger_attachmentsfolder.folderid
+				LEFT JOIN vtiger_senotesrel ON vtiger_senotesrel.notesid=vtiger_notes.notesid
+				LEFT JOIN vtiger_account ON vtiger_account.accountid=vtiger_senotesrel.crmid
+				LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid=vtiger_senotesrel.crmid
+				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
+				LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid=vtigerCreatedBy.id
+				LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid ';
+		$query .= getNonAdminAccessControlQuery('Documents', $current_user);
+		$where_auto=' vtiger_crmentity.deleted=0';
+		if ($where != '') {
+			$query .= " WHERE ($where) AND ".$where_auto;
+		} else {
+			$query .= ' WHERE '.$where_auto;
+		}
+		$log->debug('< create_export_query');
+		return $query;
+	}
+
 	public function del_create_def_folder($query) {
 		global $adb;
 		$dbQuery = $query.' and vtiger_attachmentsfolder.folderid=0';
