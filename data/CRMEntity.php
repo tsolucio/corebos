@@ -312,6 +312,7 @@ class CRMEntity {
 					$adb->pquery($upd, array($this->id));
 				} elseif (!empty($_REQUEST['__cbisduplicatedfromrecordid'])) {
 					$attachmentname = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
+					$attachmentname = str_replace(' ', '_', $attachmentname);
 					$isduplicatedfromrecordid = vtlib_purify($_REQUEST['__cbisduplicatedfromrecordid']);
 					$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel
 					 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid
