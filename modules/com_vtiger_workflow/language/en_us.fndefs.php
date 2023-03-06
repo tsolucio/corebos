@@ -1772,6 +1772,7 @@ $WFExpressionFunctionDefinitons = array(
 		"getIDof('Contacts', 'firstname', 'Amy')",
 		"getIDof('Accounts', 'siccode', 'xyhdmsi33')",
 		"getIDof('Accounts', 'siccode', some_field)",
+		"getIDof('Accounts', ['accountname','phone'], ['Chemex Labs Ltd','03-3608-5660'])",
 	),
 ),
 'getRelatedIDs' => array(

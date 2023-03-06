@@ -318,12 +318,26 @@ function __cb_getISODate($arr) {
 
 function __cb_getidof($arr) {
 	global $current_user, $adb;
-	if (count($arr)!=3 || empty($arr[0]) || empty($arr[1]) || empty($arr[2])) {
+	if (count($arr)<3 || empty($arr[0])) {
 		return 0;
 	}
 	$qg = new QueryGenerator($arr[0], $current_user);
 	$qg->setFields(array('id'));
-	$qg->addCondition($arr[1], $arr[2], 'e');
+	if (count($arr) > 3) {
+		unset($arr[0]);
+		$chunkedArr = array_chunk($arr, count($arr)/2);
+		if (count($chunkedArr[0]) != count($chunkedArr[1])) {
+			return 0;
+		}
+		foreach ($chunkedArr[1] as $k => $v) {
+			$qg->addCondition($chunkedArr[0][$k], $v, 'e', QueryGenerator::$AND);
+		}
+	} else {
+		if (empty($arr[1]) || empty($arr[2])) {
+			return 0;
+		}
+		$qg->addCondition($arr[1], $arr[2], 'e');
+	}
 	$rs = $adb->query($qg->getQuery(false, 1));
 	if ($rs && $adb->num_rows($rs)>0) {
 		return $adb->query_result($rs, 0, 0);
