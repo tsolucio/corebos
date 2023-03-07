@@ -2324,7 +2324,8 @@ $WFExpressionFunctionDefinitons = array(
 	),
 	'categories' => array('Application'),
 	'examples' => array(
-		"evaluateExpression(expression)",
+		"evaluateExpression('8*3')",
+		"evaluateExpression(description)",
 	),
 ),
 'executeSQL' => array(
