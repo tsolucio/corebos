@@ -27,7 +27,7 @@
 <div class="slds-page-header__control">
 <div class="slds-button-group" role="group">
 {if !empty($MasterDetailLayoutMap.toolbar.massedit)}
-<button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_MASS_EDIT}" onclick="masterdetailwork.MDMassEditRecords(this, '{$MasterDetailLayoutMap.targetmodule}', '{$MasterDetailLayoutMap.mapname}')" data-id="{$MasterDetailLayoutMap.mapname}--massedit" id="btn-{$MasterDetailLayoutMap.mapname}--massedit">
+<button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_MASS_EDIT}" onclick="masterdetailwork.MDMassEditRecords(this, '{$MasterDetailLayoutMap.targetmodule}', '{$MasterDetailLayoutMap.mapname}')" data-id="{$MasterDetailLayoutMap.mapname}_massedit" id="btn-{$MasterDetailLayoutMap.mapname}_massedit">
 	{$APP.LBL_MASS_EDIT}
 </button>
 {/if}
