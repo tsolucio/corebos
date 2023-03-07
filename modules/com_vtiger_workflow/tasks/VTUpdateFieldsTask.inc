@@ -31,7 +31,7 @@ class VTUpdateFieldsTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $logbg,$from_wf, $currentModule;
+		global $adb, $current_user, $logbg, $from_wf, $currentModule;
 		$logbg->debug('> UpdateFieldsTask');
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
@@ -69,6 +69,8 @@ class VTUpdateFieldsTask extends VTTask {
 			$focusrel[]=array();
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
+				$fieldinfo = VTCacheUtils::lookupFieldInfo(getTabid($moduleName), $fieldName);
+				preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldInfo['value'], $matches);
 				$fieldmodule='';
 				$fldrelname='';
 				$fieldValueType = $fieldInfo['valuetype'];
@@ -110,6 +112,14 @@ class VTUpdateFieldsTask extends VTTask {
 					$fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMeta);
 				} else {
 					$fieldValue=$util->fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta);
+					if ($fieldinfo['uitype'] == Field_Metadata::UITYPE_IMAGE) {
+						$_REQUEST[$fieldName.'_hidden'] = str_replace(' ', '_', $fieldValue);
+						if (empty($matches)) {
+							$_REQUEST['__cbisduplicatedfromrecordid'] = '';
+						} else {
+							$_REQUEST['__cbisduplicatedfromrecordid'] = $focus->column_fields[$matches[1]];
+						}
+					}
 				}
 				if ($fieldmodule=='') {
 					$focus->column_fields[$fieldName] = $fieldValue;
