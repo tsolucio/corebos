@@ -147,6 +147,7 @@ class WizardComponent {
 		if (ev != '') {
 			type = ev.target.dataset.type;
 		}
+		this.Info(type);
 		let confirmstep = this.WizardConfirmStep[this.ActiveStep] !== undefined ? JSON.parse(this.WizardConfirmStep[this.ActiveStep]) : '';
 		if (!this.isSubWizard && confirmstep != '' && confirmstep.confirm && !confirm(confirmstep.message) && type == 'next') {
 			return false;
@@ -216,10 +217,7 @@ class WizardComponent {
 			}
 			if (this.WizardMode[this.ActiveStep] == 'CREATEPRODUCTCOMPONENT') {
 				if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length != 0) {
-					if (this.CreatedRows[this.ActiveStep] == undefined) {
-						this.CreatedRows[this.ActiveStep] = [];
-					}
-					this.CreatedRows[this.ActiveStep].push(this.CheckedRows[this.ActiveStep]);
+					this.CreatedRows.push(this.CheckedRows[this.ActiveStep]);
 				}
 				this.Info(type);
 				await this.Create_ProductComponent(ev);
@@ -276,41 +274,54 @@ class WizardComponent {
 		return true;
 	}
 
-	Info(type) {
-		if (this.el(`wizard-info-${this.ActiveStep}`) === null) {
-			return true;
-		}
+	Info(type, mode = '') {
 		let list = '';
-		if (type == 'next') {
-			let flds = JSON.parse(this.WizardInfoFields[this.ActiveStep]);
-			for (let i in this.CreatedRows[this.ActiveStep]) {
-				this.CreatedRows[this.ActiveStep][i].forEach(function(row, index) {
-					for (let j in row) {
-						let fields = '';
-						for (let k in flds) {
-							fields += `
-							<div class="slds-col">
-								<strong>${flds[k].label}</strong>
-							</div>
-							<div class="slds-col">
-								${row[j][flds[k].name]}
-							</div>`;
-						}
-						list += `
-						<li class="slds-dropdown__item" role="presentation">
-							<a role="menuitem" tabindex="0">
-								<span class="slds-truncate">
-									<div class="slds-grid slds-gutters">
-										${fields}
-									</div>
-								</span>
-							</a>
-						</li>
-						`;
+		let activeStep = this.ActiveStep+1;
+		if (mode == 'save') {
+			activeStep = this.ActiveStep;
+		}
+		if (type == 'back') {
+			activeStep = this.ActiveStep-1;
+		}
+		let flds = JSON.parse(this.WizardInfoFields[activeStep]);
+		if (flds.length == undefined) {
+			flds = [flds];
+		}
+		let insertedIds = [];
+		for (let i in this.CreatedRows) {
+			this.CreatedRows[i].forEach(function(row, index) {
+				for (let j in row) {
+					if (insertedIds.includes(row[j].id)) {
+						continue;
 					}
-				});
-			}
-			this.el(`wizard-info-${this.ActiveStep}`).innerHTML = list;
+					insertedIds.push(row[j].id);
+					let fields = '';
+					for (let k in flds) {
+						fields += `
+						<div class="slds-col">
+							<strong>${flds[k].label}</strong>
+						</div>
+						<div class="slds-col">
+							${row[j][flds[k].name]}
+						</div>`;
+					}
+					list += `
+					<li class="slds-dropdown__item" role="presentation">
+						<a role="menuitem" tabindex="0">
+							<span class="slds-truncate">
+								<div class="slds-grid slds-gutters">
+									${fields}
+								</div>
+							</span>
+						</a>
+					</li>
+					`;
+				}
+			});
+		}
+		console.log(activeStep)
+		if (this.el(`wizard-info-${activeStep}`)) {
+			this.el(`wizard-info-${activeStep}`).innerHTML = list;
 		}
 	}
 
@@ -1042,14 +1053,11 @@ class WizardComponent {
 			rows.push(ids);
 		}
 		if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length != 0) {
-			if (this.CreatedRows[this.ActiveStep] == undefined) {
-				this.CreatedRows[this.ActiveStep] = [];
-			}
-			this.CreatedRows[this.ActiveStep].push(this.CheckedRows[this.ActiveStep]);
+			this.CreatedRows.push(this.CheckedRows[this.ActiveStep]);
 		}
 		await this.Request(url, 'post', rows).then(function (response) {
 			if (response) {
-				wizard.Info(type);
+				wizard.Info(type, 'save');
 				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 			} else {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
