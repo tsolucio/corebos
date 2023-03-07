@@ -43,5 +43,3 @@ foreach ($products as $product) {
 		break;
 	}
 }
-
-echo $message;
