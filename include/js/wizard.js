@@ -283,6 +283,9 @@ class WizardComponent {
 		if (type == 'back') {
 			activeStep = this.ActiveStep-1;
 		}
+		if (this.WizardInfoFields[activeStep] == undefined) {
+			return false;
+		}
 		let flds = JSON.parse(this.WizardInfoFields[activeStep]);
 		if (flds.length == undefined) {
 			flds = [flds];
@@ -319,7 +322,6 @@ class WizardComponent {
 				}
 			});
 		}
-		console.log(activeStep)
 		if (this.el(`wizard-info-${activeStep}`)) {
 			this.el(`wizard-info-${activeStep}`).innerHTML = list;
 		}
@@ -327,8 +329,13 @@ class WizardComponent {
 
 	async FinishRequest(url, resetWizard) {
 		let response = await this.Request(url, 'post', {'masterid': this.RecordID});
+		if (response == 'no_create') {
+			return false;
+		}
 		if (response) {
-			ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+			if (response != 'no_alert') {
+				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+			}
 			if (this.isModal) {
 				RLInstance[this.gridInstance].readData(1);
 				this.CheckedRows[this.ActiveStep] = [];
@@ -616,10 +623,17 @@ class WizardComponent {
 				this.MainSelectedId = response.id;
 			}
 			if (this.WizardCustomFunction[this.ActiveStep] != '') {
+				let holdStep = this.ActiveStep;
+				if (this.isSubWizard) {
+					this.ActiveStep = this.ActiveStep-1;
+				}
 				this.CallCustomFunction();
+				this.ActiveStep = holdStep;
 			}
 			this.IsDuplicatedFrom[this.ActiveStep] = 1;
-			this.CheckedRows[this.ActiveStep][1]= [response];
+			if (this.CheckedRows[this.ActiveStep] !== undefined) {
+				this.CheckedRows[this.ActiveStep][1] = [response];
+			}
 			if (this.WizardFilterFromContext[this.ActiveStep] != '') {
 				this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep], this.ActiveStep);
 			}
