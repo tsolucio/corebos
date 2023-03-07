@@ -47,6 +47,20 @@ class SalesOrder extends CRMEntity {
 	);
 
 	/**
+	 * Mandatory for export, Include additional tablename and tablekey columnname here.
+	 */
+	public $additional_name_index_for_export = [
+		['vtiger_products', 'productid', 'vtiger_inventoryproductrel', 'productid'],
+		['vtiger_service', 'serviceid', 'vtiger_inventoryproductrel', 'productid'],
+		['vtiger_inventoryproductrel', 'id', 'vtiger_salesorder', 'salesorderid'],
+		['vtiger_contactdetails', 'contactid', 'vtiger_salesorder', 'contactid'],
+		['vtiger_potential', 'potentialid', 'vtiger_salesorder', 'potentialid'],
+		['vtiger_account', 'accountid', 'vtiger_salesorder', 'accountid'],
+		['vtiger_currency_info', 'id', 'vtiger_salesorder', 'currency_id'],
+		['vtiger_quotes', 'quoteid', 'vtiger_salesorder', 'quoteid'],
+	];
+
+	/**
 	 * Mandatory for Listing (Related listview)
 	 */
 	public $list_fields = array(

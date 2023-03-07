@@ -43,6 +43,19 @@ class Quotes extends CRMEntity {
 		'vtiger_quotescf'=>'quoteid'
 	);
 
+	/**
+	 * Mandatory for export, Include additional tablename and tablekey columnname here.
+	 */
+	public $additional_name_index_for_export = [
+		['vtiger_products', 'productid', 'vtiger_inventoryproductrel', 'productid'],
+		['vtiger_service', 'serviceid', 'vtiger_inventoryproductrel', 'productid'],
+		['vtiger_inventoryproductrel', 'id', 'vtiger_quotes', 'quoteid'],
+		['vtiger_contactdetails', 'contactid', 'vtiger_quotes', 'contactid'],
+		['vtiger_potential', 'potentialid', 'vtiger_quotes', 'potentialid'],
+		['vtiger_account', 'accountid', 'vtiger_quotes', 'accountid'],
+		['vtiger_currency_info', 'id', 'vtiger_quotes', 'currency_id'],
+	];
+
 	// This is the list of vtiger_fields that are in the lists.
 	public $list_fields = array(
 		'Quote No'=>array('quotes'=>'quote_no'),

@@ -105,6 +105,9 @@ function export($type, $format = 'CSV') {
 
 	if (method_exists($focus, 'create_export_query')) {
 		$query = $focus->create_export_query('');
+		global $log;
+		$log->fatal('PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP');
+		$log->fatal($query);
 	} elseif (isset($_SESSION['list_query'])) {
 		$query = $_SESSION['list_query'];
 	}
@@ -127,24 +130,35 @@ function export($type, $format = 'CSV') {
 		}
 	}
 	if (empty($_REQUEST['visiblecolumns'])) {
-		$currentModuleTables = $focus->tab_name_index;
-		$currentModuleEntityId = $currentModuleTableIndex;
+		$tab_name_index = array();
+		// changing the structure of the $tab_name_index
+		foreach ($focus->tab_name_index as $tableName => $idName) {
+			$tab_name_index[] = [$tableName, $idName, $currentModuleTableName, $currentModuleTableIndex];
+		}
+		// adding the additional_name_index_for_export if it exists
+		if (property_exists($focus, 'additional_name_index_for_export')) {
+			$tab_name_index = array_merge($tab_name_index, $focus->additional_name_index_for_export);
+			$log->fatal($tab_name_index);
+		}
 		$selectQuery = '';
 		$queryWordsForCondition = preg_split('/[\s\.]+/', $query);
 		$queryWords = preg_split('/\s+/', $query);
-		foreach ($currentModuleTables as $tableName => $idName) {
+		foreach ($tab_name_index as $value) {
 			// selecting all fields of all module related tables
-			$selectQuery .= $tableName . ".*, ";
+			$selectQuery .= $value[0] . ".*, ";
 			// joining those tables
-			if (!in_array($tableName, $queryWordsForCondition)) {
+			if (!in_array($value[0], $queryWordsForCondition)) {
 				$addNewElementIndex = array_search('FROM', $queryWords) + 2;
-				$innerJoinSql = "LEFT JOIN $tableName ON $currentModuleTableName.$currentModuleEntityId = $tableName.$idName";
+				$innerJoinSql = "LEFT JOIN $value[0] ON $value[2].$value[3] = $value[0].$value[1]";
 				array_splice($queryWords, $addNewElementIndex, 0, array($innerJoinSql));
 			}
 		}
 		$query = implode(' ', $queryWords);
 		$query = preg_replace("/(SELECT\s+)/", "SELECT " . $selectQuery, $query);
 	}
+	global $log;
+	$log->fatal('XXXXXXXXXXXXXXXXXXXXXXX');
+	$log->fatal($query);
 	$result = $adb->pquery($query, $idsArray, true, "Error exporting $type: <BR>$query");
 	$fields_array = $adb->getFieldsArray($result);
 	$fields_array = array_diff($fields_array, array('user_name'));

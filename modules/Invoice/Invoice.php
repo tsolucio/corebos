@@ -37,6 +37,19 @@ class Invoice extends CRMEntity {
 		'vtiger_invoicecf'=>'invoiceid'
 	);
 
+	/**
+	 * Mandatory for export, Include additional tablename and tablekey columnname here.
+	 */
+	public $additional_name_index_for_export = [
+		['vtiger_service', 'serviceid', 'vtiger_inventoryproductrel', 'productid'],
+		['vtiger_products', 'productid', 'vtiger_inventoryproductrel', 'productid'],
+		['vtiger_salesorder', 'salesorderid', 'vtiger_invoice', 'salesorderid'],
+		['vtiger_inventoryproductrel', 'id', 'vtiger_invoice', 'invoiceid'],
+		['vtiger_contactdetails', 'contactid', 'vtiger_invoice', 'contactid'],
+		['vtiger_account', 'accountid', 'vtiger_invoice', 'accountid'],
+		['vtiger_currency_info', 'id', 'vtiger_invoice', 'currency_id'],
+	];
+
 	public $list_fields = array(
 		//'Invoice No'=>array('crmentity'=>'crmid'),
 		'Invoice No'=>array('invoice'=>'invoice_no'),
