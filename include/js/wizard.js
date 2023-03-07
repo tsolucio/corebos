@@ -357,7 +357,9 @@ class WizardComponent {
 				}, 1000);
 			}
 		} else {
-			document.activeElement.innerHTML = alert_arr.JSLBL_FINISH;
+			if (document.activeElement.tagName.toLowerCase() == 'button') {
+				document.activeElement.innerHTML = alert_arr.JSLBL_FINISH;
+			}
 			ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 		}
 		if (this.el(`save-wizard-${this.ActiveStep}`) !== null) {
