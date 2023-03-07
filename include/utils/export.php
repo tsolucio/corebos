@@ -105,9 +105,6 @@ function export($type, $format = 'CSV') {
 
 	if (method_exists($focus, 'create_export_query')) {
 		$query = $focus->create_export_query('');
-		global $log;
-		$log->fatal('PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP');
-		$log->fatal($query);
 	} elseif (isset($_SESSION['list_query'])) {
 		$query = $_SESSION['list_query'];
 	}
@@ -138,7 +135,6 @@ function export($type, $format = 'CSV') {
 		// adding the additional_name_index_for_export if it exists
 		if (property_exists($focus, 'additional_name_index_for_export')) {
 			$tab_name_index = array_merge($tab_name_index, $focus->additional_name_index_for_export);
-			$log->fatal($tab_name_index);
 		}
 		$selectQuery = '';
 		$queryWordsForCondition = preg_split('/[\s\.]+/', $query);
@@ -156,9 +152,6 @@ function export($type, $format = 'CSV') {
 		$query = implode(' ', $queryWords);
 		$query = preg_replace("/(SELECT\s+)/", "SELECT " . $selectQuery, $query);
 	}
-	global $log;
-	$log->fatal('XXXXXXXXXXXXXXXXXXXXXXX');
-	$log->fatal($query);
 	$result = $adb->pquery($query, $idsArray, true, "Error exporting $type: <BR>$query");
 	$fields_array = $adb->getFieldsArray($result);
 	$fields_array = array_diff($fields_array, array('user_name'));
