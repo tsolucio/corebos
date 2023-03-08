@@ -230,6 +230,7 @@ class VTExpressionsManager {
 			'setSetting' => "setSetting('setting_key', value)",
 			'delSetting' => "delSetting('setting_key')",
 			'evaluateRule' => 'evaluateRule(ruleID)',
+			'evaluateExpression' => 'evaluateExpression(expression)',
 			'executeSQL' => 'executeSQL(query, parameters...)',
 			'getCRUDMode' => 'getCRUDMode()',
 			'getRequest' => 'getRequest()',

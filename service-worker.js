@@ -11486,7 +11486,7 @@ precacheAndRoute([{
   "revision": "fb88141167d9646aca4a394e689d4d8c"
 }, {
   "url": "include/js/general.js",
-  "revision": "879dc1d545db0f06c3a601a46a77ce95"
+  "revision": "758242421b2b9ac34804dbb23d10df72"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "f346848d802497b21c287f1c1f66e97e"

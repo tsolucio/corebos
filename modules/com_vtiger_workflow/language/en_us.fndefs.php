@@ -1772,6 +1772,7 @@ $WFExpressionFunctionDefinitons = array(
 		"getIDof('Contacts', 'firstname', 'Amy')",
 		"getIDof('Accounts', 'siccode', 'xyhdmsi33')",
 		"getIDof('Accounts', 'siccode', some_field)",
+		"getIDof('Accounts', ['accountname','phone'], ['Chemex Labs Ltd','03-3608-5660'])",
 	),
 ),
 'getRelatedIDs' => array(
@@ -2308,6 +2309,23 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"evaluateRule(ruleID)",
+	),
+),
+'evaluateExpression' => array(
+	'name' => 'evaluateExpression(expression)',
+	'desc' => 'This function evaluates a workflow expression, which can be given as a string or a field.',
+	'params' => array(
+		array(
+			'name' => 'expression',
+			'type' => 'String|Field',
+			'optional' => false,
+			'desc' => 'string or field that holds the expression',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"evaluateExpression('8*3')",
+		"evaluateExpression(description)",
 	),
 ),
 'executeSQL' => array(

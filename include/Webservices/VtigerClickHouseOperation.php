@@ -85,6 +85,7 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	}
 
 	public function __create($elementType, $element) {
+		global $cdb;
 		require_once 'include/utils/utils.php';
 
 		$this->id=$this->getNextId($elementType, $element);
@@ -93,8 +94,7 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 
 		//Insert into group vtiger_table
 		$query = "insert into {$this->entityTableName}(".implode(',', array_keys($element)).') values('.generateQuestionMarks(array_keys($element)).')';
-		$result = null;
-		return vtws_runQueryAsTransaction($query, array_values($element), $result);
+		return $cdb->pquery($query, array_values($element));
 	}
 
 	public function create($elementType, $element) {
@@ -119,9 +119,10 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	}
 
 	public function __retrieve($id) {
+		global $cdb;
 		$query = "select * from {$this->entityTableName} where {$this->meta->getObectIndexColumn()}=?";
-		$transactionSuccessful = vtws_runQueryAsTransaction($query, array($id), $result);
-		if (!$transactionSuccessful) {
+		$result = $cdb->pquery($query, array($id));
+		if (!$result) {
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		if ($result) {
@@ -167,12 +168,13 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	}
 
 	public function __update($element, $id) {
-		$columnStr = 'set '.implode('=?,', array_keys($element)).' =? ';
-		$query = 'update '.$this->entityTableName.' '.$columnStr.'where '. $this->meta->getObectIndexColumn().'=?';
+		global $cdb;
+		$columnStr = implode('=?,', array_keys($element)).'=? ';
+		$query = 'ALTER TABLE '.$this->entityTableName.' UPDATE '.$columnStr.'where '. $this->meta->getObectIndexColumn().'=?';
 		$params = array_values($element);
 		$params[] = $id;
-		$result = null;
-		return vtws_runQueryAsTransaction($query, $params, $result);
+		$cdb->chdatabase->settings()->readonly(false);
+		return $cdb->pquery($query, $params);
 	}
 
 	public function update($element) {
@@ -220,9 +222,10 @@ class VtigerClickHouseOperation extends WebserviceEntityOperation {
 	}
 
 	public function __delete($elemId) {
+		global $cdb;
 		$result = null;
-		$query = 'delete from '.$this->entityTableName.' where '. $this->meta->getObectIndexColumn().'=?';
-		return vtws_runQueryAsTransaction($query, array($elemId), $result);
+		$query = 'alter table '.$this->entityTableName.' delete where '. $this->meta->getObectIndexColumn().'=?';
+		return $cdb->pquery($query, array($elemId));
 	}
 
 	public function delete($id) {

@@ -14,3 +14,4 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 include 'include/validation/InventoryValidations.php';
+echo $message;

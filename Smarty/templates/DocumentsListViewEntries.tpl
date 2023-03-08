@@ -186,7 +186,7 @@
 		</tr>
 	</table>
 </form>
-<div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options options=$SEARCHLISTHEADER}</select></div>
+<div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="slds-select" style="width:150px">{html_options options=$SEARCHLISTHEADER}</select></div>
 <script>
 {literal}
 function showHideFolders(show_ele, hide_ele) {

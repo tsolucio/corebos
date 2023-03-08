@@ -1461,6 +1461,38 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 			$queryGenerator->addCondition($sfld, $term, $op, $queryGenerator::$OR);
 		}
 		$queryGenerator->endGroup();
+		//Global Search Autocomplete Mapping
+		$bmapname = 'GlobalSearchAutocomplete';
+		$cbMapGS = array();
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapGS = $cbMap->GlobalSearchAutocomplete();
+			if (!empty($cbMapGS['searchin'][$searchinmodule]['conditions'])) {
+				$queryGenerator->startGroup(QueryGenerator::$AND);
+				$firstGroup = true;
+				foreach ($cbMapGS['searchin'][$searchinmodule]['conditions'] as $cgroup) {
+					if ($firstGroup) {
+						$queryGenerator->startGroup();
+						$firstGroup = false;
+					} else {
+						$queryGenerator->startGroup($cgroup['groupjoin']);
+					}
+					$firstCond = true;
+					foreach ($cgroup['conditions'] as $cond) {
+						$queryGenerator->addCondition(
+							$cond['fieldname'],
+							$cond['value'],
+							$cond['operator'],
+							(empty($cond['join']) ? ($firstCond ? '' : $queryGenerator::$OR) : $cond['join'])
+						);
+						$firstCond = false;
+					}
+					$queryGenerator->endGroup();
+				}
+				$queryGenerator->endGroup();
+			}
+		}
 		$query = $queryGenerator->getQuery();
 		$mod_fields = $queryGenerator->getModuleFields();
 		$qryFrom= explode('FROM', $query);

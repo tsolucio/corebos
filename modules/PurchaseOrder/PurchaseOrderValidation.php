@@ -15,3 +15,4 @@
  *************************************************************************************************/
 $DIVISIBLE_WARNING = 'DIVISIBLE_WARNING_PURCHASE';
 include 'include/validation/InventoryValidations.php';
+echo $message;

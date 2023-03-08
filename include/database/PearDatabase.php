@@ -1031,8 +1031,18 @@ class PearDatabase {
 		return false;
 	}
 
+	public function getMetaColumns($tablename) {
+		$this->println('DB getMetaColumns '.$tablename);
+		$this->checkConnection();
+		$return = @$this->database->MetaColumns($tablename);
+		foreach ($return as $colname => $colinfo) {
+			$return[$colname] = $colinfo;
+		}
+		return $return;
+	}
+
 	public function getColumnNames($tablename) {
-		$this->println('DB getColumnNames table='.$tablename);
+		$this->println('DB getColumnNames '.$tablename);
 		$this->checkConnection();
 		$adoflds = @$this->database->MetaColumns($tablename);
 		$i=0;
