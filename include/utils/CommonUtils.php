@@ -1301,6 +1301,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	global $log, $adb, $current_user;
 	$log->debug('> getBlocks', [$module, $disp_view, $mode, $col_fields, $info_type]);
 	$fieldsin = '';
+	$moreFieldInfo = [];
 	if (!empty($_REQUEST['FILTERFIELDSMAP'])) {
 		$bmapname = vtlib_purify($_REQUEST['FILTERFIELDSMAP']);
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -1315,6 +1316,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				$fieldview = 'viewfields';
 			} else {
 				$fieldview = 'editfields';
+				$moreFieldInfo = $mdmap['editfieldprops'];
 			}
 			if (!empty($mdmap[$fieldview]) && !empty($mdmap['targetmodule']) && $module==$mdmap['targetmodule']) {
 				$fieldsin = $adb->convert2Sql('and vtiger_field.fieldid IN (' . generateQuestionMarks($mdmap[$fieldview]) . ')', $mdmap[$fieldview]);
@@ -1447,7 +1449,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			}
 		}
 		$result = $adb->pquery($sql, $params);
-		$getBlockInfo = getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode);
+		$getBlockInfo = getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode, $moreFieldInfo);
 	}
 	if (!empty($getBlockInfo)) {
 		foreach ($getBlockInfo as $label => $contents) {

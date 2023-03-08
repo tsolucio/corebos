@@ -1545,7 +1545,7 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 * @param string information type (basic/advance) default ''
 * @return array
 */
-function getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode) {
+function getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode, $moreFieldInfo = []) {
 	global $log, $adb;
 	$log->debug('> getBlockInformation', [$module, $col_fields, $tabid, $block_label]);
 	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
@@ -1559,6 +1559,7 @@ function getBlockInformation($module, $result, $col_fields, $tabid, $block_label
 		$cbMapFI = $cbMap->FieldInfo();
 		$cbMapFI = $cbMapFI['fields'];
 	}
+	$cbMapFI = array_merge($cbMapFI, $moreFieldInfo);
 	$noofrows = $adb->num_rows($result);
 	for ($i=0; $i<$noofrows; $i++) {
 		// $result > 'tablename'

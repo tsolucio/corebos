@@ -80,9 +80,10 @@
 
 		{if $uitype eq '10'}
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
+			{if isset($maindata['extendedfieldinfo']) && $maindata['extendedfieldinfo']['hidden']==0}
 			<span style="color:red;">{$mandatory_field}</span>
 			{$fldlabel.displaylabel}
-
+			{/if}
 			{assign var="use_parentmodule" value=$fldlabel.options.0}
 			{assign var=vtui10func value=$use_parentmodule|getvtlib_open_popup_window_function:$fldname:$MODULE}
 			{if count($fldlabel.options) eq 1}
@@ -126,11 +127,12 @@
 						id="{$fldname}_display"
 						name="{$fldname}_display"
 						readonly
-						type="text"
+						type="{if isset($maindata['extendedfieldinfo']) && $maindata['extendedfieldinfo']['hidden']==0}text{else}hidden{/if}"
 						style="border:1px solid #bababa;"
 						onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{if isset($ID)}{$ID}{/if}");'
 						value="{$fldvalue.displayvalue}">&nbsp;
 				{/if}
+				{if isset($maindata['extendedfieldinfo']) && $maindata['extendedfieldinfo']['hidden']==0}
 				<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button" onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{if isset($ID)}{$ID}{/if}");'>
 				<svg class="slds-button__icon" aria-hidden="true">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
@@ -143,6 +145,7 @@
 				</svg>
 				<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
 				</button>
+				{/if}
 
 				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
 					<div id="listbox-unique-id" role="listbox" class="">

@@ -206,6 +206,7 @@ class MasterDetailLayout extends processcbMap {
 		$mapping_arr['viewfieldnames'] = array();
 		$mapping_arr['editfields'] = array();
 		$mapping_arr['editfieldnames'] = array();
+		$mapping_arr['editfieldprops'] = array();
 		$mapping_arr['detailview'] = array();
 		$mapping_arr['detailview']['layout'] = isset($xml->detailview->layout) ? (string)$xml->detailview->layout : '';
 		$mapping_arr['detailview']['fields'] = array();
@@ -246,6 +247,12 @@ class MasterDetailLayout extends processcbMap {
 					$mapping_arr['editfields'][] = $fieldinfo['fieldid'];
 					$mapping_arr['editfieldnames'][] = $fieldinfo['name'];
 				}
+				$mapping_arr['editfieldprops'][$fieldinfo['name']] = [
+					'hidden' => isset($v->hidden) ? (string)$v->hidden : '0',
+					'editable' => $editable,
+					'value' => isset($v->value) ? (string)$v->value : '',
+					'defaultvalue' => isset($v->defaultvalue) ? (string)$v->defaultvalue : null,
+				];
 				$mapping_arr['viewfields'][] = $fieldinfo['fieldid'];
 				$mapping_arr['viewfieldnames'][] = $fieldinfo['name'];
 			}
