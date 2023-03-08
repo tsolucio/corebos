@@ -62,6 +62,9 @@ switch ($_REQUEST['rlaction']) {
 						exit;
 					}
 					$relfocus->retrieve_entity_info($relatedvalue, $data['relatedmodule']);
+					if (is_string($data['values'])) {
+						$data['values'] = (array)$data['values'];
+					}
 					$values = array_values($data['values']);
 					$res = false;
 					foreach ($values as $key) {

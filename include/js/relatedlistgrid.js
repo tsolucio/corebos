@@ -536,13 +536,17 @@ class RLActionRender {
 				if (popupactions[related_child].conditions.fieldname.indexOf('.') !== -1 && popupactions[related_child].conditions.popup != '') {
 					//get the value in a related module
 					let minfo = popupactions[related_child].conditions.fieldname.split('.');
+					let popupvalues = popupactions[related_child].conditions.popup.values;
+					if (popupvalues.length == undefined) {
+						popupvalues = [popupactions[related_child].conditions.popup.values];
+					}
 					relatedlistgrid.Request(url, 'post', {
 						recordid: recordid,
 						module: related_child,
 						relatedmodule: minfo[0],
 						fieldname: minfo[1],
 						relatedfield: popupactions[related_child].conditions.relatedfield,
-						values: popupactions[related_child].conditions.popup.values,
+						values: popupvalues,
 					}).then(function (popupid) {
 						if (popupid !== 'false') {
 							actions += `
