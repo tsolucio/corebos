@@ -18,6 +18,7 @@
 	<script type="text/javascript">
 		wizard.Context = {};
 		wizard.CheckedRows = [];
+		wizard.WizardInfoFields = [];
 		wizard.MainSelectedId = 0;
 		wizard.steps = {$wizardTotal};
 		wizard.MCModule = '{$formodule}';

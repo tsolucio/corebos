@@ -291,6 +291,19 @@ class WizardComponent {
 			flds = [flds];
 		}
 		let insertedIds = [];
+		console.log(flds)
+		let headers = '';
+		for (let k in flds) {
+			headers += `
+			<th scope="col">
+				<div class="slds-truncate" title="Column 1">
+				${flds[k].label}
+				</div>
+			</th>`;
+		}
+		if (this.el(`wizard-columns-info-${activeStep}`)) {
+			this.el(`wizard-columns-info-${activeStep}`).innerHTML = headers;
+		}
 		for (let i in this.CreatedRows) {
 			this.CreatedRows[i].forEach(function(row, index) {
 				for (let j in row) {
@@ -301,24 +314,13 @@ class WizardComponent {
 					let fields = '';
 					for (let k in flds) {
 						fields += `
-						<div class="slds-col">
-							<strong>${flds[k].label}</strong>
-						</div>
-						<div class="slds-col">
-							${row[j][flds[k].name]}
-						</div>`;
+						<td>
+							<div class="slds-truncate">
+								${row[j][flds[k].name]}
+							</div>
+						</td>`;
 					}
-					list += `
-					<li class="slds-dropdown__item" role="presentation">
-						<a role="menuitem" tabindex="0">
-							<span class="slds-truncate">
-								<div class="slds-grid slds-gutters">
-									${fields}
-								</div>
-							</span>
-						</a>
-					</li>
-					`;
+					list += `<tr class="slds-hint-parent">${fields}</tr>`;
 				}
 			});
 		}
@@ -618,6 +620,10 @@ class WizardComponent {
 			modulename: this.WizardCurrentModule[this.ActiveStep]
 		});
 		if (response) {
+			if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length != 0) {
+				this.CreatedRows.push(this.CheckedRows[this.ActiveStep]);
+				this.Info(type);
+			}
 			this.Context = response;
 			if (this.MainSelectedId == 0) {
 				this.MainSelectedId = response.id;
