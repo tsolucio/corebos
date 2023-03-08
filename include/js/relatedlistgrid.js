@@ -44,16 +44,16 @@ var relatedlistgrid = {
 		}, 1300);
 	},
 
-	upsert: (Grid, module, recordid, CurrentRecord = '', related_fieldname) => {
+	upsert: (Grid, module, recordid, CurrentRecord = '', related_fieldname, cbfromid = 0) => {
 		let record = recordid || '';
 		if (record!='') {
 			record = '&record='+record;
 		}
 		if (CurrentRecord!='') {
-			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&RLFieldName='+related_fieldname+'&'+related_fieldname+'='+CurrentRecord+'&cbfromid='+CurrentRecord;
+			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&RLFieldName='+related_fieldname+'&'+related_fieldname+'='+CurrentRecord+'&cbfromid='+cbfromid;
 		} else if (document.getElementById('record')) {
 			let recid = document.getElementById('record').value;
-			CurrentRecord = '&MDCurrentRecord='+recid+'&'+related_fieldname+'='+recid+'&cbfromid='+recid;
+			CurrentRecord = '&MDCurrentRecord='+recid+'&'+related_fieldname+'='+recid+'&cbfromid='+cbfromid;
 		}
 		let rlgridinfo = JSON.stringify({
 			'name': Grid,
@@ -388,7 +388,7 @@ class RLActionRender {
 		if (parent_module != '') {
 			actions += `
 			<li class="slds-dropdown__item">
-				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}');" role="menuitem" tabindex="0">
+				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}', ${recordid});" role="menuitem" tabindex="0">
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 					</svg>
@@ -399,7 +399,7 @@ class RLActionRender {
 		} else {
 			actions += `
 			<li class="slds-dropdown__item">
-				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}');" role="menuitem" tabindex="0">
+				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}', ${recordid});" role="menuitem" tabindex="0">
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 					</svg>
@@ -440,7 +440,7 @@ class RLActionRender {
 						if (docreate == 1) {
 							actions += `
 							<li class="slds-dropdown__item" id="create__${child_id}">
-								<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${parent_of_child}, '${related_parent_fieldname}');" role="menuitem" tabindex="0">
+								<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${parent_of_child}, '${related_parent_fieldname}', ${recordid});" role="menuitem" tabindex="0">
 									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 									</svg>
@@ -581,7 +581,7 @@ class RLActionRender {
 					}).then(function (response) {
 						if (response == 'true') {
 							let link = `
-							<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${parent_of_child}, '${related_parent_fieldname}');" role="menuitem" tabindex="0">
+							<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${parent_of_child}, '${related_parent_fieldname}', ${recordid});" role="menuitem" tabindex="0">
 								<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
 								</svg>
