@@ -34,6 +34,7 @@ class ReportRun extends CRMEntity {
 	public $reporttype;
 	public $cbreporttype;
 	public $reportname;
+	public $reportid;
 	public $totallist;
 	public $number_of_rows;
 	public $page = 1;
@@ -619,15 +620,17 @@ class ReportRun extends CRMEntity {
 							$advcolumnsql = '';
 							for ($n=0; $n<count($valuearray); $n++) {
 								$valuearray[$n] = trim($valuearray[$n]);
-								if (($selectedfields[0] == 'vtiger_users'.$this->primarymodule || in_array($selectedfields[0], $secondarymodules)) && $selectedfields[1] == 'user_name') {
+								if (($selectedfields[0]=='vtiger_users'.$this->primarymodule || in_array($selectedfields[0], $secondarymodules)) && $selectedfields[1]=='user_name') {
 									if ($valuearray[$n]=='current_user') {
 										$valuearray[$n] = $currentUserFullName;
 									}
 									$module_from_tablename = str_replace('vtiger_users', '', $selectedfields[0]);
-									$advcolsql[] = " trim($selectedfields[0].ename)".$this->getAdvComparator($comparator, $valuearray[$n], $datatype).' or vtiger_groups'.$module_from_tablename.'.groupname '.$this->getAdvComparator($comparator, $valuearray[$n], $datatype);
+									$advcolsql[] = " trim($selectedfields[0].ename)".$this->getAdvComparator($comparator, $valuearray[$n], $datatype).' or vtiger_groups'
+										.$module_from_tablename.'.groupname '.$this->getAdvComparator($comparator, $valuearray[$n], $datatype);
 								} elseif ($selectedfields[1] == 'status') {//when you use comma seperated values.
 									if ($selectedfields[2] == 'cbCalendar_Status') {
-										$advcolsql[] = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator, $valuearray[$n], $datatype);
+										$advcolsql[] = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)"
+											.$this->getAdvComparator($comparator, $valuearray[$n], $datatype);
 									} elseif ($selectedfields[2] == 'HelpDesk_Status') {
 										$advcolsql[] = 'vtiger_troubletickets.status'.$this->getAdvComparator($comparator, $valuearray[$n], $datatype);
 									}
@@ -656,12 +659,14 @@ class ReportRun extends CRMEntity {
 								$value = $currentUserFullName;
 							}
 							$module_from_tablename = str_replace('vtiger_users', '', $selectedfields[0]);
-							$fieldvalue = ' trim(case when ('.$selectedfields[0].".last_name NOT LIKE '') then ".$selectedfields[0].'.ename else vtiger_groups'.$module_from_tablename.'.groupname end) '.$this->getAdvComparator($comparator, $value, $datatype);
+							$fieldvalue = ' trim(case when ('.$selectedfields[0].".last_name NOT LIKE '') then ".$selectedfields[0].'.ename else vtiger_groups'
+								.$module_from_tablename.'.groupname end) '.$this->getAdvComparator($comparator, $value, $datatype);
 						} elseif ($comparator == 'bw' && count($valuearray) == 2) {
 							if ($selectedfields[0] == 'vtiger_crmentity'.$this->primarymodule) {
 								$fieldvalue = '(vtiger_crmentity.'.$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
 							} elseif ($selectedfields[2]=='cbCalendar_Start_Date_and_Time') {
-								$fieldvalue = "(cast(concat(vtiger_activity.date_start,' ',vtiger_activity.time_start) as DATETIME) between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
+								$fieldvalue = "(cast(concat(vtiger_activity.date_start,' ',vtiger_activity.time_start) as DATETIME) between '".trim($valuearray[0])
+									."' and '".trim($valuearray[1])."')";
 							} else {
 								$fieldvalue = '('.$selectedfields[0].'.'.$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
 							}
@@ -696,12 +701,13 @@ class ReportRun extends CRMEntity {
 							$fieldvalue = $tableName.'.ename'.$this->getAdvComparator($comparator, $value, $datatype);
 							$this->queryPlanner->addTable($tableName);
 						} elseif ($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'status') {
-							$fieldvalue = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator, trim($value), $datatype);
+							$fieldvalue = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)"
+								.$this->getAdvComparator($comparator, trim($value), $datatype);
 						} elseif ($comparator == 'e' && (trim($value) == 'NULL' || trim($value) == '')) {
 							$fieldvalue = '('.$selectedfields[0].'.'.$selectedfields[1].' IS NULL OR '.$selectedfields[0].'.'.$selectedfields[1]." = '')";
 						} elseif ($comparator == 'e' && $datatype == 'D' && (trim($value) == '--$' || trim($value) == '$')) {
 							$fieldvalue = '('.$selectedfields[0].'.'.$selectedfields[1].' IS NULL )';
-						} elseif (substr($selectedfields[0], 0, 26) == 'vtiger_inventoryproductrel' && ($selectedfields[1] == 'productid' || $selectedfields[1] == 'serviceid' || $selectedfields[1] == 'discount')) {
+						} elseif (substr($selectedfields[0], 0, 26)=='vtiger_inventoryproductrel' && ($selectedfields[1]=='productid' || $selectedfields[1]=='serviceid' || $selectedfields[1]=='discount')) {
 							$invmod = (in_array($this->primarymodule, getInventoryModules()) ? $this->primarymodule : $this->secondarymodule);
 							if ($selectedfields[1] == 'productid') {
 								$fieldvalue = "vtiger_products{$invmod}.productname ".$this->getAdvComparator($comparator, trim($value), $datatype);
@@ -710,8 +716,9 @@ class ReportRun extends CRMEntity {
 								$fieldvalue = "vtiger_service{$invmod}.servicename ".$this->getAdvComparator($comparator, trim($value), $datatype);
 								$this->queryPlanner->addTable('vtiger_service'.$invmod);
 							} elseif ($selectedfields[1] == 'discount') {
-								$fieldvalue = "(vtiger_inventoryproductrel{$invmod}.discount_amount ".$this->getAdvComparator($comparator, trim($value), $datatype)."
-									OR ROUND((vtiger_inventoryproductrel{$invmod}.listprice * vtiger_inventoryproductrel{$invmod}.quantity * (vtiger_inventoryproductrel{$invmod}.discount_percent/100)),3) ".$this->getAdvComparator($comparator, trim($value), $datatype).') ';
+								$fieldvalue = "(vtiger_inventoryproductrel{$invmod}.discount_amount ".$this->getAdvComparator($comparator, trim($value), $datatype)
+									." OR ROUND((vtiger_inventoryproductrel{$invmod}.listprice * vtiger_inventoryproductrel{$invmod}.quantity * (vtiger_inventoryproductrel{$invmod}.discount_percent/100)),3) "
+									.$this->getAdvComparator($comparator, trim($value), $datatype).') ';
 							}
 							$this->queryPlanner->addTable('vtiger_inventoryproductrel'.$invmod);
 						} elseif ($fieldInfo['uitype'] == '10' || isReferenceUIType($fieldInfo['uitype'])) {
@@ -1420,13 +1427,13 @@ class ReportRun extends CRMEntity {
 			}
 			if (($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 				if ($this->queryPlanner->requireTable('vtiger_inventoryproductrelPurchaseOrder', $matrix)) {
-					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelPurchaseOrder on vtiger_purchaseorder.purchaseorderid = vtiger_inventoryproductrelPurchaseOrder.id';
+					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelPurchaseOrder on vtiger_purchaseorder.purchaseorderid=vtiger_inventoryproductrelPurchaseOrder.id';
 				}
 				if ($this->queryPlanner->requireTable('vtiger_productsPurchaseOrder')) {
-					$query .= ' left join vtiger_products as vtiger_productsPurchaseOrder on vtiger_productsPurchaseOrder.productid = vtiger_inventoryproductrelPurchaseOrder.productid';
+					$query .= ' left join vtiger_products as vtiger_productsPurchaseOrder on vtiger_productsPurchaseOrder.productid=vtiger_inventoryproductrelPurchaseOrder.productid';
 				}
 				if ($this->queryPlanner->requireTable('vtiger_servicePurchaseOrder')) {
-					$query .= ' left join vtiger_service as vtiger_servicePurchaseOrder on vtiger_servicePurchaseOrder.serviceid = vtiger_inventoryproductrelPurchaseOrder.productid';
+					$query .= ' left join vtiger_service as vtiger_servicePurchaseOrder on vtiger_servicePurchaseOrder.serviceid=vtiger_inventoryproductrelPurchaseOrder.productid';
 				}
 			}
 			if ($this->queryPlanner->requireTable('vtiger_accountsPurchaseOrder')) {
@@ -1437,7 +1444,7 @@ class ReportRun extends CRMEntity {
 				$query .= ' left join vtiger_vendor as vtiger_vendorRelPurchaseOrder on vtiger_vendorRelPurchaseOrder.vendorid = vtiger_purchaseorder.vendorid';
 			}
 			if ($this->queryPlanner->requireTable('vtiger_contactdetailsPurchaseOrder')) {
-				$query .= ' left join vtiger_contactdetails as vtiger_contactdetailsPurchaseOrder on vtiger_contactdetailsPurchaseOrder.contactid = vtiger_purchaseorder.contactid';
+				$query .= ' left join vtiger_contactdetails as vtiger_contactdetailsPurchaseOrder on vtiger_contactdetailsPurchaseOrder.contactid=vtiger_purchaseorder.contactid';
 			}
 			if ($this->queryPlanner->requireTable('vtiger_currency_info')) {
 				$query .= ' LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_purchaseorder.currency_id';
@@ -1462,7 +1469,7 @@ class ReportRun extends CRMEntity {
 			}
 			if (($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 				if ($this->queryPlanner->requireTable('vtiger_inventoryproductrelInvoice', $matrix)) {
-					$query .=' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelInvoice on vtiger_invoice.invoiceid = vtiger_inventoryproductrelInvoice.id';
+					$query.=' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelInvoice on vtiger_invoice.invoiceid=vtiger_inventoryproductrelInvoice.id';
 				}
 				if ($this->queryPlanner->requireTable('vtiger_productsInvoice')) {
 					$query .=' left join vtiger_products as vtiger_productsInvoice on vtiger_productsInvoice.productid = vtiger_inventoryproductrelInvoice.productid';
@@ -1503,13 +1510,13 @@ class ReportRun extends CRMEntity {
 			}
 			if (($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 				if ($this->queryPlanner->requireTable('vtiger_inventoryproductrelSalesOrder', $matrix)) {
-					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelSalesOrder on vtiger_salesorder.salesorderid = vtiger_inventoryproductrelSalesOrder.id';
+					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelSalesOrder on vtiger_salesorder.salesorderid=vtiger_inventoryproductrelSalesOrder.id';
 				}
 				if ($this->queryPlanner->requireTable('vtiger_productsSalesOrder')) {
-					$query .= ' left join vtiger_products as vtiger_productsSalesOrder on vtiger_productsSalesOrder.productid = vtiger_inventoryproductrelSalesOrder.productid';
+					$query .= ' left join vtiger_products as vtiger_productsSalesOrder on vtiger_productsSalesOrder.productid=vtiger_inventoryproductrelSalesOrder.productid';
 				}
 				if ($this->queryPlanner->requireTable('vtiger_serviceSalesOrder')) {
-					$query.=' left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid = vtiger_inventoryproductrelSalesOrder.productid';
+					$query.=' left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid=vtiger_inventoryproductrelSalesOrder.productid';
 				}
 			}
 			if ($this->queryPlanner->requireTable('vtiger_contactdetailsSalesOrder')) {
@@ -1563,7 +1570,7 @@ class ReportRun extends CRMEntity {
 			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 			$query .= " left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = vtiger_issuecards.currency_id";
 			if (($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
-				$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelIssuecards on vtiger_issuecards.issuecardid = vtiger_inventoryproductrelIssuecards.id
+				$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelIssuecards on vtiger_issuecards.issuecardid=vtiger_inventoryproductrelIssuecards.id
 					left join vtiger_products as vtiger_productsIssuecards on vtiger_productsIssuecards.productid = vtiger_inventoryproductrelIssuecards.productid
 					left join vtiger_service as vtiger_serviceIssuecards on vtiger_serviceIssuecards.serviceid = vtiger_inventoryproductrelIssuecards.productid';
 			}
@@ -1768,7 +1775,7 @@ class ReportRun extends CRMEntity {
 	/** function to get the report output in HTML,PDF,TOTAL,PRINT,PRINTTOTAL formats depends on the argument $outputformat
 	 * @param string outputformat (valid parameters HTML,PDF,TOTAL,PRINT,PRINT_TOTAL)
 	 * @param string filtersql
-	 * @return string HTML Report if $outputformat is HTML
+	 * @return mixed HTML Report if $outputformat is HTML
 	 * 		Array for PDF if $outputformat is PDF
 	 *		HTML strings for TOTAL if $outputformat is TOTAL
 	 *		Array for PRINT if $outputformat is PRINT
@@ -2176,7 +2183,7 @@ class ReportRun extends CRMEntity {
 				} else {
 					$resp['next_page_url'] = 'index.php?module=Reports&action=ReportsAjax&file=getJSON&record='.$this->reportid.'&page='.($this->islastpage ? $this->page : $this->page+1);
 				}
-				$resp['prev_page_url'] = 'index.php?module=Reports&action=ReportsAjax&file=getJSON&record='.$this->reportid.'&page='.($this->page == 1 ? 1 : $this->page-1);
+				$resp['prev_page_url']='index.php?module=Reports&action=ReportsAjax&file=getJSON&record='.$this->reportid.'&page='.($this->page == 1 ? 1 : $this->page-1);
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$header = array();
