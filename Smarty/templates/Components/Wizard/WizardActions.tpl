@@ -54,7 +54,7 @@
 						</svg>
 						<span class="slds-assistive-text"></span>
 					</button>
-					<div class="slds-dropdown slds-dropdown_right">
+					<div class="slds-dropdown slds-dropdown_right" style="max-width: 100rem">
 						<ul class="slds-dropdown__list" role="menu" id="wizard-info-{$smarty.foreach.stepwizard.index}" style="overflow: auto;max-height:300px">
 						</ul>
 					</div>

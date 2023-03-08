@@ -11,6 +11,7 @@ var relatedlistgrid = {
 	WizardWorkflows: [],
 	NextStep: [],
 	PopupAction: [],
+	CreateView: [],
 
 	delete: (Grid, module, recordid, fieldname) => {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
@@ -335,9 +336,9 @@ class RLActionRender {
 		}
 		let popupbutton = '';
 		let popupactions = JSON.parse(relatedlistgrid.PopupAction[`${props.grid.el.id}`]);
+		let createview = JSON.parse(relatedlistgrid.CreateView[`${props.grid.el.id}`]);
 		if (parent_module == '' && popupactions[related_child] !== undefined) {
 			if (popupactions[related_child].conditions.fieldname != '') {
-				let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=PopupAction';
 				if (popupactions[related_child].conditions.fieldname.indexOf('.') === -1) {
 					//access direct record values
 					let popupid = 0;
@@ -418,6 +419,40 @@ class RLActionRender {
 					</button>
 					<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" style="width: 8rem;">
 					<ul class="slds-dropdown__list" role="menu">`;
+			}
+		}
+		if (createview[related_child] !== undefined) {
+			if (createview[related_child].conditions.fieldname != '') {
+				if (createview[related_child].conditions.fieldname.indexOf('.') === -1) {
+					//access direct record values
+					let docreate = 0;
+					let fieldname = createview[related_child].conditions.fieldname;
+					let create = createview[related_child].conditions.create;
+					let fldvalue = props.grid.getValue(rowKey, `${fieldname}`);
+					let fldvalue_raw = props.grid.getValue(rowKey, `${fieldname}_raw`);
+					if (fldvalue != null && create != '') {
+						for (let i in create.value) {
+							if (create.value[i] == fldvalue || create.value[i] == fldvalue_raw) {
+								docreate = 1;
+								break;
+							}
+						}
+						if (docreate == 1) {
+							actions += `
+							<li class="slds-dropdown__item" id="create__${child_id}">
+								<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${parent_of_child}, '${related_parent_fieldname}');" role="menuitem" tabindex="0">
+									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+									</svg>
+									<span class="slds-truncate">${alert_arr['JSLBL_Create']}</span>
+								</a>
+							</li>`;
+						}
+					}
+				} else {
+					//render from backend
+					actions += `<li class="slds-dropdown__item" id="create__${recordid}"></li>`;
+				}
 			}
 		}
 		let wizard = JSON.parse(relatedlistgrid.Wizard[`${props.grid.el.id}`]);
@@ -526,6 +561,35 @@ class RLActionRender {
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);
+		if (createview[related_child] !== undefined) {
+			if (createview[related_child].conditions.fieldname != '') {
+				if (createview[related_child].conditions.fieldname.indexOf('.') !== -1) {
+					let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=CreateView';
+					//get the value in a related module
+					let minfo = createview[related_child].conditions.fieldname.split('.');
+					relatedlistgrid.Request(url, 'post', {
+						recordid: recordid,
+						module: related_child,
+						relatedmodule: minfo[0],
+						fieldname: minfo[1],
+						relatedfield: createview[related_child].conditions.relatedfield,
+						values: createview[related_child].conditions.create.value,
+					}).then(function (response) {
+						if (response == 'true') {
+							let link = `
+							<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${parent_of_child}, '${related_parent_fieldname}');" role="menuitem" tabindex="0">
+								<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+								</svg>
+								<span class="slds-truncate">${alert_arr['JSLBL_Create']}</span>
+							</a>`;
+							document.getElementById(`create__${recordid}`).innerHTML = link;
+						}
+					});
+
+				}
+			}
+		}
 	}
 
 	getElement() {

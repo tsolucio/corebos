@@ -56,6 +56,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$WizardWorkflows = array();
 		$NextStep = array();
 		$PopupAction = array();
+		$CreateView = array();
 		$functionName = '';
 		$MainModule = '';
 		$MainRelateField = '';
@@ -118,6 +119,9 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 			if (isset($module['popupaction'])) {
 				$PopupAction[$module['name']] = $module['popupaction'];
 			}
+			if (isset($module['createview'])) {
+				$CreateView[$module['name']] = $module['createview'];
+			}
 			$idx++;
 		}
 		$smarty->assign('ID', $id);
@@ -136,6 +140,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('WizardWorkflows', json_encode($WizardWorkflows));
 		$smarty->assign('NextStep', json_encode($NextStep));
 		$smarty->assign('PopupAction', json_encode($PopupAction));
+		$smarty->assign('CreateView', json_encode($CreateView));
 		$smarty->assign('mapname', $mapname);
 		$smarty->assign('functionName', $functionName);
 		$smarty->assign('title', $map['title']);
