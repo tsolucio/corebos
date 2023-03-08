@@ -566,12 +566,12 @@ class RLActionRender {
 				if (createview[related_child].conditions.fieldname.indexOf('.') !== -1) {
 					let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=CreateView';
 					//get the value in a related module
-					let minfo = createview[related_child].conditions.fieldname.split('.');
+					let cinfo = createview[related_child].conditions.fieldname.split('.');
 					relatedlistgrid.Request(url, 'post', {
 						recordid: recordid,
 						module: related_child,
-						relatedmodule: minfo[0],
-						fieldname: minfo[1],
+						relatedmodule: cinfo[0],
+						fieldname: cinfo[1],
 						relatedfield: createview[related_child].conditions.relatedfield,
 						values: createview[related_child].conditions.create.value,
 					}).then(function (response) {
