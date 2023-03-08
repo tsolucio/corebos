@@ -50,10 +50,10 @@ var relatedlistgrid = {
 			record = '&record='+record;
 		}
 		if (CurrentRecord!='') {
-			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&RLFieldName='+related_fieldname+'&'+related_fieldname+'='+CurrentRecord;
+			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&RLFieldName='+related_fieldname+'&'+related_fieldname+'='+CurrentRecord+'&cbfromid='+CurrentRecord;
 		} else if (document.getElementById('record')) {
 			let recid = document.getElementById('record').value;
-			CurrentRecord = '&MDCurrentRecord='+recid+'&'+related_fieldname+'='+recid;
+			CurrentRecord = '&MDCurrentRecord='+recid+'&'+related_fieldname+'='+recid+'&cbfromid='+recid;
 		}
 		let rlgridinfo = JSON.stringify({
 			'name': Grid,
