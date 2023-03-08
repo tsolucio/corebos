@@ -2142,7 +2142,11 @@ class ReportRun extends CRMEntity {
 			}
 			if ($result) {
 				$fldcnt=$adb->num_fields($result);
-				$noofrows = $adb->query_result($count_result, 0, 0);
+				if ($this->cbreporttype == 'directsql' && stripos($sSQL, ' group by ')) {
+					$noofrows = $adb->num_rows($count_result);
+				} else {
+					$noofrows = $adb->query_result($count_result, 0, 0);
+				}
 				$this->number_of_rows = $noofrows;
 				$resp = array(
 					'total' => $noofrows,
