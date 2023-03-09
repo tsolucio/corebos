@@ -58,6 +58,17 @@
 					</popup>
 				</conditions>
 			</popupaction>
+			<createview>
+				<conditions>
+					<fieldname>field | Module.field</fieldname>
+					<relatedfield>field</relatedfield>
+					<create>
+						<value></value>
+						<value></value>
+						...
+					</create>
+				</conditions>			
+			</createview>
 			<listview>
 				<fields>
 					<field>
@@ -142,6 +153,15 @@ class RelatedListBlock extends processcbMap {
 							'fieldname' => isset($key->popupaction->conditions->fieldname) ? (string)$key->popupaction->conditions->fieldname : '',
 							'relatedfield' => isset($key->popupaction->conditions->relatedfield) ? (string)$key->popupaction->conditions->relatedfield : '',
 							'popup' => isset($key->popupaction->conditions->popup) ? (array)$key->popupaction->conditions->popup : '',
+						)
+					);
+				}
+				if (isset($key->createview)) {
+					$this->mapping_arr['modules'][$idx]['createview'] = array(
+						'conditions' => array(
+							'fieldname' => isset($key->createview->conditions->fieldname) ? (string)$key->createview->conditions->fieldname : '',
+							'relatedfield' => isset($key->createview->conditions->relatedfield) ? (string)$key->createview->conditions->relatedfield : '',
+							'create' => isset($key->createview->conditions->create) ? (array)$key->createview->conditions->create : '',
 						)
 					);
 				}

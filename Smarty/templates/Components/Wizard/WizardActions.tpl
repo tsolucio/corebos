@@ -45,6 +45,28 @@
 				</button>
 			</div>
 			{/if}
+			{if $WizardInfo[{$smarty.foreach.stepwizard.index}]}
+			<div class="slds-button-group" role="group">
+				<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
+					<button class="slds-button slds-button_icon slds-button_icon-border-filled slds-is-selected" aria-haspopup="true" aria-expanded="true">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+						</svg>
+						<span class="slds-assistive-text"></span>
+					</button>
+					<div class="slds-dropdown slds-dropdown_table slds-dropdown_right" style="max-width: 100rem">
+						<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+							<thead>
+								<tr class="slds-text-title_caps" id="wizard-columns-info-{$smarty.foreach.stepwizard.index}">
+								</tr>
+							</thead>
+							<tbody id="wizard-info-{$smarty.foreach.stepwizard.index}">
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			{/if}
 			{if in_array('delete', $step.actions)}
 			<div class="slds-page-header__control">
 				<button type="button" onclick="wizard.DeleteRowFromGrid({$smarty.foreach.stepwizard.index})" class="slds-button slds-button_icon slds-button_icon-border-filled" title="{'LNK_REMOVE'|@getTranslatedString}">

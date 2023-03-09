@@ -31,6 +31,13 @@
 		<suboperation></suboperation>
 		<module></module>
 		<filter>0|1</filter>
+		<info>
+			<field>
+				<label></label>
+				<name></name>
+			</field>
+			...
+		</info>
 		<validations>
 			<validation>
 				<validationmap>mapid</validationmap>
@@ -73,6 +80,14 @@ class Wizard extends processcbMap {
 			$step['suboperation'] = (string)$s->suboperation;
 			$step['module'] = (string)$s->module;
 			$step['filter'] = (string)$s->filter;
+			$step['info'] = empty($s->info) ? false : true;
+			$infofields = array();
+			if ($step['info']) {
+				foreach ((array)$s->info as $key => $value) {
+					$infofields[] = (array)$value;
+				}
+			}
+			$step['infofields'] = $infofields;
 			$validations = array();
 			if (isset($s->validations)) {
 				foreach ($s->validations->validation as $v) {

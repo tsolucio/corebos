@@ -297,7 +297,7 @@ class WizardActions extends WizardCustomFunctions {
 			$filterrows = isset($_REQUEST['filterrows']) ? $_REQUEST['filterrows'] : false;
 			$qg = new QueryGenerator($this->module, $current_user);
 			$qg->setFields(array('*'));
-			$newRecords = coreBOS_Session::get('DuplicatedRecords');
+			$newRecords = $this->GetSession($current_user->id);
 			if ($filterrows) {
 				//filter records for the next step based on some givend ids
 				if (!empty($forids)) {
@@ -421,7 +421,7 @@ class WizardActions extends WizardCustomFunctions {
 				$field = 'assigned_user_id';
 			}
 			$fieldinfo[$field] = self::FieldInfo($cachedModuleFields, $field);
-			if (!isset($fieldinfo[$field])) {
+			if (empty($fieldinfo[$field])) {
 				continue;
 			}
 			$gridvalue = getDataGridValue($module, $row[$table_index], $fieldinfo[$field], $value, 'Wizard');
@@ -583,7 +583,11 @@ class WizardActions extends WizardCustomFunctions {
 				$id = explode('x', $key['id'])[1];
 				if (isset($_REQUEST['step'])) {
 					$step = vtlib_purify($_REQUEST['step']);
-					coreBOS_Session::set('DuplicatedRecords^'.$step.'^'.$id, $id);
+					$ids = '';
+					if (coreBOS_Settings::settingExists('WizardRecords'.$current_user->id.'^'.$step)) {
+						$ids = $this->GetSession($current_user->id.'^'.$step);
+					}
+					$this->SetSession($current_user->id.'^'.$step, $id.';'.$ids);
 				}
 				$res[] = $id;
 			}
@@ -593,11 +597,18 @@ class WizardActions extends WizardCustomFunctions {
 	}
 
 	public function DeleteSession() {
-		return coreBOS_Session::delete('DuplicatedRecords');
+		global $current_user;
+		return coreBOS_Settings::delSettingStartsWith('WizardRecords'.$current_user->id);
 	}
 
-	public function GetSession() {
-		return coreBOS_Session::get('DuplicatedRecords');
+	public function GetSession($name) {
+		global $current_user;
+		return coreBOS_Settings::getSetting('WizardRecords'.$name, '');
+	}
+
+	public function SetSession($name, $value) {
+		global $current_user;
+		return coreBOS_Settings::setSetting('WizardRecords'.$name, $value);
 	}
 
 	/**
@@ -681,7 +692,7 @@ class WizardActions extends WizardCustomFunctions {
 				$newRecord->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newRecord->column_fields, $handlerMeta);
 				$newRecord->saveentity($modulename);
 				$step = $data['step'] - 1;
-				coreBOS_Session::set('DuplicatedRecords^'.$step.'^'.$newRecord->id, $newRecord->id);
+				$this->SetSession($current_user->id.'^'.$step, $newRecord->id);
 				$newRecord->column_fields['id'] = $newRecord->id;
 				return $newRecord->column_fields;
 			} catch (Throwable $e) {
