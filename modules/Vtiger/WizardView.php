@@ -60,7 +60,7 @@ if ($cbMapid) {
 			$WizardInfo[$step] = isset($value['info']) ? boolval($value['info']) : false;
 			$WizardInfoFields[$step] = !empty($value['infofields']) ? $value['infofields'][0] : array();
 			$smarty->assign('WizardIcon', $WizardIcon);
-			$smarty->assign('WizardSuboperation', $suboperation);
+			$smarty->assign('WizardSuboperation', isset($value['suboperation']) ? $value['suboperation'] : '');
 			$smarty->assign('WizardSuboperationArray', $WizardSuboperation);
 			$smarty->assign('WizardModule', isset($value['module']) ? $value['module'] : '');
 			$smarty->assign('WizardInfo', $WizardInfo);

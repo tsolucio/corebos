@@ -330,7 +330,15 @@ class WizardComponent {
 	}
 
 	async FinishRequest(url, resetWizard) {
-		let response = await this.Request(url, 'post', {'masterid': this.RecordID});
+		let cStep = this.ActiveStep;
+		if (this.isSubWizard) {
+			cStep = this.ActiveStep-1;
+		}
+		let response = await this.Request(url, 'post', {
+			'masterid': this.RecordID,
+			'step': cStep,
+			'isSubWizard': this.isSubWizard
+		});
 		if (response == 'no_create') {
 			return false;
 		}

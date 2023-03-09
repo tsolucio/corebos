@@ -1464,7 +1464,7 @@ class CRMEntity {
 
 		if (isset($_REQUEST['WizardAction']) && $_REQUEST['WizardAction'] == 'duplicate') {
 			$step = vtlib_purify($_REQUEST['WizardStep']) - 1;
-			coreBOS_Session::set('DuplicatedRecords^'.$step.'^'.$this->id, $this->id);
+			coreBOS_Settings::setSetting('WizardRecords'.$current_user->id.'^'.$step, $this->id);
 		}
 
 		//Event triggering code
