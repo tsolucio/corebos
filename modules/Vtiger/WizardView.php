@@ -55,14 +55,16 @@ if ($cbMapid) {
 				'mapid' => $value['detailviewlayoutmap'],
 			);
 			$smarty->assign('WizardStep', $step);
-			$icon = isset($value['suboperation']) && $value['suboperation'] == 'CalendarView' ? 'event' : 'procedure';
-			$suboperation = isset($value['suboperation']) ? $value['suboperation'] : '';
-			$WizardIcon[$step] = $icon;
-			$WizardSuboperation[$step] = $suboperation;
+			$WizardIcon[$step] = isset($value['suboperation']) && $value['suboperation'] == 'CalendarView' ? 'event' : 'procedure';
+			$WizardSuboperation[$step] = isset($value['suboperation']) ? $value['suboperation'] : '';
+			$WizardInfo[$step] = isset($value['info']) ? boolval($value['info']) : false;
+			$WizardInfoFields[$step] = !empty($value['infofields']) ? $value['infofields'][0] : array();
 			$smarty->assign('WizardIcon', $WizardIcon);
-			$smarty->assign('WizardSuboperation', $suboperation);
+			$smarty->assign('WizardSuboperation', isset($value['suboperation']) ? $value['suboperation'] : '');
 			$smarty->assign('WizardSuboperationArray', $WizardSuboperation);
 			$smarty->assign('WizardModule', isset($value['module']) ? $value['module'] : '');
+			$smarty->assign('WizardInfo', $WizardInfo);
+			$smarty->assign('WizardInfoFields', $WizardInfoFields);
 			$view = $setfield->process($context);
 			$views[$key] = $view;
 			$step++;

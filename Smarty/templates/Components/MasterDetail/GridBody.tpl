@@ -1,4 +1,5 @@
 <div id="{$MasterDetailLayoutMap.mapname}" data-mapname="{$MasterDetailLayoutMap.mapnameraw}" style="display: inline"></div>
+<script type="text/javascript" src="include/js/ListView.js"></script>
 <script>
 var MasterDetail_Pagination = 0;
 if (MasterDetail_TargetField === undefined) {

@@ -26,6 +26,11 @@
 <div class="slds-page-header__controls">
 <div class="slds-page-header__control">
 <div class="slds-button-group" role="group">
+{if !empty($MasterDetailLayoutMap.toolbar.massedit)}
+<button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_MASS_EDIT}" onclick="masterdetailwork.MDMassEditRecords(this, '{$MasterDetailLayoutMap.targetmodule}', '{$MasterDetailLayoutMap.mapname}')" data-id="{$MasterDetailLayoutMap.mapname}_massedit" id="btn-{$MasterDetailLayoutMap.mapname}_massedit">
+	{$APP.LBL_MASS_EDIT}
+</button>
+{/if}
 {if !empty($MasterDetailLayoutMap.toolbar.actions)}
 {foreach from=$MasterDetailLayoutMap.toolbar.actions item=$i}
 	<button type="button" class="slds-button slds-button_neutral" title="{$i.label}" onclick="masterdetailwork.CallToAction(this, '{$i.workflow}')" data-id="{$MasterDetailLayoutMap.mapname}--actions" id="btn-{$MasterDetailLayoutMap.mapname}--actions">
@@ -51,16 +56,11 @@
 </div>
 	<script>
 
-		const blockToggleBtn = document.getElementById("btn-{$MasterDetailLayoutMap.mapname}");
-		const id = blockToggleBtn?.dataset?.id;
-
-		setTimeout( () => {
-			blockToggleBtn.click();
-		}, 3000);
-
-		setTimeout( () => {
-			masterdetailwork.MDToggle('', id);
-		}, 4000);
+		window.addEventListener('load', (event) => {
+			if (dtlViewReload(document.getElementById('module') != null && document.getElementById('record').value != null)) {
+				dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
+			}
+		});
 
 	</script>
 </div>

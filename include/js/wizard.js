@@ -21,6 +21,7 @@ class WizardComponent {
 		this.MCModule = '';
 		this.ActiveStep = 0;
 		this.CheckedRows = [];
+		this.CreatedRows = [];
 		this.GroupByField = '';
 		this.GridData = [];
 		this.GroupData = [];
@@ -44,6 +45,7 @@ class WizardComponent {
 		this.WizardSaveIsActive = [];
 		this.WizardFilterFromContext = [];
 		this.WizardConfirmStep = [];
+		this.WizardInfoFields = [];
 		this.Module = [];
 		this.Context = {};
 		this.Operation = '';
@@ -145,6 +147,7 @@ class WizardComponent {
 		if (ev != '') {
 			type = ev.target.dataset.type;
 		}
+		this.Info(type);
 		let confirmstep = this.WizardConfirmStep[this.ActiveStep] !== undefined ? JSON.parse(this.WizardConfirmStep[this.ActiveStep]) : '';
 		if (!this.isSubWizard && confirmstep != '' && confirmstep.confirm && !confirm(confirmstep.message) && type == 'next') {
 			return false;
@@ -174,7 +177,7 @@ class WizardComponent {
 				const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
 				await this.DuplicateRow(ev);
 				if (this.ActiveStep == 0) {
-					return await this.FinishRequest(url, false);
+					return this.FinishRequest(url, false);
 				}
 				return true;
 			}
@@ -213,13 +216,17 @@ class WizardComponent {
 				return this.FilterRows(ev);
 			}
 			if (this.WizardMode[this.ActiveStep] == 'CREATEPRODUCTCOMPONENT') {
+				if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length != 0) {
+					this.CreatedRows.push(this.CheckedRows[this.ActiveStep]);
+				}
+				this.Info(type);
 				await this.Create_ProductComponent(ev);
 				if (this.steps == this.ActiveStep+1) {
 					await this.Finish();
 				} else {
 					const url = `${this.url}&wizardaction=CustomCreate&subaction=CustomOfferDetail`;
 					if (type == 'next') {
-						await this.FinishRequest(url, false);
+						this.FinishRequest(url, false);
 					}
 					return true;
 				}
@@ -267,10 +274,78 @@ class WizardComponent {
 		return true;
 	}
 
+	Info(type, mode = '') {
+		let list = '';
+		let activeStep = this.ActiveStep+1;
+		if (mode == 'save') {
+			activeStep = this.ActiveStep;
+		}
+		if (type == 'back') {
+			activeStep = this.ActiveStep-1;
+		}
+		if (this.WizardInfoFields[activeStep] == undefined) {
+			return false;
+		}
+		let flds = JSON.parse(this.WizardInfoFields[activeStep]);
+		if (flds.length == undefined) {
+			flds = [flds];
+		}
+		let insertedIds = [];
+		console.log(flds)
+		let headers = '';
+		for (let k in flds) {
+			headers += `
+			<th scope="col">
+				<div class="slds-truncate" title="Column 1">
+				${flds[k].label}
+				</div>
+			</th>`;
+		}
+		if (this.el(`wizard-columns-info-${activeStep}`)) {
+			this.el(`wizard-columns-info-${activeStep}`).innerHTML = headers;
+		}
+		for (let i in this.CreatedRows) {
+			this.CreatedRows[i].forEach(function(row, index) {
+				for (let j in row) {
+					if (insertedIds.includes(row[j].id)) {
+						continue;
+					}
+					insertedIds.push(row[j].id);
+					let fields = '';
+					for (let k in flds) {
+						fields += `
+						<td>
+							<div class="slds-truncate">
+								${row[j][flds[k].name]}
+							</div>
+						</td>`;
+					}
+					list += `<tr class="slds-hint-parent">${fields}</tr>`;
+				}
+			});
+		}
+		if (this.el(`wizard-info-${activeStep}`)) {
+			this.el(`wizard-info-${activeStep}`).innerHTML = list;
+		}
+	}
+
 	async FinishRequest(url, resetWizard) {
-		let response = await this.Request(url, 'post', {'masterid': this.RecordID});
+		let cStep = this.ActiveStep;
+		if (this.isSubWizard) {
+			cStep = this.ActiveStep-1;
+		}
+		let response = await this.Request(url, 'post', {
+			'masterid': this.RecordID,
+			'step': cStep,
+			'isSubWizard': this.isSubWizard
+		});
+		if (response == 'no_create') {
+			return false;
+		}
 		if (response) {
-			ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+			if (response != 'no_alert') {
+				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+			}
 			if (this.isModal) {
 				RLInstance[this.gridInstance].readData(1);
 				this.CheckedRows[this.ActiveStep] = [];
@@ -299,7 +374,9 @@ class WizardComponent {
 				}, 1000);
 			}
 		} else {
-			document.activeElement.innerHTML = alert_arr.JSLBL_FINISH;
+			if (document.activeElement.tagName.toLowerCase() == 'button') {
+				document.activeElement.innerHTML = alert_arr.JSLBL_FINISH;
+			}
 			ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 		}
 		if (this.el(`save-wizard-${this.ActiveStep}`) !== null) {
@@ -551,15 +628,26 @@ class WizardComponent {
 			modulename: this.WizardCurrentModule[this.ActiveStep]
 		});
 		if (response) {
+			if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length != 0) {
+				this.CreatedRows.push(this.CheckedRows[this.ActiveStep]);
+				this.Info(type);
+			}
 			this.Context = response;
 			if (this.MainSelectedId == 0) {
 				this.MainSelectedId = response.id;
 			}
 			if (this.WizardCustomFunction[this.ActiveStep] != '') {
+				let holdStep = this.ActiveStep;
+				if (this.isSubWizard) {
+					this.ActiveStep = this.ActiveStep-1;
+				}
 				this.CallCustomFunction();
+				this.ActiveStep = holdStep;
 			}
 			this.IsDuplicatedFrom[this.ActiveStep] = 1;
-			this.CheckedRows[this.ActiveStep][1]= [response];
+			if (this.CheckedRows[this.ActiveStep] !== undefined) {
+				this.CheckedRows[this.ActiveStep][1] = [response];
+			}
 			if (this.WizardFilterFromContext[this.ActiveStep] != '') {
 				this.FilterRows(ev, this.WizardFilterFromContext[this.ActiveStep], this.ActiveStep);
 			}
@@ -994,8 +1082,12 @@ class WizardComponent {
 			}
 			rows.push(ids);
 		}
+		if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length != 0) {
+			this.CreatedRows.push(this.CheckedRows[this.ActiveStep]);
+		}
 		await this.Request(url, 'post', rows).then(function (response) {
 			if (response) {
+				wizard.Info(type, 'save');
 				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 			} else {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
