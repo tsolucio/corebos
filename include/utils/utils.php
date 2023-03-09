@@ -57,7 +57,7 @@ define('RB_RECORD_UPDATED', 'update');
  * @return array with the variables
  */
 function getBrowserVariables(&$smarty) {
-	global $currentModule,$current_user,$default_charset,$theme,$adb,$current_language;
+	global $currentModule,$current_user,$default_charset,$theme,$adb,$current_language,$site_URL;
 	$vars = array();
 	$vars['gVTModule'] = $currentModule;
 	$vars['gVTTheme'] = $theme;
@@ -117,6 +117,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('SW_MD5', $swmd5);
 		$smarty->assign('corebos_browsertabID', $corebos_browsertabID);
 		$smarty->assign('gVTviewType', isset($_REQUEST['action']) ? vtlib_purify($_REQUEST['action']) : '');
+		$smarty->assign('gVTsiteUrl', $site_URL);
 	}
 }
 
