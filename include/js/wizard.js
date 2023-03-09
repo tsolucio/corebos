@@ -291,7 +291,6 @@ class WizardComponent {
 			flds = [flds];
 		}
 		let insertedIds = [];
-		console.log(flds)
 		let headers = '';
 		for (let k in flds) {
 			headers += `
@@ -591,7 +590,7 @@ class WizardComponent {
 							let res = JSON.parse(response);
 							if (res.success) {
 								ev.instance.readData(page);
-								wizard.CheckRows(wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].getPagination()._options);
+								wizard.CheckRows(page);
 							} else {
 								ldsNotification.show(alert_arr.ERROR, alert_arr.Failed, 'error');
 							}
@@ -962,7 +961,7 @@ class WizardComponent {
 				}
 			}
 			if (page !== null) {
-				wizard.CheckRows(page._options);
+				wizard.CheckRows(page._currentPage);
 			}
 		}, 1000);
 	}
@@ -975,7 +974,13 @@ class WizardComponent {
 		if (this.CheckedRows[this.ActiveStep] === undefined) {
 			return false;
 		}
-		const _currentPage = this.CheckedRows[this.ActiveStep][ev.page];
+		let pnum = 1;
+		if (typeof ev == 'number') {
+			pnum = page;
+		} else {
+			pnum = ev.page;
+		}
+		const _currentPage = this.CheckedRows[this.ActiveStep][pnum];
 		for (let i in _currentPage) {
 			this.WizardInstance[`wzgrid${this.ActiveStep}`].check(_currentPage[i].rowKey);
 		}
