@@ -349,7 +349,7 @@ class WizardComponent {
 				RLInstance[this.gridInstance].readData(1);
 				this.CheckedRows[this.ActiveStep] = [];
 				this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
-				if (resetWizard) {
+				if (resetWizard && !this.isSubWizard) {
 					ldsModal.close();
 					this.ActiveStep = 0;
 					this.IsDuplicatedFrom = [];
@@ -362,8 +362,8 @@ class WizardComponent {
 					localStorage.removeItem('currentWizardActive');
 				} else {
 					//if we click "save" make sure that "finish" will not create twice records
-					if (this.steps == this.ActiveStep+1) {
-						let nextBtn = this.el('btn-next');
+					let nextBtn = this.el('btn-next');
+					if (nextBtn != null && this.steps == this.ActiveStep+1) {
 						nextBtn.setAttribute('onclick', 'wizard.CloseModal()');
 					}
 				}
@@ -411,7 +411,9 @@ class WizardComponent {
 				await this.CallCustomFunction();
 				await this.FinishRequest(url, resetWizard);
 				this.CheckedRows[this.ActiveStep] = [];
-				this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
+				if (this.WizardInstance[`wzgrid${this.ActiveStep}`] !== undefined) {
+					this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
+				}
 			} else {
 				await this.FinishRequest(url, resetWizard);
 			}
@@ -1093,7 +1095,9 @@ class WizardComponent {
 		await this.Request(url, 'post', rows).then(function (response) {
 			if (response) {
 				wizard.Info(type, 'save');
-				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+				if (response.length > 0) {
+					ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
+				}
 			} else {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 			}
