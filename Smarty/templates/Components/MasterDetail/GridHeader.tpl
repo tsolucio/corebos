@@ -56,16 +56,11 @@
 </div>
 	<script>
 
-		const blockToggleBtn = document.getElementById("btn-{$MasterDetailLayoutMap.mapname}");
-		const id = blockToggleBtn?.dataset?.id;
-
-		setTimeout( () => {
-			blockToggleBtn.click();
-		}, 3000);
-
-		setTimeout( () => {
-			masterdetailwork.MDToggle('', id);
-		}, 4000);
+		window.addEventListener('load', (event) => {
+			if (dtlViewReload(document.getElementById('module') != null && document.getElementById('record').value != null)) {
+				dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
+			}
+		});
 
 	</script>
 </div>

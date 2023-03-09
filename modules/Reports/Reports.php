@@ -61,7 +61,9 @@ class Reports extends CRMEntity {
 	public $stdselectedcolumn;
 
 	public $primodule;
+	public $primarymodule;
 	public $secmodule;
+	public $secondarymodule;
 	public $columnssummary;
 	public $is_editable;
 	public $reporttype;
@@ -70,6 +72,8 @@ class Reports extends CRMEntity {
 	public $reportdescription;
 	public $folderid;
 	public $module_blocks;
+	public $module_id;
+	public $related_modules;
 
 	public $pri_module_columnslist;
 	public $sec_module_columnslist;
