@@ -70,4 +70,11 @@
 	<classname>addYesNoFieldsToCbSurveyQuestion</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>ketlinapuci</author>
+	<description>Add new blocks and certificate field and email settings option in Credentials</description>
+	<filename>build/changeSets/2023/addCertificateFieldandEmailSettingOptionToCbCredentials.php</filename>
+	<classname>addCertificateFieldandEmailSettingOptionToCbCredentials</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
