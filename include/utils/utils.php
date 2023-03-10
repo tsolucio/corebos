@@ -3918,6 +3918,10 @@ function validateClickHouseSecret($signedvalue, $signedkey, $input) {
 	return ($receivedSignature === $computedSignature);
 }
 
+/**
+ * Converts /home/malik-ben/Desktop/dockerized_corebos/www/corebos/include/utils/utils.php
+ * to: include/utils/utils.php
+ */
 function convertPathFromAbsoluteToRelative($absolutePath) {
 	global $root_directory;
 	$prefix_pos = strpos($absolutePath, $root_directory);
@@ -3925,5 +3929,16 @@ function convertPathFromAbsoluteToRelative($absolutePath) {
 		return '';
 	}
 	return substr($absolutePath, $prefix_pos + strlen($root_directory));
+}
+
+/**
+ * Converts this: http://localhost:8880/corebos/storage/2023/March/week1/45361_image.png
+ * to: /storage/2023/March/week1/45361_image.png
+ */
+function convertFileUrlToRelativePath($url) {
+	$path = parse_url($url, PHP_URL_PATH);
+	$path_parts = explode('/', $path);
+	$result = implode('/', array_slice($path_parts, 2));
+	return $result;
 }
 ?>
