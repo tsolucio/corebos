@@ -303,8 +303,9 @@ class WizardComponent {
 		if (this.el(`wizard-columns-info-${activeStep}`)) {
 			this.el(`wizard-columns-info-${activeStep}`).innerHTML = headers;
 		}
-		for (let i in this.CreatedRows) {
-			this.CreatedRows[i].forEach(function(row, index) {
+		const CreatedRows = this.CreatedRows.map((_, i, arr) => arr[arr.length - 1 - i]);
+		for (let i in CreatedRows) {
+			CreatedRows[i].forEach(function(row, index) {
 				for (let j in row) {
 					if (insertedIds.includes(row[j].id)) {
 						continue;
@@ -442,6 +443,7 @@ class WizardComponent {
 		this.FormIDS = [];
 		this.Suboperation = [];
 		this.TreeViewID = [];
+		this.CreatedRows = [];
 		localStorage.removeItem('currentWizardActive');
 	}
 
