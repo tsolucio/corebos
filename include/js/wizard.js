@@ -978,7 +978,7 @@ class WizardComponent {
 		}
 		let pnum = 1;
 		if (typeof ev == 'number') {
-			pnum = page;
+			pnum = ev;
 		} else {
 			pnum = ev.page;
 		}
