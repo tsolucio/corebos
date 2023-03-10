@@ -348,7 +348,9 @@ class WizardComponent {
 			if (this.isModal) {
 				RLInstance[this.gridInstance].readData(1);
 				this.CheckedRows[this.ActiveStep] = [];
-				this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
+				if (this.WizardInstance[`wzgrid${this.ActiveStep}`] !== undefined) {
+					this.WizardInstance[`wzgrid${this.ActiveStep}`].uncheckAll();
+				}
 				if (resetWizard && !this.isSubWizard) {
 					ldsModal.close();
 					this.ActiveStep = 0;
@@ -1092,10 +1094,13 @@ class WizardComponent {
 		if (this.CheckedRows[this.ActiveStep] !== undefined && this.CheckedRows[this.ActiveStep].length != 0) {
 			this.CreatedRows.push(this.CheckedRows[this.ActiveStep]);
 		}
+		if (rows.length == 0) {
+			return false;
+		}
 		await this.Request(url, 'post', rows).then(function (response) {
 			if (response) {
 				wizard.Info(type, 'save');
-				if (response.length > 0) {
+				if (response) {
 					ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 				}
 			} else {
