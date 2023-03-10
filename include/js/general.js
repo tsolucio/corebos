@@ -7718,6 +7718,21 @@ function cbdzdragFinish() {
 	document.getElementById('corebosdropzonemsg').style.display = 'none';
 }
 
+async function downloadFilesAsZip(fileName, urls) {
+	var baseurl = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=compressAndDownloadFiles&zipFileName=test.zip&filesToBeCompressed=${JSON.stringify(urls)}`;
+	fetch(baseurl)
+	.then(response => response.blob())
+	.then(blob => {
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `${fileName}.zip`;
+		document.body.appendChild(a);
+		a.click();
+		a.remove();
+	});
+}
+
 var cbdzClearDrag = null;
 
 window.addEventListener('DOMContentLoaded', () => {
