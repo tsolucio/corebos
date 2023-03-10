@@ -40,25 +40,25 @@ class addCertificateFieldandEmailSettingOptionToCbCredentials extends cbupdaterW
 							'uitype'=>1,
 							'label' => 'server'
 						),
-						'LBL_USERNAME' => array(
+						'emusername' => array(
 							'columntype'=>'varchar(100)',
 							'typeofdata'=>'V~O',
 							'uitype'=>1,
 							'label' => 'LBL_USERNAME'
 						),
-						'LBL_PASWRD' => array(
+						'empassword' => array(
 							'columntype'=>'varchar(100)',
 							'typeofdata'=>'V~O',
 							'uitype'=>1,
 							'label' => 'LBL_PASWRD'
 						),
-						'LBL_FROM_EMAIL_FIELD' => array(
+						'emfrom' => array(
 							'columntype'=>'varchar(50)',
 							'typeofdata'=>'V~O',
 							'uitype'=>13,
 							'label' => 'LBL_FROM_EMAIL_FIELD'
 						),
-						'LBL_REQUIRES_AUTHENT' => array(
+						'emauth' => array(
 							'columntype'=>'varchar(50)',
 							'typeofdata'=>'V~O',
 							'uitype'=>15,
