@@ -685,6 +685,10 @@ $app_strings = array(
 'LBL_END_DATE_TIME'=>'End Date & Time (System Date)',
 'LBL_CREATE_MERGE_TEMPLATE'=>'Create Mail Merge templates ',
 'LBL_IMG_FORMATS'=>'(Only jpg, gif, bmp and png images)',
+'LBL_IMG_FORMATS'=>'(Only jpg, gif, bmp and png images)',
+'LBL_GENERATE_LINK'=>'generate share link',
+'LBL_DOWNLOAD_ALL_IMAGES'=>'download all images (zip format)',
+'LBL_CLICK_TO_COPY'=>'Click to Copy',
 
 //Added for Taxmode in detail view of Product Details.
 'group'=>'Group',

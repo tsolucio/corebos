@@ -93,3 +93,54 @@
 .js-Carousel .js-Carousel-btnStop {
   left: 100px;
 }
+#imageSliderButtonsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#imageSliderButtons {
+  display: flex;
+  justify-content: center;
+}
+#imageSliderButtons div {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 15px;
+}
+#imageSliderShareLinkPopupContainer {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 1000;
+  /* background-color: rgba(255, 255, 255, 0.5); */
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+#imageSliderShareLinkPopup {
+  position: relative;
+  background-color: white;
+  width: 500px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  text-align: center;
+}
+#imageSliderClosePopup {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  top: -15px;
+  right: -15px;
+  font-size: large;
+  font-weight: bold;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer;
+}
