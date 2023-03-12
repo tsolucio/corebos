@@ -264,14 +264,14 @@ function vtws_getReferenceValue($strids, $user) {
 				$rs1 = $adb->pquery('select foldername from vtiger_documentfolders where documentfoldersid=?', array($realid));
 				$result[$id]=array(
 					'module'=>$modulename,
-					'reference'=>html_entity_decode($adb->query_result($rs1, 0, 0), ENT_QUOTES, $default_charset),
+					'reference'=>($rs1 && $adb->num_rows($rs1)>0) ? html_entity_decode($adb->query_result($rs1, 0, 0), ENT_QUOTES, $default_charset) : '',
 					'cbuuid' => '',
 				);
 			} elseif ($modulename=='Groups') {
 				$rs1 = $adb->pquery('select groupname from vtiger_groups where groupid=?', array($realid));
 				$result[$id]=array(
 					'module'=>$modulename,
-					'reference'=>$adb->query_result($rs1, 0, 0),
+					'reference'=>($rs1 && $adb->num_rows($rs1)>0) ? $adb->query_result($rs1, 0, 0) : '',
 					'cbuuid' => '',
 				);
 			} else {
