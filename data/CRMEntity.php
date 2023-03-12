@@ -312,6 +312,7 @@ class CRMEntity {
 					$adb->pquery($upd, array($this->id));
 				} elseif (!empty($_REQUEST['__cbisduplicatedfromrecordid'])) {
 					$attachmentname = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
+					$attachmentname = str_replace(' ', '_', $attachmentname);
 					$isduplicatedfromrecordid = vtlib_purify($_REQUEST['__cbisduplicatedfromrecordid']);
 					$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel
 					 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid
@@ -1463,7 +1464,7 @@ class CRMEntity {
 
 		if (isset($_REQUEST['WizardAction']) && $_REQUEST['WizardAction'] == 'duplicate') {
 			$step = vtlib_purify($_REQUEST['WizardStep']) - 1;
-			coreBOS_Session::set('DuplicatedRecords^'.$step.'^'.$this->id, $this->id);
+			coreBOS_Settings::setSetting('WizardRecords'.$current_user->id.'^'.$step, $this->id);
 		}
 
 		//Event triggering code
@@ -4019,6 +4020,14 @@ class CRMEntity {
 			return $modObj->crmentityTable;
 		}
 		return (($modObj->crmentityTable != 'vtiger_crmentity') ? $modObj->crmentityTable. ' as vtiger_crmentity':'vtiger_crmentity');
+	}
+
+	public function isDeleted($id) {
+		global $adb;
+		$result = $adb->pquery("select deleted from $this->crmentityTable where crmid=?", array(
+			$id
+		));
+		return boolval($adb->query_result($result, 0, 'deleted'));
 	}
 }
 ?>

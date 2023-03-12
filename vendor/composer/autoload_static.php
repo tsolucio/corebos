@@ -11,8 +11,8 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '78d47739fff607f33066e6259f091845' => __DIR__ . '/..' . '/laminas/laminas-cache/autoload/patternPluginManagerPolyfill.php',
-        '9c67151ae59aff4788964ce8eb2a0f43' => __DIR__ . '/..' . '/clue/stream-filter/src/functions_include.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        '9c67151ae59aff4788964ce8eb2a0f43' => __DIR__ . '/..' . '/clue/stream-filter/src/functions_include.php',
         '8cff32064859f4559445b89279f3199c' => __DIR__ . '/..' . '/php-http/message/src/filters.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
@@ -38,6 +38,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'p' => 
         array (
             'phpseclib\\' => 10,
+        ),
+        'j' => 
+        array (
+            'josemmo\\Facturae\\' => 17,
         ),
         'V' => 
         array (
@@ -162,6 +166,10 @@ class ComposerStaticInitc853d184ee53a096ee1e1bd1115c51dd
         'phpseclib\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
+        'josemmo\\Facturae\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/josemmo/facturae-php/src',
         ),
         'Vaites\\ApacheTika\\' => 
         array (

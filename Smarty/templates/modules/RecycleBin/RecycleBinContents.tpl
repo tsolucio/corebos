@@ -132,41 +132,7 @@
 
 {if isset($smarty.request.mode) and $smarty.request.mode eq 'ajax'}
 	<div id="search_ajax" style="display:none;">
-	<table width="80%" cellpadding="5" cellspacing="0" class="searchUIBasic small" align="center" border=0>
-	<tr>
-		<td class="searchUIName small" nowrap align="left">
-			<span class="moduleName">{$APP.LBL_SEARCH}</span><br>
-		</td>
-		<td class="small" nowrap align=right><b>{$APP.LBL_SEARCH_FOR}</b></td>
-		<td class="small"><input type="text" class="txtBox" style="width:120px" name="search_text"></td>
-		<td class="small" nowrap><b>{$APP.LBL_IN}</b>&nbsp;</td>
-		<td class="small" nowrap>
-			<div id="basicsearchcolumns_real">
-				<select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">
-				{html_options options=$SEARCHLISTHEADER }
-				</select>
-			</div>
-			<input type="hidden" name="searchtype" value="BasicSearch">
-			<input type="hidden" name="module" value="{$SELECTED_MODULE}">
-			<input type="hidden" name="action" value="index">
-			<input type="hidden" name="query" value="true">
-			<input type="hidden" name="search_cnt">
-		</td>
-		<td class="small" nowrap>
-			<input name="submit" type="button" class="crmbutton small create" onClick="callRBSearch('Basic');" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
-		</td>
-		<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','')">[x]</td>
-	</tr>
-	<tr>
-		<td colspan="7" align="center" class="small">
-			<table border=0 cellspacing=0 cellpadding=0 width=100%>
-				<tr>
-					{$ALPHABETICAL}
-				</tr>
-			</table>
-		</td>
-	</tr>
-	</table>
+	{include "modules/RecycleBin/RecycleBinSearch.tpl"}
+	</div>
 {/if}
-
 </form>

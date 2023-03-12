@@ -20,13 +20,24 @@
 <map>
 <title>Process Title</title>
 <operation></operation>
+<instantshow>0|1</instantshow>
+<subwizardmainfield>related_product</subwizardmainfield>
 <steps>
 	<step>
 		<title></title>
 		<description></description>
 		<sequence></sequence>
 		<detailviewlayoutmap>mapid</detailviewlayoutmap>
+		<suboperation></suboperation>
+		<module></module>
 		<filter>0|1</filter>
+		<info>
+			<field>
+				<label></label>
+				<name></name>
+			</field>
+			...
+		</info>
 		<validations>
 			<validation>
 				<validationmap>mapid</validationmap>
@@ -66,7 +77,17 @@ class Wizard extends processcbMap {
 			$step['description'] = (string)$s->description;
 			$step['sequence'] = (int)$s->sequence;
 			$step['detailviewlayoutmap'] = (string)$s->detailviewlayoutmap;
+			$step['suboperation'] = (string)$s->suboperation;
+			$step['module'] = (string)$s->module;
 			$step['filter'] = (string)$s->filter;
+			$step['info'] = empty($s->info) ? false : true;
+			$infofields = array();
+			if ($step['info']) {
+				foreach ((array)$s->info as $key => $value) {
+					$infofields[] = (array)$value;
+				}
+			}
+			$step['infofields'] = $infofields;
 			$validations = array();
 			if (isset($s->validations)) {
 				foreach ($s->validations->validation as $v) {
@@ -102,6 +123,8 @@ class Wizard extends processcbMap {
 		$this->mapping['totalsteps'] = count($steps);
 		$this->mapping['title'] = (isset($xml->title) ? (string)$xml->title : '');
 		$this->mapping['operation'] = (isset($xml->operation) ? (string)$xml->operation : '');
+		$this->mapping['instantshow'] = (isset($xml->instantshow) ? boolval((string)$xml->instantshow) : false);
+		$this->mapping['subwizardmainfield'] = (isset($xml->subwizardmainfield) ? (string)$xml->subwizardmainfield : '');
 		usort($steps, function ($a, $b) {
 			return $a['sequence'] > $b['sequence'] ? 1 : -1;
 		});

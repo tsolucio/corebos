@@ -512,6 +512,43 @@ class ClickHouseDatabase extends PearDatabase {
 		return false;
 	}
 
+	public function getMetaColumns($tablename) {
+		$rsf = $this->chdatabase->select("DESCRIBE $tablename;");
+		try {
+			$rsf->error();
+		} catch (\Throwable $th) {
+			$this->lastResult = $rsf;
+			return false;
+		}
+		$rspk = $this->chdatabase->select("SELECT name FROM system.columns WHERE table='$tablename' and is_in_primary_key=1;");
+		$pks = array();
+		while ($pk = $rspk->FetchRow()) {
+			$pks[] = $pk['name'];
+		}
+		$field_array = array();
+		while ($meta = $rsf->FetchRow()) {
+			$mf = new ADOFieldObject();
+			$mf->name = $meta['name'];
+			$mf->max_length = $meta['type'] == 'String' ? 200 : -1;
+			$mf->type = $meta['type'];
+			$mf->scale = null;
+			$mf->not_null = true;
+			$mf->primary_key = in_array($meta['name'], $pks);
+			$mf->auto_increment = false;
+			$mf->binary = false;
+			$mf->unsigned = false;
+			$mf->zerofill = false;
+			$mf->has_default = false;
+			$mf->default_type = '';
+			$mf->default_expression = '';
+			$mf->comment = '';
+			$mf->codec_expression = '';
+			$mf->ttl_expression = '';
+			$field_array[$meta['name']] = $mf;
+		}
+		return $field_array;
+	}
+
 	public function getColumnNames($tablename) {
 		$rsf = $this->chdatabase->select("DESCRIBE $tablename;");
 		try {

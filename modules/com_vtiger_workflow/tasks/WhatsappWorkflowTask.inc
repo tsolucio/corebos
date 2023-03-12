@@ -41,7 +41,7 @@ class WhatsappWorkflowTask extends VTTask {
 				$docrs = $adb->pquery($query, array($docid));
 				if ($docrs && $adb->num_rows($docrs)==1) {
 					$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
-					$this->attachmentsinfo[] = $attname;
+					$this->attachmentsinfo[] = decode_html($attname);
 					$this->dzattinfo[] = array(
 						'docid' => $docid,
 						'name' => $adb->query_result($docrs, 0, 'filename'),

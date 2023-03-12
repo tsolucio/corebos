@@ -11,6 +11,7 @@ var relatedlistgrid = {
 	WizardWorkflows: [],
 	NextStep: [],
 	PopupAction: [],
+	CreateView: [],
 
 	delete: (Grid, module, recordid, fieldname) => {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
@@ -43,16 +44,16 @@ var relatedlistgrid = {
 		}, 1300);
 	},
 
-	upsert: (Grid, module, recordid, CurrentRecord = '', related_fieldname) => {
+	upsert: (Grid, module, recordid, CurrentRecord = '', related_fieldname, cbfromid = 0) => {
 		let record = recordid || '';
 		if (record!='') {
 			record = '&record='+record;
 		}
 		if (CurrentRecord!='') {
-			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&RLFieldName='+related_fieldname+'&'+related_fieldname+'='+CurrentRecord;
+			CurrentRecord = '&MDCurrentRecord='+CurrentRecord+'&RLFieldName='+related_fieldname+'&'+related_fieldname+'='+CurrentRecord+'&cbfromid='+cbfromid;
 		} else if (document.getElementById('record')) {
 			let recid = document.getElementById('record').value;
-			CurrentRecord = '&MDCurrentRecord='+recid+'&'+related_fieldname+'='+recid;
+			CurrentRecord = '&MDCurrentRecord='+recid+'&'+related_fieldname+'='+recid+'&cbfromid='+cbfromid;
 		}
 		let rlgridinfo = JSON.stringify({
 			'name': Grid,
@@ -120,7 +121,7 @@ var relatedlistgrid = {
 			}
 			const el = `
 			<div class="cbds-tooltip__wrapper--inner cbds-tooltip__margin--left">
-				<section class="slds-popover slds-nubbin_bottom" role="dialog">
+				<section class="slds-popover slds-nubbin_bottom-left" role="dialog">
 					<header class="slds-popover__header" style="background: #1589ee;color: white">
 						<div class="slds-media slds-media_center slds-has-flexi-truncate">
 						<div class="slds-media__figure">
@@ -160,18 +161,18 @@ var relatedlistgrid = {
 		let getWizardActive = localStorage.getItem('currentWizardActive');
 		let modalContainer = document.getElementById('global-modal-container');
 		if (getWizardActive == null) {
-			localStorage.setItem('currentWizardActive', id);
+			localStorage.setItem('currentWizardActive', id+mapid);
 			if (modalContainer) {
 				ldsModal.close();
 			}
 		} else {
-			if (getWizardActive == id) {
+			if (getWizardActive == id+mapid) {
 				if (modalContainer) {
 					modalContainer.style.display = '';
 					return false;
 				}
 			} else {
-				localStorage.setItem('currentWizardActive', id);
+				localStorage.setItem('currentWizardActive', id+mapid);
 				if (modalContainer) {
 					ldsModal.close();
 				}
@@ -191,7 +192,8 @@ var relatedlistgrid = {
 			relatedlistgrid.Request(url, 'post', {
 				grid: grid,
 				recordid: id,
-				isModal: true
+				isModal: true,
+				modname: module,
 			}).then(function (response) {
 				ldsModal.close();
 				ldsModal.show('Wizard', response, 'large', '', '', false);
@@ -268,7 +270,8 @@ class RLinkRender {
 					props.value = `<span>${props.value}</span>
 					<span class="slds-icon_container slds-float_right slds-m-right_small cbds-tooltip__trigger slds-p-left_xx-small"
 						id="cbds-tooltip__trigger-${parent_id}"
-						onmouseover="relatedlistgrid.Tooltip(${parent_id}, '${props.grid.el.id}', ${rowKey}, '${parent_module}')">
+						onmouseover="relatedlistgrid.Tooltip(${parent_id}, '${props.grid.el.id}', ${rowKey}, '${parent_module}')"
+						style="position: absolute">
 						<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 						</svg>
@@ -327,129 +330,270 @@ class RLActionRender {
 			related_parent_fieldname = related_fieldname;
 		}
 		el = document.createElement('span');
-		let actions = '<div class="slds-button-group" role="group">';
-		let wizard = JSON.parse(relatedlistgrid.Wizard[`${props.grid.el.id}`]);
-		if (wizard[parent_module] !== undefined && wizard[parent_module] != '') {
-			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="relatedlistgrid.openWizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module]}, '${parent_module}');">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
-				</svg>
-			</button>`;
+		let className = 'slds-button_icon-border-filled';
+		if (parent_module == module) {
+			className = 'slds-button_icon-brand';
 		}
+		let popupbutton = '';
+		let popupactions = JSON.parse(relatedlistgrid.PopupAction[`${props.grid.el.id}`]);
+		let createview = JSON.parse(relatedlistgrid.CreateView[`${props.grid.el.id}`]);
+		if (parent_module == '' && popupactions[related_child] !== undefined) {
+			if (popupactions[related_child].conditions.fieldname != '') {
+				if (popupactions[related_child].conditions.fieldname.indexOf('.') === -1) {
+					//access direct record values
+					let popupid = 0;
+					let fieldname = popupactions[related_child].conditions.fieldname;
+					let popup = popupactions[related_child].conditions.popup;
+					let fldvalue = props.grid.getValue(rowKey, `${fieldname}`);
+					let fldvalue_raw = props.grid.getValue(rowKey, `${fieldname}_raw`);
+					if (fldvalue != null && popup != '') {
+						for (let i in popup.values) {
+							if (popup.values[i].value == fldvalue || popup.values[i].value == fldvalue_raw) {
+								popupid = popup.values[i].id;
+								break;
+							}
+						}
+						if (popupid > 0) {
+							popupbutton += `
+							<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupid}|${related_child}|${recordid}')">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+								</svg>
+							</button>`;
+						}
+					}
+				}
+			} else {
+				//no conditions: show action in evey row
+				popupbutton += `
+				<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+					</svg>
+				</button>`;
+			}
+		}
+		let actions = `
+		<div class="slds-button-group" role="group">
+			${popupbutton}
+			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
+				<button type="button" class="slds-button slds-button_icon ${className}" aria-haspopup="true" aria-expanded="true">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
+					</svg>
+					<span class="slds-assistive-text">${alert_arr.LBL_SHOW_MORE}</span>
+				</button>
+				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" style="width: 8rem;">
+				<ul class="slds-dropdown__list" role="menu">`;
 		if (parent_module != '') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Create']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}', ${recordid});" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+					</svg>
+					<span class="slds-truncate">${alert_arr['JSLBL_Create']}</span>
+				</a>
+			</li>
+			`;
 		} else {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}');" title="${alert_arr['JSLBL_Create']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${recordid}, '${related_fieldname}', ${recordid});" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+					</svg>
+					<span class="slds-truncate">${alert_arr['JSLBL_Create']}</span>
+				</a>
+			</li>`;
 			if (relatedlistgrid.findRelatedField(related_child, props.grid.el.id) == '') {
-				actions = '<div class="slds-button-group" role="group">';
+				actions = `
+				<div class="slds-button-group" role="group">
+				${popupbutton}
+				<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
+					<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
+						</svg>
+						<span class="slds-assistive-text">${alert_arr.LBL_SHOW_MORE}</span>
+					</button>
+					<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions" style="width: 8rem;">
+					<ul class="slds-dropdown__list" role="menu">`;
+			}
+		}
+		if (createview[related_child] !== undefined) {
+			if (createview[related_child].conditions.fieldname != '') {
+				if (createview[related_child].conditions.fieldname.indexOf('.') === -1) {
+					//access direct record values
+					let docreate = 0;
+					let fieldname = createview[related_child].conditions.fieldname;
+					let create = createview[related_child].conditions.create;
+					let fldvalue = props.grid.getValue(rowKey, `${fieldname}`);
+					let fldvalue_raw = props.grid.getValue(rowKey, `${fieldname}_raw`);
+					if (fldvalue != null && create != '') {
+						for (let i in create.value) {
+							if (create.value[i] == fldvalue || create.value[i] == fldvalue_raw) {
+								docreate = 1;
+								break;
+							}
+						}
+						if (docreate == 1) {
+							actions += `
+							<li class="slds-dropdown__item" id="create__${child_id}">
+								<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${parent_of_child}, '${related_parent_fieldname}', ${recordid});" role="menuitem" tabindex="0">
+									<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+									</svg>
+									<span class="slds-truncate">${alert_arr['JSLBL_Create']}</span>
+								</a>
+							</li>`;
+						}
+					}
+				} else {
+					//render from backend
+					actions += `<li class="slds-dropdown__item" id="create__${recordid}"></li>`;
+				}
+			}
+		}
+		let wizard = JSON.parse(relatedlistgrid.Wizard[`${props.grid.el.id}`]);
+		if (wizard[parent_module] !== undefined && wizard[parent_module] != '') {
+			if (wizard[parent_module].length === undefined && wizard[parent_module].id !== undefined) {
+					actions += `
+					<li class="slds-dropdown__item">
+						<a onclick="relatedlistgrid.openWizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module].id}, '${parent_module}');" role="menuitem" tabindex="0">
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+							</svg>
+							<span class="slds-truncate">${wizard[parent_module].label}</span>
+						</a>
+					</li>`;
+			} else {
+				for (let i in wizard[parent_module]) {
+					actions += `
+					<li class="slds-dropdown__item">
+						<a onclick="relatedlistgrid.openWizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module][i].id}, '${parent_module}');" role="menuitem" tabindex="0">
+							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+							</svg>
+							<span class="slds-truncate">${wizard[parent_module][i].label}</span>
+						</a>
+					</li>`;
+				}
 			}
 		}
 		if (permissions.parent_edit == 'yes') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${module}', ${recordid});" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+					</svg>
+					<span class="slds-truncate">${alert_arr['JSLBL_Edit']}</span>
+				</a>
+			</li>
+			`;
 		}
 		if (permissions.child_edit == 'yes') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${module}', ${recordid});" title="${alert_arr['JSLBL_Edit']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${module}', ${recordid});" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+					</svg>
+					<span class="slds-truncate">${alert_arr['JSLBL_Edit']}</span>
+				</a>
+			</li>`;
 		}
 		const parent_delete = props.columnInfo.renderer.options.parent_delete;
 		const child_delete = props.columnInfo.renderer.options.child_delete;
 		if (parent_delete == 'O' && permissions.parent_edit == 'yes') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('${props.grid.el.id}', '${parent_module}', ${recordid}, '${related_parent_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.delete('${props.grid.el.id}', '${parent_module}', ${recordid}, '${related_parent_fieldname}');" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left cbds-color-compl-red--sober" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					<span class="slds-truncate cbds-color-compl-red--sober">${alert_arr['JSLBL_Delete']}</span>
+				</a>
+			</li>
+			`;
 		}
 		if (child_delete == 'O' && permissions.child_edit == 'yes') {
 			actions += `
-			<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="relatedlistgrid.delete('${props.grid.el.id}', '${child_module}', ${recordid}, '${related_parent_fieldname}');" title="${alert_arr['JSLBL_Delete']}">
-				<svg class="slds-button__icon" aria-hidden="true">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-				</svg>
-			</button>`;
+			<li class="slds-dropdown__item">
+				<a onclick="relatedlistgrid.delete('${props.grid.el.id}', '${child_module}', ${recordid}, '${related_parent_fieldname}');" role="menuitem" tabindex="0">
+					<svg class="slds-button__icon slds-button__icon_left cbds-color-compl-red--sober" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					<span class="slds-truncate cbds-color-compl-red--sober">${alert_arr['JSLBL_Delete']}</span>
+				</a>
+			</li>
+			`;
 		}
-		let popupactions = JSON.parse(relatedlistgrid.PopupAction[`${props.grid.el.id}`]);
 		if (parent_module == '' && popupactions[related_child] !== undefined) {
 			if (popupactions[related_child].conditions.fieldname != '') {
 				let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=PopupAction';
-				if (popupactions[related_child].conditions.fieldname.indexOf('.') !== -1) {
+				if (popupactions[related_child].conditions.fieldname.indexOf('.') !== -1 && popupactions[related_child].conditions.popup != '') {
 					//get the value in a related module
 					let minfo = popupactions[related_child].conditions.fieldname.split('.');
+					let popupvalues = popupactions[related_child].conditions.popup.values;
+					if (popupvalues.length == undefined) {
+						popupvalues = [popupactions[related_child].conditions.popup.values];
+					}
 					relatedlistgrid.Request(url, 'post', {
 						recordid: recordid,
 						module: related_child,
 						relatedmodule: minfo[0],
 						fieldname: minfo[1],
 						relatedfield: popupactions[related_child].conditions.relatedfield,
-						values: popupactions[related_child].conditions.values,
-					}).then(function (response) {
-						if (response == 'true') {
+						values: popupvalues,
+					}).then(function (popupid) {
+						if (popupid !== 'false') {
 							actions += `
-							<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
+							<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" onclick="getProcessInfo('','DetailView','Save','','${popupid}|${related_child}|${recordid}')">
 								<svg class="slds-button__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 								</svg>
 							</button>`;
-							actions += '</div>';
 							el.innerHTML = actions;
 						}
 					});
-				} else {
-					//access direct record values
-					let fieldname = popupactions[related_child].conditions.fieldname;
-					let values = popupactions[related_child].conditions.values;
-					let fldvalue = props.grid.getValue(rowKey, `${fieldname}`);
-					let fldvalue_raw = props.grid.getValue(rowKey, `${fieldname}_raw`);
-					if (fldvalue != null) {
-						if (typeof values.value == 'string') {
-							values.value = [values.value];
-						}
-						if (values.value.includes(fldvalue) || values.value.includes(fldvalue_raw)) {
-							actions += `
-							<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
-								<svg class="slds-button__icon" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-								</svg>
-							</button>`;
-							actions += '</div>';
-						}
-					}
 				}
-			} else {
-				//no conditions: show action in evey row
-				actions += `
-				<button type="button" class="slds-button slds-button_icon slds-button_icon-brand" onclick="getProcessInfo('','DetailView','Save','','${popupactions[related_child].id}|${related_child}|${recordid}')">
-					<svg class="slds-button__icon" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-					</svg>
-				</button>`;
-				actions += '</div>';
 			}
 		}
+		actions += `</ul></div></div></div>`;
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);
+		if (createview[related_child] !== undefined) {
+			if (createview[related_child].conditions.fieldname != '') {
+				if (createview[related_child].conditions.fieldname.indexOf('.') !== -1) {
+					let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=CreateView';
+					//get the value in a related module
+					let cinfo = createview[related_child].conditions.fieldname.split('.');
+					relatedlistgrid.Request(url, 'post', {
+						recordid: recordid,
+						module: related_child,
+						relatedmodule: cinfo[0],
+						fieldname: cinfo[1],
+						relatedfield: createview[related_child].conditions.relatedfield,
+						values: createview[related_child].conditions.create.value,
+					}).then(function (response) {
+						if (response == 'true') {
+							let link = `
+							<a onclick="relatedlistgrid.upsert('${props.grid.el.id}', '${related_child}', '', ${parent_of_child}, '${related_parent_fieldname}', ${recordid});" role="menuitem" tabindex="0">
+								<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+								</svg>
+								<span class="slds-truncate">${alert_arr['JSLBL_Create']}</span>
+							</a>`;
+							document.getElementById(`create__${recordid}`).innerHTML = link;
+						}
+					});
+
+				}
+			}
+		}
 	}
 
 	getElement() {

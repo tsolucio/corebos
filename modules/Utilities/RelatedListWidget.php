@@ -56,6 +56,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$WizardWorkflows = array();
 		$NextStep = array();
 		$PopupAction = array();
+		$CreateView = array();
 		$functionName = '';
 		$MainModule = '';
 		$MainRelateField = '';
@@ -100,11 +101,16 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 				$Tooltips[$module['name']] = $module['tooltip']['fields'];
 			}
 			$Wizard[$module['name']] = '';
+			if (isset($module['wizards'])) {
+				foreach ((array)$module['wizards'] as $wz) {
+					$Wizard[$module['name']] = (array)$wz;
+				}
+			}
 			if (isset($module['wizard'])) {
 				$Wizard[$module['name']] = $module['wizard'];
 			}
-			$NextStep[$module['name']] = true;
-			if (isset($module['wizard'])) {
+			$NextStep[$module['name']] = false;
+			if (isset($module['nextstep'])) {
 				$NextStep[$module['name']] = boolval($module['nextstep']);
 			}
 			if (isset($module['workflows'])) {
@@ -112,6 +118,9 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 			}
 			if (isset($module['popupaction'])) {
 				$PopupAction[$module['name']] = $module['popupaction'];
+			}
+			if (isset($module['createview'])) {
+				$CreateView[$module['name']] = $module['createview'];
 			}
 			$idx++;
 		}
@@ -131,6 +140,7 @@ class RelatedListWidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('WizardWorkflows', json_encode($WizardWorkflows));
 		$smarty->assign('NextStep', json_encode($NextStep));
 		$smarty->assign('PopupAction', json_encode($PopupAction));
+		$smarty->assign('CreateView', json_encode($CreateView));
 		$smarty->assign('mapname', $mapname);
 		$smarty->assign('functionName', $functionName);
 		$smarty->assign('title', $map['title']);

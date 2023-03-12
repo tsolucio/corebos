@@ -22,7 +22,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 		var curr_productid = document.getElementById('hdnProductId'+curr_row).value;
 		if(curr_productid == '')
 		{ldelim}
-			alert('{$APP.PLEASE_SELECT_LINE_ITEM}');
+			alert('{$APP.PLEASE_SELECT_LINE_ITEM|escape:"quotes":"UTF-8"}');
 			return false;
 		{rdelim}
 		var curr_quantity = document.getElementById('qty'+curr_row).value;

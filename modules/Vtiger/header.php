@@ -114,6 +114,7 @@ if ($cbMapid) {
 	$cbMap = cbMap::getMapByID($cbMapid);
 	$cbMapGS = $cbMap->GlobalSearchAutocomplete();
 	$cbMapGS['entityfield']='query_string';
+	unset($cbMapGS['conditions']);
 }
 $smarty->assign('GS_AUTOCOMP', $cbMapGS);
 $Application_Global_Search_Active = GlobalVariable::getVariable('Application_Global_Search_Active', 1);

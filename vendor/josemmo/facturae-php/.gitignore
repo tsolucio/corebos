@@ -1,0 +1,13 @@
+# App
+/vendor/
+/composer.lock
+
+# Tests
+/tests/output/*.*
+!/tests/output/.gitignore
+
+# Documentation site
+/build/
+Gemfile.lock
+.sass-cache/
+_site/

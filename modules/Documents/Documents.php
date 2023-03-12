@@ -150,8 +150,11 @@ class Documents extends CRMEntity {
 		}
 		if ($tryToFindMime && $filetype=='') {
 			$finfo = new finfo(FILEINFO_MIME);
-			$filetype = explode(';', $finfo->buffer(file_get_contents(self::getAttachmentPath($this->id))));
-			$filetype = $filetype[0];
+			$attfpath = self::getAttachmentPath($this->id);
+			if ($attfpath!='') {
+				$filetype = explode(';', $finfo->buffer(file_get_contents($attfpath)));
+				$filetype = $filetype[0];
+			}
 		}
 		$query = 'UPDATE vtiger_notes SET filename = ? ,filesize = ?, filetype = ? , filelocationtype = ? , filedownloadcount = ? WHERE notesid = ?';
 		$adb->pquery($query, array(decode_html($filename), $filesize, $filetype, $filelocationtype, $filedownloadcount, $this->id));

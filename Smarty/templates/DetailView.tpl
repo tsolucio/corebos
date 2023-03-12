@@ -85,6 +85,7 @@
 		var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
 		var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 	</script>
+	{include file='MassEditHtml.tpl'}
 	{if $MODULE|hasEmailField}
 	<form name="SendMail" method="post">
 		<div id="sendmail_cont" style="z-index:100001;position:absolute;"></div>

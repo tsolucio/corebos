@@ -468,7 +468,7 @@ class Validations extends processcbMap {
 			if ($tablename=='vtiger_crmentity') {
 				continue;
 			}
-			foreach ($adb->database->MetaColumns($tablename) as $fname => $finfo) {
+			foreach ($adb->getMetaColumns($tablename) as $fname => $finfo) {
 				if ($finfo->type == 'varchar' && !in_array($fname, $novalfields)) {
 					$fname = strtolower($fname);
 					if (isset($mapping['fields'][$fname])) {
@@ -553,6 +553,11 @@ class Validations extends processcbMap {
 					if ($tax_value!='') {
 						$screen_values['current_'.$tax['taxname']] = $tax['percentage'];
 					}
+				}
+			}
+			foreach ($meta->getImageFields() as $imageField) {
+				if (empty($screen_values[$imageField])) {
+					$screen_values[$imageField] = $screen_values['current_'.$imageField];
 				}
 			}
 		}
