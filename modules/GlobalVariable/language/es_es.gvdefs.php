@@ -106,6 +106,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'InBucket SMTP Listener',
 	'definition' => 'Si se establece, el valor se utilizará como servidor de correo saliente',
 ),
+'Debug_Workflow_Execution'=> array(
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0|1',
+	'definition' => 'Si 1, se generarán logs de la ejecución de los flujos de trabajo. Por defecto es 0',
+),
 'Application_Menu_Direction' => array(
 	'valuetype' => 'Cadena',
 	'category' => 'Applicación',

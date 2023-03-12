@@ -19,6 +19,7 @@
 <input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
 <input type="hidden" name="return_id" value="{if isset($RETURN_ID)}{$RETURN_ID}{/if}">
 <input type="hidden" name="return_action" value="{if isset($RETURN_ACTION)}{$RETURN_ACTION}{/if}">
+<input type="hidden" name="_logwf" id="_logwf" value="{if isset($smarty.request._logwf)}{$smarty.request._logwf|@urlencode}{/if}" />
 {if $MODULE eq 'Accounts'}
 	<input type="hidden" name="contact_id">
 	<input type="hidden" name="member_id">

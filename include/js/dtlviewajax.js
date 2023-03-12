@@ -316,7 +316,8 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 
 	var data = {
 		'fldName' : fieldName,
-		'fieldValue' : encodeURIComponent(tagValue)
+		'fieldValue' : encodeURIComponent(tagValue),
+		'_logwf': document.getElementById('_logwf').value
 	};
 	data = corebosjshook_dtlViewAjaxFinishSave_moredata(data);
 	var url = 'file=DetailViewAjax&module=' + module + '&action=' + module + 'Ajax&record=' + crmId + '&recordid=' + crmId + '&ajxaction=DETAILVIEW' + groupurl;
