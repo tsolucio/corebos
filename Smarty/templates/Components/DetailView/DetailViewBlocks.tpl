@@ -17,11 +17,17 @@
 			<h3 class="slds-section__title">
 				<button aria-expanded="true" class="slds-button slds-section__title-action" onclick="showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
 					{if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
-						<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$header|replace:' ':''}_block">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 						</svg>
+						<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$header|replace:' ':''}_none" style="display: none">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+						</svg>
 					{else}
-						<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+						<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$header|replace:' ':''}_block" style="display: none">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+						</svg>
+						<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$header|replace:' ':''}_none">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
 						</svg>
 					{/if}

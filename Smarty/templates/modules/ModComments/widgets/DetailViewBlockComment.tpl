@@ -13,11 +13,17 @@
 		<h3 class="slds-section__title">
 			<button aria-expanded="true" class="slds-button slds-section__title-action" onclick="showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');">
 				{if $BLOCKOPEN}
-					<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$UIKEY}_block">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 					</svg>
+					<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$UIKEY}_none" style="display: none">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+					</svg>
 				{else}
-					<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$UIKEY}_block" style="display: none">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+					</svg>
+					<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$UIKEY}_none">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
 					</svg>
 				{/if}

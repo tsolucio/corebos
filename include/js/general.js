@@ -2157,25 +2157,35 @@ function showBlock(divId) {
 }
 
 function showHideStatus(sId, anchorImgId, sImagePath) {
+	let svg_block = document.getElementById(`svg_${sId}_block`);
+	let svg_none = document.getElementById(`svg_${sId}_none`);
 	oObj = document.getElementById(sId);
 	var params = '&dvblock='+sId+'&dvmodule='+gVTModule+'&dvstatus=';
 	if (oObj.style.display == 'block') {
 		oObj.style.display = 'none';
 		ExecuteFunctions('setDetailViewBlockStatus', params+'0');
-		if (anchorImgId !=null) {
+		if (anchorImgId !=null && document.getElementById(anchorImgId)!=null) {
 			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
 			document.getElementById(anchorImgId).alt = alert_arr.LBL_Show;
 			document.getElementById(anchorImgId).title = alert_arr.LBL_Show;
 			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
 		}
+		if (svg_block !=null && svg_none!=null) {
+			svg_block.style.display = 'none';
+			svg_none.style.display = 'block';
+		}
 	} else {
 		oObj.style.display = 'block';
 		ExecuteFunctions('setDetailViewBlockStatus', params+'1');
-		if (anchorImgId !=null) {
+		if (anchorImgId !=null && document.getElementById(anchorImgId)!=null) {
 			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
 			document.getElementById(anchorImgId).alt = alert_arr.LBL_Hide;
 			document.getElementById(anchorImgId).title = alert_arr.LBL_Hide;
 			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate';
+		}
+		if (svg_block !=null && svg_none!=null) {
+			svg_block.style.display = 'block';
+			svg_none.style.display = 'none';
 		}
 	}
 }
