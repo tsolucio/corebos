@@ -70,7 +70,7 @@
 	</tr>
 </table>
 {if $header neq 'Comments'}
-	{if (isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1) || !empty($BLOCKS[$idx]['__fields'].relatedlist)}
+	{if (isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1) || !empty($BLOCKS[$idx]['__type'])}
 		<div style="width:auto;display:block;" id="tbl{$header|replace:' ':''}" >
 		{else}
 		<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
@@ -78,7 +78,7 @@
 			<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
 			{if !empty($CUSTOMBLOCKS.$header.custom)}
 				{include file=$CUSTOMBLOCKS.$header.tpl}
-			{elseif isset($BLOCKS[$idx]['__fields'].relatedlist) && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
+			{elseif isset($BLOCKS[$idx]['__type']) && $BLOCKS[$idx]['__type'] eq 'relatedlist' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 				{foreach key=bhkey item=bhitem from=$BLOCKS[$idx]['__fields']}
 					{if isPermitted($bhkey, 'index')=='yes'}
 						{assign var='RELBINDEX' value=$BLOCKS[$idx]['__fields'].relatedlist}

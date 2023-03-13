@@ -5,7 +5,7 @@
 			<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
 			{include file='DetailViewHidden.tpl'}
 			{foreach item=details key=idx from=$BLOCKS}
-				{if $details.__type == 'block'}
+				{if $details.__type == 'block' || $details.__type == 'relatedlist'}
 					{assign var=header value=$details.__header}
 					{assign var=detail value=$details.__fields}
 					{include file='Components/DetailView/DetailViewBlocks.tpl'}

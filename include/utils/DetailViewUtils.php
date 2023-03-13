@@ -1557,9 +1557,19 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		}
 		$specialModules = array('Users', 'Emails');
 		if (!empty($block_sequence) && !in_array($module, $specialModules)) {
-			$returndata_[$curBlock]['__header'] = $i18nidx;
-			$returndata_[$curBlock]['__fields'] = $returndata[$i18nidx];
-			$returndata_[$curBlock]['__type'] = 'block';
+			if (!isset($i18nidx)) {
+				$header = array_keys($returndata[$curBlock]);
+				$returndata_[$curBlock]['__header'] = $header[0];
+				$returndata_[$curBlock]['__fields'] = $returndata_[$curBlock];
+			} else {
+				$returndata_[$curBlock]['__header'] = $i18nidx;
+				$returndata_[$curBlock]['__fields'] = $returndata[$i18nidx];
+			}
+			if (isset($returndata[$curBlock]['relatedlist'])) {
+				$returndata_[$curBlock]['__type'] = 'relatedlist';
+			} else {
+				$returndata_[$curBlock]['__type'] = 'block';
+			}
 			$returndata_[$curBlock]['__sequence'] = empty($block_sequence[$idx]) ? 0 : (int)$block_sequence[$idx];
 			if (isset($returndata[$curBlock])) {
 				$returndata_[$curBlock]['__fields'] = $returndata[$curBlock];

@@ -159,7 +159,7 @@ foreach ($blocks as $block) {
 			'__fields' => $block
 		);
 	} else {
-		if (isset($block['__header'])) {
+		if (isset($block['__header']) && $block['__type'] != 'relatedlist') {
 			if (in_array($block['__header'], $headers)) {
 				continue;
 			}
@@ -167,15 +167,15 @@ foreach ($blocks as $block) {
 			$mergedBlocks[] = $block;
 		} else {
 			//suport for related lists
-			if (!isset($block['sequence'])) {
+			if (!isset($block['__type'])) {
 				continue;
 			}
-			$header = array_keys($block);
+			$header = array_keys($block['__fields']);
 			$mergedBlocks[] = array(
-				'__sequence' => (int)$block['sequence'],
-				'__type' => 'block',
+				'__sequence' => (int)$block['__sequence'],
+				'__type' => 'relatedlist',
 				'__header' => $header[0],
-				'__fields' => $block,
+				'__fields' => $block['__fields'],
 			);
 		}
 	}
@@ -198,10 +198,10 @@ if ($isPresentRelatedListBlock) {
 		if (is_object($binfo)) {
 			continue;
 		}
-		if (!empty($binfo['relatedlist'])) {
+		if (!empty($binfo['__fields']['relatedlist'])) {
 			foreach ($related_array as $rlabel => $rinfo) {
-				if ($rinfo['relationId']==$binfo['relatedlist']) {
-					$related_list_block[$binfo['relatedlist']] = array($rlabel=>$rinfo);
+				if ($rinfo['relationId']==$binfo['__fields']['relatedlist']) {
+					$related_list_block[$binfo['__fields']['relatedlist']] = array($rlabel=>$rinfo);
 					break;
 				}
 			}
