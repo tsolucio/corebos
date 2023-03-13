@@ -1084,7 +1084,7 @@ class WizardComponent {
 		if (this.WizardCustomFunction[this.ActiveStep] == '') {
 			return true;
 		}
-		const url = `${this.url}&wizardaction=CustomCreate&subaction=${this.WizardCustomFunction[this.ActiveStep]}&step=${this.ActiveStep}&rid=${this.Context.id}&mainid=${this.MainSelectedId}`;
+		const url = `${this.url}&wizardaction=CustomCreate&subaction=${this.WizardCustomFunction[this.ActiveStep]}&step=${this.ActiveStep}&rid=${this.Context.id}&mainid=${this.MainSelectedId}&masterid=${this.RecordID}`;
 		let rows = [];
 		for (let i in this.CheckedRows[this.ActiveStep]) {
 			let ids = [];
@@ -1142,7 +1142,7 @@ class WizardComponent {
 			rows.push(ids);
 		}
 		this.loader('show');
-		const url = `${this.url}&wizardaction=MassCreate&subaction=Create_ProductComponent&formodule=ProductComponent&step=${this.ActiveStep}`;
+		const url = `${this.url}&wizardaction=MassCreate&subaction=Create_ProductComponent&formodule=ProductComponent&step=${this.ActiveStep}&masterid=${this.RecordID}`;
 		let response = await this.Request(url, 'post', rows);
 		if (response != 'no_create') {
 			if (response) {
