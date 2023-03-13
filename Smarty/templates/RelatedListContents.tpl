@@ -9,9 +9,7 @@
   *********************************************************************************/
 -->*}
 <script type='text/javascript' src='include/js/Mail.js'></script>
-
 {foreach key=header item=detail from=$RELATEDLISTS}
-
 {if is_numeric($header)}
 	{if $detail.type eq 'CodeWithHeader'}
 	<table width="100%" cellspacing="0" cellpadding="0" border="0" class="small lvt rel_mod_table">
@@ -39,8 +37,8 @@
 {else}
 	{assign var=rel_mod value=$header}
 	{assign var="HEADERLABEL" value=$header|@getTranslatedString:$rel_mod}
-	<div class="slds-section slds-is-open">
-		<h3 class="slds-section__title">
+	<div class="slds-is-open">
+		<h3 class="slds-section__title" style="background: #f3f3f3">
 			<button type="button" aria-expanded="true" class="slds-button slds-section__title-action">
 				<span class="toggle_rel_mod_table">
 				{strip}
@@ -71,7 +69,7 @@
 				<div class="slds-spinner__dot-b"></div>
 			</div>
 		</span>
-		<span style="float: right;position:relative; left: -16px; top: -25px;width: 2em;">
+		<span style="display:none;" id="delete_{$MODULE}_{$header|replace:' ':''}">
 			<a href="javascript:disableRelatedListBlock(
 				'module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&ajxaction=DISABLEMODULE&relation_id={$detail.relationId}&header={$header}',
 				'tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">

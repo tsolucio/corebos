@@ -68,10 +68,10 @@
 	{include file='applicationmessage.tpl'}
 	{include file='DetailViewWidgetBar.tpl'}
 	<div class="slds-grid slds-gutters" style="width: 99.5%;margin-left: 0.0%;">
-		<div class="slds-col slds-size_4-of-5" id="bodycolumn" style="background: white;margin-right: 0.5%;">
+		<div class="slds-col slds-size_9-of-12" id="bodycolumn" style="background: white;margin-right: 0.5%;">
 			{include file='Components/DetailView/Body.tpl'}
 		</div>
-		<div class="slds-col slds-size_1-of-5" id="actioncolumn" style="background: white;{$DEFAULT_ACTION_PANEL_STATUS}">
+		<div class="slds-col slds-size_3-of-12" id="actioncolumn" style="background: white;{$DEFAULT_ACTION_PANEL_STATUS}">
 			{include file='Components/DetailView/Actions.tpl'}
 		</div>
 	</div>
