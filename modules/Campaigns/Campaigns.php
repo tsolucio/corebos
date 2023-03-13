@@ -124,7 +124,7 @@ class Campaigns extends CRMEntity {
 		$button = '';
 
 		// Send mail button for selected Accounts
-		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='crmbutton small edit' value='".getTranslatedString('LBL_SEND_MAIL_BUTTON');
+		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='slds-button slds-button_success' value='".getTranslatedString('LBL_SEND_MAIL_BUTTON');
 		$button .= "' type='button' name='button' onclick='rel_eMail(\"$this_module\",this,\"$related_module\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp';
 
@@ -136,10 +136,10 @@ class Campaigns extends CRMEntity {
 		$ahtml .= $customviewcombo_html;
 		$ahtml .= '</select>';
 
-		$button .= $ahtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= $ahtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='slds-button slds-button_success' value='";
 		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
-		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='slds-button slds-button_success' value='";
 		$button .= getTranslatedString('LBL_EMPTY_LIST', $this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
@@ -149,7 +149,7 @@ class Campaigns extends CRMEntity {
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
-					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
+					"' class='slds-button slds-button_success' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
 					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
 					"cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '.
 					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
@@ -157,7 +157,7 @@ class Campaigns extends CRMEntity {
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 				$button .= "<input type='hidden' name='createmode' value='link' />".
-					"<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='crmbutton small create'" .
+					"<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='slds-button slds-button_neutral'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
@@ -202,7 +202,7 @@ class Campaigns extends CRMEntity {
 		$lhtml .= $customviewcombo_html;
 		$lhtml .= '</select>';
 
-		$button = $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button = $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='slds-button slds-button_success' value='";
 		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 		return parent::get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions, $button);
@@ -240,7 +240,7 @@ class Campaigns extends CRMEntity {
 		$button = '';
 
 		// Send mail button for selected Leads
-		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='crmbutton small edit' value='";
+		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='slds-button slds-button_success' value='";
 		$button .= getTranslatedString('LBL_SEND_MAIL_BUTTON')."' type='button' name='button' onclick='rel_eMail(\"$this_module\",this,\"$related_module\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp';
 
@@ -252,10 +252,10 @@ class Campaigns extends CRMEntity {
 		$lhtml .= $customviewcombo_html;
 		$lhtml .= '</select>';
 
-		$button .= $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='slds-button slds-button_success' value='";
 		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
-		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='slds-button slds-button_success' value='";
 		$button .= getTranslatedString('LBL_EMPTY_LIST', $this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
@@ -265,7 +265,7 @@ class Campaigns extends CRMEntity {
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
-					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
+					"' class='slds-button slds-button_success' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
 					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
 					"cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '.
 					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
@@ -273,7 +273,7 @@ class Campaigns extends CRMEntity {
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 				$button .= "<input type='hidden' name='createmode' value='link' />".
-					"<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='crmbutton small create'" .
+					"<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='slds-button slds-button_neutral'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
@@ -344,7 +344,7 @@ class Campaigns extends CRMEntity {
 		$button = '';
 
 		// Send mail button for selected Leads
-		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='crmbutton small edit' value='".getTranslatedString('LBL_SEND_MAIL_BUTTON');
+		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='slds-button slds-button_success' value='".getTranslatedString('LBL_SEND_MAIL_BUTTON');
 		$button .= "' type='button' name='button' onclick='rel_eMail(\"$this_module\",this,\"$related_module\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp';
 
@@ -356,10 +356,10 @@ class Campaigns extends CRMEntity {
 		$lhtml .= $customviewcombo_html;
 		$lhtml .= '</select>';
 
-		$button .= $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= $lhtml."&nbsp;<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='slds-button slds-button_success' value='";
 		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
-		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='slds-button slds-button_success' value='";
 		$button .= getTranslatedString('LBL_EMPTY_LIST', $this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
@@ -369,7 +369,7 @@ class Campaigns extends CRMEntity {
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
-					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
+					"' class='slds-button slds-button_success' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
 					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
 					"cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '.
 					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
@@ -377,7 +377,7 @@ class Campaigns extends CRMEntity {
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 				$button .= "<input type='hidden' name='createmode' value='link' />".
-					"<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='crmbutton small create'" .
+					"<input title='".getTranslatedString('LBL_ADD_NEW'). ' '. $singular_modname ."' class='slds-button slds-button_neutral'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}

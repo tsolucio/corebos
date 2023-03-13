@@ -582,7 +582,7 @@ class Calendar4You extends CRMEntity {
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module)
-					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
+					."' class='slds-button slds-button_success' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id$search_string','test',"
 					."cbPopupWindowSettings);\" value='".getTranslatedString('LBL_SELECT').' '
 					.getTranslatedString($related_module, $related_module)."'>&nbsp;";
