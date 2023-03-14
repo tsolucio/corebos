@@ -9,92 +9,60 @@
  ********************************************************************************/
 -->*}
 {include file='SetMenu.tpl'}
-<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
-<div class="slds-modal__container slds-p-around_none">
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
-	<tr>
-		<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-			<br />
-			<div align=center>
-
-			<table class="settingsSelUITopLine" align="center" border="0" cellpadding="5" cellspacing="0" width="100%">
-				<tr>
-					<td rowspan="2" valign="top" width="50">
-						<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="{$MOD.VTLIB_LBL_MODULE_MANAGER}">
-							<svg class="slds-icon slds-icon_small" aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#bundle_config"></use>
-							</svg>
-						</span>
-					</td>
-					<td class="heading2" valign="bottom"> <b>
-						<a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a>
-						<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="{$MOD.VTLIB_LBL_MODULE_MANAGER}">
-							<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-							</svg>
-						</span> {$MODULE_LBL} </td>
-				</tr>
-				<tr>
-					<td class="small" valign="top">{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</td>
-				</tr>
-				</table>
-
-				<br>
-				<table border="0" cellspacing="0" cellpadding="20" width="100%" class="settingsUI">
-					<tr>
-						<td>
-							<table border="0" cellspacing="0" cellpadding="10" width="100%">
-								<tr>
-									{foreach key=mod_name item=mod_array from=$MENU_ARRAY name=itr}
-									<td width=25% valign=top>
-										{if empty($mod_array.label)}
-											&nbsp;
-										{else}
-										<table border=0 cellspacing=0 cellpadding=5 width="100%">
-											<tr>
-												{assign var=count value=$smarty.foreach.itr.iteration}
-												<td rowspan=2 valign=top width="10%">
-												<a href="{$mod_array.location}">
-													<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="{$mod_array.label}">
-														<svg class="slds-icon slds-icon_large" aria-hidden="true">
-															<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$mod_array.image_src}"></use>
-														</svg>
-													</span>
-												</a>
-												</td>
-												<td class=big valign=top>
-													<a href="{$mod_array.location}">
-													{$mod_array.label}
-													</a>
-												</td>
-											</tr>
-											<tr>
-												<td class="small" valign=top width="80%">
-													{$mod_array.desc}
-												</td>
-											</tr>
-										</table>
-										{/if}
-									</td>
-									{if $count mod 3 eq 0}
-										</tr><tr>
-									{/if}
-									{/foreach}
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
-
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
+<div class="slds-page-header slds-page-header_record-home slds-m-horizontal_small">
+	<div class="slds-page-header__row">
+		<div class="slds-page-header__col-title">
+			<div class="slds-media">
+				<div class="slds-media__figure">
+					<span class="slds-icon_container slds-icon-utility-announcement slds-current-color">
+						<svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#bundle_config"></use>
+						</svg>
+					</span>
+				</div>
+				<div class="slds-media__body">
+					<div class="slds-page-header__name">
+						<div class="slds-page-header__name-title">
+							<h1>
+								<span>{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</span>
+								<span class="slds-page-header__title slds-truncate" title="{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}">
+									{$MOD.VTLIB_LBL_MODULE_MANAGER} | {$MODULE_LBL}
+								</span>
+							</h1>
+						</div>
+					</div>
+				</div>
 			</div>
-		</td>
-	</tr>
-</table>
+		</div>
+	</div>
+	<div class="slds-page-header__row slds-page-header__row_gutters">
+		<div class="slds-page-header__col-details">
+			<ul style="margin: 0.75rem -1rem -1rem;padding: 1rem;border-radius: 0 0 0.25rem 0.25rem;background-color: white;position: relative;z-index: 2;">
+				{foreach key=mod_name item=mods_array from=$MENU_ARRAY name=itr}
+					<div class="slds-grid slds-gutters slds-m-around_medium">
+					{foreach from=$mods_array item=mod_array}
+						{if !empty($mod_array.label)}
+							{assign var=count value=$smarty.foreach.itr.iteration}
+							<div class="slds-col slds-size_4-of-12">
+								<a href="{$mod_array.location}" class="slds-box slds-box_link slds-box_x-small slds-media">
+									<div class="slds-media__figure slds-media__figure_fixed-width slds-align_absolute-center slds-m-left_xx-small">
+										<span class="slds-icon_container slds-icon-utility-knowledge_base">
+											<svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$mod_array.image_src}"></use>
+											</svg>
+										</span>
+									</div>
+									<div class="slds-media__body slds-border_left slds-p-around_small">
+										<h2 class="slds-truncate slds-text-heading_small" title="{$mod_array.label}">{$mod_array.label}</h2>
+										<p class="slds-m-top_small">{$mod_array.desc}</p>
+									</div>
+								</a>
+							</div>
+						{/if}
+					{/foreach}
+					</div>
+				{/foreach}
+			</ul>
+		</div>
+	</div>
 </div>
-</section>
