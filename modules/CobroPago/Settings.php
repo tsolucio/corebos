@@ -9,7 +9,7 @@
  ************************************************************************************/
 $custom_menu_array = array();
 $custom_menu_array['CYP_SERVER_CONFIGURATION']['location'] = 'index.php?module=CobroPago&action=CobroPagoConfigServer';
-$custom_menu_array['CYP_SERVER_CONFIGURATION']['image_src'] = 'modules/CobroPago/settings.png';
+$custom_menu_array['CYP_SERVER_CONFIGURATION']['image_src'] = 'settings';
 $custom_menu_array['CYP_SERVER_CONFIGURATION']['desc'] = getTranslatedString('SERVER_CONFIGURATION_DESCRIPTION', 'CobroPago');
 $custom_menu_array['CYP_SERVER_CONFIGURATION']['label'] = getTranslatedString('SERVER_CONFIGURATION', 'CobroPago');
 include 'modules/Vtiger/Settings.php';
