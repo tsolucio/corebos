@@ -422,6 +422,7 @@ class WizardComponent {
 			}
 			break;
 		default:
+			this.CloseModal();
 		}
 	}
 
@@ -512,7 +513,7 @@ class WizardComponent {
 	/**
 	 * Filter rows for specific IDS.
 	 */
-	FilterDataForStep() {
+	FilterDataForStep(ids = {}) {
 		if (this.WizardMode[this.ActiveStep].includes('CREATE')) {
 			return false;
 		}
@@ -524,6 +525,7 @@ class WizardComponent {
 				filterrows: true,
 				step: wizard.ActiveStep,
 				showdata: true,
+				forids: JSON.stringify(ids)
 			});
 			setTimeout(function () {
 				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
@@ -1210,7 +1212,7 @@ class WizardComponent {
 			});
 			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
 		}
-		if (operation == 'MASSCREATE' && this.steps-2 == this.ActiveStep) {
+		if (operation == 'MASSCREATE' && this.WizardMode[this.ActiveStep+1] == 'Mapping') {
 			this.Mapping(0, 1);
 			return true;
 		}
@@ -1231,7 +1233,7 @@ class WizardComponent {
 			this.GroupData = groupBy;
 			this.TreeGrid();
 		}
-		if (this.steps-1 == this.ActiveStep && type == 'next') {//mass create in last step
+		if (this.WizardMode[this.ActiveStep] == 'Mapping' && type == 'next') {//mass create in last step
 			this.MassCreate(operation);
 		}
 		return true;
@@ -1325,19 +1327,24 @@ class WizardComponent {
 		const url = `${this.url}&wizardaction=MassCreate&formodule=${this.MCModule}&subaction=${this.WizardMode[0]}`;
 		this.Request(url, 'post', filterData).then(function (response) {
 			if (response) {
+				wizard.FilterDataForStep(response);
 				ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_CREATED_SUCCESS, 'success');
 				if (wizard.isModal) {
 					RLInstance[wizard.gridInstance].readData(1);
-					ldsModal.close();
-					wizard.ActiveStep = 0;
-					wizard.CheckedRows = [];
-					wizard.GridData = [];
-					wizard.GroupData = [];
-					localStorage.removeItem('currentWizardActive');
+					if (wizard.steps == wizard.ActiveStep) {
+						ldsModal.close();
+						wizard.ActiveStep = 0;
+						wizard.CheckedRows = [];
+						wizard.GridData = [];
+						wizard.GroupData = [];
+						localStorage.removeItem('currentWizardActive');
+					}
 				} else {
-					setTimeout(function () {
-						location.reload(true);
-					}, 1000);
+					if (wizard.steps == wizard.ActiveStep) {
+						setTimeout(function () {
+							location.reload(true);
+						}, 1000);
+					}
 				}
 			} else {
 				ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
