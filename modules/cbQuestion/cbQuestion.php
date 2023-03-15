@@ -448,7 +448,7 @@ class cbQuestion extends CRMEntity {
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-					'answer' => $handler->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules, false),
+					'answer' => $handler->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules, false, ADODB_ASSOC_CASE_NATIVE),
 				);
 			} elseif ($q->column_fields['querytype']=='Direct Sql') {
 				$sql_query = cbQuestion::getSQL($qid, $params);
@@ -456,7 +456,7 @@ class cbQuestion extends CRMEntity {
 				$output = array();
 				$noofrows = $adb->num_rows($rs);
 				for ($i=0; $i<$noofrows; $i++) {
-					$output[] = $adb->fetchByAssoc($rs, $i);
+					$output[] = $adb->fetchByAssoc($rs, $i, true, ADODB_ASSOC_CASE_NATIVE);
 				}
 				return array(
 					'module' => $q->column_fields['qmodule'],
@@ -506,7 +506,7 @@ class cbQuestion extends CRMEntity {
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-					'answer' => $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules, false),
+					'answer' => $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules, false, ADODB_ASSOC_CASE_NATIVE),
 				);
 			}
 		}
