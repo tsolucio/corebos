@@ -35,13 +35,14 @@ class CBDeleteRelatedTask extends VTTask {
 		$logbg->debug('> DeleteRelatedTask');
 		list($wsid,$crmid) = explode('x', $entity->getId());
 		if (!empty($crmid) && !empty($this->relmodule)) {
-			self::deleteRelatedRecords($crmid, $this->relmodule, $this->bmapid);
+			$this->logmessages = self::deleteRelatedRecords($crmid, $this->relmodule, $this->bmapid);
 		}
 		$logbg->debug('< DeleteRelatedTask');
 	}
 
 	public static function deleteRelatedRecords($masterRecord, $relatedModule, $bmapid) {
 		global $adb,$log,$current_user, $logbg;
+		$logmessages = [];
 		$module = getSalesEntityType($masterRecord);
 		if (!empty($bmapid)) {
 			// Business Map
@@ -51,15 +52,17 @@ class CBDeleteRelatedTask extends VTTask {
 			$focus->retrieve_entity_info($bmapid, 'cbMap');
 			$businessMap = $focus->column_fields['maptype'];
 			if ($businessMap == 'Condition Query') {
-				$logbg->debug('(DeleteRelatedTask) called ConditionQuery');
+				$logmsg = '(DeleteRelatedTask) called ConditionQuery';
 				$ids = $focus->ConditionQuery($masterRecord);
 			} else {
-				$logbg->debug('(DeleteRelatedTask) called ConditionExpression');
+				$logmsg = '(DeleteRelatedTask) called ConditionExpression';
 			}
 		} else {
-			$logbg->debug('(DeleteRelatedTask) called with no businessMap');
+			$logmsg = '(DeleteRelatedTask) called with no businessMap';
 			$businessMap = '';
 		}
+		$logmessages[] = $logmsg;
+		$logbg->debug($logmsg);
 
 		// Checking relation
 		$moduleId = getTabid($module);
@@ -73,7 +76,9 @@ class CBDeleteRelatedTask extends VTTask {
 
 		if ($result && $adb->num_rows($result) > 0) {
 			$relation_result_row = $adb->fetch_array($result);
-			$logbg->debug('(DeleteRelatedTask) type of relation: '.$relation_result_row['name']);
+			$logmsg = '(DeleteRelatedTask) type of relation: '.$relation_result_row['name'];
+			$logmessages[] = $logmsg;
+			$logbg->debug($logmsg);
 			switch ($relation_result_row['name']) {
 				case 'get_related_list':
 					if ($businessMap == 'Condition Query') {
@@ -126,7 +131,9 @@ class CBDeleteRelatedTask extends VTTask {
 								}
 							}
 						} else {
-							$logbg->debug('(DeleteRelatedTask) not called: no related Documents');
+							$logmsg = '(DeleteRelatedTask) not called: no related Documents';
+							$logmessages[] = $logmsg;
+							$logbg->debug($logmsg);
 						}
 					} else {
 						$adb->pquery('delete from vtiger_senotesrel where crmid = ?', array($masterRecord));
@@ -156,7 +163,9 @@ class CBDeleteRelatedTask extends VTTask {
 					break;
 			}
 		} else {
-			$logbg->debug('(DeleteRelatedTask) type of relation: web service search');
+			$logmsg = '(DeleteRelatedTask) type of relation: web service search';
+			$logmessages[] = $logmsg;
+			$logbg->debug($logmsg);
 			$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
 			$handlerClass = $webserviceObject->getHandlerClass();
 			$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
@@ -173,7 +182,9 @@ class CBDeleteRelatedTask extends VTTask {
 			$queryGenerator->setFields(array('id'));
 			$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $masterRecord, 'e');
 			$query = $queryGenerator->getQuery();
-			$logbg->debug('(DeleteRelatedTask) deleting these: '.$query);
+			$logmsg = '(DeleteRelatedTask) deleting these: '.$query;
+			$logmessages[] = $logmsg;
+			$logbg->debug($logmsg);
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias($relatedModule, true);
 			$denormed = ($crmEntityTable!='vtiger_crmentity');
 			$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
@@ -221,6 +232,7 @@ class CBDeleteRelatedTask extends VTTask {
 				}
 			}
 		}
+		return $logmessages;
 	}
 }
 ?>

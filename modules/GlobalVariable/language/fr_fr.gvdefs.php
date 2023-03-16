@@ -106,6 +106,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'InBucket SMTP Listener',
 	'definition' => 'If set its value will be used as the Out Going Mail Server Host',
 ),
+'Debug_Workflow_Execution'=> array(
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0|1',
+	'definition' => 'If 1, workflow execution logs will generated. The default is 0',
+),
 'Application_Menu_Direction' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',

@@ -85,7 +85,9 @@ class ConvertInventoryModule extends VTTask {
 			if (empty($associated_prod[1]['entityType1'])) {
 				$from_wf = false;
 				$util->revertUser();
-				$logbg->debug("(ConvertInventoryModule) not called: converting from $cbfrommodule to {$this->convertto} failed because there is no related products");
+				$logmsg = "(ConvertInventoryModule) not called: converting from $cbfrommodule to {$this->convertto} failed because there is no related products";
+				$this->logmessages[] = $logmsg;
+				$logbg->debug($logmsg);
 				return;
 			}
 
@@ -180,7 +182,15 @@ class ConvertInventoryModule extends VTTask {
 		$_REQUEST['ajxaction'] = $holdajxaction;
 		$from_wf = false;
 		$util->revertUser();
-		$logbg->debug('(ConvertInventoryModule) From '.$cbfrommodule.' '.$entity->getId().' to '.$this->convertto);
+		$logmsg = '(ConvertInventoryModule) From '.$cbfrommodule.' '.$entity->getId().' to '.$this->convertto;
+		$this->logmessages[] = $logmsg;
+		$this->logmessages[] = 'FROM';
+		$this->logmessages[] = json_encode($wsso);
+		$this->logmessages[] = 'TO';
+		$this->logmessages[] = json_encode($data);
+		$this->logmessages[] = 'RESULT';
+		$this->logmessages[] = json_encode($invmod);
+		$logbg->debug($logmsg);
 		$logbg->debug('(ConvertInventoryModule) From', $wsso);
 		$logbg->debug('(ConvertInventoryModule) To', $data);
 		$logbg->debug('(ConvertInventoryModule) Result', $invmod);

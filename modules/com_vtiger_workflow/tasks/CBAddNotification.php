@@ -203,7 +203,9 @@ class CBAddNotification extends VTTask {
 			$remid = $minfo['id'];
 		}
 		$entity->WorkflowContext['AddNotification_NotificationID'] = $remid;
-		$logbg->debug('< AddNotification', [$cbmodule, $cbrecord, $datetime, $ownerid, $relwith, $moreaction, $minfo, $remid]);
+		$logmsg = [$cbmodule, $cbrecord, $datetime, $ownerid, $relwith, $moreaction, $minfo, $remid];
+		$this->logmessages[] = json_encode($logmsg);
+		$logbg->debug('< AddNotification', $logmsg);
 	}
 }
 ?>

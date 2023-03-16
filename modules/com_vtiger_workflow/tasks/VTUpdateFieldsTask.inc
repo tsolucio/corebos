@@ -41,7 +41,9 @@ class VTUpdateFieldsTask extends VTTask {
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
-		$logbg->debug("(UpdateFieldsTask) Module: $moduleName, Record: $entityId");
+		$logmsg = "(UpdateFieldsTask) Module: $moduleName, Record: $entityId";
+		$logbg->debug($logmsg);
+		$this->logmessages[] = $logmsg;
 		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $current_user);
 		$handlerMeta = $moduleHandler->getMeta();
 		$moduleFields = $handlerMeta->getModuleFields();
@@ -57,6 +59,8 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->retrieve_entity_info($recordId, $moduleName, false, $from_wf);
 			$focus->clearSingletonSaveFields();
 			$logbg->debug('(UpdateFieldsTask) field values pre', $focus->column_fields);
+			$this->logmessages[] = 'DATABASE';
+			$this->logmessages[] = json_encode($focus->column_fields);
 			$logbg->debug('(UpdateFieldsTask) update info', $fieldValueMapping);
 
 			$hold_user = $current_user;
@@ -143,6 +147,8 @@ class VTUpdateFieldsTask extends VTTask {
 			$holdCM = $currentModule;
 			$_REQUEST['ajxaction'] = 'Workflow';
 			$logbg->debug('(UpdateFieldsTask) field values presave', $focus->column_fields);
+			$this->logmessages[] = 'PRESAVE';
+			$this->logmessages[] = json_encode($focus->column_fields);
 			if (isset($this->launchwf) && $this->launchwf) {
 				$focus->save($moduleName);
 			} else {
@@ -172,6 +178,8 @@ class VTUpdateFieldsTask extends VTTask {
 			$currentModule = $holdCM;
 			$util->revertUser();
 			$logbg->debug('(UpdateFieldsTask) field values postsave', $focus->column_fields);
+			$this->logmessages[] = 'POSTSAVE';
+			$this->logmessages[] = json_encode($focus->column_fields);
 		} else {
 			$logbg->debug('(UpdateFieldsTask) not called: fieldValueMapping is empty');
 		}

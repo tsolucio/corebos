@@ -84,4 +84,11 @@
 	<classname>updateSettingsIcons</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add ondemand workflow logs table</description>
+	<filename>build/changeSets/2023/addworkflowlogstable.php</filename>
+	<classname>addworkflowlogstable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
