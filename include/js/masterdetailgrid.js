@@ -232,7 +232,8 @@ var masterdetailwork = {
 
 	CallToAction: (ev, workflowid) => {
 		if (SelectedRecordsIds.length > 0) {
-			runBAWorkflow(workflowid.split(','), SelectedRecordsIds.join(';'))
+			runBAWorkflow(workflowid.split(','), SelectedRecordsIds.join(';'));
+			masterdetailwork.MDReload();
 		}
 	},
 
