@@ -89,7 +89,20 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 			if ($workflow->evaluate($entityCache, $entityData->getId())) {
 				try {
 					if ($workflow->activeWorkflow()) {
-						$workflow->performTasks($entityData, $ctx, true, $cbwflog);
+						$logid = $cbwflog->critical([
+							'wftkid'=>$workflow->id,
+							'recid'=>$entityData->getId(),
+							'parentid'=>0,
+							'name'=>$workflow->description,
+							'wftype'=>$workflow->executionCondition,
+							'recvalues'=>json_encode($entityData->getData()),
+							'conditions'=>$workflow->test,
+							'evaluation'=>1,
+							'inqueue'=>0,
+							'haserror'=>0,
+							'logsmsgs'=>[],
+						]);
+						$workflow->performTasks($entityData, $ctx, true, $cbwflog, $logid);
 					}
 					if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
 						$workflow->markAsCompletedForRecord($crmid);
