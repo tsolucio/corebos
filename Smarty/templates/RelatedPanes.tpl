@@ -33,7 +33,7 @@
 					{$RLARR.label}
 				</a>
 				{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}
-				<div class="slds-dropdown slds-dropdown_right">
+				<div class="slds-dropdown slds-dropdown_left">
 					<ul class="slds-dropdown__list slds-dropdown_length-with-icon-10 cbds-scrollbar" role="menu">
 						{foreach key=_BLOCK_ID item=_RELATED_BLOCK from=$RLARR.blocks}
 						<li class="slds-dropdown__item" role="presentation">
