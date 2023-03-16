@@ -209,7 +209,7 @@ foreach ($failure_query_array as $failed_query) {
 	</td>
 	<td align="left">
 		<strong style="color:#FF0000;">
-		<?php echo $failure_query_count ;?>
+		<?php echo $failure_query_count; ?>
 		</strong>
 	</td>
    </tr>

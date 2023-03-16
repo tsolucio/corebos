@@ -141,8 +141,8 @@
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" defer="1">
 	var textAreaName = 'notification_content';
-	CKEDITOR.replace( textAreaName,	{ldelim}
+	CKEDITOR.replace(textAreaName, {ldelim}
 		customConfig: '../../modules/com_vtiger_workflow/resources/onesignalckeditor.js'
-	{rdelim} ) ;
+	{rdelim});
 	var oCKeditor = CKEDITOR.instances[textAreaName];
 </script>

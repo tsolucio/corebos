@@ -3140,7 +3140,7 @@ function getFieldsResultForMerge($tabid) {
 		$params[] = $nonmergable_displaytypes;
 	}
 	if (count($nonmergable_uitypes) > 0) {
-		$where .= ' AND uitype NOT IN ('. generateQuestionMarks($nonmergable_uitypes) .')' ;
+		$where .= ' AND uitype NOT IN ('. generateQuestionMarks($nonmergable_uitypes) .')';
 		$params[] = $nonmergable_uitypes;
 	}
 

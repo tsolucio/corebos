@@ -231,10 +231,10 @@ document.getElementById('attach_cont').innerHTML = document.getElementById('atta
 </script>
 <script type="text/javascript" defer="1">
 	var textAreaName = 'description';
-	CKEDITOR.replace( textAreaName,	{ldelim}
+	CKEDITOR.replace(textAreaName, {ldelim}
 		extraPlugins : 'uicolor',
 		uiColor: '#dfdff1'
-	{rdelim} ) ;
+	{rdelim});
 	var oCKeditor = CKEDITOR.instances[textAreaName];
 </script>
 {if vt_hasRTESpellcheck()}

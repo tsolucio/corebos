@@ -74,7 +74,7 @@ if (typeof window.opener.document.getElementById('subject') != 'undefined' && wi
 	window.opener.addOption(<?php echo $row['notesid']; ?>, attachment);
 <?php } ?>
 } else {
-	vtlib_setvalue_from_popup('<?php echo $req->get('action_id'); ?>', '<?php echo $req->get('callvalue') ; ?>', '<?php echo $req->get('targetfield'); ?>', '<?php echo $req->get('callform'); ?>');
+	vtlib_setvalue_from_popup('<?php echo $req->get('action_id'); ?>', '<?php echo $req->get('callvalue'); ?>', '<?php echo $req->get('targetfield'); ?>', '<?php echo $req->get('callform'); ?>');
 }
 window.close();
 </script>

@@ -42,7 +42,7 @@ class MailManager_UploadFile {
 
 		if ($attachid !== false) {
 			// Create document record
-			$document->column_fields['notes_title']      = $this->getName() ;
+			$document->column_fields['notes_title']      = $this->getName();
 			$document->column_fields['filename']         = $this->getName();
 			$document->column_fields['filestatus']       = 1;
 			$document->column_fields['filelocationtype'] = 'I';

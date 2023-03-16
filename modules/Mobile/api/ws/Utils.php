@@ -129,7 +129,7 @@ class crmtogo_WS_Utils {
 	private static $gatherModuleFieldGroupInfoCache = array();
 	public static function gatherModuleFieldGroupInfo($module) {
 		$db = PearDatabase::getInstance();
-		$current_language = crmtogo_WS_Controller::sessionGet('language') ;
+		$current_language = crmtogo_WS_Controller::sessionGet('language');
 		$current_module_strings = return_module_language($current_language, $module);
 		// Cache hit?
 		if (isset(self::$gatherModuleFieldGroupInfoCache[$module])) {
@@ -196,7 +196,7 @@ class crmtogo_WS_Utils {
 	public static function getassignedtoValues($userObj, $module, $assigned_user_id = '') {
 		//get users info
 		$tabid = getTabid($module);
-		$recordprefix= self::getEntityModuleWSId('Users') ;
+		$recordprefix= self::getEntityModuleWSId('Users');
 		if ($assigned_user_id=='') {
 			$assigned_user_id_ws = $recordprefix.'x'.$userObj->id;
 			$assigned_user_id = $userObj->id;
@@ -281,7 +281,7 @@ class crmtogo_WS_Utils {
 			foreach ($describeInfo['fields'] as $index => $fieldInfo) {
 				if ($fieldInfo['name'] == 'salutationtype') {
 					$picklistValues = self::salutationValues();
-					$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']) ;
+					$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']);
 					$fieldInfo['type']['name'] = 'picklist';
 					$fieldInfo['type']['picklistValues'] = $picklistValues;
 					$describeInfo['fields'][$index] = $fieldInfo;

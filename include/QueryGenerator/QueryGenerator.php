@@ -1701,7 +1701,7 @@ class QueryGenerator {
 				$advft_criteria = json_decode($advft_criteria, true);
 			}
 			if (empty($advft_criteria) || count($advft_criteria) <= 0) {
-				return ;
+				return;
 			}
 
 			$advft_criteria_groups = (empty($input['advft_criteria_groups']) ?
@@ -1714,7 +1714,7 @@ class QueryGenerator {
 			$advfilterlist = getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, $this->getModule());
 
 			if (empty($advfilterlist) || count($advfilterlist) <= 0) {
-				return ;
+				return;
 			}
 
 			if ($this->conditionInstanceCount > 0) {
@@ -1790,7 +1790,7 @@ class QueryGenerator {
 			if (isset($input['search_field']) && $input['search_field'] !='') {
 				$fieldName=vtlib_purify($input['search_field']);
 			} else {
-				return ;
+				return;
 			}
 			if ($this->conditionInstanceCount > 0) {
 				$this->startGroup(self::$AND);

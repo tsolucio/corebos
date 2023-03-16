@@ -13,7 +13,7 @@ $wm->save($wf);
 
 
 $tm = new VTTaskManager($adb);
-$taskType ="VTEntityMethodTask" ;
+$taskType ="VTEntityMethodTask";
 $workflowId =$wf->id;
 $task = $tm->createTask($taskType, $workflowId);
 $task->summary ="NAME";

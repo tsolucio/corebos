@@ -640,7 +640,7 @@ class Documents extends CRMEntity {
 			$elink = '<a href="index.php?module='.$row['setype'].'&action=DetailView&return_module=Documents&return_action=DetailView&record='.$row['crmid'].
 				'&return_id='.$id.'">'.$ename.'</a>';
 			$entries[] = $elink;
-			$entries[] = getTranslatedString($row['setype']) ;
+			$entries[] = getTranslatedString($row['setype']);
 			$entries[] = $row['user_name'];
 			$entries_list[] = $entries;
 		}

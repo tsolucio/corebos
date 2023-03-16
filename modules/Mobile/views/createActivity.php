@@ -14,7 +14,7 @@ include_once __DIR__ . '/../api/ws/Utils.php';
 class crmtogo_UI_DecideActivityType extends crmtogo_WS_Controller {
 	public function process(crmtogo_API_Request $request) {
 		$response = new crmtogo_API_Response();
-		$current_language = $this->sessionGet('language') ;
+		$current_language = $this->sessionGet('language');
 		$viewer = new crmtogo_UI_Viewer();
 		$viewer->assign('MOD', $this->getUsersLanguage());
 		$viewer->assign('LANGUAGE', $current_language);

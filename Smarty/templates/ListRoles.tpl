@@ -59,10 +59,10 @@ ul {ldelim}color:black;{rdelim}
 	function displayCoords(event) {ldelim}
 		var move_Element = document.getElementById('Drag_content').style;
 		if (!event) {ldelim}
-			move_Element.left = e.pageX +'px' ;
+			move_Element.left = e.pageX +'px';
 			move_Element.top = e.pageY+10 + 'px';
 		{rdelim} else {ldelim}
-			move_Element.left = event.clientX +'px' ;
+			move_Element.left = event.clientX +'px';
 			move_Element.top = event.clientY+10 + 'px';
 		{rdelim}
 	{rdelim}

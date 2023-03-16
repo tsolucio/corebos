@@ -113,8 +113,8 @@ var __attinfo = {$task->dzattinfo|json_encode};
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" defer="1">
 	var textAreaName = 'save_content';
-	CKEDITOR.replace( textAreaName,	{ldelim}
+	CKEDITOR.replace(textAreaName, {ldelim}
 		customConfig: '../../modules/com_vtiger_workflow/resources/Whatsappckeditor.js'
-	{rdelim} ) ;
+	{rdelim});
 	var oCKeditor = CKEDITOR.instances[textAreaName];
 </script>
