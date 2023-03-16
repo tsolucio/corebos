@@ -103,7 +103,9 @@ class GenerateDocument extends VTTask {
 			if ($this->updateOnChange) {
 				$rdocs = $adb->pquery($relatedDocsSQLNotDeleted, array($fileid, $record));
 				if ($rdocs && $adb->num_rows($rdocs)>0) {
-					$logbg->debug('(GenerateDocument) update Share');
+					$logmsg = '(GenerateDocument) update Share';
+					$this->logmessages[] = $logmsg;
+					$logbg->debug($logmsg);
 					while ($rdoc = $adb->fetch_array($rdocs)) {
 						if ($this->shareOnCreate && !$smq->isShared($rdoc['notesid'])) {
 							$smq->createShareLink($rdoc['notesid']);
@@ -120,20 +122,29 @@ class GenerateDocument extends VTTask {
 						array($fileid, $record)
 					);
 				} else { // creating for the first time
-					$logbg->debug('(GenerateDocument) create Share on update');
+					$logmsg = '(GenerateDocument) create Share on update';
+					$this->logmessages[] = $logmsg;
+					$logbg->debug($logmsg);
 					$skey = $smq->createShareLink($docid);
 				}
 				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
 				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
 			} elseif ($this->shareOnCreate && !$smq->isShared($docid)) {
-				$logbg->debug('(GenerateDocument) create Share');
+				$logmsg = '(GenerateDocument) create Share';
+				$this->logmessages[] = $logmsg;
+				$logbg->debug($logmsg);
 				$skey = $smq->createShareLink($docid);
 				$entity->WorkflowContext['SharedDocumentCode'] = $skey;
 				$entity->WorkflowContext['SharedDocumentLink'] = $smq->constructShareLink($skey);
 			} else {
-				$logbg->debug('(GenerateDocument) not called:  updateOnChange is false or shareOnCreate and isShared are false');
+				$logmsg = '(GenerateDocument) not called: updateOnChange is false or shareOnCreate and isShared are false';
+				$this->logmessages[] = $logmsg;
+				$logbg->debug($logmsg);
 			}
-			$logbg->debug('(GenerateDocument) updating Document template ID', [$fileid, $docid]);
+			$logmsg = '(GenerateDocument) updating Document template ID';
+			$this->logmessages[] = $logmsg;
+			$this->logmessages[] = json_encode([$fileid, $docid]);
+			$logbg->debug($logmsg, [$fileid, $docid]);
 			$adb->pquery('update vtiger_notes set gendoctplid=? where notesid=?', array($fileid, $docid));
 		}
 		$logbg->debug('< GenerateDocument');

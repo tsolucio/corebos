@@ -23,6 +23,7 @@ class VTCreateEntityTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user, $from_wf, $logbg;
+		$this->logmessages[] = $this->entity_type;
 		$logbg->debug('> CreateEntityTask '.$this->entity_type);
 		if (!vtlib_isModuleActive($this->entity_type)) {
 			return;
@@ -71,6 +72,10 @@ class VTCreateEntityTask extends VTTask {
 				$datetimeFields[] = $webserviceField->getFieldName();
 			}
 			unset($dtFields);
+			$this->logmessages[] = 'column_fields';
+			$this->logmessages[] = json_encode($focus->column_fields);
+			$this->logmessages[] = 'fieldValueMapping';
+			$this->logmessages[] = json_encode($fieldValueMapping);
 			$logbg->debug('(CreateEntityTask) column_fields', $focus->column_fields);
 			$logbg->debug('(CreateEntityTask) fieldValueMapping', $fieldValueMapping);
 			$files_set = false;
@@ -160,12 +165,16 @@ class VTCreateEntityTask extends VTTask {
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
 			$newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields, $handlerMeta);
+			$this->logmessages[] = 'newEntity';
+			$this->logmessages[] = json_encode($newEntity->column_fields);
 			$logbg->debug('(CreateEntityTask) newEntity', $newEntity->column_fields);
 			$newEntity->save($entityType);
 			relateEntities($focus, $moduleName, $recordId, $entityType, $newEntity->id);
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 		} else {
-			$logbg->debug('(CreateEntityTask) cannot create entity due to missing information');
+			$logmsg = '(CreateEntityTask) cannot create entity due to missing information';
+			$this->logmessages[] = $logmsg;
+			$logbg->debug($logmsg);
 			$logbg->debug('(CreateEntityTask) fieldValueMapping', $fieldValueMapping);
 		}
 		$from_wf = false;

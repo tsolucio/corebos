@@ -43,12 +43,15 @@ class wfExecExpression extends VTTask {
 					$exprEvaluation = $exprEvaluater->evaluate($entity);
 				}
 				if (!empty($exp['var'])) {
+					$this->logmessages[] = json_encode([$exp, $exprEvaluation]);
 					$logbg->debug('(wfExecExpression)', [$exp, $exprEvaluation]);
 					$entity->WorkflowContext[$exp['var']] = $exprEvaluation;
 				}
 			}
 		} else {
-			$logbg->debug('(wfExecExpression) workflow expression is empty');
+			$logmsg = '(wfExecExpression) workflow expression is empty';
+			$this->logmessages[] = $logmsg;
+			$logbg->debug($logmsg);
 		}
 		$logbg->debug('< wfExecExpression');
 	}

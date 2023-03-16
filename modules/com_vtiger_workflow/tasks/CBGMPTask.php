@@ -47,19 +47,19 @@ class CBGMPTask extends VTTask {
 				$url = getMergedDescription($conn, $ent_id, $entype);
 				$url = getMergedDescription($url, $acc_id, 'Accounts');
 				$url = vtlib_purify($url);
-				$logbg->debug('(GMPTask) GMP url: ' . $url);
 				$curl = curl_init($url);
 				curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 				$curl_result = curl_exec($curl);
-				$logbg->debug('(GMPTask) curl result: ' . $curl_result);
+				$logmsg = "(GMPTask) curl result ($url): $curl_result";
 			} else {
-				$logbg->debug('(GMPTask) not called: empty GID');
+				$logmsg = '(GMPTask) not called: empty GID';
 			}
 		} else {
-			$logbg->debug('(GMPTask) not called: the acc_id and url_query may be empty or the GMP is not active');
+			$logmsg = '(GMPTask) not called: the acc_id and url_query may be empty or the GMP is not active';
 		}
-		$logbg->debug('< GMPTask');
+		$this->logmessages[] = $logmsg;
+		$logbg->debug('< '.$logmsg);
 	}
 }
 ?>

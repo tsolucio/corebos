@@ -386,41 +386,34 @@ class VTEmailTask extends VTTask {
 		if ($crmid=='') {
 			list($wsid, $crmid) = explode('x', $emailid);
 		}
+		$logArray = [
+			'To' => $to_email,
+			'FromName' => $from_name,
+			'FromEmail' => $from_email,
+			'CC' => $cc,
+			'BCC' => $bcc,
+			'AttInfo' => $this->attachmentsinfo,
+		];
 		if (!empty($this->linktemplate) && !empty($this->sgmsgtemplate)) {
 			include_once 'include/integrations/sendgrid/sendgrid.php';
 			$sdInstance = new corebos_sendgrid();
 			try {
-				$res = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $entity->moduleName, $to_email, $subject, $this->attachmentsinfo, $from_name, $from_email, $cc, $bcc, $replyto);
-				$logbg->debug(
-					'(EmailTask) SG template mail was sent',
-					[
-						'To' => $to_email,
-						'FromName' => $from_name,
-						'FromEmail' => $from_email,
-						'CC' => $cc,
-						'BCC' => $bcc,
-						'Result' => $res,
-						'AttInfo' => $this->attachmentsinfo,
-					]
-				);
+				$logArray['Result'] = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $entity->moduleName, $to_email, $subject, $this->attachmentsinfo, $from_name, $from_email, $cc, $bcc, $replyto);
+				$logmsg = '(EmailTask) SG template mail was sent';
+				$this->logmessages[] = $logmsg;
+				$this->logmessages[] = json_encode($logArray);
+				$logbg->debug($logmsg, $logArray);
 			} catch (Exception $e) {
-				$logbg->debug('(EmailTask) SG template mail failed: '. $e->getMessage());
+				$logmsg = '(EmailTask) SG template mail failed: '. $e->getMessage();
+				$this->logmessages[] = $logmsg;
+				$logbg->debug($logmsg);
 			}
 			return;
 		}
-		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
-		$logbg->debug(
-			'(EmailTask) EmailWFTask',
-			[
-				'To' => $to_email,
-				'FromName' => $from_name,
-				'FromEmail' => $from_email,
-				'CC' => $cc,
-				'BCC' => $bcc,
-				'Result' => $rdo,
-				'AttInfo' => $this->attachmentsinfo,
-			]
-		);
+		$logArray['Result'] = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
+		$this->logmessages[] = 'Workflow email';
+		$this->logmessages[] = json_encode($logArray);
+		$logbg->debug('(EmailTask) EmailWFTask', $logArray);
 		$util->revertUser();
 		$logbg->debug('< EmailTask');
 	}

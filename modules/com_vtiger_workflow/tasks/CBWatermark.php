@@ -26,6 +26,8 @@ class CBWatermark extends VTTask {
 	public $imagefieldName;
 	public $wmSize;
 	public $wmPosition;
+	const LOGMSG_IMAGENOTCREATED = '(Watermark) The watermark image was not created';
+	const LOGMSG_MAINIMAGENOTCREATED = '(Watermark) The main image was not created';
 
 	public function getFieldNames() {
 		return array('wmImageValue', 'imagefieldName', 'wmSize', 'wmPosition');
@@ -143,35 +145,43 @@ class CBWatermark extends VTTask {
 			if ($waterMarkType == 'png') {
 				$waterMarkImg = imagecreatefrompng($waterMarkUrl);
 				if (!$waterMarkImg) {
-					$logbg->debug('(Watermark) The watermark image was not created');
+					$this->logmessages[] = self::LOGMSG_IMAGENOTCREATED;
+					$logbg->debug(self::LOGMSG_IMAGENOTCREATED);
 					$invalidImage = true;
 				}
 			} elseif ($waterMarkType == 'jpg' || $waterMarkType == 'jpeg') {
 				$waterMarkImg = imagecreatefromjpeg($waterMarkUrl);
 				if (!$waterMarkImg) {
-					$logbg->debug('(Watermark) The watermark image was not created ');
+					$this->logmessages[] = self::LOGMSG_IMAGENOTCREATED;
+					$logbg->debug(self::LOGMSG_IMAGENOTCREATED);
 					$invalidImage = true;
 				}
 			} else {
-				$logbg->debug('(Watermark) cannot create the watermark image because extension is not supported');
+				$logmsg = '(Watermark) cannot create the watermark image because extension is not supported';
+				$this->logmessages[] = $logmsg;
+				$logbg->debug($logmsg);
 				$invalidImage = true;
 			}
 			if ($mainImageFileType == 'png') {
 				$mainImage = imagecreatefrompng($mainImagePath);
 				if (!$mainImage) {
-					$logbg->debug('(Watermark) The main image was not created');
+					$this->logmessages[] = self::LOGMSG_MAINIMAGENOTCREATED;
+					$logbg->debug(self::LOGMSG_MAINIMAGENOTCREATED);
 					$invalidImage = true;
 				}
 				$mainImageOriginal = imagecreatefrompng($mainImagePath);
 			} elseif ($mainImageFileType == 'jpg' || $mainImageFileType == 'jpeg') {
 				$mainImage = imagecreatefromjpeg($mainImagePath);
 				if (!$mainImage) {
-					$logbg->debug('(Watermark) The main image was not created');
+					$this->logmessages[] = self::LOGMSG_MAINIMAGENOTCREATED;
+					$logbg->debug(self::LOGMSG_MAINIMAGENOTCREATED);
 					$invalidImage = true;
 				}
 				$mainImageOriginal = imagecreatefromjpeg($mainImagePath);
 			} else {
-				$logbg->debug('(Watermark) cannot create the main image because extension is not supported');
+				$logmsg = '(Watermark) cannot create the main image because extension is not supported';
+				$this->logmessages[] = $logmsg;
+				$logbg->debug($logmsg);
 				$invalidImage = true;
 			}
 
@@ -244,14 +254,18 @@ class CBWatermark extends VTTask {
 						$wmpy = $misy - $wmnsy;
 						break;
 					default:
-						$logbg->debug('(Watermark) the watermark position you specified is not supported. we use bottom right');
+						$logmsg = '(Watermark) the watermark position you specified is not supported. we use bottom right';
+						$this->logmessages[] = $logmsg;
+						$logbg->debug($logmsg);
 						$wmpx = $misx - $wmnsx;
 						$wmpy = $misy - $wmnsy;
 						break;
 				}
 
 				// resize the watermark image
-				$logbg->debug('(Watermark) adding the watermark to the image');
+				$logmsg = '(Watermark) adding the watermark to the image';
+				$this->logmessages[] = $logmsg;
+				$logbg->debug($logmsg);
 				$waterMarkImgAfterResize = imagecreatetruecolor($wmnsx, $wmnsy);
 				imagesavealpha($waterMarkImgAfterResize, true);
 				$color = imagecolorallocatealpha($waterMarkImgAfterResize, 0, 0, 0, 127);
@@ -261,7 +275,9 @@ class CBWatermark extends VTTask {
 				// add the watermark to the image
 				$res = imagecopy($mainImage, $waterMarkImgAfterResize, $wmpx, $wmpy, 0, 0, $wmnsx, $wmnsy);
 				if (!$res) {
-					$logbg->debug('(Watermark) could not add the watermark on the image');
+					$logmsg = '(Watermark) could not add the watermark on the image';
+					$this->logmessages[] = $logmsg;
+					$logbg->debug($logmsg);
 				}
 
 				// Save image
@@ -273,7 +289,9 @@ class CBWatermark extends VTTask {
 					imagejpeg($mainImage, $mainImagePath);
 					imagejpeg($mainImageOriginal, $mainOriginalImagePath);
 				} else {
-					$logbg->debug('(Watermark) cannot save the main image because the extension is not supported');
+					$logmsg = '(Watermark) cannot save the main image because the extension is not supported';
+					$this->logmessages[] = $logmsg;
+					$logbg->debug($logmsg);
 				}
 
 				// free the images

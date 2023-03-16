@@ -81,6 +81,7 @@ class wfSendFile extends VTTask {
 			require_once 'modules/Emails/Emails.php';
 			return send_mail('Email', 'sendfile@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $adapter, print_r($workflow_context, true));
 		}
+		$this->logmessages[] = json_encode([$this->exptype, $this->credentialid, $adapter, $filename]);
 		$logbg->debug('(wfSendFile)', [$this->exptype, $this->credentialid, $adapter, $filename]);
 		if ($adapter == 'FTP') {
 			#require_once 'modules/com_vtiger_workflow/actions/FTP.php';
@@ -154,7 +155,9 @@ class wfSendFile extends VTTask {
 			$storage->setUp();
 			$storage->writeFile();
 		} else {
-			$logbg->debug('(wfSendFile) not called: adapter is not supported');
+			$logmsg = '(wfSendFile) not called: adapter is not supported';
+			$this->logmessages[] = $logmsg;
+			$logbg->debug($logmsg);
 		}
 		$logbg->debug('< wfSendFile');
 	}

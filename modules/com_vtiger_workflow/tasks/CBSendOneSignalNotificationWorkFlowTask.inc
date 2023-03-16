@@ -79,7 +79,9 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 				if (!empty($inBucketServeUrl)) {
 					require_once 'modules/Emails/mail.php';
 					require_once 'modules/Emails/Emails.php';
-					$logbg->debug('(SendOneSignalNotificationTask) sending mail to inbucket');
+					$logmsg = '(SendOneSignalNotificationTask) sending mail to inbucket';
+					$logbg->debug($logmsg);
+					$this->logmessages[] = $logmsg;
 					return send_mail('Email', 'desktop@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $headings.' '.$subtitle, $contents);
 				} else {
 					$logbg->debug('(SendOneSignalNotificationTask) sending Desktop Notification');
@@ -93,18 +95,19 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 						$web_buttons
 					);
 					if ($result) {
-						$logbg->debug('(SendOneSignalNotificationTask) Desktop Notification sent successfully');
+						$logmsg = '(SendOneSignalNotificationTask) Desktop Notification sent successfully';
 					} else {
-						$logbg->debug('(SendOneSignalNotificationTask) not called: failed to send Desktop Notification');
+						$logmsg = '(SendOneSignalNotificationTask) not called: failed to send Desktop Notification';
 					}
 				}
 			} catch (Exception $e) {
-				$logbg->debug('(SendOneSignalNotificationTask) not called: Error on Send OneSignal Notification Task: '.$e->getMessage());
+				$logmsg = '(SendOneSignalNotificationTask) not called: Error on Send OneSignal Notification Task: '.$e->getMessage();
 			}
 		} else {
-			$logbg->debug('(SendOneSignalNotificationTask) not called: one signal is not active');
+			$logmsg = '(SendOneSignalNotificationTask) not called: one signal is not active';
 		}
-		$logbgbg->debug('< SendOneSignalNotificationTask');
+		$this->logmessages[] = $logmsg;
+		$logbg->debug('< '.$logmsg);
 	}
 }
 ?>
