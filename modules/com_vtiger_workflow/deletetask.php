@@ -20,12 +20,20 @@ function vtDeleteWorkflow($adb, $request) {
 	$mod = return_module_language($current_language, $module->name);
 	$request = vtlib_purify($request);  // this cleans all values of the array
 	if (!$util->checkAdminAccess()) {
+		if (isset($request['mode']) && $request['mode'] == 'ajax') {
+			echo json_encode(false);
+			return;
+		}
 		$errorUrl = $module->errorPageUrl($mod['LBL_ERROR_NOT_ADMIN']);
 		$util->redirectTo($errorUrl, $mod['LBL_ERROR_NOT_ADMIN']);
 		return;
 	}
 	$wm = new VTTaskManager($adb);
 	$wfid = $wm->deleteTask($request['task_id']);
+	if (isset($request['mode']) && $request['mode'] == 'ajax') {
+		echo json_encode(true);
+		return;
+	}
 	// We should empty cb_messagequeue of any message related to this task but that is not supported
 	if (isset($request['return_url'])) {
 		$returnUrl=$request['return_url'];

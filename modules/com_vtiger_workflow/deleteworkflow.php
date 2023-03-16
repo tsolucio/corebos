@@ -26,8 +26,16 @@ function vtDeleteWorkflow($adb, $request) {
 	$wm = new VTWorkflowManager($adb);
 	$affected = $wm->delete($request['workflow_id']);
 	if ($affected==0) {
+		if (isset($request['mode']) && $request['mode'] == 'ajax') {
+			echo json_encode(false);
+			return;
+		}
 		$errorUrl = $module->errorPageUrl(getTranslatedString('LBL_PERMISSION', $module->name));
 		$util->redirectTo($errorUrl, getTranslatedString('LBL_PERMISSION', $module->name));
+		return;
+	}
+	if (isset($request['mode']) && $request['mode'] == 'ajax') {
+		echo json_encode(true);
 		return;
 	}
 	if (isset($request['return_url'])) {

@@ -9,6 +9,29 @@
  ********************************************************************************/
 -->*}
 {include file='SetMenu.tpl'}
+<style type="text/css">
+.slds-modal__container {
+	width: 100% !important;
+	height: 100% !important;
+	padding: 3rem 0rem 0rem 0 !important;
+}
+.cbds-scrollbar::-webkit-scrollbar {
+  width: 1px;
+}
+
+.cbds-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+.cbds-scrollbar::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+.cbds-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+</style>
+<script src="include/js/Settings.js"></script>
 <div class="slds-page-header slds-page-header_record-home slds-m-horizontal_small">
 	<div class="slds-page-header__row">
 		<div class="slds-page-header__col-title">

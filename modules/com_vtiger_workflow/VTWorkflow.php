@@ -782,9 +782,16 @@ class Workflow {
 		} else {
 			$list_query = "Select * from com_vtiger_workflows $conds $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
-		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 20);
-		$from = ($page-1)*$rowsperpage;
-		$limit = " limit $from,$rowsperpage";
+		$limit = '';
+		$from = 0;
+		$rowsperpage = 20;
+		if ($page != 'all') {
+			$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 20);
+			$from = ($page-1)*$rowsperpage;
+			$limit = " limit $from,$rowsperpage";
+		} else {
+			$page = 1;
+		}
 
 		$result = $adb->pquery($list_query.$limit, $params);
 		$rscnt = $adb->pquery("select count(*) from com_vtiger_workflows $conds", array($params));
@@ -823,7 +830,14 @@ class Workflow {
 			if (empty($lgn['defaultworkflow']) && getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'Settings') != 'MANUAL') {
 				$entry['isDefaultWorkflow'] = false;
 			}
+			$modInstance = CRMEntity::getInstance($lgn['module_name']);
+			$icon = $modInstance->moduleIcon['icon'];
+			if (strpos($modInstance->moduleIcon['icon'], '-') !== false) {
+				list($lib, $icon) = explode('-', $modInstance->moduleIcon['icon']);
+			}
 			$entry['Module'] = getTranslatedString($lgn['module_name'], $lgn['module_name']);
+			$entry['ModuleName'] = $lgn['module_name'];
+			$entry['ModuleIcon'] = $icon;
 			$entry['Description'] = getTranslatedString($lgn['summary'], 'com_vtiger_workflow');
 			if (empty($lgn['workflow_id'])) {
 				$rurl = '';
@@ -847,15 +861,46 @@ class Workflow {
 			}
 			if ($lgn['active'] == 'true') {
 				$active = $app_strings['Active'];
+				$entry['StatusRaw'] = true;
 			} else {
 				$active = $app_strings['Inactive'];
+				$entry['StatusRaw'] = false;
 			}
 			$entry['Trigger'] = $i18n;
 			$entry['Status'] = $active;
+			$entry['type'] = 'workflow';
+			$tasks = $this->getWorkflowTasks($vtwfappObject, $lgn['workflow_id'], $lgn['module_name']);
+			if (!empty($tasks)) {
+				$entry['_children'] = $tasks;
+			}
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getWorkFlowJSON');
 		return json_encode($entries_list);
+	}
+
+	public function getWorkflowTasks($vtwfappObject, $wfid, $module) {
+		global $log, $adb, $current_user, $app_strings;
+		$log->debug('> getWorkflowTasks');
+		$rs = $adb->pquery('select * from com_vtiger_workflowtasks where workflow_id=? order by executionorder', array($wfid));
+		$tasks = array();
+		$tm = new VTTaskManager($adb);
+		while ($task = $adb->fetch_array($rs)) {
+			$taskinfo = $tm->unserializeTask($task['task']);
+			$tasks[] = array(
+				'type' => 'task',
+				'task_id' => $task['task_id'],
+				'workflow_id' => $task['workflow_id'],
+				'summary' => $task['summary'],
+				'Status' => boolval($taskinfo->active) ? $app_strings['Active'] : $app_strings['Inactive'],
+				'StatusRaw' => boolval($taskinfo->active) ? true : false,
+				'tasktypelabel' => getTranslatedString(get_class($taskinfo)),
+				'Record' => $vtwfappObject->editTaskUrl($task['task_id']),
+				'RecordDel' => $vtwfappObject->deleteTaskUrl($task['task_id'])
+			);
+		}
+		$log->debug('< getWorkflowTasks');
+		return $tasks;
 	}
 }
 ?>
