@@ -41,6 +41,13 @@ class MailManager_UploadFile {
 		$attachid = $this->saveAttachment();
 
 		if ($attachid !== false) {
+			$filetype = '';
+			$finfo = new finfo(FILEINFO_MIME);
+			$attfpath = getAttachmentPathFromID($attachid);
+			if ($attfpath!='') {
+				$filetype = explode(';', $finfo->buffer(file_get_contents($attfpath)));
+				$filetype = $filetype[0];
+			}
 			// Create document record
 			$document->column_fields['notes_title']      = $this->getName();
 			$document->column_fields['filename']         = $this->getName();
@@ -48,6 +55,7 @@ class MailManager_UploadFile {
 			$document->column_fields['filelocationtype'] = 'I';
 			$document->column_fields['folderid']         = $this->getAttachmentsFolder();
 			$document->column_fields['filesize']         = $this->getSize();
+			$document->column_fields['filetype']         = $filetype;
 			$document->column_fields['assigned_user_id'] = $current_user->id;
 			if (!empty($_REQUEST['parent_id'])) {
 				$document->parentid = vtlib_purify($_REQUEST['parent_id']);
