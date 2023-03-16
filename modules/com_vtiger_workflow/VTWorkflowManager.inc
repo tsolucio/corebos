@@ -27,6 +27,7 @@ class VTWorkflowManager {
 	public static $RECORD_ACCESS_CONTROL = 8;
 	public static $ON_RELATE = 9;
 	public static $ON_UNRELATE = 10;
+	private $adb;
 
 	public function __construct($adb) {
 		$this->adb = $adb;
