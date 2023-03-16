@@ -20,7 +20,7 @@ class MailManager_MailController extends MailManager_Controller {
 	/**
 	* Function which processes request for Mail Operations
 	* @global Users Instance $current_user
-	* @global String $root_directory
+	* @global string $root_directory
 	* @param MailManager_Request $request
 	* @return MailManager_Response
 	*/

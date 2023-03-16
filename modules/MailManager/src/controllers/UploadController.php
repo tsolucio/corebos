@@ -25,7 +25,7 @@ class MailManager_UploadFile {
 	 * Create a Document
 	 * @global Users $current_user
 	 * @global PearDataBase $adb
-	 * @global String $currentModule
+	 * @global string $currentModule
 	 */
 	public function createDocument() {
 		global $current_user, $adb, $currentModule;
@@ -82,9 +82,9 @@ class MailManager_UploadFile {
 	/**
 	 * Creates an Attachment
 	 * @global PearDataBase $adb
-	 * @global Array $upload_badext
+	 * @global array $upload_badext
 	 * @global Users $current_user
-	 * @return attachmentid or false
+	 * @return mixed attachmentid or false
 	 */
 	public function saveAttachment() {
 		global $adb, $upload_badext, $current_user;
@@ -168,9 +168,9 @@ class MailManager_UploadFileForm extends MailManager_UploadFile {
 
 	/**
 	 * Saves the uploaded file
-	 * @global String $root_directory
+	 * @global string $root_directory
 	 * @param string $path
-	 * @return Boolean
+	 * @return boolean
 	 */
 	public function save($path) {
 		global $root_directory;
@@ -196,11 +196,12 @@ class MailManager_Uploader {
 
 	public $allowedExtensions;
 	public $file;
+	public $sizeLimit;
 
 	/**
 	* Constructor used to invoke the Uploading Handler
-	* @param Array $allowedExtensions
-	* @param Integer $sizeLimit
+	* @param array $allowedExtensions
+	* @param integer $sizeLimit
 	*/
 	public function __construct($allowedExtensions, $sizeLimit) {
 		$this->setAllowedFileExtension($allowedExtensions);
@@ -217,8 +218,8 @@ class MailManager_Uploader {
 	/**
 	* Function used to handle the upload
 	* @param string $uploadDirectory
-	* @param Boolean $replaceOldFile
-	* @return Array
+	* @param boolean $replaceOldFile
+	* @return array
 	*/
 	public function handleUpload($uploadDirectory, $replaceOldFile = false) {
 		if (isPermitted('Documents', 'CreateView')=='no') {
@@ -252,28 +253,28 @@ class MailManager_Uploader {
 		}
 	}
 
-	/*
-	 * get the max file upload sizr
+	/**
+	 * get the max file upload size
 	 */
 	public function getMaxUploadSize() {
 		return $this->sizeLimit;
 	}
 
-	/*
+	/**
 	 * Sets the max file upload size
 	 */
 	public function setMaxUploadSize($value) {
 		$this->sizeLimit = $value;
 	}
 
-	/*
+	/**
 	 * gets the allowed file extension
 	 */
 	public function getAllowedFileExtension() {
 		return $this->allowedExtensions;
 	}
 
-	/*
+	/**
 	 * sets the allowed file extension
 	 */
 	public function setAllowedFileExtension($values) {

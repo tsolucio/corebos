@@ -26,7 +26,7 @@ abstract class MailManager_Controller {
 
 	/**
 	 * Function which gets the template handler
-	 * @global String $currentModule
+	 * @global string $currentModule
 	 * @return MailManager_Viewer
 	 */
 	public function getViewer() {
@@ -39,7 +39,7 @@ abstract class MailManager_Controller {
 
 	/**
 	 * Function which fetches the template file
-	 * @global String $currentModule
+	 * @global string $currentModule
 	 * @param string $filename
 	 * @return template file
 	 */
@@ -79,7 +79,7 @@ abstract class MailManager_Controller {
 
 	/**
 	 * Checks if the current users has provided Mail Server details
-	 * @return Boolean
+	 * @return boolean
 	 */
 	protected function hasMailboxModel() {
 		$model = $this->getMailboxModel();
@@ -88,7 +88,7 @@ abstract class MailManager_Controller {
 
 	/**
 	 * Returns a Connector to either MailBox or Internal Drafts
-	 * @param string $folder - Name of the folder
+	 * @param string Name of the folder
 	 * @return MailManager_Connector
 	 */
 	protected function getConnector($folder = '') {
