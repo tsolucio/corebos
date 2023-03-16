@@ -2372,6 +2372,27 @@ function decideFilePath() {
 }
 
 /**
+ * Function to retrieve the physical path of the file referenced by given attachment ID
+ * @param int attachment ID
+ * @param boolean return relative (true) or absolute path (false). default is absolute
+ * @return string path to attachment
+ */
+function getAttachmentPathFromID($attid, $relative = false) {
+	global $adb, $root_directory;
+	$path = '';
+	if (!empty($attid)) {
+		$res_att = $adb->pquery('SELECT attachmentsid,name,path FROM vtiger_attachments WHERE attachmentsid=?', array($attid));
+		if ($res_att && $adb->num_rows($res_att)>0) {
+			$name = $res_att->fields['name'];
+			$ruta = $res_att->fields['path'];
+			$prefix = $res_att->fields['attachmentsid'].'_';
+			$path = ($relative ? '' : $root_directory).$ruta.$prefix.$name;
+		}
+	}
+	return $path;
+}
+
+/**
  * This function is used to check whether the attached file is a image file or not
  * @param array files array which contains all the uploaded file details
  * @return string if the image can be uploaded then 'true' will be returned otherwise 'false'

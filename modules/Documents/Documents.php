@@ -579,6 +579,26 @@ class Documents extends CRMEntity {
 	}
 
 	/**
+	 * Function to retrieve the attachment ID of the file attached to the document
+	 * @param mixed crmid or document number
+	 * @return integer related attachment ID
+	 */
+	public static function getAttachmentID($docid) {
+		global $adb;
+		$id = 0;
+		if (!empty($docid)) {
+			$res_att = $adb->pquery(
+				'SELECT attachmentsid FROM vtiger_seattachmentsrel INNER JOIN vtiger_notes ON notesid=crmid WHERE crmid=? or note_no=?',
+				array($docid, $docid)
+			);
+			if ($res_att && $adb->num_rows($res_att)>0) {
+				$id = $res_att->fields['attachmentsid'];
+			}
+		}
+		return $id;
+	}
+
+	/**
 	 * Customizing the restore procedure.
 	 */
 	public function restore($modulename, $id) {
