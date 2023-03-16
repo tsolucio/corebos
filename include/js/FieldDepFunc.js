@@ -140,6 +140,35 @@ async function fieldDep_GetFieldSearch(change_field, action_field, new_value, ol
 	});
 }
 
+async function fieldDep_GetRule(change_field, action_field, new_value, old_value, parameters) {
+	await ExecuteFunctions(
+		'execrule',
+		'rulebmap='+encodeURIComponent(parameters[0])+'&record='+document.getElementById('record').value+'&structure='+JSON.stringify(getFormFields(gVTviewType))
+	).then(function (data) {
+		let rdo = JSON.parse(data);
+		if (CKEDITOR.instances[action_field]!=undefined) {
+			let fld = CKEDITOR.instances[action_field];
+			fld.insertHtml(rdo);
+		} else {
+			let fld = document.getElementById(action_field);
+			if (fld) {
+				if (fld.type == 'checkbox') {
+					fld.checked = !(rdo=='0' || rdo=='false' || rdo=='' || rdo=='null' || rdo=='yes');
+				} else if (fld.type == 'hidden' && document.getElementById(action_field+'_display')!=null) {
+					// reference field
+					fld.value = rdo;
+					let dispfname = action_field+'_display';
+					ExecuteFunctions('getEntityName', 'getNameFrom='+fld.value).then(function (ename) {
+						document.getElementById(dispfname).value = JSON.parse(ename);
+					});
+				} else {
+					fld.value = rdo;
+				}
+			}
+		}
+	});
+}
+
 async function fieldDep_AssignNewValue(change_field, action_field, new_value, old_value, parameters) {
 	document.getElementsByName(action_field).item(0).value = new_value;
 }

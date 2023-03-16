@@ -353,7 +353,7 @@ class ClickHouseDatabase extends PearDatabase {
 		return ($result->iterator>=$result->count());
 	}
 
-	public function fetchByAssoc(&$result, $rowNum = -1, $encode = true) {
+	public function fetchByAssoc(&$result, $rowNum = -1, $encode = true, $keycase = ADODB_ASSOC_CASE_LOWER) {
 		if (empty($result) || !is_object($result) || $this->EOF($result)) {
 			$this->println('CHDB fetchByAssoc return null');
 			return null;
