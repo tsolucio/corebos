@@ -84,4 +84,11 @@
 	<classname>addworkflowlogstable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add ondemand workflow logs table index</description>
+	<filename>build/changeSets/2023/addworkflowlogstableindex.php</filename>
+	<classname>addworkflowlogstableindex</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
