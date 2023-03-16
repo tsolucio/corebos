@@ -148,12 +148,19 @@ class Documents extends CRMEntity {
 			$filesize = 0;
 			$filedownloadcount = null;
 		}
-		if ($tryToFindMime && $filetype=='') {
+		if ($tryToFindMime && ($filetype=='' || stripos($filetype, 'x-empty') || stripos($filetype, 'octet-stream'))) {
+			$orgft = $filetype;
 			$finfo = new finfo(FILEINFO_MIME);
 			$attfpath = self::getAttachmentPath($this->id);
 			if ($attfpath!='') {
 				$filetype = explode(';', $finfo->buffer(file_get_contents($attfpath)));
 				$filetype = $filetype[0];
+			}
+			if ($orgft!=$filetype && $this->mode!='') { // we update the attachment filetype accordingly
+				$attid = self::getAttachmentID($this->id);
+				if ($attid) {
+					$adb->pquery('update vtiger_attachments set type=? where attachmentsid=?', [$filetype, $attid]);
+				}
 			}
 		}
 		$query = 'UPDATE vtiger_notes SET filename = ? ,filesize = ?, filetype = ? , filelocationtype = ? , filedownloadcount = ? WHERE notesid = ?';
