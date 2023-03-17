@@ -87,14 +87,14 @@
 			document.getElementById('actioncolumn').style.display='block';
 			document.getElementById('action-on').style.display='block';
 			document.getElementById('action-off').style.display='none';
-			bodycolumn.classList.remove('slds-size_5-of-5');
-			bodycolumn.classList.add('slds-size_4-of-5');
+			bodycolumn.classList.remove('slds-size_12-of-12');
+			bodycolumn.classList.add('slds-size_9-of-12');
 		} else {
 			document.getElementById('actioncolumn').style.display='none';
 			document.getElementById('action-on').style.display='none';
 			document.getElementById('action-off').style.display='block';
-			bodycolumn.classList.remove('slds-size_4-of-5');
-			bodycolumn.classList.add('slds-size_5-of-5');
+			bodycolumn.classList.remove('slds-size_9-of-12');
+			bodycolumn.classList.add('slds-size_12-of-12');
 		}
 		window.dispatchEvent(new Event('resize'));{/literal}"
 		>
