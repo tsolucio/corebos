@@ -294,7 +294,7 @@ class HelpDesk extends CRMEntity {
 
 	/** Function to get the list of comments for the given ticket id
 	 * @param int Ticket id
-	 * @return list of comments and comment informations as an html DIV output
+	 * @return string list of comments and comment informations as an html DIV output
 	**/
 	public function getCommentInformation($ticketid) {
 		global $log, $adb, $mod_strings, $default_charset;
