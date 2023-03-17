@@ -114,8 +114,9 @@ FieldDependencies.prototype.init = function (sourceform, datasource) {
  * On Loading of Page handler of detail view.
  */
 FieldDependencies.prototype.actOnDetailViewLoad = function () {
-	var sourcename = Object.keys(this.DS)[0];
-	this.controlActions(sourcename);
+	Object.keys(this.DS).forEach((sourcename) => {
+		this.controlActions(sourcename);
+	});
 };
 
 /**
