@@ -2360,10 +2360,10 @@ class OpenDocument {
 		if ($gdfolder!='') {
 			$res = $adb->pquery('select folderid from vtiger_attachmentsfolder where foldername=?', array($gdfolder));
 			if ($adb->num_rows($res)==0) {
-				$res = $adb->pquery('select folderid from vtiger_attachmentsfolder order by foldername', array());
+				$res = $adb->pquery('select folderid from vtiger_attachmentsfolder order by foldername limit 1', array());
 			}
 		} else {
-			$res = $adb->pquery('select folderid from vtiger_attachmentsfolder order by foldername', array());
+			$res = $adb->pquery('select folderid from vtiger_attachmentsfolder order by foldername limit 1', array());
 		}
 		$doc->column_fields['folderid'] = $adb->query_result($res, 0, 'folderid');
 		$doc->column_fields['filestatus'] = '1';
