@@ -171,5 +171,7 @@ $mod_strings = array (
 	'LBL_TO_LEADS' => 'Aux Prospects',
 	'LBL_TO_USERS' => 'Aux Utilisateurs',
 	'LBL_SENT_MAILS' => 'Emails Envoyés',
+	'LBL_VERIFY_SERVER' => 'Veuillez vérifier le serveur sortant',
+	'LBL_DRAFT_NOT_SAVED' => 'Le brouillon n`a pas été enregistré',
 );
 ?>
