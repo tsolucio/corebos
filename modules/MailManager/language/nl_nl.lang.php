@@ -166,5 +166,7 @@ $mod_strings = array(
 	'LBL_TO_ACCOUNTS' => 'Naar accounts',
 	'LBL_TO_LEADS' => 'Naar leads',
 	'LBL_TO_USERS' => 'Naar gebruikers',
+	'LBL_VERIFY_SERVER' => 'Controleer de uitgaande server',
+	'LBL_DRAFT_NOT_SAVED' => 'Concept is niet opgeslagen',
 );
 ?>

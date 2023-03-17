@@ -228,7 +228,7 @@ class MailManager_MailController extends MailManager_Controller {
 				$response->setResult(array('sent'=> true));
 			} else {
 				$response->isJson(true);
-				$response->setError(112, 'please verify outgoing server.');
+				$response->setError(112, getTranslatedString('LBL_VERIFY_SERVER'));
 			}
 		} elseif ('attachment_dld' == $request->getOperationArg()) {
 			$attachmentName = $request->get('_atname');
@@ -273,7 +273,7 @@ class MailManager_MailController extends MailManager_Controller {
 			if (!empty($draftId)) {
 				$response->setResult(array('success'=> true,'emailid'=>$draftId));
 			} else {
-				$response->setResult(array('success'=> false,'error'=>'Draft was not saved'));
+				$response->setResult(array('success'=> false,'error'=>getTranslatedString('LBL_DRAFT_NOT_SAVED')));
 			}
 		} elseif ('deleteAttachment' == $request->getOperationArg()) {
 			$connector = $this->getConnector('__vt_drafts');
