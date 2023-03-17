@@ -8,6 +8,7 @@
 * All Rights Reserved.
 ********************************************************************************/
 -->*}
+<link rel="stylesheet" type="text/css" href="Smarty/templates/Components/DetailView/detailview.css">
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 {if $FIELD_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
@@ -64,18 +65,18 @@
 	{include file='Buttons_List.tpl' isDetailView=true}
 	</div>
 	{include file='Components/DetailView/MainHeader.tpl'}
-	<div class="small" style="padding:14px" onclick="hndCancelOutsideClick();">
+	<div class="small" style="padding:0px 7px 14px 14px;" onclick="hndCancelOutsideClick();">
 	{include file='applicationmessage.tpl'}
 	{include file='DetailViewWidgetBar.tpl'}
 	<div class="slds-grid slds-gutters" style="width: 99.5%;margin-left: 0.0%;">
-		<div class="slds-col slds-size_9-of-12" id="bodycolumn" style="background: white;margin-right: 0.5%;">
+		<div class="slds-col slds-size_9-of-12" id="bodycolumn" style="background: white;">
 			{include file='Components/DetailView/Body.tpl'}
 		</div>
-		<div class="slds-col slds-size_3-of-12" id="actioncolumn" style="background: white;{$DEFAULT_ACTION_PANEL_STATUS}">
+		<div class="slds-col slds-size_3-of-12" id="actioncolumn" style="background: white;border-left: 1px solid #f3f3f3;{$DEFAULT_ACTION_PANEL_STATUS}">
 			{include file='Components/DetailView/Actions.tpl'}
 		</div>
 	</div>
-	<div class="slds-grid" style="background: white;padding-bottom: 1%;margin-top: 0.5%">
+	<div class="slds-grid" style="background: white;padding-bottom: 1%;margin-top: 0.5%;margin-right: 7px;">
 		<div class="slds-col">
 			{include file='Components/DetailView/Others.tpl'}
 		</div>

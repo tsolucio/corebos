@@ -29,7 +29,7 @@
 	{/if}
 		<li class="slds-tabs_default__item" role="presentation">
 			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-				<a class="slds-tabs_default__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}">
+				<a class="slds-tabs_default__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}" style="font-size: 14px">
 					{$RLARR.label}
 				</a>
 				{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}
@@ -38,9 +38,9 @@
 						{foreach key=_BLOCK_ID item=_RELATED_BLOCK from=$RLARR.blocks}
 						<li class="slds-dropdown__item" role="presentation">
 							<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}&selected_header={$_RELATED_BLOCK.loadfrom}&relation_id={if isset($_RELATED_BLOCK.relatedid)}{$_RELATED_BLOCK.relatedid}{/if}#tbl_{$MODULE}_{$_RELATED_BLOCK.loadfrom}" role="menuitem" tabindex="-1">
-								<span class="slds-truncate" title="Accounts">
+								<span class="slds-truncate">
 									<span class="slds-media slds-media_center">
-										<span class="slds-media__body">
+										<span class="slds-media__body" style="font-size: 14px">
 											{$_RELATED_BLOCK.label|@getTranslatedString:$_RELATED_BLOCK.label}
 										</span>
 									</span>

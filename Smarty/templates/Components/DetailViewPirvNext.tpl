@@ -76,35 +76,33 @@
 			<span class="slds-assistive-text">{$APP.LNK_LIST_NEXT}</span>
 	</button>
 {/if}
-
-	<div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-button_last">
-		<button class="slds-button slds-button_icon slds-button_icon-brand"
-		aria-haspopup="true"
-		title="{$APP.TOGGLE_ACTIONS}"
-		onclick="{literal}
-		let bodycolumn = document.getElementById('bodycolumn');
-		if (document.getElementById('actioncolumn').style.display=='none') {
-			document.getElementById('actioncolumn').style.display='block';
-			document.getElementById('action-on').style.display='block';
-			document.getElementById('action-off').style.display='none';
-			bodycolumn.classList.remove('slds-size_12-of-12');
-			bodycolumn.classList.add('slds-size_9-of-12');
-		} else {
-			document.getElementById('actioncolumn').style.display='none';
-			document.getElementById('action-on').style.display='none';
-			document.getElementById('action-off').style.display='block';
-			bodycolumn.classList.remove('slds-size_9-of-12');
-			bodycolumn.classList.add('slds-size_12-of-12');
-		}
-		window.dispatchEvent(new Event('resize'));{/literal}"
-		>
-		<svg class="slds-button__icon" id="action-on" style="display: block;">
-			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#contract_alt"></use>
-		</svg>
-		<svg class="slds-button__icon" id="action-off" style="display: none;">
-			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#expand_alt"></use>
-		</svg>
-		<span class="slds-assistive-text">{$APP.TOGGLE_ACTIONS}</span>
-		</button>
-	</div>
+<div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-button_last">
+	<button class="slds-button slds-button_icon slds-button_icon-brand"
+	aria-haspopup="true"
+	title="{$APP.TOGGLE_ACTIONS}"
+	onclick="{literal}
+	let bodycolumn = document.getElementById('bodycolumn');
+	if (document.getElementById('actioncolumn').style.display=='none') {
+		document.getElementById('actioncolumn').style.display='block';
+		document.getElementById('action-on').style.display='block';
+		document.getElementById('action-off').style.display='none';
+		bodycolumn.classList.remove('slds-size_12-of-12');
+		bodycolumn.classList.add('slds-size_9-of-12');
+	} else {
+		document.getElementById('actioncolumn').style.display='none';
+		document.getElementById('action-on').style.display='none';
+		document.getElementById('action-off').style.display='block';
+		bodycolumn.classList.remove('slds-size_9-of-12');
+		bodycolumn.classList.add('slds-size_12-of-12');
+	}
+	window.dispatchEvent(new Event('resize'));{/literal}"
+	>
+	<svg class="slds-button__icon" id="action-on" style="display: block;">
+		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#contract_alt"></use>
+	</svg>
+	<svg class="slds-button__icon" id="action-off" style="display: none;">
+		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#expand_alt"></use>
+	</svg>
+	<span class="slds-assistive-text">{$APP.TOGGLE_ACTIONS}</span>
+	</button>
 </div>

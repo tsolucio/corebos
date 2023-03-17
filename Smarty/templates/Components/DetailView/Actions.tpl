@@ -1,5 +1,5 @@
 {if empty($Module_Popup_Edit)}
-	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="detailview_actionlinks actionlinks_events_todo" style="margin-top: 1.5%;">
+	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="detailview_actionlinks actionlinks_events_todo" style="margin-top: 4.5%;">
 		<tr>
 			<td align="left" class="slds-text-heading_medium">
 				<div class="slds-section slds-is-open">

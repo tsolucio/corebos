@@ -1,4 +1,4 @@
-<table border=0 cellspacing=0 cellpadding=0 width=100%>
+<table border=0 cellspacing=0 cellpadding=0 width=100% style="margin-top: 1%">
 	<tr valign=top>
 		<td style="padding:5px">
 			<form action="index.php" method="post" name="DetailView" id="formDetailView">
