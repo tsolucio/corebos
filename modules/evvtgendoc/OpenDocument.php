@@ -2392,6 +2392,12 @@ class OpenDocument {
 		$_REQUEST['return_module'] = $module;
 		$_REQUEST['return_id'] = $record;
 		$doc->save('Documents');
+		if ($gdfolder!='') {
+			$fldid = DocumentFolders::getFolderIDbyName($gdfolder);
+			if ($fldid) {
+				relateEntities($doc, 'Documents', $doc->id, 'DocumentFolders', $fldid);
+			}
+		}
 		unset($_FILES);
 		$_REQUEST = $holdRequest;
 		return $doc->id;

@@ -61,7 +61,13 @@ class MailManager_UploadFile {
 				$document->parentid = vtlib_purify($_REQUEST['parent_id']);
 			}
 			$document->save('Documents');
-
+			$attfolder = GlobalVariable::getVariable('Email_Attachments_Folder', 'Default', 'Emails');
+			if ($attfolder!='') {
+				$fldid = DocumentFolders::getFolderIDbyName($gdfolder);
+				if ($fldid) {
+					relateEntities($document, 'Documents', $document->id, 'DocumentFolders', $fldid);
+				}
+			}
 			// Link file attached to document
 			$adb->pquery('INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)', array($document->id, $attachid));
 
