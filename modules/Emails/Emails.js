@@ -28,7 +28,7 @@ function addOption(id, filename) {
 			}
 		}
 	}
-	var newRow = '<div>';
+	var newRow = '<div class="slds-truncate">';
 	newRow += '<a href=\'javascript:void(0)\' onclick=\'this.parentNode.parentNode.removeChild(this.parentNode);\'><img src=\'' + remove_image_url + '\'></a>';
 	newRow += '&nbsp' + filename + '<input type=\'hidden\' name=\'doc_attachments[]\' value=\'' + id + '\'>';
 	newRow += '</div>';

@@ -5,7 +5,7 @@
 	padding: 5px;
 }
 .wd-525 {
-	width: 525px;
+	width: 88% !important;
 }
 .border-1p {
 	border: 1px solid #c9c9c9;
@@ -14,6 +14,7 @@
 	overflow: auto;
 	height: 100px;
 	width: 100%;
+	max-width: 200px;
 	position: relative;
 	left: 0px;
 	top: 0px;
