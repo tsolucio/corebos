@@ -1895,10 +1895,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Activa la edición en línea según el tipo de vista. El valor predeterminado es 1',
 ),
 'Email_Template_AutomaticMerge' => array(
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0 | 1',
-	'definition' => 'If set to 1, the email template is merged automatically. If set to 0, the email template is not merged and you can preview the email. The default value is 1.',
+	'definition' => 'Si se establece en 1, la plantilla de correo electrónico se fusiona automáticamente. Si se establece en 0, la plantilla de correo electrónico no se fusiona y puede obtener una vista previa del correo electrónico. El valor predeterminado es 1.',
 ),
 );
 

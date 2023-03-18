@@ -128,8 +128,8 @@ function MultiSelector( list_target, max ){
 		// Delete button
 		var new_row_button = document.createElement('input');
 		new_row_button.type = 'button';
-		new_row_button.value = 'Delete';
-		new_row_button.className = 'crmbutton small delete';
+		new_row_button.value = alert_arr.JSLBL_Delete;
+		new_row_button.className = 'slds-button slds-button_text-destructive slds-m-left_x-small slds-p-around_xx-small';
 
 		// References
 		new_row.element = element;
