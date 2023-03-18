@@ -37,5 +37,6 @@ $mod_strings = array(
 
 	'LBL_MESSAGE'=>'Mensaje',
 	'LBL_MESSAGE_ONLYTEXT'=>'Mensaje Solo Texto',
+	'ERR_NOTEMPLATESELECTED' => 'Ninguna plantilla seleccionada.',
 );
 ?>

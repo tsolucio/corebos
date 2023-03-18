@@ -26,4 +26,4 @@ if (isset($_REQUEST['templateid']) && $_REQUEST['templateid'] !='') {
 	echo $tpl[1];
 	exit;
 }
-echo 'Something is wrong. Please try again!';
+echo getTranslatedString('ERR_NOTEMPLATESELECTED', 'MsgTemplate');
