@@ -118,6 +118,11 @@ class cbCVManagement extends CRMEntity {
 
 	private static $validationinfo = array();
 
+	public function __construct() {
+		parent::__construct();
+		self::checkcbCVManagementInstalled();
+	}
+
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
@@ -146,10 +151,10 @@ class cbCVManagement extends CRMEntity {
 		}
 	}
 
-	/* returns the default Custom View ID for the given module and user applying escalation rules
-	 * param $module: the module we need the view for, will use current module if no value is given
-	 * param $cvuserid: user for which we want to get the view, will use current user if no value is given
-	 * returns: custom view ID
+	/** returns the default Custom View ID for the given module and user applying escalation rules
+	 * @param string the module we need the view for, will use current module if no value is given
+	 * @param integer user for which we want to get the view, will use current user if no value is given
+	 * @return integer custom view ID
 	 *   search for mandatory default record
 	 *   search for non-mandatory record that belongs to the role of the user
 	 *   search for non-mandatory record assigned to the user
@@ -197,13 +202,12 @@ class cbCVManagement extends CRMEntity {
 			from vtiger_cbcvmanagement
 			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
-			left join vtiger_user2role on vtiger_user2role.userid=?
-			where vtiger_crmentity.deleted=0 and cvdefault='1' and cvrole like concat('%', vtiger_user2role.roleid, '%') and entitytype=? and cvretrieve='1' limit 1";
+			where vtiger_crmentity.deleted=0 and cvdefault='1' and smownerid=? and entitytype=? and cvretrieve='1' limit 1";
 		self::$validationinfo[] = '---';
-		self::$validationinfo[] = 'search for role records';
+		self::$validationinfo[] = 'search for user records';
 		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
-			self::$validationinfo[] = 'role records found';
+			self::$validationinfo[] = 'user records found';
 			$value = $adb->query_result($cvrs, 0, 0);
 			VTCacheUtils::updateCachedInformation($key, $value);
 			return $value;
@@ -212,12 +216,13 @@ class cbCVManagement extends CRMEntity {
 			from vtiger_cbcvmanagement
 			inner join '.$crmEntityTable." on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
-			where vtiger_crmentity.deleted=0 and cvdefault='1' and smownerid=? and entitytype=? and cvretrieve='1' limit 1";
+			left join vtiger_user2role on vtiger_user2role.userid=?
+			where vtiger_crmentity.deleted=0 and cvdefault='1' and cvrole like concat('%', vtiger_user2role.roleid, '%') and entitytype=? and cvretrieve='1' limit 1";
 		self::$validationinfo[] = '---';
-		self::$validationinfo[] = 'search for user records';
+		self::$validationinfo[] = 'search for role records';
 		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
-			self::$validationinfo[] = 'user records found';
+			self::$validationinfo[] = 'role records found';
 			$value = $adb->query_result($cvrs, 0, 0);
 			VTCacheUtils::updateCachedInformation($key, $value);
 			return $value;
@@ -273,10 +278,10 @@ class cbCVManagement extends CRMEntity {
 		return false;
 	}
 
-	/* returns all the Custom Views available for the given module and user applying escalation rules
-	 * param $module: the module we need the views for, will use current module if no value is given
-	 * param $cvuserid: user for which we want to get the views, will use current user if no value is given
-	 * returns: custom view ID
+	/** returns all the Custom Views available for the given module and user applying escalation rules
+	 * @param string the module we need the views for, will use current module if no value is given
+	 * @param integer user for which we want to get the views, will use current user if no value is given
+	 * @return mixed custom view IDs
 	 *   search for mandatory default record
 	 *   search for non-mandatory record that belongs to the role of the user
 	 *   search for non-mandatory record assigned to the user
@@ -403,6 +408,39 @@ class cbCVManagement extends CRMEntity {
 				$allViews[] = $value['cvid'];
 			}
 		}
+
+		// push all public filters if the user is admin
+		if ($current_user->id == 1) {
+			$cvsql = 'SELECT vtiger_cbcvmanagement.cvid FROM `vtiger_cbcvmanagement` WHERE setpublic = 1 AND module_list = ?';
+			$queryResult = $adb->pquery($cvsql, array($module));
+			while ($row=$adb->fetch_array($queryResult)) {
+				$allViews[] = $row['cvid'];
+			}
+		}
+
+		// push all approved public filters
+		$cvsql = "SELECT * FROM `vtiger_customview` WHERE status = 3 AND entitytype = ?";
+		$queryResult = $adb->pquery($cvsql, array($module));
+		while ($row=$adb->fetch_array($queryResult)) {
+			$allViews[] = $row['cvid'];
+		}
+
+		// filter private records views
+		$cvsql = 'SELECT vtiger_cbcvmanagement.cvid, vtiger_customview.userid 
+			FROM `vtiger_cbcvmanagement` 
+			INNER JOIN vtiger_customview 
+			ON vtiger_cbcvmanagement.cvid = vtiger_customview.cvid 
+			WHERE setprivate = 1';
+		$queryResult = $adb->query($cvsql);
+		while ($row=$adb->fetch_array($queryResult)) {
+			for ($i=0; $i < count($allViews); $i++) {
+				if ($allViews[$i] == $row['cvid'] && $row['userid'] !== $cvuserid) {
+					unset($allViews[$i]);
+					$allViews = array_values($allViews);
+				}
+			}
+		}
+
 		VTCacheUtils::updateCachedInformation($key, $value);
 		return array_unique($allViews);
 	}
@@ -441,13 +479,12 @@ class cbCVManagement extends CRMEntity {
 		}
 	}
 
-	/* returns set of permissions of a user upon a custom view depending on the different records
-	 * param $cvid: the custom view identifier
-	 * param $cvuserid: user for which we want to know the perimissions, will use current user if no value is given
-	 * returns:
+	/** returns set of permissions of a user upon a custom view depending on the different records
+	 * @param integer the custom view identifier
+	 * @param integer user for which we want to know the perimissions, will use current user if no value is given
+	 * @return mixed
 	 *  if $cvid or $cvuserid are empty or invalid it returns boolean false
-	 *  else it returns
-	 *  array with CRUD and Approve permissions:
+	 *  else it returns array with CRUD and Approve permissions:
 	 *   search for mandatory record that belongs to the user
 	 *   search for mandatory record that belongs to the role of the user
 	 *   search for mandatory record that belongs to any group the user is in
@@ -479,6 +516,23 @@ class cbCVManagement extends CRMEntity {
 		if (empty($cvuserid)) {
 			return false;
 		}
+
+		// checks if the record is Private
+		$cvsql = 'SELECT vtiger_cbcvmanagement.cvid, vtiger_customview.userid 
+			FROM `vtiger_cbcvmanagement` 
+			INNER JOIN vtiger_customview 
+			ON vtiger_cbcvmanagement.cvid = vtiger_customview.cvid 
+			WHERE setprivate = 1 AND vtiger_cbcvmanagement.cvid = ? AND vtiger_customview.userid != ?';
+		$queryResult = $adb->pquery($cvsql, array($cvid, $cvuserid));
+		if ($adb->num_rows($queryResult)) {
+			return array('C' => 0, 'R' => 0, 'U' => 0, 'D' => 0, 'A' => 0);
+		}
+
+		// giving all permissions if its the admin user
+		if ($cvuserid == 1) {
+			return array('C' => 1, 'R' => 1, 'U' => 1, 'D' => 1, 'A' => 1);
+		}
+
 		$module = $adb->query_result($cvrs, 0, 'entitytype');
 		$cvname = $adb->query_result($cvrs, 0, 'viewname');
 		$cvuid = $adb->query_result($cvrs, 0, 'userid');
@@ -605,6 +659,52 @@ class cbCVManagement extends CRMEntity {
 
 	public static function getValidationInfo() {
 		return self::$validationinfo;
+	}
+
+	public static function getFieldValuesByCvId($cvid) {
+		global $adb;
+		$result = $adb->pquery('SELECT * FROM vtiger_cbcvmanagement WHERE cvid=?', array($cvid));
+		if (!$result) {
+			return false;
+		}
+		return $result->fields;
+	}
+
+	public static function checkcbCVManagementInstalled() {
+		global $adb, $current_user;
+		if (vtlib_isModuleActive('cbupdater')) {
+			$columnNames = $adb->getColumnNames('vtiger_cbcvmanagement');
+			if (!in_array('setprivate', $columnNames)) {
+				$holduser = $current_user;
+				ob_start();
+				include 'modules/cbupdater/getupdatescli.php';
+				$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='addIsPrivateFieldToCbCVManagement'");
+				if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
+					$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
+					$argv[0] = 'doworkcli';
+					$argv[1] = 'apply';
+					$argv[2] = $updid;
+					include 'modules/cbupdater/doworkcli.php';
+					ob_end_clean();
+					$current_user = $holduser;
+				}
+			}
+			if (!in_array('sortfieldbyfirst', $columnNames) || !in_array('sortfieldbysecond', $columnNames)) {
+				$holduser = $current_user;
+				ob_start();
+				include 'modules/cbupdater/getupdatescli.php';
+				$rsup = $adb->query("select cbupdaterid,execstate from vtiger_cbupdater where classname='addSortByFieldToCbCVManagement'");
+				if ($adb->query_result($rsup, 0, 'execstate')!='Executed') {
+					$updid = $adb->query_result($rsup, 0, 'cbupdaterid');
+					$argv[0] = 'doworkcli';
+					$argv[1] = 'apply';
+					$argv[2] = $updid;
+					include 'modules/cbupdater/doworkcli.php';
+					ob_end_clean();
+					$current_user = $holduser;
+				}
+			}
+		}
 	}
 }
 ?>

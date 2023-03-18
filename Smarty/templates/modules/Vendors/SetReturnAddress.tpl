@@ -26,7 +26,7 @@
 	<tr>
 		<td width="90%" align="left" class="genHeaderSmall">{'SetReturnAddressTitle'|@getTranslatedString}</td>
 		<td width="10%" align="right">
-			<a href="javascript:fninvsh('setaddressvendordiv');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
+			<a href="javascript:fninvsh('setaddressvendordiv');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 		</td>
 	</tr>
 </table>

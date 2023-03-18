@@ -59,10 +59,10 @@ ul {ldelim}color:black;{rdelim}
 	function displayCoords(event) {ldelim}
 		var move_Element = document.getElementById('Drag_content').style;
 		if (!event) {ldelim}
-			move_Element.left = e.pageX +'px' ;
+			move_Element.left = e.pageX +'px';
 			move_Element.top = e.pageY+10 + 'px';
 		{rdelim} else {ldelim}
-			move_Element.left = event.clientX +'px' ;
+			move_Element.left = event.clientX +'px';
 			move_Element.top = event.clientY+10 + 'px';
 		{rdelim}
 	{rdelim}
@@ -92,6 +92,34 @@ ul {ldelim}color:black;{rdelim}
 				<tr>
 					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ico-roles.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_ROLES}" width="48" height="48" border=0 title="{$MOD.LBL_ROLES}"></td>
 					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_ROLES}</b></td>
+					<td valign=top class="small cblds-p-v_none">
+						<div style="float: right">
+							<a
+								class="slds-button slds-button_icon slds-button_icon-border-filled"
+								aria-haspopup="true"
+								href="index.php?module=Settings&action=handle_xml_layout_import&category=ROLE"
+								title="{$MOD.LBL_IMPORT}">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>
+									</svg>
+									<span class="slds-assistive-text">
+										{$APP.LBL_IMPORT}
+									</span>
+							</a>
+							<a
+								class="slds-button slds-button_icon slds-button_icon-border-filled"
+								aria-haspopup="true"
+								href="index.php?module=Settings&action=SettingsAjax&file=ExportXML&category=ROLE"
+								title="{$MOD.LBL_EXPORT}">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
+									</svg>
+									<span class="slds-assistive-text">
+										{$APP.LBL_EXPORT}
+									</span>
+							</a>
+						</div>
+					</td>
 				</tr>
 				<tr>
 					<td valign=top class="small cblds-p-v_none">{$MOD.LBL_ROLE_DESCRIPTION}</td>

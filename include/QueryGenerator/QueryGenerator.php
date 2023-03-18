@@ -35,6 +35,7 @@ class QueryGenerator {
 	private $fields;
 	private $addJoinFields;
 	private $referenceModuleMetaInfo;
+	private $referenceModuleField;
 	private $moduleNameFields;
 	private $referenceFieldInfoList;
 	private $referenceFieldList;
@@ -778,6 +779,9 @@ class QueryGenerator {
 			$alreadyinfrom[] = $baseTable;
 			if (isset($this->referenceModuleField) && is_array($this->referenceModuleField)) {
 				foreach ($this->referenceModuleField as $conditionInfo) {
+					if (empty($conditionInfo['relatedModule'])) {
+						continue;
+					}
 					if ($conditionInfo['relatedModule'] == 'Users' && $baseModule != 'Users'
 					 && !in_array('vtiger_users', $referenceFieldTableList) && !in_array('vtiger_users', $tableList)) {
 						$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
@@ -1019,7 +1023,7 @@ class QueryGenerator {
 						}
 
 						$fieldSql .= "$fieldGlue trim($columnSql) $valueSql";
-						if ($conditionInfo['operator'] == 'e' && (empty($conditionInfo['value']) || $conditionInfo['value'] == 'null') && $field->getFieldDataType() == 'reference') {
+						if ($conditionInfo['operator']=='e' && (empty($conditionInfo['value']) || $conditionInfo['value']=='null') && $field->getFieldDataType()=='reference') {
 							$fieldGlue = ' AND';
 						} else {
 							$fieldGlue = ' OR';
@@ -1075,6 +1079,9 @@ class QueryGenerator {
 		// This is added to support reference module fields
 		if (isset($this->referenceModuleField)) {
 			foreach ($this->referenceModuleField as $index => $conditionInfo) {
+				if (empty($conditionInfo['relatedModule'])) {
+					continue;
+				}
 				$handler = vtws_getModuleHandlerFromName($conditionInfo['relatedModule'], $current_user);
 				$meta_data = $handler->getMeta();
 				$fieldName = $conditionInfo['fieldName'];
@@ -1480,8 +1487,29 @@ class QueryGenerator {
 			) {
 				$value = "'$value'";
 			}
-			if ($this->isNumericType($field->getFieldDataType()) && empty($value)) {
-				$value = '0';
+			if ($this->isNumericType($field->getFieldDataType())) {
+				if (empty($value)) {
+					$value = '0';
+				} elseif (strpos((string)$value, ',')>0) {
+					$value = "'$value'";
+				} elseif (!is_numeric($value) && strpos($value, "'") === false) {
+					// we have to try to understand if the value is a real string or another field
+					// this is extremely difficult at this point of the code without more context
+					$mid = getTabModuleName($field->getTabId());
+					$qgmod = CRMEntity::getInstance($mid);
+					if (strpos($value, '.')>0) {
+						list($tname, $cname) = explode('.', $value);
+					} else {
+						$tname = '';
+						$cname = $value;
+					}
+					if ($tname==$qgmod->table_name || in_array($cname, array_keys($qgmod->column_fields))) {
+						// it looks like a field on the main module
+					} else {
+						// search for tablename and columnname on all related modules then return quoted value
+						$value = "'$value'";
+					}
+				}
 			}
 			if ($this->requiresSoundex($operator)) {
 				$sql[] = 'SOUNDEX('.$field->getTableName().'.'.$field->getColumnName().') '.($operator=='nsx' ? 'NOT ' : '')."LIKE SOUNDEX($value)";
@@ -1673,7 +1701,7 @@ class QueryGenerator {
 				$advft_criteria = json_decode($advft_criteria, true);
 			}
 			if (empty($advft_criteria) || count($advft_criteria) <= 0) {
-				return ;
+				return;
 			}
 
 			$advft_criteria_groups = (empty($input['advft_criteria_groups']) ?
@@ -1686,7 +1714,7 @@ class QueryGenerator {
 			$advfilterlist = getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, $this->getModule());
 
 			if (empty($advfilterlist) || count($advfilterlist) <= 0) {
-				return ;
+				return;
 			}
 
 			if ($this->conditionInstanceCount > 0) {
@@ -1700,12 +1728,18 @@ class QueryGenerator {
 					$this->startGroup('');
 					foreach ($filtercolumns as $index => $filter) {
 						$name = explode(':', $filter['columnname']);
+						$relatedModule = substr($name[3], 0, strpos($name[3], '_'));
 						if (empty($name[2]) && $name[1] == 'crmid' && $name[0] == 'vtiger_crmentity') {
 							$name = $this->getSQLColumn('id');
 						} else {
 							$name = $name[2];
 						}
-						$this->addCondition($name, $filter['value'], $filter['comparator']);
+						if ($relatedModule==$this->module) {
+							$this->addCondition($name, $filter['value'], $filter['comparator']);
+						} else {
+							$referenceField = getFirstFieldForModule($this->module, $relatedModule);
+							$this->addReferenceModuleFieldCondition($relatedModule, $referenceField, $name, $filter['value'], $filter['comparator'], $filter['column_condition']);
+						}
 						$columncondition = $filter['column_condition'];
 						if (!empty($columncondition)) {
 							$this->addConditionGlue($columncondition);
@@ -1756,7 +1790,7 @@ class QueryGenerator {
 			if (isset($input['search_field']) && $input['search_field'] !='') {
 				$fieldName=vtlib_purify($input['search_field']);
 			} else {
-				return ;
+				return;
 			}
 			if ($this->conditionInstanceCount > 0) {
 				$this->startGroup(self::$AND);

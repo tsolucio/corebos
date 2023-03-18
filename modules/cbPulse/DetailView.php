@@ -15,14 +15,14 @@ $smarty = new vtigerCRM_Smarty();
 
 require_once 'modules/Vtiger/DetailView.php';
 $res = $adb->pquery(
-	"select workflowid from vtiger_cbpulse WHERE cbpulseid=?",
+	'select workflowid from vtiger_cbpulse WHERE cbpulseid=?',
 	array($focus->id)
 );
 $workflowId = (int)(vtlib_purify($res->fields['workflowid']));
 $wfs = new VTWorkflowManager($adb);
 if (!empty($workflowId)) {
 	$workflowres = $adb->pquery(
-		"select * from com_vtiger_workflows WHERE workflow_id = ?",
+		'select * from com_vtiger_workflows WHERE workflow_id=?',
 		array($workflowId)
 	);
 	$workflows = $wfs->getWorkflowsForResult($workflowres);

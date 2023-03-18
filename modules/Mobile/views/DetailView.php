@@ -28,7 +28,7 @@ class crmtogo_UI_DetailView extends crmtogo_WS_FetchRecordDetails {
 		$wsResponse = parent::process($request);
 		$modules_with_comments = $this->getConfigSettingsComments();
 		$current_user = $this->getActiveUser();
-		$current_language = $this->sessionGet('language') ;
+		$current_language = $this->sessionGet('language');
 		//generate dateformat for Smarty
 		$target_date_format = $current_user->date_format;
 		$target_date_format= str_replace('yyyy', '%Y', $target_date_format);

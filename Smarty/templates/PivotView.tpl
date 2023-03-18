@@ -25,6 +25,7 @@
 <script type="text/javascript">
 {literal}
 const bmapname = {/literal}'{$bmapname}'{literal};
+const rowlinks = {/literal}'{$rowlinks}'{literal};
 $(function() {
 	let url = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getMapByName&mapname=${bmapname}`;
 	fetch(
@@ -114,13 +115,33 @@ $(function() {
 								});
 							});
 							const Pivot_AdvancedSearch = res[1];
-							const urlstring = `${JSON.stringify(Pivot_AdvancedSearch)}&advft_criteria_groups=[null,{"groupcondition":""}]`;
-							window.open(`index.php?module=${gVTModule}&action=index&query=true&search=true&searchtype=advance&advft_criteria=${urlstring}`, '_blank');
+							const urlstring = `index.php?module=${gVTModule}&action=index&query=true&search=true&searchtype=advance&advft_criteria=${JSON.stringify(Pivot_AdvancedSearch)}&advft_criteria_groups=[null,{"groupcondition":""}]`;
+							localStorage.setItem(`${gVTModule}_${gVTUserID}_LastClickedURL`, urlstring);
+							window.open(urlstring, '_blank');
 						});
 						advFilter = Array();
 						fields = Array();
 					}
 				}
+			},
+			onRefresh: function(config) {
+				let rowFields = JSON.parse(rowlinks);
+				$('.pvtRowLabel').click(function(e) {
+					let vTotalAxisLabels = $('.pvtAxisLabel').length;
+					let vTotalRowLabels =  ($(this).siblings('th').length)+1;
+					let vColRowLabels = vTotalAxisLabels - vTotalRowLabels;
+					let thHeaderName = $('.pvtAxisLabel').eq($(this).index()+vColRowLabels);
+					const advSearch = [{
+						'columnname': rowFields[thHeaderName.html()],
+						'comparator': 'e',
+						'value': encodeURIComponent(e.target.innerText),
+						'groupid': 1,
+						'columncondition': 'and'
+					}];
+					const urlstring = `index.php?module=${gVTModule}&action=index&query=true&search=true&searchtype=advance&advft_criteria=${JSON.stringify(advSearch)}&advft_criteria_groups=[null,{"groupcondition":""}]`;
+					localStorage.setItem(`${gVTModule}_${gVTUserID}_LastClickedURL`, urlstring);
+					window.open(urlstring, '_blank');
+				});
 			}
 		};
 		const aggregatorName = {/literal}'{$aggregatorName}'{literal};

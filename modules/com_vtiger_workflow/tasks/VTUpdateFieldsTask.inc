@@ -13,21 +13,27 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 class VTUpdateFieldsTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $field_value_mapping;
+	public $launchwf;
+	public $launchrelwf;
 
 	public function getFieldNames() {
-		return array('field_value_mapping', 'launchrelwf');
+		return array('field_value_mapping', 'launchwf', 'launchrelwf');
 	}
 
 	public function after_retrieve() {
 		if (!isset($this->launchrelwf)) {
 			$this->launchrelwf = 0;
 		}
+		if (!isset($this->launchwf)) {
+			$this->launchwf = 0;
+		}
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $logbg,$from_wf, $currentModule;
+		global $adb, $current_user, $logbg, $from_wf, $currentModule;
+		$logbg->debug('> UpdateFieldsTask');
 		$from_wf = true;
-		$logbg->debug('> VTUpdateFieldsTask');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 		$isqueue=$entity->isqueue;
@@ -35,7 +41,9 @@ class VTUpdateFieldsTask extends VTTask {
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
-		$logbg->debug("Module: $moduleName, Record: $entityId");
+		$logmsg = "(UpdateFieldsTask) Module: $moduleName, Record: $entityId";
+		$logbg->debug($logmsg);
+		$this->logmessages[] = $logmsg;
 		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $current_user);
 		$handlerMeta = $moduleHandler->getMeta();
 		$moduleFields = $handlerMeta->getModuleFields();
@@ -48,25 +56,29 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus = CRMEntity::getInstance($moduleName);
 			$focus->id = $recordId;
 			$focus->mode = 'edit';
-			$focus->retrieve_entity_info($recordId, $moduleName);
+			$focus->retrieve_entity_info($recordId, $moduleName, false, $from_wf);
 			$focus->clearSingletonSaveFields();
-			$logbg->debug('field values pre', $focus->column_fields);
-			$logbg->debug('update info', $fieldValueMapping);
+			$logbg->debug('(UpdateFieldsTask) field values pre', $focus->column_fields);
+			$this->logmessages[] = 'DATABASE';
+			$this->logmessages[] = json_encode($focus->column_fields);
+			$logbg->debug('(UpdateFieldsTask) update info', $fieldValueMapping);
 
 			$hold_user = $current_user;
 			$util->loggedInUser();
 			if (is_null($current_user)) {
-				$current_user = $hold_user;  // make sure current_user is defined
+				$current_user = $hold_user; // make sure current_user is defined
 			}
 			$relmodule=array();
 			$handlerMetarel[]=array();
+			$focusrel[]=array();
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
+				$fieldinfo = VTCacheUtils::lookupFieldInfo(getTabid($moduleName), $fieldName);
+				preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldInfo['value'], $matches);
 				$fieldmodule='';
 				$fldrelname='';
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue = trim($fieldInfo['value']);
-				$focusrel[]=array();
 				if (array_key_exists('fldmodule', $fieldInfo)) {
 					$fieldmodule = trim($fieldInfo['fldmodule']);
 				}
@@ -104,20 +116,44 @@ class VTUpdateFieldsTask extends VTTask {
 					$fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMeta);
 				} else {
 					$fieldValue=$util->fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta);
+					if ($fieldinfo['uitype'] == Field_Metadata::UITYPE_IMAGE) {
+						$_REQUEST[$fieldName.'_hidden'] = str_replace(' ', '_', $fieldValue);
+						if (empty($matches)) {
+							$_REQUEST['__cbisduplicatedfromrecordid'] = '';
+						} else {
+							$_REQUEST['__cbisduplicatedfromrecordid'] = $focus->column_fields[$matches[1]];
+						}
+					}
 				}
 				if ($fieldmodule=='') {
 					$focus->column_fields[$fieldName] = $fieldValue;
 					$entity->data[$fieldName] = $fieldValue;
 				} else {
-					$focusrel[$fieldmodule]->column_fields[$fldrelname]=$fieldValue;
+					if (empty($focusrel[$fieldmodule]) && $relId!='' && $relId!=0 && !in_array($fieldmodule, $relmodule)) {
+						$relmodule[]=$fieldmodule;
+						$focusrel[$fieldmodule] = CRMEntity::getInstance($fieldmodule);
+						$focusrel[$fieldmodule]->id = $relId;
+						$focusrel[$fieldmodule]->mode = 'edit';
+						$focusrel[$fieldmodule]->retrieve_entity_info($relId, $fieldmodule, false, $from_wf);
+						$focusrel[$fieldmodule]->clearSingletonSaveFields();
+					}
+					if (!empty($focusrel[$fieldmodule])) {
+						$focusrel[$fieldmodule]->column_fields[$fldrelname]=$fieldValue;
+					}
 				}
 			}
 			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$holdCM = $currentModule;
 			$_REQUEST['ajxaction'] = 'Workflow';
-			$logbg->debug('field values presave', $focus->column_fields);
-			$focus->saveentity($moduleName);
+			$logbg->debug('(UpdateFieldsTask) field values presave', $focus->column_fields);
+			$this->logmessages[] = 'PRESAVE';
+			$this->logmessages[] = json_encode($focus->column_fields);
+			if (isset($this->launchwf) && $this->launchwf) {
+				$focus->save($moduleName);
+			} else {
+				$focus->saveentity($moduleName);
+			}
 			if (!empty($relmodule) && !empty($relId)) {
 				foreach ($relmodule as $mod) {
 					$currentModule = $mod;
@@ -141,11 +177,15 @@ class VTUpdateFieldsTask extends VTTask {
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 			$currentModule = $holdCM;
 			$util->revertUser();
-			$logbg->debug('field values postsave', $focus->column_fields);
+			$logbg->debug('(UpdateFieldsTask) field values postsave', $focus->column_fields);
+			$this->logmessages[] = 'POSTSAVE';
+			$this->logmessages[] = json_encode($focus->column_fields);
+		} else {
+			$logbg->debug('(UpdateFieldsTask) not called: fieldValueMapping is empty');
 		}
 		$util->revertUser();
 		$from_wf = false;
-		$logbg->debug('< VTUpdateFieldsTask');
+		$logbg->debug('< UpdateFieldsTask');
 	}
 }
 ?>

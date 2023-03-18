@@ -122,7 +122,7 @@
 																</tr>
 																<tr>
 																	<td>
-																		<div name="cfcombo" id="cfcombo" class="small" style="width:205px; height:150px; overflow-y:auto ;overflow-x:hidden ;overflow:auto; border:1px solid #CCCCCC ;">
+																		<div name="cfcombo" id="cfcombo" class="small" style="width:205px; height:150px; overflow-y:auto;overflow-x:hidden;overflow:auto; border:1px solid #CCCCCC;">
 																			<table>
 																				<tr><td align="left"><a id="field0_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'text.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,0,{$entries.blockid});"> {$MOD.Text} </a></td></tr>
 																				<tr><td align="left"><a id="field1_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'number.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,1,{$entries.blockid})"> {$MOD.Number} </a></td></tr>

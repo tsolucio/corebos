@@ -8,7 +8,7 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<table class="small" bgcolor="#ffffff" border="0" cellpadding="5" cellspacing="0"  valign="top" height="500" width="100%">
+<table class="small" bgcolor="#ffffff" border="0" cellpadding="5" cellspacing="0" valign="top" height="500" width="100%">
 	<tbody>
 		<tr>
 			<td colspan="4">

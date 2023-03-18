@@ -20,6 +20,10 @@ use Gaufrette\Adapter\GoogleCloudStorage as GoogleStorage;
 use Gaufrette\Filesystem;
 
 class GoogleStorageAdapter {
+	public $bucket = '';
+	public $client = '';
+	public $context = '';
+	public $filesystem = null;
 
 	public function __construct($data, $client, $workflow_context) {
 		$this->bucket = $data['google_bucket'];
@@ -29,9 +33,7 @@ class GoogleStorageAdapter {
 
 	public function setUp() {
 		$service = new Google_Service_Storage($this->client);
-		$adapter = new GoogleStorage($service, $this->bucket, array(
-			'acl' => 'private',
-		), true);
+		$adapter = new GoogleStorage($service, $this->bucket, array('acl' => 'private'), true);
 		$this->filesystem = new Filesystem($adapter);
 	}
 

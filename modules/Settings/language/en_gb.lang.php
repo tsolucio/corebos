@@ -316,6 +316,7 @@ $mod_strings = array(
 	'LBL_OWNER' => 'Assigned Owner',
 	'LBL_MIGRATION' => 'Migration Wizard',
 	'LBL_MIGRATION_INFO' => 'Migrate your existing CRM data to latest version',
+	'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Supported File Type .XML only',
 	'LBL_USER_DESCRIPTION' => 'Manage users who can access CRM',
 	'LBL_ROLE_DESCRIPTION' => 'Set up hierarchy of Roles and assign to the users',
 	'LBL_PROFILE_DESCRIPTION' => 'Manage user-specific modules access to different Roles',
@@ -838,7 +839,7 @@ $mod_strings = array(
 	'LBL_MENU_EDITOR' => 'Menu editor',
 	'LBL_ALL_MODULES' => 'All Modules',
 	'LBL_SELECTED_MODULES' => 'Selected Modules',
-	'LBL_CRM_SETTINGS' => 'CRM Settings',
+	'LBL_CRM_SETTINGS' => 'Application Settings',
 	// language translation strings
 	'LBL_LANGUAGES_PACKS' => 'Language Extension',
 	'LBL_EDIT_LANGUAGE_FILE' => 'Translate modules strings',
@@ -917,6 +918,8 @@ $mod_strings = array(
 	'LBL_MB_NEWBLOCK' => 'Add Block',
 	'LBL_MB_ADDFIELD' => 'ADD FIELD',
 	'LBL_MB_ALLMODULES' => 'All modules',
+	'LBL_MB_STARTMODULE' => 'Start new module',
+	'LBL_NEWFIELDHELP' => 'Default fields for module <i>assigned_user_id</i>, <i>created_user_id</i>, <i>createdtime</i>, <i>modifiedtime</i> and <i>description</i> are created automatically!',
 	'LBL_MB_PROGRESS' => 'Progress',
 	'LBL_MB_STATUS' => 'Status',
 	'LBL_MODULE_BUILDER' => 'Module Builder',
@@ -933,5 +936,11 @@ $mod_strings = array(
 	'LBL_EXPORT' => 'Export',
 	'LBL_RELATED_MODULE' => 'Related Module',
 	'LBL_RL_LABEL' => 'Label',
+	//email language translate
+    'LBL_EMAIL_TRANSLATE' => 'This is a test mail sent to confirm if a mail is actually being sent through the smtp server that you have configured.',
+    'LBL_EMAIL_END' => 'Feel free to delete this mail.',
+    'LBL_EMAIL_SUBJECT' => 'Test mail about the mail server configuration.',
+    'LBL_DEAR' => 'Dear ',
+    'LBL_THANKS' => 'Thanks and Regards,',
 );
 ?>

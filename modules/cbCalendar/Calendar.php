@@ -36,8 +36,8 @@ class Calendar {
 
 	/**
 	 * Function to get calendarview Label
-	 * @param string  $view   - calendarview
-	 * return string  - calendarview Label
+	 * @param string calendarview
+	 * @return string calendarview Label
 	*/
 	public function getCalendarView($view) {
 		switch ($view) {
@@ -121,7 +121,7 @@ class Calendar {
 
 	/**
 	 * Function to get date info depends on calendarview
-	 * @param  string   $type  - string 'increment' or 'decrment'
+	 * @param string 'increment' or 'decrment'
 	 */
 	public function get_datechange_info($type) {
 		if ($type == 'next') {
@@ -158,8 +158,8 @@ class Layout {
 
 	/**
 	* Constructor for Layout class
-	* @param  string   $view - calendarview
-	* @param  string   $time - time string
+	* @param string calendarview
+	* @param string time string
 	*/
 	public function __construct($view, $time) {
 		$this->view = $view;

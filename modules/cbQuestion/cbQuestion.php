@@ -173,23 +173,22 @@ class cbQuestion extends CRMEntity {
 		}
 		include_once 'include/Webservices/Query.php';
 		include_once 'include/Webservices/VtigerModuleOperation.php';
-		if ($q->column_fields['sqlquery']=='1') {
+		if ($q->column_fields['querytype']=='SQL') {
 			$mod = CRMEntity::getInstance($q->column_fields['qmodule']);
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.$mod->table_name.' ';
-			$query .= getNonAdminAccessControlQuery($q->column_fields['qmodule'], $current_user);
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
-				$queryparams = 'set ';
-				$paramcount = 1;
-				$qpprefix = '@qp'.time();
-				foreach ($params as $param => $value) {
-					$qp = $qpprefix.$paramcount;
-					$paramcount++;
-					$queryparams.= $adb->convert2Sql(" $qp = ?,", [$value]);
-					$conds = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $conds);
-				}
-				$queryparams = trim($queryparams, ',');
 				if (!empty($params)) {
+					$queryparams = 'set ';
+					$paramcount = 1;
+					$qpprefix = '@qp'.time();
+					foreach ($params as $param => $value) {
+						$qp = $qpprefix.$paramcount;
+						$paramcount++;
+						$queryparams.= $adb->convert2Sql(" $qp = ?,", [$value]);
+						$conds = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $conds);
+					}
+					$queryparams = trim($queryparams, ',');
 					$adb->query($queryparams);
 				}
 				if ($q->column_fields['condfilterformat']=='1') { // filter conditions
@@ -211,6 +210,7 @@ class cbQuestion extends CRMEntity {
 					$query .= $conds;
 				}
 			}
+			$query = appendFromClauseToQuery($query, getNonAdminAccessControlQuery($q->column_fields['qmodule'], $current_user));
 			if (!empty($q->column_fields['groupby'])) {
 				$query .= ' GROUP BY '.$q->column_fields['groupby'];
 			}
@@ -221,6 +221,21 @@ class cbQuestion extends CRMEntity {
 				$query .= ' LIMIT '.$q->column_fields['qpagesize'];
 			}
 			$query .= ';';
+		} elseif ($q->column_fields['querytype'] == 'Direct Sql') {
+			$query = decode_html($q->column_fields['qcolumns']);
+			if (!empty($params)) {
+				$queryparams = 'set ';
+				$paramcount = 1;
+				$qpprefix = '@qp'.time();
+				foreach ($params as $param => $value) {
+					$qp = $qpprefix.$paramcount;
+					$paramcount++;
+					$queryparams.= $adb->convert2Sql(" $qp = ?,", [$value]);
+					$query = str_replace(["'$param'", '"'.$param.'"', $param], $qp, $query);
+				}
+				$queryparams = trim($queryparams, ',');
+				$adb->query($queryparams);
+			}
 		} else {
 			$chkrs = $adb->pquery(
 				'SELECT 1 FROM (select name from `vtiger_ws_entity` UNION select name from vtiger_tab) as tnames where name=?',
@@ -412,8 +427,9 @@ class cbQuestion extends CRMEntity {
 				'answer' => cbwsgetSearchResultsWithTotals($props['query'], $props['searchin'], $restrictionids, $current_user),
 			);
 		} else {
+			$groupinginfo = [];
 			include_once 'include/Webservices/Query.php';
-			if ($q->column_fields['sqlquery']=='0') {
+			if ($q->column_fields['querytype']=='SQL') {
 				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
 				$handlerPath = $webserviceObject->getHandlerPath();
 				$handlerClass = $webserviceObject->getHandlerClass();
@@ -422,13 +438,34 @@ class cbQuestion extends CRMEntity {
 				$meta = $handler->getMeta();
 				$queryRelatedModules = array();
 				$sql_query = cbQuestion::getSQL($qid, $params);
+				if (!empty($q->column_fields['groupby'])) {
+					$groupinginfo = cbQuestion::getGroupingInfo($sql_query, $q->column_fields['groupby'], $q->column_fields['qmodule']);
+				}
 				return array(
 					'module' => $q->column_fields['qmodule'],
-					'columns' =>  html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
+					'columns' => html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
+					'groupings' => $groupinginfo,
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-					'answer' => $handler->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules),
+					'answer' => $handler->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules, false, ADODB_ASSOC_CASE_NATIVE),
+				);
+			} elseif ($q->column_fields['querytype']=='Direct Sql') {
+				$sql_query = cbQuestion::getSQL($qid, $params);
+				$rs = $adb->query($sql_query);
+				$output = array();
+				$noofrows = $adb->num_rows($rs);
+				for ($i=0; $i<$noofrows; $i++) {
+					$output[] = $adb->fetchByAssoc($rs, $i, true, ADODB_ASSOC_CASE_NATIVE);
+				}
+				return array(
+					'module' => $q->column_fields['qmodule'],
+					'columns' => '',
+					'groupings' => [],
+					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
+					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
+					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
+					'answer' => $output,
 				);
 			} else {
 				require_once 'include/Webservices/GetExtendedQuery.php';
@@ -436,10 +473,16 @@ class cbQuestion extends CRMEntity {
 				$meta = $handler->getMeta();
 				$queryRelatedModules = array(); // this has to be filled in with all the related modules in the query
 				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
-				$modOp = new VtigerModuleOperation($webserviceObject, $current_user, $adb, $log);
+				$handlerPath = $webserviceObject->getHandlerPath();
+				$handlerClass = $webserviceObject->getHandlerClass();
+				require_once $handlerPath;
+				$modOp = new $handlerClass($webserviceObject, $current_user, $adb, $log);
 				$sql_query = cbQuestion::getSQL($qid, $params);
+				if (!empty($q->column_fields['groupby'])) {
+					$groupinginfo = cbQuestion::getGroupingInfo($sql_query, $q->column_fields['groupby'], $q->column_fields['qmodule']);
+				}
 				$sql_question_context_variable = json_decode($q->column_fields['typeprops']);
-				if ($sql_question_context_variable) {
+				if ($sql_question_context_variable && isset($sql_question_context_variable->context_variables)) {
 					$context_var_array = (array) $sql_question_context_variable->context_variables;
 					if (!empty($context_var_array)) {
 						foreach ($context_var_array as $key => $value) {
@@ -458,14 +501,57 @@ class cbQuestion extends CRMEntity {
 				}
 				return array(
 					'module' => $q->column_fields['qmodule'],
-					'columns' => $q->column_fields['qcolumns'],
+					'columns' => html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
+					'groupings' => $groupinginfo,
 					'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 					'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 					'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
-					'answer' => $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules),
+					'answer' => $modOp->querySQLResults($sql_query, ' not in ', $meta, $queryRelatedModules, false, ADODB_ASSOC_CASE_NATIVE),
 				);
 			}
 		}
+	}
+
+	public static function getGroupingInfo($sql_query, $groupby, $qmodule) {
+		global $adb;
+		if (strpos($groupby, '.') !== false) {
+			list($tablename, $groupby) = explode('.', $groupby);
+		}
+		$mod = Vtiger_Module::getInstance($qmodule);
+		$fld = Vtiger_Field::getInstance($groupby, $mod);
+		if ($fld) {
+			$tablename = $fld->table;
+			$fldname = $fld->name;
+			$colname = $fld->column;
+			$uitype = $fld->uitype;
+		} else {
+			getColumnFields($qmodule);
+			$fieldinfo = VTCacheUtils::lookupFieldInfoByColumn($mod->id, $groupby);
+			$tablename = $fieldinfo['tablename'];
+			$colname = $fieldinfo['columnname'];
+			$fldname = $fieldinfo['fieldname'];
+			$uitype = $fieldinfo['uitype'];
+		}
+		$gby = mkXQuery($sql_query, $tablename.'.'.$colname);
+		$rs = $adb->query($gby);
+		$cv = new CustomView($qmodule);
+		$conds = $cv->getConditionsFromSQL2CV($sql_query, ['columnname' => 'rating', 'comparator' => 'e', 'value' => 'Active', 'columncondition' => '']);
+		$colspec = $cv->getFilterFieldDefinitionByNameOrLabel($fldname, $qmodule);
+		$gbyelems = [];
+		while ($elem = $adb->fetch_array($rs)) {
+			if ($uitype==10 && !empty($elem[0])) {
+				$ename = getEntityName(getSalesEntityType($elem[0]), $elem[0]);
+				$elem[0] = $ename[$elem[0]];
+			}
+			$gbyc = $conds;
+			$gbyc[count($gbyc)-1]['columnname'] = $colspec;
+			$gbyc[count($gbyc)-1]['value'] = $elem[0];
+			if (empty($elem[0])) {
+				$gbyc[count($gbyc)-1]['operator'] = 'y';
+			}
+			$gbyelems[] = json_encode($gbyc);
+		}
+		return $gbyelems;
 	}
 
 	public static function getFormattedAnswer($qid, $params = array()) {
@@ -478,7 +564,7 @@ class cbQuestion extends CRMEntity {
 				$ret = self::getTableFromAnswer($ans);
 				break;
 			case 'Grid':
-				$ret = self::getGridFromAnswer($qid, $params);
+				$ret = self::getGridFromAnswer($qid, $params, $ans);
 				break;
 			case 'Number':
 				$ret = array_pop($ans['answer'][0]);
@@ -523,7 +609,7 @@ class cbQuestion extends CRMEntity {
 		if (!empty($ans)) {
 			$properties = json_decode($ans['properties']);
 			if (!empty($properties->filename)) {
-				$fname = utf8_decode($properties->filename);
+				$fname = mb_convert_encoding($properties->filename, 'ISO-8859-1', 'UTF-8');
 				if (!empty($params) && is_array($params)) {
 					$strtemplate = new Vtiger_StringTemplate();
 					foreach ($params as $key => $value) {
@@ -564,7 +650,7 @@ class cbQuestion extends CRMEntity {
 				$alllabels[] = empty($properties->columns[$ls]->label) ? $label : $properties->columns[$ls]->label;
 				$ls++;
 			}
-			if (!empty($alllabels)) {
+			if (!empty($alllabels) && (!isset($properties->ShowHeaderOnEmpty) || filter_var($properties->ShowHeaderOnEmpty, FILTER_VALIDATE_BOOLEAN))) {
 				$line = self::generateCSV($alllabels, $delim, $encls);
 				if (isset($properties->postprocess)) {
 					$line = self::postProcessFileLine($line, $properties->postprocess);
@@ -614,18 +700,37 @@ class cbQuestion extends CRMEntity {
 			$module = $ans['module'];
 			$properties = json_decode($ans['properties']);
 			$columnLabels = empty($properties->columnlabels) ? array() : $properties->columnlabels;
+			$linkedCols = array();
+			if (!empty($properties->linkedcolumns)) {
+				if ($properties->linkedcolumns=='*') {
+					$linkedCols = range(0, count($answer[0]));
+				} elseif (strpos($properties->linkedcolumns, ',')) {
+					$linkedCols = explode(',', $properties->linkedcolumns);
+				} else {
+					$linkedCols = $properties->linkedcolumns;
+				}
+			}
+			$searchURL = cbQuestion::getSearchUrl($module);
 			$limit = GlobalVariable::getVariable('BusinessQuestion_TableAnswer_Limit', 2000);
 			$table .= '<table>';
-			$table .= '<tr>';
-			foreach ($columnLabels as $columnLabel) {
-				$table .= '<th>'.getTranslatedString($columnLabel, $module).'</th>';
+			if (!isset($properties->ShowHeaderOnEmpty) || filter_var($properties->ShowHeaderOnEmpty, FILTER_VALIDATE_BOOLEAN)) {
+				$table .= '<tr>';
+				foreach ($columnLabels as $columnLabel) {
+					$table .= '<th>'.getTranslatedString($columnLabel, $module).'</th>';
+				}
+				$table .= '</tr>';
 			}
-			$table .= '</tr>';
 			for ($x = 0; $x < $limit; $x++) {
 				if (isset($answer[$x])) {
 					$table .= '<tr>';
+					$col = 0;
 					foreach ($answer[$x] as $columnValue) {
-						$table .= '<td>'.$columnValue.'</td>';
+						if (in_array($col, $linkedCols)) {
+							$table .= '<td><a href="'.$searchURL.urlencode($ans['groupings'][$x]).'">'.$columnValue.'</a></td>';
+						} else {
+							$table .= '<td>'.$columnValue.'</td>';
+						}
+						$col++;
 					}
 					$table .= '</tr>';
 				}
@@ -635,12 +740,34 @@ class cbQuestion extends CRMEntity {
 		return $table;
 	}
 
-	public static function getGridFromAnswer($qid, $params) {
+	public static function getGridFromAnswer($qid, $params, $ans) {
 		$smarty = new vtigerCRM_Smarty();
+		$searchURL = cbQuestion::getSearchUrl($ans['module']);
 		$properties = json_encode(cbQuestion::getQuestionProperties($qid));
+		$props = json_decode($properties, true);
+		$properties = array();
+		foreach ($props as $prop) {
+			if (isset($prop['renderer']) && $prop['renderer']['type'] == 'LinkedColumns') {
+				$prop['renderer'] = [
+					'type' => str_replace('"', '', $prop['renderer']['type']),
+					'options' => [
+						'searchurl' => $searchURL
+					]
+				];
+			}
+			$properties[] = $prop;
+		}
+		$groupings = array();
+		if (isset($ans['groupings'])) {
+			foreach ($ans['groupings'] as $group) {
+				$groupings[] = json_decode($group, true);
+			}
+		}
+		$properties = str_replace('"LinkedColumns"', 'LinkedColumns', json_encode($properties));
 		$smarty->assign('Properties', $properties);
 		$smarty->assign('QuestionID', $qid);
 		$smarty->assign('RecordID', $params['$RECORD$']);
+		$smarty->assign('Answer', $groupings);
 		$smarty->assign('RowsperPage', GlobalVariable::getVariable('MasterDetail_Pagination', 40));
 		$smarty->display('modules/cbQuestion/Grid.tpl');
 	}
@@ -661,6 +788,15 @@ class cbQuestion extends CRMEntity {
 				$values[] = $answer[$x][$properties->key_value];
 				$rc[] = 'getRandomColor()';
 			}
+			$groupings = '{';
+			if (isset($ans['groupings'])) {
+				$idx = 0;
+				foreach ($ans['groupings'] as $group) {
+					$groupings .= $idx.':"'.cbQuestion::getSearchUrl($module).urlencode($group).'",';
+					$idx++;
+				}
+			}
+			$groupings .= '}';
 			$chartID = uniqid('chartAns');
 			$chart .= '<script src="include/chart.js/Chart.min.js"></script>
 				<link rel="stylesheet" type="text/css" media="all" href="include/chart.js/Chart.min.css">
@@ -713,6 +849,16 @@ class cbQuestion extends CRMEntity {
 								}
 							}
 						});
+						chartans.addEventListener("click", function(evt) {
+							let activePoint = window.chartAns.getElementAtEvent(evt);
+							let clickzone = '.$groupings.';
+							console.log(clickzone)
+							let a = document.createElement("a");
+							a.target = "_blank";
+							a.href = clickzone[activePoint[0]._index];
+							document.body.appendChild(a);
+							a.click();
+						});
 					}
 
 					let charttype = "'.strtolower($type).'";
@@ -724,8 +870,16 @@ class cbQuestion extends CRMEntity {
 		return $chart;
 	}
 
+	public static function getSearchUrl($module) {
+		$cv = new CustomView($module);
+		$view = $cv->getViewIdByName('All', $module);
+		$advgroups = urlencode('[null,{"groupcondition":""}]');
+		$searchURL = 'index.php?module='.$module.'&action=index&query=true&search=true&searchtype=advance&advft_criteria_groups='.$advgroups.'&viewname='.$view.'&advft_criteria=';
+		return $searchURL;
+	}
+
 	public function convertColumns2DataTable() {
-		global $adb, $log;
+		global $adb;
 		$qcols = $this->column_fields;
 		if (empty($qcols['qcolumns'])) {
 			return array(
@@ -753,7 +907,7 @@ class cbQuestion extends CRMEntity {
 		$parsed = $parser->parse('select '.$qcols.' from stubtable');
 		$generatedQColumns = '';
 		if (isset($parsed['SELECT'])) {
-			$selectCoulums = $parsed["SELECT"];
+			$selectCoulums = $parsed['SELECT'];
 			foreach ($selectCoulums as $col) {
 				if ($col['expr_type'] == 'colref' || $col['expr_type'] == 'function' || $col['expr_type'] == 'expression') {
 					$value = '';

@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+require_once 'include/Webservices/GetExtendedQuery.php';
 
 class VtigerModuleOperation extends WebserviceEntityOperation {
 	protected $tabId;
@@ -285,7 +286,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		return $this->querySQLResults($mysql_query, $q, $meta, $queryRelatedModules);
 	}
 
-	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules) {
+	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules, $addimagefields = true, $keycase = ADODB_ASSOC_CASE_LOWER) {
 		global $site_URL, $adb, $default_charset, $currentModule;
 		$holdCM = $currentModule;
 		$currentModule = $meta->getEntityName();
@@ -305,12 +306,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$currentModule = $holdCM;
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-		$imageFields = $meta->getImageFields();
-		$imgquery = 'select vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_attachments.path
-			from vtiger_attachments
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-			inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
-			where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment") and deleted=0 and vtiger_seattachmentsrel.crmid=?';
+		if ($addimagefields) {
+			$imageFields = $meta->getImageFields();
+		}
 		$isDocModule = ($meta->getEntityName()=='Documents');
 		$isRelatedQuery = __FQNExtendedQueryIsFQNQuery($q);
 		$noofrows = $this->pearDB->num_rows($result);
@@ -319,7 +317,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$streaming = (isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || $streamraw));
 		$stream = '';
 		for ($i=0; $i<$noofrows; $i++) {
-			$row = $this->pearDB->fetchByAssoc($result, $i);
+			$row = $this->pearDB->fetchByAssoc($result, $i, true, $keycase);
 			$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $rowcrmid)) {
 				continue;
@@ -384,6 +382,11 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 					foreach ($imageFields as $imgvalue) {
 						$newrow[$imgvalue.'fullpath'] = ''; // initialize so we have same number of columns in all rows
 					}
+					$imgquery = 'select vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_attachments.path
+						from vtiger_attachments
+						inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+						inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+						where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment") and deleted=0 and vtiger_seattachmentsrel.crmid=?';
 					$result_image = $adb->pquery($imgquery, array($rowcrmid));
 					while ($img = $adb->fetch_array($result_image)) {
 						foreach ($imageFields as $imgvalue) {
@@ -414,7 +417,11 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$mysql_query = mkXQuery(stripTailCommandsFromQuery($mysql_query, false), 'count(*) AS cnt');
 		$result = $this->pearDB->pquery($mysql_query, array());
 		if ($result) {
-			$this->queryTotalRows = $result->fields['cnt'];
+			if ($result->fields) {
+				$this->queryTotalRows = $result->fields['cnt'];
+			} else {
+				$this->queryTotalRows = 0;
+			}
 		} else {
 			$this->queryTotalRows = 0;
 		}

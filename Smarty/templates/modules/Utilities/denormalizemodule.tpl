@@ -10,7 +10,7 @@ $(document).ready(function() {
 });
 
 function handleOperationChange() {
-	$denorm_operation =  document.getElementById("denorm_op").value;
+	$denorm_operation = document.getElementById("denorm_op").value;
 	switch($denorm_operation) {
 	case 'denorm':
 		document.getElementById("denormDiv").style.display = "";
@@ -52,7 +52,7 @@ function handleOperationChange() {
 				<div class="slds-select_container">
 				<select class="slds-select" id="denorm_op" name="denorm_op" required="">
 					<option {if (isset($denormop) && $denormop eq "denorm")}{"selected"}{/if} value = 'denorm'>{'DENORMALIZE'|@getTranslatedString:$MODULE}</option>
-					<option {if (isset($denormop) && $denormop eq "undo_denorm")}{"selected"}{/if}  value = 'undo_denorm'>{'UNDO_DENORMALIZE'|@getTranslatedString:$MODULE}</option>
+					<option {if (isset($denormop) && $denormop eq "undo_denorm")}{"selected"}{/if} value = 'undo_denorm'>{'UNDO_DENORMALIZE'|@getTranslatedString:$MODULE}</option>
 				</select>
 				</div>
 			</div>

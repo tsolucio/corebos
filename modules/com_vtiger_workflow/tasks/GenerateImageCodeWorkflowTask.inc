@@ -23,15 +23,56 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = false;
 	public $tcpdf1dEncodingTypes = array('EAN8' => 'EAN8','EAN13' => 'EAN13');
-
 	public $tcpdf2dEncodingTypes = array('QRCODE,L' => 'QRCODE,L','QRCODE,M' => 'QRCODE M','QRCODE,Q' => 'QRCODE,Q','QRCODE,H' => 'QRCODE,H');
+	public $save_encoded_value;
+	public $field_to_encode;
+	public $encoding_type;
 
 	public function getFieldNames() {
 		return array('save_encoded_value', 'field_to_encode', 'encoding_type');
 	}
 
+	public function getGenerateImageCode_EncodingType() {
+		return array_merge($this->tcpdf1dEncodingTypes, $this->tcpdf2dEncodingTypes);
+	}
+
+	public function getContextVariables() {
+		return array(
+			'GenerateImageCode_ValueToEncode' => array(
+				'type' => '??',
+				'values' => 'fields of the module',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_GenerateImageCode_ValueToEncode',
+			),
+			'GenerateImageCode_EncodingType' => array(
+				'type' => '15',
+				'values' => array($this, 'getGenerateImageCode_EncodingType'), // use with call_user_func
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_GenerateImageCode_EncodingType',
+			),
+			'GenerateImageCode_SaveTo' => array(
+				'type' => '??',
+				'values' => 'image fields of the module',
+				'modules' => '',
+				'massaction' => true,
+				'description' => 'HELP_GenerateImageCode_SaveTo',
+			),
+		);
+	}
+
+	public function after_retrieve() {
+		$this->taskSavedData = array(
+			'save_encoded_value' => $this->save_encoded_value,
+			'field_to_encode' => $this->field_to_encode,
+			'encoding_type' => $this->encoding_type,
+		);
+	}
+
 	public function doTask(&$entity) {
-		global $from_wf, $root_directory;
+		global $from_wf, $logbg, $root_directory;
+		$logbg->debug('> GenerateImageCodeTask');
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 		if (empty($entity->WorkflowContext['GenerateImageCode_ValueToEncode'])) {
@@ -43,6 +84,9 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 			$encoding_type = $this->encoding_type;
 		} else {
 			$encoding_type = $entity->WorkflowContext['GenerateImageCode_EncodingType'];
+		}
+		if (!empty($entity->WorkflowContext['GenerateImageCode_SaveTo'])) {
+			$this->save_encoded_value = $entity->WorkflowContext['GenerateImageCode_SaveTo'];
 		}
 		$util->adminUser();
 		$moduleName = $entity->getModuleName();
@@ -64,6 +108,8 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 			$height = 3;
 		}
 		if ($barcodeobj) {
+			$this->logmessages[] = json_encode([$fieldValueToEncode, $encoding_type, $width, $height]);
+			$logbg->debug('(GenerateImageCodeTask)', [$fieldValueToEncode, $encoding_type, $width, $height]);
 			$data = $barcodeobj->getBarcodePngData($width, $height, array(0,0,0));
 
 			$attachment_name = 'BARCODEname.png';
@@ -74,7 +120,7 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 				'type' => 'image/png',
 				'tmp_name' => $filepath,
 				'error' => 0,
-				'size' => strlen($data)
+				'size' => filesize($filepath)
 			);
 
 			$moduleInstance = CRMEntity::getInstance($moduleName);
@@ -84,15 +130,13 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 			$moduleInstance->retrieve_entity_info($recordId, $moduleName);
 			$moduleInstance->insertIntoAttachment($recordId, $moduleName);
 			unlink($filepath);
+		} else {
+			$logmsg = '(GenerateImageCodeTask) not called: barcode object is empty';
+			$this->logmessages[] = $logmsg;
+			$logbg->debug($logmsg);
 		}
 		$util->revertUser();
-	}
-
-	public function after_retrieve() {
-		$this->taskSavedData = array(
-			'save_encoded_value' => $this->save_encoded_value,
-			'field_to_encode' => $this->field_to_encode,
-			'encoding_type' => $this->encoding_type );
+		$logbg->debug('< GenerateImageCodeTask');
 	}
 }
 ?>

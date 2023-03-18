@@ -2,6 +2,7 @@
 <script src="./include/components/ldsmodal.js"></script>
 <script src="./include/components/ldsprompt.js"></script>
 <script src="./include/components/ldsmail.js"></script>
+<script src="./include/components/ldsnotifications.js"></script>
 <script src="./include/components/toast-ui/pagination/tui-pagination.js"></script>
 <script src="./include/components/toast-ui/tui-time-picker/tui-time-picker.js"></script>
 <script src="./include/components/toast-ui/tui-date-picker/tui-date-picker.js"></script>
@@ -11,7 +12,7 @@
 <script type="text/javascript">
 <!-- Initialize components -->
 let currentLang = gVTuserLanguage.substring(0, 2);
-if (!['en', 'es', 'ko', 'pt'].includes(currentLang)) {
+if (!['en', 'es', 'ko', 'pt', 'it', 'nl'].includes(currentLang)) {
 	currentLang = 'en';
 }
 tui.Grid.setLanguage(currentLang);

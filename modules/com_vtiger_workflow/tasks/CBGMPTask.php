@@ -23,6 +23,7 @@ class CBGMPTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
 	private $gmp_url = 'https://www.google-analytics.com/collect?';
+	public $url_query;
 
 	public function getFieldNames() {
 		return array('url_query');
@@ -30,6 +31,7 @@ class CBGMPTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $logbg;
+		$logbg->debug('> GMPTask');
 		$gmp = new corebos_gmp();
 		list($ent, $ent_id) = explode('x', $entity->getId());
 		$entype = getSalesEntityType($ent_id);
@@ -45,14 +47,19 @@ class CBGMPTask extends VTTask {
 				$url = getMergedDescription($conn, $ent_id, $entype);
 				$url = getMergedDescription($url, $acc_id, 'Accounts');
 				$url = vtlib_purify($url);
-
 				$curl = curl_init($url);
 				curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-				curl_exec($curl);
-				$logbg->debug('Send to GMP: '.$url);
+				$curl_result = curl_exec($curl);
+				$logmsg = "(GMPTask) curl result ($url): $curl_result";
+			} else {
+				$logmsg = '(GMPTask) not called: empty GID';
 			}
+		} else {
+			$logmsg = '(GMPTask) not called: the acc_id and url_query may be empty or the GMP is not active';
 		}
+		$this->logmessages[] = $logmsg;
+		$logbg->debug('< '.$logmsg);
 	}
 }
 ?>

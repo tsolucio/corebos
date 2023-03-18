@@ -467,8 +467,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			for ($image_iter=0, $img_itrMax = $adb->num_rows($result_image); $image_iter < $img_itrMax; $image_iter++) {
 				$image_id_array[] = $adb->query_result($result_image, $image_iter, 'attachmentsid');
 
-				//decode_html  - added to handle UTF-8   characters in file names
-				//urlencode    - added to handle special characters like #, %, etc.,
+				//decode_html - added to handle UTF-8 characters in file names
+				//urlencode - added to handle special characters like #, %, etc.,
 				$image_array[] = urlencode(decode_html($adb->query_result($result_image, $image_iter, 'name')));
 				$image_orgname_array[] = decode_html($adb->query_result($result_image, $image_iter, 'name'));
 
@@ -585,7 +585,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 							$result = $adb->pquery($sql, array($mycrmid));
 							$full_name = getFullNameFromQResult($result, 0, 'Leads');
 							$myemail=$adb->query_result($result, 0, 'email');
-							$parent_id .=$mycrmid.'@0|' ;
+							$parent_id .=$mycrmid.'@0|';
 							$parent_name .= $full_name.'<'.$myemail.'>; ';
 						} elseif ($parent_module == 'Contacts') {
 							$sql = 'select * from vtiger_contactdetails where contactid=?';
@@ -714,20 +714,14 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$SET_REM = '';
 	} elseif ($uitype == 115) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$pick_query='select * from vtiger_' . $adb->sql_escape_string($fieldname);
-		$pickListResult = $adb->pquery($pick_query, array());
-		$noofpickrows = $adb->num_rows($pickListResult);
-
 		$options = array();
-		for ($j = 0; $j < $noofpickrows; $j++) {
-			$pickListValue=$adb->query_result($pickListResult, $j, strtolower($fieldname));
-
+		foreach (['Active', 'Inactive'] as $pickListValue) {
 			if ($value == $pickListValue) {
 				$chk_val = 'selected';
 			} else {
 				$chk_val = '';
 			}
-			$options[] = array(getTranslatedString($pickListValue),$pickListValue,$chk_val );
+			$options[] = array(getTranslatedString($pickListValue), $pickListValue, $chk_val );
 		}
 		$fieldvalue [] = $options;
 		$fieldvalue [] = is_admin($current_user);
@@ -755,28 +749,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fieldvalue[]=$value;
 		$fieldvalue[]=getRoleName($value);
 		$fieldvalue[]=is_admin($current_user);
-	} elseif ($uitype == 105) {
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$image_array = array();
-		if (isset($col_fields['record_id']) && $col_fields['record_id'] != '') {
-			$query = 'select vtiger_attachments.path, vtiger_attachments.name
-				from vtiger_users
-				left join vtiger_salesmanattachmentsrel on vtiger_salesmanattachmentsrel.smid=vtiger_users.id
-				inner join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_salesmanattachmentsrel.attachmentsid
-				where vtiger_users.imagename=vtiger_attachments.name and id=?';
-			$result_image = $adb->pquery($query, array($col_fields['record_id']));
-			for ($image_iter=0; $image_iter < $adb->num_rows($result_image); $image_iter++) {
-				$image_array[] = $adb->query_result($result_image, $image_iter, 'name');
-				$image_path_array[] = $adb->query_result($result_image, $image_iter, 'path');
-			}
-		}
-		if (!empty($image_array)) {
-			for ($img_itr=0, $img_itrMax = count($image_array); $img_itr< $img_itrMax; $img_itr++) {
-				$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr]);
-			}
-		} else {
-			$fieldvalue[] = array('name'=>'','path'=>'');
-		}
 	} elseif ($uitype == 101) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = getOwnerName($value);
@@ -1118,20 +1090,14 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			'Products' AS entitytype
 			FROM vtiger_products
 			INNER JOIN $crmETProduct ON vtiger_crmentity.crmid=vtiger_products.productid
-			INNER JOIN vtiger_crmentityrel ON (
-				(vtiger_crmentityrel.crmid=vtiger_products.productid and vtiger_crmentityrel.relcrmid=?) or
-				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_products.productid)
-			)
+			INNER JOIN vtiger_crmentityreldenorm ON vtiger_crmentityreldenorm.crmid=vtiger_products.productid and vtiger_crmentityreldenorm.relcrmid=?
 			WHERE vtiger_crmentity.deleted=0";
 		$query.=" UNION SELECT vtiger_service.serviceid AS productid, vtiger_service.servicename AS productname,
 			'NA' AS productcode, vtiger_service.unit_price AS unit_price, 'NA' AS qtyinstock,
 			vtiger_crmentity.description AS product_description, 'Services' AS entitytype
 			FROM vtiger_service
 			INNER JOIN $crmETService ON vtiger_crmentity.crmid=vtiger_service.serviceid
-			INNER JOIN vtiger_crmentityrel ON (
-				(vtiger_crmentityrel.crmid=vtiger_service.serviceid and vtiger_crmentityrel.relcrmid=?) or
-				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_service.serviceid)
-			)
+			INNER JOIN vtiger_crmentityreldenorm ON vtiger_crmentityreldenorm.crmid=vtiger_service.serviceid and vtiger_crmentityreldenorm.relcrmid=?
 			WHERE vtiger_crmentity.deleted=0";
 			$params = array($seid, $seid, $seid, $seid);
 	}

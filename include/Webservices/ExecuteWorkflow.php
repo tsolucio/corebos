@@ -36,6 +36,7 @@ require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/include.inc';
+require_once 'include/logging/cbWFLogger.php';
 
 /*
  * Execute a workflow against a list of CRMIDs
@@ -75,19 +76,33 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 	if (!in_array($workflow_mod, $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied for module');
 	}
+	$cbwflog = new cbWFLogger();
 	$errortasks = array();
 	foreach ($crmids as $crmid) {
 		$entityData = $entityCache->forId($crmid);
 		$modPrefix = $entityData->getModuleName(); // it return module from webservice
 		if ($workflow_mod == $modPrefix) { // compare workflow module with webservice module to execute
-			if ($workflow->isCompletedForRecord($crmid) || isPermitted($workflow_mod, 'DetailView', $crmid)=='no' || isPermitted($workflow_mod, 'Save', $crmid)=='no') {
+			if ($workflow->isCompletedForRecord($crmid) || isPermitted($workflow_mod, 'DetailView', $crmid)=='no') {
 				$errortasks[$crmid] = "Permission to access $crmid is denied or workflow already applied";
 				continue;
 			}
 			if ($workflow->evaluate($entityCache, $entityData->getId())) {
 				try {
 					if ($workflow->activeWorkflow()) {
-						$workflow->performTasks($entityData, $ctx, true);
+						$logid = $cbwflog->critical([
+							'wftkid'=>$workflow->id,
+							'recid'=>$entityData->getId(),
+							'parentid'=>0,
+							'name'=>$workflow->description,
+							'wftype'=>$workflow->executionCondition,
+							'recvalues'=>json_encode($entityData->getData()),
+							'conditions'=>$workflow->test,
+							'evaluation'=>1,
+							'inqueue'=>0,
+							'haserror'=>0,
+							'logsmsgs'=>[],
+						]);
+						$workflow->performTasks($entityData, $ctx, true, $cbwflog, $logid);
 					}
 					if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
 						$workflow->markAsCompletedForRecord($crmid);

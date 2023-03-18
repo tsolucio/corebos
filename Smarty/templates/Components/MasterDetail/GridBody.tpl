@@ -1,6 +1,14 @@
 <div id="{$MasterDetailLayoutMap.mapname}" data-mapname="{$MasterDetailLayoutMap.mapnameraw}" style="display: inline"></div>
+<script type="text/javascript" src="include/js/ListView.js"></script>
 <script>
 var MasterDetail_Pagination = 0;
+if (MasterDetail_TargetField === undefined) {
+	var MasterDetail_TargetField = Array();
+}
+masterdetailwork.MasterMapID['{$MasterDetailLayoutMap.mapname}'] = '{$MasterMapID}';
+masterdetailwork.MasterButtons['{$MasterDetailLayoutMap.mapname}'] = '{$MasterButtons|json_encode}';
+masterdetailwork.MasterHide['{$MasterDetailLayoutMap.mapname}'] = {$MasterDetailHide};
+MasterDetail_TargetField['mdgrid{$MasterDetailLayoutMap.mapname}'] = '{$MasterTargetField}';
 var pageOptions = false;
 if ({$MasterDetail_Pagination} > 0) {
 	pageOptions = {
@@ -11,6 +19,7 @@ if ({$MasterDetail_Pagination} > 0) {
 function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'] = new tui.Grid({
 		el: document.getElementById('{$MasterDetailLayoutMap.mapname}'), // Container element
+		rowHeaders: ['checkbox'],
 		columns: [
 			{foreach from=$MasterDetailLayoutMap.listview.fields item=mdfield name=mdhdr}
 			{
@@ -59,6 +68,11 @@ function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 
 	tui.Grid.applyTheme('striped');
 	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('editingFinish', masterdetailwork.inlineedit);
+	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('onGridMounted', masterdetailwork.GridMounted);
+	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('check', masterdetailwork.checkUnCheckRows);
+	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('uncheck', masterdetailwork.checkUnCheckRows);
+	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('checkAll', masterdetailwork.checkUnCheckRows);
+	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('uncheckAll', masterdetailwork.checkUnCheckRows);
 }
 loadMDGrid{$MasterDetailLayoutMap.mapname}();
 </script>

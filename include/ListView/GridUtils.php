@@ -12,6 +12,7 @@ require_once 'modules/PickList/PickListUtils.php';
 require_once 'data/CRMEntity.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/utils/utils.php';
+require_once 'include/ListView/ListViewGrid.php';
 
 function gridGetEditor($module, $fieldname, $uitype) {
 	global $current_user, $adb, $noof_group_rows;
@@ -110,6 +111,8 @@ function gridGetEditor($module, $fieldname, $uitype) {
 		case Field_Metadata::UITYPE_TEXT:
 		case Field_Metadata::UITYPE_TIME:
 		case Field_Metadata::UITYPE_URL:
+		case Field_Metadata::UITYPE_FULL_WIDTH_TEXT_AREA:
+		case Field_Metadata::UITYPE_HALF_WIDTH_TEXT_AREA:
 			return 'text';
 			break;
 		case Field_Metadata::UITYPE_CURRENCY_AMOUNT:
@@ -199,7 +202,10 @@ function getDataGridResponse($mdmap) {
 		if (!empty($sortColumn)) {
 			$mdmap['sortfield'] = $sortColumn;
 		}
-		$sql .= ' ORDER BY '.$qg->getOrderByColumn($mdmap['sortfield']).$sort;
+		if (empty($sort) && !empty($mdmap['defaultorder'])) {
+			$sort = $mdmap['defaultorder'];
+		}
+		$sql .= ' ORDER BY '.$qg->getOrderByColumn($mdmap['sortfield']).' '.$sort;
 	}
 	$rs = $adb->query($sql);
 	$ret = array();
@@ -233,11 +239,11 @@ function getDataGridResponse($mdmap) {
 	);
 }
 
-function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
+function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue, $mode = '') {
 	global $current_user, $adb;
 	static $ownerNameList = array();
 	$fieldAttrs = array();
-	$fieldtype = $fieldinfo['fieldtype'];
+	$fieldtype = isset($fieldinfo['fieldtype']) ? $fieldinfo['fieldtype'] : '';
 	$fieldInfo = $fieldinfo['fieldinfo'];
 	$fieldName = $fieldInfo['name'];
 	switch ($fieldInfo['uitype']) {
@@ -384,7 +390,7 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 				array_push($fieldAttrs, array(
 					'mdField' => $fieldName,
 					'mdValue' => textlength_check($fieldValue),
-					'mdLink' => "javascript:InternalMailer($recordID, '".$fieldinfo['fieldid']."','$fieldName','$module','record_id');",
+					'mdLink' => "javascript:InternalMailer($recordID, '".$fieldInfo['fieldid']."','$fieldName','$module','record_id');",
 					'mdUitype' => Field_Metadata::UITYPE_EMAIL
 				));
 			} else {
@@ -419,6 +425,34 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 				));
 			}
 			break;
+		case Field_Metadata::UITYPE_FILENAME:
+			$docrs = $adb->pquery('select filename,filelocationtype,filestatus,notesid from vtiger_notes where notesid=?', array($recordID));
+			if ($adb->num_rows($docrs) == 1) {
+				$downloadtype = $adb->query_result($docrs, 0, 'filelocationtype');
+				$fileName = $adb->query_result($docrs, 0, 'filename');
+				$status = $adb->query_result($docrs, 0, 'filestatus');
+				$notesid = $adb->query_result($docrs, 0, 'notesid');
+				$fileattach = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
+				$res = $adb->pquery($fileattach, array($notesid));
+				$fileid = $adb->query_result($res, 0, 'attachmentsid');
+				$value = '';
+				if ($fileName != '' && $status == 1) {
+					if ($downloadtype == 'I') {
+						$value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile".
+							"&entityid=$notesid&fileid=$fileid' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module).
+							"' onclick='javascript:dldCntIncrease($fileid);'>".textlength_check($fieldValue).'</a>';
+					} elseif ($downloadtype == 'E') {
+						$value = "<a target='_blank' href='$fieldValue' onclick='javascript:".
+							"dldCntIncrease($notesid);' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module)."'>".textlength_check($fieldValue).'</a>';
+					} else {
+						$value = '--';
+					}
+				}
+				$return = $value;
+			} else {
+				$return = '--';
+			}
+			break;
 		case Field_Metadata::UITYPE_RECORD_NO:
 		case Field_Metadata::UITYPE_LASTNAME:
 		case Field_Metadata::UITYPE_NAME:
@@ -427,15 +461,27 @@ function getDataGridValue($module, $recordID, $fieldinfo, $fieldValue) {
 		case Field_Metadata::UITYPE_TEXT:
 		default:
 			$nameFields = getEntityFieldNames($module);
-			if (in_array($fieldName, (array)$nameFields['fieldname'])) {
+			$lv = new GridListView($module);
+			$lv->tabid = getTabid($module);
+			$columnnameVal = $lv->getFieldNameByColumn($nameFields['fieldname']);
+			$referenceFields = array($nameFields['fieldname'], $columnnameVal);
+			if (in_array($fieldName, $referenceFields)) {
+				if (GlobalVariable::getVariable('MasterDetail_OpenRecordNewTab', 1)) {
+					$mdTarget = '_blank';
+				} else {
+					$mdTarget = '';
+				}
 				array_push($fieldAttrs, array(
 					'mdField' => $fieldName,
 					'mdValue' => $fieldValue,
 					'mdLink' => "index.php?module=$module&action=DetailView&record=$recordID",
-					'mdTarget' => '_blank',
+					'mdTarget' => $mdTarget,
 					'mdUitype' => Field_Metadata::UITYPE_TEXT
 				));
 				$return = $fieldValue;
+				if ($mode == 'Wizard') {
+					$return = '<a href="index.php?module='.$module.'&action=DetailView&record='.$recordID.'" target="_blank">'.$fieldValue.'</a>';
+				}
 			} else {
 				$return = $fieldValue;
 			}
@@ -450,7 +496,7 @@ function gridGetActionColumn($renderer, $actions) {
 			'header' => getTranslatedString('LBL_ACTION'),
 			'sortable' => false,
 			'whiteSpace' => 'normal',
-			'width' => 140,
+			'width' => 100,
 			'renderer' => [
 				'type' => $renderer, // 'ActionRender', 'mdActionRender',
 				'options' => [
@@ -584,4 +630,265 @@ function gridMoveRowUpDown($adb, $request) {
 		}
 	}
 	return $result;
+}
+
+function getRelatedListGridResponse($map) {
+	global $current_user, $adb;
+	$modules = array();
+	foreach ($map['modules'] as $module) {
+		$index = array_search($module, $map['modules']);
+		if ($index !== false && $index < count($map['modules'])-1) {
+			$next = $map['modules'][$index+1];
+		};
+		if (!isset($module['relatedfield'])) {
+			$module['relatedfield'] = '';
+		}
+		$modules[] = array(
+			'current' => $module['name'],
+			'relatedwith' => $next['name'],
+			'relatedfield' => $module['relatedfield'],
+			'entity' => getEntityFieldNames($next['name']),
+		);
+	}
+	$data = array();
+	$focus = CRMEntity::getInstance($_REQUEST['currentmodule']);
+	$focus->retrieve_entity_info($_REQUEST['pid'], $_REQUEST['currentmodule']);
+	$focus->column_fields['id'] = $_REQUEST['pid'];
+	$data = TreeView($focus->column_fields, $modules, $map, 0);
+	return json_encode(
+		array(
+			'data' => array(
+				'contents' => $data,
+				'pagination' => array(
+					'page' => 1,
+					'totalCount' => 0,
+				),
+			),
+			'result' => true,
+		)
+	);
+}
+
+function TreeView($element, $modules, $map, $i = 0) {
+	global $adb;
+	$tree = array();
+	$cn = count($modules);
+	if (isset($modules[$i])) {
+		$relatedmodule = $modules[$i]['relatedwith'];
+		$current = $modules[$i]['current'];
+		$relatedfield = $modules[$i]['relatedfield'];
+		$entity = $modules[$i]['entity'];
+		if (empty($relatedfield)) {
+			return $tree;
+		}
+		$sql = generateRelationQuery($relatedmodule, $current, $relatedfield, $element['id'], $map);
+		$rs = $adb->query($sql);
+		$lv = end($map['modules']);
+		if ($adb->num_rows($rs) > 0) {
+			$i++;
+			if (empty($modules[$i])) {
+				return $tree;
+			}
+			while ($row = $adb->fetch_array($rs)) {
+				$id = $row[$entity['entityidfield']];
+				$row['id'] = $id;
+				$children = TreeView($row, $modules, $map, $i);
+				if (!empty($children)) {
+					$row['_children'] = $children;
+				}
+				if ($i == $cn - 1) {//last iteration
+					foreach ($lv['listview'] as $finfo) {
+						$gridValue = getDataGridValue($relatedmodule, $row['id'], $finfo, $row[$finfo['fieldinfo']['name']]);
+						if (empty($gridValue[0])) {
+							continue;
+						}
+						$row[$finfo['fieldinfo']['name']] = $gridValue[0];
+						$row[$finfo['fieldinfo']['name'].'_attributes'] = $gridValue[1];
+						if (!empty($gridValue[1])) {
+							$row[$finfo['fieldinfo']['name'].'_raw'] = $gridValue[1][0]['mdValue'];
+						}
+					}
+					$row['typeof_row'] = 'children';
+					$row['child_id'] = $id;
+					$row['child_module'] = $relatedmodule;
+					$row['parent_of_child'] = $element['id'];
+					$row['related_fieldname'] = $modules[$i]['relatedfield'];
+					$row['related_parent_fieldname'] = $relatedfield;
+					$row['related_child'] = $relatedmodule;
+					$row['record_permissions'] = array(
+						'child_edit' => isPermitted($relatedmodule, 'EditView', $row['id'])
+					);
+					$findAllChildrens = findChilds($relatedmodule, $id, $map);
+					if (!empty($findAllChildrens)) {
+						$row['_attributes'] = array(
+							'expanded' => true
+						);
+						$row['_children'] = $findAllChildrens;
+					}
+				} else {
+					if (is_array($entity['fieldname']) && count($entity['fieldname']) > 1) {
+						$entity['fieldname'] = $entity['fieldname'][0];
+					}
+					$row['parentaction'] = $row[$entity['fieldname']];
+					$row['parentaction_attributes'] = [];
+					$row['typeof_row'] = 'parent';
+					$row['parent_id'] = $id;
+					$row['parent_module'] = $relatedmodule;
+					$row['parent_of_child'] = $element['id'];
+					$row['related_fieldname'] = $modules[$i]['relatedfield'];
+					$row['related_parent_fieldname'] = $relatedfield;
+					$row['related_child'] = $modules[$i]['relatedwith'];
+					$row['record_permissions'] = array(
+						'parent_edit' => isPermitted($relatedmodule, 'EditView', $id)
+					);
+					$row['_attributes'] = array(
+						'expanded' => true
+					);
+				}
+				$tree[] = array_filter($row, 'is_string', ARRAY_FILTER_USE_KEY);
+			}
+			if (!empty($tree)) {
+				$element['_children'] = array_filter($tree, 'is_string', ARRAY_FILTER_USE_KEY);
+			}
+		}
+	}
+	return $tree;
+}
+
+function findChilds($module, $parentid, $map) {
+	global $adb;
+	$focus = new $module;
+	$relfieldname = $focus->getSelfRelationField($module);
+	$data = array();
+	if (!empty($relfieldname)) {
+		$entity = getEntityField($module);
+		$targetentity = getEntityFieldNames($module);
+		$entityid = $entity['entityid'];
+		$tablename = $entity['tablename'];
+		$crmentityTable = $focus->getcrmEntityTableAlias($module);
+		$reltablename = getTableNameForField($module, $relfieldname);
+		$query = $adb->convert2Sql("select * from {$tablename}
+			inner join {$crmentityTable} on {$tablename}.{$entityid} = vtiger_crmentity.crmid
+			inner join {$tablename}cf on {$tablename}cf.{$entityid} = {$tablename}.{$entityid}
+			where vtiger_crmentity.deleted=0 and {$reltablename}.{$relfieldname}=? and {$tablename}.{$entityid} > 0", array($parentid));
+		$result = $adb->query($query);
+		$lv = end($map['modules']);
+		if ($adb->num_rows($result) > 0) {
+			while ($row = $adb->fetch_array($result)) {
+				$findChilds = findChilds($module, $row[$entityid], $map);
+				foreach ($lv['listview'] as $finfo) {
+					$gridValue = getDataGridValue($module, $row[$targetentity['entityidfield']], $finfo, $row[$finfo['fieldinfo']['name']]);
+					$row[$finfo['fieldinfo']['name']] = $gridValue[0];
+					$row[$finfo['fieldinfo']['name'].'_attributes'] = $gridValue[1];
+				}
+				$entityidfield = $row[$targetentity['entityidfield']];
+				$row['typeof_row'] = 'children';
+				$row['child_id'] = $entityidfield;
+				$row['child_module'] = $module;
+				$row['parent_of_child'] = $entityidfield;
+				$row['related_fieldname'] = $relfieldname;
+				$row['related_child'] = $module;
+				$row['record_permissions'] = array(
+					'child_edit' => isPermitted($module, 'EditView', $entityidfield)
+				);
+				if (!empty($findChilds)) {
+					$row['_attributes'] = array(
+						'expanded' => false
+					);
+					$row['_children'] = $findChilds;
+				}
+				$data[] = $row;
+			}
+		}
+	}
+	return $data;
+}
+
+function generateRelationQuery($module, $relatedmodule, $fieldname, $value, $map) {
+	global $current_user, $adb;
+	$qg = new QueryGenerator($module, $current_user);
+	if (!empty($map['targetmodule']['listview'])) {
+		$fieldnames = $map['targetmodule']['listview'];
+		$fnames = array();
+		foreach ($fieldnames as $key) {
+			$fnames[] = $key['fieldinfo']['name'];
+		}
+		$qg->setFields(array_merge(['id'], $fnames));
+	} else {
+		$qg->setFields(array('*'));
+	}
+	$conditions = '';
+	foreach ($map['modules'] as $mod) {
+		if ($mod['name'] == $module && isset($mod['listview']['conditions'])) {
+			$conditions = json_decode(trim($mod['listview']['conditions']), true);
+			break;
+		}
+	}
+	if (!empty($conditions)) {
+		foreach ($conditions as $cond) {
+			$qg->addReferenceModuleFieldCondition($cond['relatedmodule'], $cond['relatedfieldname'], $cond['fieldname'], $cond['value'], $cond['operation'], $cond['glue']);
+		}
+	}
+	$qg->addReferenceModuleFieldCondition($relatedmodule, $fieldname, 'id', $value, 'e', 'and');
+	return $qg->getQuery();
+}
+
+function getRelatedFieldId($relatedmodule, $module) {
+	global $adb;
+	$rs = $adb->pquery('select fieldid from vtiger_fieldmodulerel where module=? and relmodule=?', array(
+		$module, $relatedmodule
+	));
+	if ($adb->num_rows($rs) > 0) {
+		return $adb->query_result($rs, 0, 'fieldid');
+	}
+	return 0;
+}
+
+function getFieldNameByFieldId($FieldId) {
+	global $adb;
+	$rs = $adb->pquery('select fieldname from vtiger_field where fieldid=?', array(
+		$FieldId
+	));
+	if ($adb->num_rows($rs) > 0) {
+		return $adb->query_result($rs, 0, 'fieldname');
+	}
+	return '';
+}
+
+function gridRelatedListActionColumn($renderer, $map) {
+	$cn = count($map['modules']);
+	$currentModule = $map['modules'][$cn-3]['name'];
+	$originmodule = $map['modules'][$cn-2]['name'];
+	$targetmodule = $map['modules'][$cn-1]['name'];
+	$Originfieldname = $map['modules'][$cn-3]['relatedfield'];
+	$Targetfieldname = $map['modules'][$cn-2]['relatedfield'];
+	return [
+		'name' => 'cblvactioncolumn',
+		'header' => getTranslatedString('LBL_ACTION'),
+		'sortable' => false,
+		'whiteSpace' => 'normal',
+		'width' => 100,
+		'renderer' => [
+			'type' => $renderer,
+			'options' => [
+				'parent_delete' => isMandatoryField($originmodule, $Originfieldname),
+				'child_delete' => isMandatoryField($targetmodule, $Targetfieldname),
+			]
+		],
+	];
+}
+
+function gridUnrelate($adb, $request) {
+	$result = $adb->pquery('select tablename, columnname from vtiger_field where tabid=? and fieldname=?', array(getTabid($request['detail_module']), $request['fieldname']));
+	if ($adb->num_rows($result) == 1 && isPermitted($request['detail_module'], 'EditView', $request['detail_id']) == 'yes') {
+		$entity = getEntityFieldNames($request['detail_module']);
+		$columnname = $adb->query_result($result, 0, 'columnname');
+		$tablename = $adb->query_result($result, 0, 'tablename');
+		$adb->pquery("update {$tablename} set {$columnname}=0 where {$entity['entityidfield']}=?", array($request['detail_id']));
+		if (!$adb->database->_errorMsg) {
+			return true;
+		}
+		return false;
+	}
+	return false;
 }

@@ -42,7 +42,7 @@ function quote_replace($value) {
 // If file contains license header we respect it, if not we return the default header
 function cbGetHeaderToUseInLanguageFile($filename) {
 	global $line_break;
-	$filehdr = file_get_contents($filename, false, null, 0, 4000);  // should be enough to get very big headers
+	$filehdr = file_get_contents($filename, false, null, 0, 4000); // should be enough to get very big headers
 	$startcomm = strpos($filehdr, '/*');
 	$stopcomm = strpos($filehdr, '*/');
 	if (!($startcomm===false || $stopcomm===false)) {
@@ -91,6 +91,7 @@ if (!empty($langid) && !empty($pmodule)) {
 					}
 					foreach ($_REQUEST['translate_value'] as $key => $string) {
 						$_key = ($key=='#empty#') ? '' : $key;
+						$_key = quote_replace($_key);
 						fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $string)."',".$line_break);
 					}
 					if (is_array($_REQUEST['newLabels'])) {
@@ -99,6 +100,7 @@ if (!empty($langid) && !empty($pmodule)) {
 							if (is_array($arr)) {
 								$_key = $arr['key'];
 								$value = $arr['value'];
+								$_key = quote_replace($_key);
 								fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $value)."',".$line_break);
 							}
 						}
@@ -125,10 +127,12 @@ if (!empty($langid) && !empty($pmodule)) {
 				foreach ($_REQUEST['translate_value'] as $key => $string) {
 					if ($first_entry == 1) {
 						$_key = ($key=='#empty#')?'':$key;
+						$_key = quote_replace($_key);
 						fwrite($fd, "	'$_key':'".iconv('UTF-8', $langencoding, $string)."'");
 						$first_entry = 0;
 					} else {
 						$_key = ($key=='#empty#')?'':$key;
+						$_key = quote_replace($_key);
 						fwrite($fd, ','.$line_break."	'$_key':'".iconv('UTF-8', $langencoding, $string)."'");
 					}
 				}
@@ -154,6 +158,7 @@ if (!empty($langid) && !empty($pmodule)) {
 						if ($string=='') {
 							$string = $key;
 						}
+						$_key = quote_replace($_key);
 						fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $string)."',".$line_break);
 					}
 					if (isset($_REQUEST['translate_list_value']) && is_array($_REQUEST['translate_list_value'])) {
@@ -166,6 +171,7 @@ if (!empty($langid) && !empty($pmodule)) {
 									if ($value=='') {
 										$value = $key2;
 									}
+									$_key = quote_replace($_key);
 									fwrite($fd, "		'$_key' => '".iconv('UTF-8', $langencoding, $value)."',".$line_break);
 								}
 								fwrite($fd, '	),'.$line_break);
@@ -178,6 +184,7 @@ if (!empty($langid) && !empty($pmodule)) {
 							if (is_array($arr)) {
 								$_key = $arr['key'];
 								$value = $arr['value'];
+								$_key = quote_replace($_key);
 								fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $value)."',".$line_break);
 							}
 						}

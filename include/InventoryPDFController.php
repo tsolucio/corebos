@@ -21,6 +21,9 @@ class Vtiger_InventoryPDFController {
 
 	protected $module;
 	protected $focus = null;
+	public $moduleName;
+	public $associated_products;
+	public $totaltaxes;
 
 	public function __construct($module) {
 		$this->moduleName = $module;

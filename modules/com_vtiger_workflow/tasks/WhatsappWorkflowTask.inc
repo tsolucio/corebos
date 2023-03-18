@@ -18,6 +18,9 @@ class WhatsappWorkflowTask extends VTTask {
 	public $queable = true;
 	public $attachmentsinfo = array();
 	public $dzattinfo = array();
+	public $messageBody;
+	public $attachmentids;
+	public $phone;
 
 	public function getFieldNames() {
 		return array('messageBody', 'attachmentids', 'phone');
@@ -38,7 +41,7 @@ class WhatsappWorkflowTask extends VTTask {
 				$docrs = $adb->pquery($query, array($docid));
 				if ($docrs && $adb->num_rows($docrs)==1) {
 					$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
-					$this->attachmentsinfo[] = $attname;
+					$this->attachmentsinfo[] = decode_html($attname);
 					$this->dzattinfo[] = array(
 						'docid' => $docid,
 						'name' => $adb->query_result($docrs, 0, 'filename'),
@@ -52,6 +55,7 @@ class WhatsappWorkflowTask extends VTTask {
 	}
 	public function doTask(&$entityData) {
 		global $current_user, $site_URL, $logbg;
+		$logbg->debug('> WhatsappWorkflowTask');
 		$clientclass = new corebos_whatsapp();
 		$client = $clientclass->whatsappclient;
 		$isactive = $clientclass->isActive();
@@ -80,6 +84,7 @@ class WhatsappWorkflowTask extends VTTask {
 			$phones = trim($phones, ',');
 			try {
 				if ($sender!='' && $phones!='') {
+					$logmsg = "Sender $sender, Phones: $phones";
 					$pa = explode(',', $phones);
 					foreach ($pa as $phone) {
 						$phone = trim($phone);
@@ -147,11 +152,18 @@ class WhatsappWorkflowTask extends VTTask {
 							));
 						}
 					}
+				} else {
+					$logmsg = '(WhatsappWorkflowTask) not called: sender or phones are empty';
 				}
 			} catch (Exception $e) {
-				$logbg->debug('Error on Whatsapp Task: '. $e->getMessage());
+				$logmsg = '(WhatsappWorkflowTask) not called: Error on Whatsapp Task: '. $e->getMessage();
 			}
+		} else {
+			$logmsg = '(WhatsappWorkflowTask) not called: Whatsapp is not active';
 		}
+		$this->logmessages[] = $logmsg;
+		$logbg->debug($logmsg);
+		$logbg->debug('< WhatsappWorkflowTask');
 	}
 
 	private function sendWhatsappMessage($phone, $what, $client) {

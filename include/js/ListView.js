@@ -614,6 +614,7 @@ function massDelete(module) {
 }
 
 function showDefaultCustomView(selectView, module) {
+	window.coreBOSEvents.FilterLoaded = new CustomEvent('coreBOSEvent_FilterLoaded', {'filter': selectView, 'module': module});
 	document.getElementById('status').style.display = 'inline';
 	var viewName = encodeURIComponent(selectView.options[selectView.options.selectedIndex].value);
 	if (Application_Landing_View=='tuigrid') {
@@ -628,6 +629,7 @@ function showDefaultCustomView(selectView, module) {
 				kanbanRefresh(currentKanbanID, 'filter');
 				return;
 			}
+			window.dispatchEvent(window.coreBOSEvents.FilterLoaded);
 			var result = response.split('&#&#&#');
 			document.getElementById('ListViewContents').innerHTML = result[2];
 			vtlib_executeJavascriptInElement(document.getElementById('ListViewContents'));
@@ -914,13 +916,26 @@ function getListViewCount(module, element, parentElement, url) {
 			elementList[i].style.display = 'none';
 		}
 		elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
+		var result = response.split('&#&#&#');
 		if (module != 'Documents' && typeof parentElement != 'undefined' && elementList.length !=0) {
 			for (i=0; i<elementList.length;) {
 				//No need to increment the count, as the element will be eliminated in the next step.
-				elementList[i].parentNode.innerHTML = response;
+				elementList[i].parentNode.innerHTML = result[0];
+			}
+			var el = document.getElementById('recordListRanget');
+			if (el) {
+				el.innerHTML = el.innerHTML + ' ' + result[1];
+			}
+			var el = document.getElementById('recordListRangeb');
+			if (el) {
+				el.innerHTML = el.innerHTML + ' ' + result[1];
 			}
 		} else {
-			parentElement.innerHTML = response;
+			parentElement.innerHTML = result[0];
+			var el = parentElement.parentElement.previousSibling.previousElementSibling;
+			if (el) {
+				el.innerHTML = el.innerHTML + ' ' + result[1];
+			}
 		}
 	});
 }
@@ -982,7 +997,7 @@ function emptyCvList(type, id) {
 	if (confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)) {
 		document.getElementById('status').style.display='inline';
 		var relidsselected = get_cookie(type+'_all');
-		if (relidsselected == '' || document.getElementById('Campaigns_'+type+'_selectallActivate').value == 'true') {
+		if (relidsselected == null || relidsselected == '' || document.getElementById('Campaigns_'+type+'_selectallActivate').value == 'true') {
 			var idlist = 'All';
 		} else {
 			var idlist = relidsselected;
@@ -1017,16 +1032,24 @@ function callSearch(searchtype, mode = '') {
 	var search_fld_val = document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
 	var search_txt_val = encodeURIComponent(document.basicSearch.search_text.value);
 	var urlstring = '';
+	let eventdata = {
+		'searchtype': searchtype,
+	};
 	if (searchtype == 'Basic') {
 		urlstring = 'search_field=' + search_fld_val + '&searchtype=BasicSearch&search_text=' + search_txt_val + '&';
+		eventdata.search_field = search_fld_val;
+		eventdata.search_text = search_txt_val;
 		if (mode == 'SearchDocuments') {
 			urlstring += 'mode=SearchDocuments&';
 		}
 	} else if (searchtype == 'Advanced') {
 		var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
 		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
+		eventdata.advft_criteria = advft_criteria;
+		eventdata.advft_criteria_groups = advft_criteria_groups;
 		urlstring += '&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&searchtype=advance&';
 	}
+	window.coreBOSEvents.FilterSearch = new CustomEvent('coreBOSEvent_FilterSearch', eventdata);
 	document.getElementById('status').style.display = 'inline';
 	if (Application_Landing_View=='table' || Application_Landing_View=='Kanban') {
 		jQuery.ajax({
@@ -1038,6 +1061,7 @@ function callSearch(searchtype, mode = '') {
 				kanbanRefresh(currentKanbanID, 'search');
 			} else {
 				processQuickSearchResponse(response);
+				window.dispatchEvent(window.coreBOSEvents.FilterSearch);
 			}
 		});
 	} else {
@@ -1046,6 +1070,7 @@ function callSearch(searchtype, mode = '') {
 			return false;
 		}
 		ListView.Show('search', urlstring, searchtype);
+		window.dispatchEvent(window.coreBOSEvents.FilterSearch);
 	}
 	return false;
 }
@@ -1068,15 +1093,22 @@ function alphabetic(module, url, dataid) {
 	}
 	getObj(dataid).className = 'searchAlphselected';
 	document.getElementById('status').style.display = 'inline';
+	let eventdata = {
+		'searchtype': 'Alphabetic',
+		'letter': dataid
+	};
+	window.coreBOSEvents.FilterSearch = new CustomEvent('coreBOSEvent_FilterSearch', eventdata);
 	if (Application_Landing_View=='table') {
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=index&ajax=true&search=true&' + url
 		}).done(function (response) {
 			processQuickSearchResponse(response);
+			window.dispatchEvent(window.coreBOSEvents.FilterSearch);
 		});
 	} else {
 		ListView.Show('alphabetic', url);
+		window.dispatchEvent(window.coreBOSEvents.FilterSearch);
 	}
 }
 
@@ -1110,42 +1142,66 @@ function removeDiv(ID) {
 	}
 }
 
+function getSelectedRecordsFromLV() {
+	var excludedRecords = document.getElementById('excludedRecords').value;
+	var select_options = document.getElementById('allselectedboxes').value;
+	var searchurl = document.getElementById('search_url').value;
+	var numOfRows = document.getElementById('numOfRows').value;
+	var idstring = '';
+	var viewid = getviewId();
+	var confirm_status = false;
+	if (select_options != 'all') {
+		var x = select_options.split(';');
+		var count = x.length;
+		if (count > 1) {
+			idstring = select_options;
+		} else {
+			alert(alert_arr.SELECT);
+			return false;
+		}
+	} else {
+		idstring = select_options;
+		count = numOfRows;
+	}
+	if (count > getMaxMassOperationLimit()) {
+		var confirm_str = alert_arr.MORE_THAN_500;
+		if (confirm(confirm_str)) {
+			confirm_status = true;
+		} else {
+			return false;
+		}
+	} else {
+		confirm_status = true;
+	}
+	return [excludedRecords, searchurl, idstring, viewid, confirm_status];
+}
+
+function runBAWorkflowFromListView(workflowid, context = '', refreshLV = false) {
+	let lvinfo = getSelectedRecordsFromLV();
+	if (lvinfo) {
+		let crmids = lvinfo[2];
+		if (crmids != '') {
+			runBAWorkflow(workflowid, crmids, context);
+			corebosjshook_runBAWorkflowFromListView(workflowid, crmids);
+			if (refreshLV) {
+				listViewReload();
+			}
+		}
+	}
+}
+
 function runBAScriptFromListView(scriptname, module, callback) {
 	if (document.getElementById('allids').value=='' && document.getElementById('allselectedboxes').value=='') {
 		alert(alert_arr.SELECT);
 	} else {
-		var excludedRecords = document.getElementById('excludedRecords').value;
-		var select_options = document.getElementById('allselectedboxes').value;
-		var searchurl = document.getElementById('search_url').value;
-		var numOfRows = document.getElementById('numOfRows').value;
-		var idstring = '';
-		var viewid = getviewId();
-		if (select_options != 'all') {
-			var x = select_options.split(';');
-			var count = x.length;
-			if (count > 1) {
-				idstring = select_options;
-			} else {
-				alert(alert_arr.SELECT);
-				return false;
-			}
-		} else {
-			idstring = select_options;
-			count = numOfRows;
-		}
-		if (count > getMaxMassOperationLimit()) {
-			var confirm_str = alert_arr.MORE_THAN_500;
-			if (confirm(confirm_str)) {
-				var confirm_status = true;
-			} else {
-				return false;
-			}
-		} else {
-			confirm_status = true;
-		}
-
-		if (confirm_status) {
-			if (idstring) {
+		let lvinfo = getSelectedRecordsFromLV();
+		if (lvinfo) {
+			let excludedRecords = lvinfo[0];
+			let searchurl = lvinfo[1];
+			let idstring = lvinfo[2];
+			let viewid = lvinfo[3];
+			let confirm_status = lvinfo[4];
+			if (confirm_status && idstring) {
 				VtigerJS_DialogBox.block();
 				VtigerJS_DialogBox.showbusy();
 				let url = 'module='+module+'&action='+module+'Ajax&file='+scriptname;
@@ -1172,67 +1228,73 @@ function runBAScriptFromListViewSSE(scriptname, module, eventsink, parameters2se
 	if (document.getElementById('allids').value=='' && document.getElementById('allselectedboxes').value=='') {
 		alert(alert_arr.SELECT);
 	} else {
-		var excludedRecords = document.getElementById('excludedRecords').value;
-		var select_options = document.getElementById('allselectedboxes').value;
-		var searchurl = document.getElementById('search_url').value;
-		var numOfRows = document.getElementById('numOfRows').value;
-		var idstring = '';
-		var viewid = getviewId();
-		if (select_options != 'all') {
-			var x = select_options.split(';');
-			var count = x.length;
-			if (count > 1) {
-				idstring = select_options;
-			} else {
-				alert(alert_arr.SELECT);
-				return false;
+		let lvinfo = getSelectedRecordsFromLV();
+		if (lvinfo) {
+			let excludedRecords = lvinfo[0];
+			let searchurl = lvinfo[1];
+			let idstring = lvinfo[2];
+			let viewid = lvinfo[3];
+			let confirm_status = lvinfo[4];
+			if (confirm_status && idstring) {
+				var sentForm = new Object();
+				sentForm['module'] = module;
+				sentForm.SSE_SOURCE_ACTION = scriptname;
+				sentForm.SSE_SOURCE_KEY = 'runBAScript'+corebos_browsertabID;
+				sentForm.corebos_browsertabID= corebos_browsertabID;
+				parameters2send = parameters2send || [];
+				var selectedinfo = {
+					'ids': encodeURIComponent(idstring),
+					'excludedRecords': encodeURIComponent(excludedRecords),
+					'viewname': encodeURIComponent(viewid),
+					'searchurl': encodeURIComponent(searchurl),
+					'ListViewSSEParameters': encodeURIComponent(JSON.stringify(parameters2send)),
+				};
+				parameters2send.forEach(element => {
+					let e = document.getElementById(element);
+					if (e) {
+						selectedinfo[element] = e.value;
+					}
+				});
+				ExecuteFunctions('setSetting', 'skey='+sentForm.SSE_SOURCE_KEY+'&svalue='+JSON.stringify(selectedinfo)).then(function (response) {
+					var worker = new Worker('massedit-worker.js');
+					//a message is received
+					worker.postMessage(sentForm);
+					worker.addEventListener('message', eventsink, false);
+					worker.postMessage(true);
+				}, function (error) {
+					console.log('error', error);
+				});
+				var rdo = document.getElementById('relresultssection');
+				rdo.style.visibility = 'visible';
+				rdo.style.display = 'block';
+				document.getElementById('massedit').style.display = 'none';
 			}
-		} else {
-			idstring = select_options;
-			count = numOfRows;
 		}
-		if (count > getMaxMassOperationLimit()) {
-			var confirm_str = alert_arr.MORE_THAN_500;
-			if (confirm(confirm_str)) {
-				var confirm_status = true;
-			} else {
-				return false;
-			}
-		} else {
-			confirm_status = true;
-		}
+	}
+}
 
-		if (confirm_status && idstring) {
-			var sentForm = new Object();
-			sentForm['module'] = module;
-			sentForm.SSE_SOURCE_ACTION = scriptname;
-			sentForm.SSE_SOURCE_KEY = 'runBAScript'+corebos_browsertabID;
-			var selectedinfo = {
-				'ids': encodeURIComponent(idstring),
-				'excludedRecords': encodeURIComponent(excludedRecords),
-				'viewname': encodeURIComponent(viewid),
-				'searchurl': encodeURIComponent(searchurl),
-			};
-			parameters2send = parameters2send || [];
-			parameters2send.forEach(element => {
-				let e = document.getElementById(element);
-				if (e) {
-					selectedinfo[element] = e.value;
+function listViewReload() {
+	if (document.basicSearch) {
+		var srch = document.basicSearch.searchtype.searchlaunched;
+		if (srch=='basic') {
+			callSearch('Basic');
+		} else if (srch=='advance') {
+			callSearch('Advanced');
+		} else {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=loadlv'
+			}).done(function (response) {
+				var result = response.split('&#&#&#');
+				if (Application_Landing_View=='table') {
+					document.getElementById('ListViewContents').innerHTML= result[2];
+				} else {
+					ListView.Show('massedit');
+				}
+				if (result[1] != '') {
+					ldsPrompt.show(alert_arr['ERROR'], result[1]);
 				}
 			});
-			ExecuteFunctions('setSetting', 'skey='+sentForm.SSE_SOURCE_KEY+'&svalue='+JSON.stringify(selectedinfo)).then(function (response) {
-			}, function (error) {
-				console.log('error', error);
-			});
-			var worker = new Worker('massedit-worker.js');
-			//a message is received
-			worker.postMessage(sentForm);
-			worker.addEventListener('message', eventsink, false);
-			worker.postMessage(true);
-			var rdo = document.getElementById('relresultssection');
-			rdo.style.visibility = 'visible';
-			rdo.style.display = 'block';
-			document.getElementById('massedit').style.display = 'none';
 		}
 	}
 }

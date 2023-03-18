@@ -13,6 +13,8 @@
  */
 class VTEventsManager {
 
+	public $adb;
+
 	public function __construct($adb) {
 		$this->adb = $adb;
 	}

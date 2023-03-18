@@ -51,6 +51,7 @@
 	<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 	<script type="text/javascript" src="modules/Reports/Reports.js"></script>
 	<script type="text/javascript" src="modules/cbQuestion/cbQuestion.js"></script>
+	<script type="text/javascript" src="include/components/ldsprompt.js"></script>
 </head>
 <body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
 <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0" class="mailClient mailClientBg">

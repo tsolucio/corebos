@@ -142,6 +142,11 @@ class BusinessActions extends CRMEntity {
 		$link_obj->handler_class  = $valuemap['handler_class'];
 		$link_obj->handler        = $valuemap['handler'];
 		$link_obj->onlyonmymodule = $valuemap['onlyonmymodule'];
+		$link_obj->errormsg = isset($valuemap['error_msg']) ? $valuemap['error_msg'] : '';
+		$link_obj->successmsg = isset($valuemap['success_msg']) ? $valuemap['success_msg'] : '';
+		$link_obj->widget_header = isset($valuemap['widget_header']) ? $valuemap['widget_header'] : '';
+		$link_obj->widget_width = isset($valuemap['widget_width']) ? $valuemap['widget_width'] : '';
+		$link_obj->widget_height = isset($valuemap['widget_height']) ? $valuemap['widget_height'] : '';
 		return $link_obj;
 	}
 
@@ -202,16 +207,24 @@ class BusinessActions extends CRMEntity {
 			// Multiple link type selection
 			if (is_array($type)) {
 				$multitype = true;
-				$type_sql = $adb->convert2Sql(' AND ba.elementtype_action IN ('.Vtiger_Utils::implodestr('?', count($type), ',') .') ', $adb->flatten_array($type));
+				$types = $type;
+				if (in_array('DETAILVIEWBASIC', $type)) {
+					$types[] = 'DETAILVIEWACTIONBUTTON';
+				}
+				$type_sql = $adb->convert2Sql(' AND ba.elementtype_action IN ('.Vtiger_Utils::implodestr('?', count($types), ',') .') ', $adb->flatten_array($types));
 				if ($tabid == self::IGNORE_MODULE && !empty($currentModule)) {
 					$module_sql = " AND ((ba.onlyonmymodule AND (ba.module_list = '".$currentModule."' OR ba.module_list LIKE '".$currentModule." %' OR ba.module_list LIKE '% ".$currentModule." %' OR ba.module_list LIKE '% ".$currentModule."')) OR !ba.onlyonmymodule) ";
 				}
 			} else {
-				$type_sql = $adb->convert2Sql(' AND ba.elementtype_action = ?', array($type));
+				if ('DETAILVIEWBASIC' == $type) {
+					$type_sql = $adb->convert2Sql(' AND ba.elementtype_action IN (?,?)', array($type, 'DETAILVIEWACTIONBUTTON'));
+				} else {
+					$type_sql = $adb->convert2Sql(' AND ba.elementtype_action=?', array($type));
+				}
 			}
 		}
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
-		$query = 'SELECT ba.businessactionsid, ba.elementtype_action,ba.linklabel,ba.linkurl,ba.linkicon,ba.sequence,ba.handler_path,ba.handler_class,ba.handler,ba.onlyonmymodule,ba.brmap,ba.mandatory
+		$query = 'SELECT ba.*
 			FROM vtiger_businessactions as ba INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=ba.businessactionsid
 			WHERE vtiger_crmentity.deleted=0 AND ba.active=1 '.$module_sql.$type_sql;
 
@@ -268,6 +281,10 @@ class BusinessActions extends CRMEntity {
 
 			//Get Vtiger_Link object
 			$link = self::convertToObject($tabid, $row);
+			if ($link->linktype=='DETAILVIEWACTIONBUTTON') {
+				$link->linktype = 'DETAILVIEWBASIC';
+				$link->showasbutton = true;
+			}
 
 			if (!empty($row['handler_path']) && isInsideApplication($row['handler_path'])) {
 				checkFileAccessForInclusion($row['handler_path']);
@@ -289,15 +306,22 @@ class BusinessActions extends CRMEntity {
 				if (!empty($parameters['RECORD'])) {
 					include_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 					$entityCache = new VTEntityCache($current_user);
-					$ct = new VTSimpleTemplate($link->linkurl, true);
 					if ($module_name=='Users') {
 						if (Users::is_ActiveUserID($parameters['RECORD'])) {
-							$link->linkurl = $ct->render($entityCache, vtws_getEntityId('Users').'x'.$parameters['RECORD']);
+							$ct = new VTSimpleTemplate($link->linkurl, true);
+							$id = vtws_getEntityId('Users').'x'.$parameters['RECORD'];
+							$link->linkurl = $ct->render($entityCache, $id);
+							$ct = new VTSimpleTemplate($link->linklabel, true);
+							$link->linklabel = $ct->render($entityCache, $id);
 						} else {
 							$link->linkurl = '';
 						}
 					} else {
-						$link->linkurl = $ct->render($entityCache, vtws_getEntityId(getSalesEntityType($parameters['RECORD'])).'x'.$parameters['RECORD']);
+						$ct = new VTSimpleTemplate($link->linkurl, true);
+						$id = vtws_getEntityId(getSalesEntityType($parameters['RECORD'])).'x'.$parameters['RECORD'];
+						$link->linkurl = $ct->render($entityCache, $id);
+						$ct = new VTSimpleTemplate($link->linklabel, true);
+						$link->linklabel = $ct->render($entityCache, $id);
 					}
 				}
 			}
@@ -328,7 +352,7 @@ class BusinessActions extends CRMEntity {
 	 * @param string ICON to use on the display
 	 * @param integer Order or sequence of displaying the link
 	 */
-	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false, $brmap = 0) {
+	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false, $brmap = 0, $fields = []) {
 		global $adb;
 		$module_name = getTabModuleName($tabid);
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
@@ -358,6 +382,9 @@ class BusinessActions extends CRMEntity {
 			$newBA->column_fields['active'] = 1;
 			$newBA->column_fields['mandatory'] = 1;
 			$newBA->column_fields['brmap'] = $brmap;
+			foreach ($fields as $field => $value) {
+				$newBA->column_fields[$field] = $value;
+			}
 
 			if (!empty($handlerInfo)) {
 				$newBA->column_fields['handler_path'] = (isset($handlerInfo['path']) ? $handlerInfo['path'] : '');
@@ -459,12 +486,10 @@ class BusinessActions extends CRMEntity {
 			}
 			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('BusinessActions');
 			$businessAction = $adb->pquery(
-				'SELECT 1 
+				'SELECT 1
 				FROM vtiger_businessactions
-				INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid
-					AND vtiger_crmentity.deleted = 0
-					AND vtiger_businessactions.module_list = ?
-					AND vtiger_businessactions.businessactionsid = ?',
+				INNER JOIN '.$crmEntityTable.' ON vtiger_businessactions.businessactionsid=vtiger_crmentity.crmid
+					AND vtiger_crmentity.deleted=0 AND vtiger_businessactions.module_list=? AND vtiger_businessactions.businessactionsid=?',
 				array($module_name, $businessActionId)
 			);
 

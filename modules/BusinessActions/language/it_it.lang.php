@@ -41,5 +41,10 @@ $mod_strings = array(
 'Created Time'=>'Tempo Creato',
 'Modified Time'=>'Tempo Modificato',
 'Description'=>'Descrizione',
+'Error Message' => 'Error Message',
+'Success Message' => 'Success Message',
+'Widget Header' => 'Widget Header',
+'Widget Width' => 'Widget Width',
+'Widget Height' => 'Widget Height',
 );
 ?>

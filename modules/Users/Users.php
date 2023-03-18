@@ -29,9 +29,9 @@ class Users extends CRMEntity {
 	public $error_string;
 	public $is_admin;
 	public $deleted;
-
-	public $tab_name = array('vtiger_users', 'vtiger_attachments', 'vtiger_user2role', 'vtiger_asteriskextensions');
-	public $tab_name_index = array('vtiger_users'=>'id', 'vtiger_attachments'=>'attachmentsid', 'vtiger_user2role'=>'userid', 'vtiger_asteriskextensions'=>'userid');
+	public $HasDirectImageField = true;
+	public $tab_name = array('vtiger_users', 'vtiger_user2role', 'vtiger_asteriskextensions');
+	public $tab_name_index = array('vtiger_users'=>'id', 'vtiger_user2role'=>'userid', 'vtiger_asteriskextensions'=>'userid');
 
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-user', 'class' => 'slds-icon', 'icon'=>'user');
 
@@ -123,8 +123,19 @@ class Users extends CRMEntity {
 
 	public $record_id;
 
-	public $DEFAULT_PASSWORD_CRYPT_TYPE;
-	// BLOWFISH before PHP5.3 MD5
+	public $DEFAULT_PASSWORD_CRYPT_TYPE; // BLOWFISH before PHP5.3 MD5
+	public $theme;
+	public $language;
+	public $reports_to_name;
+	public $time_zone;
+	public $currency_name;
+	public $currency_code;
+	public $currency_symbol;
+	public $currency_grouping_pattern;
+	public $currency_decimal_separator;
+	public $currency_grouping_separator;
+	public $currency_symbol_placement;
+	public $conv_rate;
 
 	/**
 	 * @var UserPrivileges
@@ -316,7 +327,7 @@ class Users extends CRMEntity {
 				}
 				$crypt_type = $adb->query_result($result, 0, 'crypt_type');
 				$encrypted_password = $this->encrypt_password($user_password, $crypt_type);
-				$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
+				$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5, 'Users', $userid);
 				$query = "SELECT * from $this->table_name where user_name=? AND user_password=?";
 				$params = array($usr_name, $encrypted_password);
 				$cnuser=$adb->getColumnNames($this->table_name);
@@ -786,11 +797,7 @@ class Users extends CRMEntity {
 		$adb->println("TRANS saveentity starts $module");
 		$adb->startTransaction();
 		foreach ($this->tab_name as $table_name) {
-			if ($table_name == 'vtiger_attachments') {
-				$this->insertIntoAttachment($this->id, $module, $fileid);
-			} else {
-				$this->insertIntoEntityTable($table_name, $module, $fileid);
-			}
+			$this->insertIntoEntityTable($table_name, $module, $fileid);
 		}
 		require_once 'modules/Users/UserPrivilegesWriter.php';
 		UserPrivilegesWriter::setUserPrivileges($this->id);
@@ -799,6 +806,7 @@ class Users extends CRMEntity {
 		if ($insertion_mode != 'edit') {
 			$this->createAccessKey();
 		}
+		$this->insertIntoAttachment($this->id, $module);
 		$adb->completeTransaction();
 		$adb->println('TRANS saveentity ends');
 	}
@@ -974,24 +982,6 @@ class Users extends CRMEntity {
 		}
 	}
 
-	/** Function to insert values into the attachment table
-	 * @param integer entity id
-	 * @param string module
-	 */
-	public function insertIntoAttachment($id, $module, $direct_import = false) {
-		global $log;
-		$log->debug("> insertIntoAttachment $id,$module");
-
-		foreach ($_FILES as $fileindex => $files) {
-			if ($files['name'] != '' && $files['size'] > 0) {
-				$files['original_name'] = vtlib_purify($_REQUEST[$fileindex . '_hidden']);
-				$this->uploadAndSaveFile($id, $module, $files);
-			}
-		}
-
-		$log->debug('< insertIntoAttachment');
-	}
-
 	/** Function to retrieve the user information of the given user ID which will be loaded into the $this->column_fields array
 	 * @param integer record ID
 	 * @param string module
@@ -1053,65 +1043,6 @@ class Users extends CRMEntity {
 		$this->id = $record;
 		$log->debug('< retrieve_entity_info');
 		return $this;
-	}
-
-	/** Function to upload the file to the server and add the file details in the attachments table
-	 * @param integer user id
-	 * @param string module name
-	 * @param array file details
-	 */
-	public function uploadAndSaveFile($id, $module, $file_details, $attachmentname = '', $direct_import = false, $forfield = '') {
-		global $log, $current_user, $upload_badext, $adb;
-
-		$date_var = date('Y-m-d H:i:s');
-
-		//to get the owner id
-		$ownerid = (isset($this->column_fields['assigned_user_id']) ? $this->column_fields['assigned_user_id'] : $current_user->id);
-		if (!isset($ownerid) || $ownerid == '') {
-			$ownerid = $current_user->id;
-		}
-
-		$file = $file_details['name'];
-		$binFile = sanitizeUploadFileName($file, $upload_badext);
-
-		$filename = ltrim(basename(' ' . $binFile));
-		//allowed filename like UTF-8 characters
-		$filetype = $file_details['type'];
-		// file size is in $file_details['size']
-		$filetmp_name = $file_details['tmp_name'];
-
-		if (validateImageFile($file_details) == 'true' && !validateImageContents($filetmp_name)) {
-			$log->debug('Skip the save attachment process.');
-			return;
-		}
-
-		$current_id = $adb->getUniqueID('vtiger_crmentity');
-
-		//get the file path inwhich folder we want to upload the file
-		$upload_file_path = decideFilePath();
-		//upload the file in server
-		$upload_status = move_uploaded_file($filetmp_name, $upload_file_path . $current_id . '_' . $binFile);
-
-		if ($upload_status) {
-			$sql1 = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?,?,?,?,?,?,?)';
-			$params1 = array($current_id, $current_user->id, $ownerid, $module.Field_Metadata::ATTACHMENT_ENTITY, $this->column_fields['description'],
-				$adb->formatString('vtiger_crmentity', 'createdtime', $date_var), $adb->formatDate($date_var, true));
-			$adb->pquery($sql1, $params1);
-
-			$sql2 = 'insert into vtiger_attachments(attachmentsid, name, description, type, path) values(?,?,?,?,?)';
-			$params2 = array($current_id, $filename, $this->column_fields['description'], $filetype, $upload_file_path);
-			$adb->pquery($sql2, $params2);
-
-			if ($id != '') {
-				$delquery = 'delete from vtiger_salesmanattachmentsrel where smid = ?';
-				$adb->pquery($delquery, array($id));
-			}
-
-			$adb->pquery('insert into vtiger_salesmanattachmentsrel values(?,?)', array($id, $current_id));
-
-			//we should update the imagename in the users table
-			$adb->pquery('update vtiger_users set imagename=? where id=?', array($filename, $id));
-		}
 	}
 
 	/** Function to save the user information into the database
@@ -1428,27 +1359,6 @@ class Users extends CRMEntity {
 
 	public function filterInactiveFields($module) {
 		// Nothing do right now
-	}
-
-	public function deleteImage() {
-		global $adb;
-		$sql1 = 'SELECT attachmentsid FROM vtiger_salesmanattachmentsrel WHERE smid = ?';
-		$res1 = $adb->pquery($sql1, array($this->id));
-		if ($adb->num_rows($res1) > 0) {
-			$attachmentId = $adb->query_result($res1, 0, 'attachmentsid');
-
-			$sql2 = "DELETE FROM vtiger_crmentity WHERE crmid=? AND setype='Users Attachments'";
-			$adb->pquery($sql2, array($attachmentId));
-
-			$sql3 = 'DELETE FROM vtiger_salesmanattachmentsrel WHERE smid=? AND attachmentsid=?';
-			$adb->pquery($sql3, array($this->id, $attachmentId));
-
-			$sql2 = "UPDATE vtiger_users SET imagename='' WHERE id=?";
-			$adb->pquery($sql2, array($this->id));
-
-			$sql4 = 'DELETE FROM vtiger_attachments WHERE attachmentsid=?';
-			$adb->pquery($sql4, array($attachmentId));
-		}
 	}
 
 	/** Function to delete an entity with given Id */

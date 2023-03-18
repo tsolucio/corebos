@@ -295,7 +295,7 @@ function createRelatedList(module) {
 	var rllabel = document.getElementById('rllabel').value;
 	var relation = document.getElementById('relation').value;
 	var relmod = relmodpl.options[relmodpl.selectedIndex].value;
-	let url = `index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=createRelatedList&fld_module=${module}&rllabel=${rllabel}&relation=${relation}&relwithmod=${relmod}&ajax=true`;
+	let url = `index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=createRelatedList&fld_module=${module}&rllabel=${encodeURIComponent(rllabel)}&relation=${relation}&relwithmod=${relmod}&ajax=true`;
 	$('#global-modal-container__content').load(url, function() {
 		VtigerJS_DialogBox.hidebusy();
 	});
@@ -304,7 +304,7 @@ function createRelatedList(module) {
 function callRelatedList(module) {
 	VtigerJS_DialogBox.showbusy();
 	let url = `index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=getRelatedInfoOrder&formodule=${module}&ajax=true`;
-	ldsModal.show('Related List', '', 'small');
+	ldsModal.show(alert_arr.RelatedList, '', 'small');
 	$('#global-modal-container__content').load(url, function() {
 		VtigerJS_DialogBox.hidebusy();
 	});

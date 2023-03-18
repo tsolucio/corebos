@@ -9,28 +9,30 @@
  ************************************************************************************/
 
 /** Get the details of a KeyMetrics on Home page
-* @returns  $customviewlist Array in the following format
-* $values = Array('Title'=>Array(0=>'image name',
-*				1=>'Key Metrics',
-*				2=>'home_metrics'
-*				),
-*		'Header'=>Array(0=>'Metrics',
-*				1=>'Count'
-*				),
-*		'Entries'=>Array($cvid=>Array(
-*				0=>$customview name,
-*				1=>$no of records for the view
-*				),
+* @return array in the following format
+* $values = Array('Title'=>Array(
+*			0=>'image name',
+*			1=>'Key Metrics',
+*			2=>'home_metrics'
+*		),
+*		'Header'=>Array(
+*			0=>'Metrics',
+*			1=>'Count'
+*		),
+*		'Entries'=>Array(
+*			$cvid=>Array(
+*			0=>$customview name,
+*			1=>$no of records for the view
+*		),
 *		$cvid=>Array(
-*				0=>$customview name,
-*				1=>$no of records for the view
-*				),
-*		|
+*			0=>$customview name,
+*			1=>$no of records for the view
+*		),
 *		|
 *		$cvid=>Array(
-*				0=>$customview name,
-*				1=>$no of records for the view
-*				)
+*			0=>$customview name,
+*			1=>$no of records for the view
+*		)
 *	)
 */
 function getKeyMetrics($maxval, $calCnt) {
@@ -76,10 +78,11 @@ function getKeyMetrics($maxval, $calCnt) {
 	if (isset($metriclists)) {
 		foreach ($metriclists as $metriclist) {
 			$value=array();
-			$CVname = textlength_check($metriclist['name'], 20);
-			$mlisturl = '<a href="index.php?action=ListView&module='.$metriclist['module'].'&viewname='.$metriclist['id'].'">';
-			$value[] = $mlisturl.$CVname . '</a> <font style="color:#6E6E6E;">('. $metriclist['user'] .')</font>';
-			$value[] = $mlisturl.getTranslatedString($metriclist['module'], $metriclist['module']). '</a>';
+			$CVname = textlength_check($metriclist['name'], GlobalVariable::getVariable('HomePage_KeyMetrics_Max_Text_Length', 20, $metriclist['module']));
+			$uname = ' ('. $metriclist['user'] .')';
+			$mlisturl = '<a href="index.php?action=ListView&module='.$metriclist['module'].'&viewname='.$metriclist['id'].'" title="'.strtr($CVname, '"', '').$uname.'">';
+			$value[] = $mlisturl.$CVname.'</a>';
+			$value[] = $mlisturl.getTranslatedString($metriclist['module'], $metriclist['module']).'</a>';
 			$value[] = $mlisturl.$metriclist['count'].'</a>';
 			$entries[$metriclist['id']]=$value;
 		}
@@ -88,7 +91,7 @@ function getKeyMetrics($maxval, $calCnt) {
 }
 
 /** to get the details of a customview Entries
-* @returns  $metriclists Array in the following format
+* @return array in the following format
 * $customviewlist []= Array(
 *		'id'=>custom view id,
 *		'name'=>custom view name,
@@ -100,8 +103,7 @@ function getMetricList() {
 	global $adb, $current_user;
 	$userprivs = $current_user->getPrivileges();
 
-	$ssql = "select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype";
-	$ssql .= " where vtiger_customview.setmetrics = 1 ";
+	$ssql='select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name=vtiger_customview.entitytype where vtiger_customview.setmetrics=1 ';
 	$sparams = array();
 
 	if (!$userprivs->isAdmin()) {
@@ -112,7 +114,7 @@ function getMetricList() {
 				where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 		$sparams[] = $current_user->id;
 	}
-	$ssql .= " order by vtiger_customview.entitytype";
+	$ssql .= ' order by vtiger_customview.entitytype';
 	$result = $adb->pquery($ssql, $sparams);
 	while ($cvrow=$adb->fetch_array($result)) {
 		$metricslist = array();
@@ -122,7 +124,7 @@ function getMetricList() {
 			$metricslist['module'] = $cvrow['entitytype'];
 			$metricslist['user'] = getUserFullName($cvrow['userid']);
 			$metricslist['count'] = '';
-			if (isPermitted($cvrow['entitytype'], "index") == "yes") {
+			if (isPermitted($cvrow['entitytype'], 'index') == 'yes') {
 				$metriclists[] = $metricslist;
 			}
 		}

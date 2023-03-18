@@ -130,5 +130,8 @@ $mod_strings = array(
 	'accept_charge' => 'I accept the license change and the associated charge it may have',
 	'LBL_DOCUMENTS_MASSUPLOAD' => 'Mass Upload Documents',
 	'LBL_MASSUPLOAD_DESCRIPTION' => 'Activate and deactivate the document mass upload widget on each module.',
+	'Approve' => 'Approve',
+	'Decline' => 'Decline',
+	'View PDF' => 'View PDF',
 );
 ?>

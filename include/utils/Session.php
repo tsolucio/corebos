@@ -97,22 +97,26 @@ class coreBOS_Session {
 				case 'cbws':
 					$lock_user_agentGV = 'Webservice_Session_LockUserAgent';
 					$lock_to_ipGV = 'Webservice_Session_LockIP';
+					$sessionLifeSpan = 'WebService_Session_Life_Span';
 					break;
 				case 'cbmb':
 					$lock_user_agentGV = 'Mobile_Session_LockUserAgent';
 					$lock_to_ipGV = 'Mobile_Session_LockIP';
+					$sessionLifeSpan = 'Mobile_Session_Life_Span';
 					break;
 				default:
 					$lock_user_agentGV = 'Application_Session_LockUserAgent';
 					$lock_to_ipGV = 'Application_Session_LockIP';
+					$sessionLifeSpan = 'Application_Session_Life_Span';
 					break;
 			}
 			self::$session = new Zebra_Session(
 				$link,
 				self::csrfGetSecret(),
-				'',
+				GlobalVariable::getVariable($sessionLifeSpan, 7200, 'Users', Users::getActiveAdminId()),
 				GlobalVariable::getVariable($lock_user_agentGV, 1, 'Users', Users::getActiveAdminId()),
-				GlobalVariable::getVariable($lock_to_ipGV, 0, 'Users', Users::getActiveAdminId())
+				GlobalVariable::getVariable($lock_to_ipGV, 0, 'Users', Users::getActiveAdminId()),
+				0
 			);
 		}
 		if ($setKCFinder) {
@@ -131,10 +135,8 @@ class coreBOS_Session {
 
 	/**
 	 * Sets the maximum expire time
-	 *
-	 * @param integer $time Time in seconds
-	 * @param bool    $add  Add time to current expire time or not
-	 *
+	 * @param integer Time in seconds
+	 * @param bool Add time to current expire time or not
 	 * @return void
 	 */
 	public static function setExpire($time, $add = false) {
@@ -150,13 +152,9 @@ class coreBOS_Session {
 
 	/**
 	 * Sets the maximum idle time
-	 *
-	 * Sets the time-out period allowed between requests before the session-state
-	 * provider terminates the session.
-	 *
-	 * @param integer $time Time in seconds
-	 * @param bool    $add  Add time to current maximum idle time or not
-	 *
+	 * Sets the time-out period allowed between requests before the session-state  provider terminates the session.
+	 * @param integer Time in seconds
+	 * @param bool Add time to current maximum idle time or not
 	 * @return void
 	 */
 	public static function setIdle($time, $add = false) {
@@ -195,10 +193,8 @@ class coreBOS_Session {
 	 *
 	 * You MUST call this method only after you have started the session with the self::start() method.
 	 *
-	 * @return boolean true when the session was created with the current request
-	 *                 false otherwise
-	 *
-	 * @see  self::start()
+	 * @return boolean true when the session was created with the current request, false otherwise
+	 * @see self::start()
 	 * @uses self::STARTED
 	 */
 	public static function isNew() {
@@ -214,7 +210,7 @@ class coreBOS_Session {
 	 * @param string $id New ID of a sesion
 	 *
 	 * @return string Previous ID of a session
-	 * @see    session_id()
+	 * @see session_id()
 	 */
 	public static function id($id = null) {
 		if (!is_null($id)) {

@@ -259,8 +259,8 @@ class Potentials extends CRMEntity {
 
 	 /**
 	 * Function to get Contact related Products
-	 * @param  integer   $id  - contactid
-	 * returns related Products record in array format
+	 * @param integer contactid
+	 * @return array related Products record
 	 */
 	public function get_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
@@ -321,10 +321,10 @@ class Potentials extends CRMEntity {
 		return $return_value;
 	}
 
-	/**	Function used to get the Sales Stage history of the Potential
-	 *	@param $id - potentialid
-	 *	return $return_data - array with header and the entries in format array('header'=>$header,'entries'=>$entries_list)
-	 *	 where as $header and $entries_list are array which contains all the column values of an row
+	/** Function used to get the Sales Stage history of the Potential
+	 * @param integer potentialid
+	 * @return array with header and the entries in format array('header'=>$header,'entries'=>$entries_list)
+	 *  where as $header and $entries_list are array which contains all the column values of an row
 	 */
 	public function get_stage_history($id) {
 		global $log, $adb, $app_strings, $current_user;
@@ -415,10 +415,10 @@ class Potentials extends CRMEntity {
 		$log->debug('< transferRelatedRecords');
 	}
 
-	/*
+	/**
 	 * Function to get the relation tables for related modules
-	 * @param - $secmodule secondary module name
-	 * returns the array with table names and fieldnames storing relations between module and this module
+	 * @param string secondary module name
+	 * @return array with table names and fieldnames storing relations between module and this module
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (

@@ -280,9 +280,9 @@
 		<textarea id="bqsql" class="slds-textarea" {if $sqlquery != '1'} style="display:none;height:280px;" {else} style="height:280px;" readonly {/if}>{$QSQL}</textarea>
 		<textarea id="bqwsq" class="slds-textarea" {if $sqlquery == '1'} style="display:none;height:280px;" {else} style="height:280px;" {/if}></textarea>
 		<legend class="slds-form-element__legend slds-form-element__label" {if $sqlquery != '1'} style="display:none;" {/if}>{'qcolumns'|@getTranslatedString:'cbQuestion'}</legend>
-		<textarea id="bqsqlcoulumns" class="slds-textarea" {if $sqlquery != '1'} style="display:none;" {else} style="height:280px;"  {/if}>{$questioncolumns}</textarea>
+		<textarea id="bqsqlcoulumns" class="slds-textarea" {if $sqlquery != '1'} style="display:none;" {else} style="height:280px;" {/if}>{$questioncolumns}</textarea>
 		<legend class="slds-form-element__legend slds-form-element__label" {if $sqlquery != '1'} style="display:none;" {/if}><h2><b>{'qcondition'|@getTranslatedString:'cbQuestion'}</b></h2></legend>
-		<textarea id="bqsqlconditions" class="slds-textarea"  {if $sqlquery != '1'} style="display:none;" {else} style="height:280px;"  {/if}>{$cbqconditons}</textarea>
+		<textarea id="bqsqlconditions" class="slds-textarea" {if $sqlquery != '1'} style="display:none;" {else} style="height:280px;" {/if}>{$cbqconditons}</textarea>
 	</fieldset>
 </div>
 </div>

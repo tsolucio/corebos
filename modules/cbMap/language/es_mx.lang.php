@@ -51,6 +51,8 @@ $mod_strings = array(
 	'FieldInfo' => 'Información de Campos',
 	'GlobalSearchAutocomplete' => 'Sugerencias en Búsqueda Global',
 	'RelatedPanes' => 'Pestañas Relacionadas',
+	'ApplicationMenu' => 'Menú de Aplicación',
+	'MassUpsertGridView' => 'Cuadrícula de inserción masiva',
 	'Function' => 'Función',
 	'TypeOfExpression' => 'Tipo de Expresión',
 	'FunctionName' => 'Nombre Función',
@@ -80,5 +82,8 @@ $mod_strings = array(
 	'Reset content' => 'Contenido original',
 	'Clear content' => 'Limpiar contenido',
 	'Content Holder' => 'Contenido',
+	'AdvancedSearch' => 'Búsqueda Avanzada',
+	'Wizard' => 'Asistente',
+	'RelatedListBlock' => 'Lista Relacionada en Arbol',
 );
 ?>

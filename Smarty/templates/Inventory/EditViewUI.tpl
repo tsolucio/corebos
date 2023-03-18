@@ -81,7 +81,7 @@
 
 		{if $uitype eq '10'}
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-			<font color="red">{$mandatory_field}</font>
+			<span style="color:red;">{$mandatory_field}</span>
 			{$fldlabel.displaylabel}
 
 			{if count($fldlabel.options) eq 1}
@@ -115,30 +115,24 @@ alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedStr
 				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
 alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 			</span>
-
-		{elseif $uitype eq 2}
-			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
-			</span>
-			<span class="mdCellInfo">
-				<input type="text" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" value="{$fldvalue}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'">
-			</span>
 		{elseif $uitype eq 3 || $uitype eq 4}<!-- Non Editable field, only configured value will be loaded -->
-			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}"><font color="red">{$mandatory_field}</font>{$usefldlabel}</span>
+			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}"><span style="color:red;">{$mandatory_field}</span>{$usefldlabel}</span>
 			<span class="mdCellInfo"><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span>
-		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 13 || $uitype eq 7}
-			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}"><font color="red">{$mandatory_field}</font>{$usefldlabel}</span>
-			<span class="mdCellInfo"><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span><br>
+		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 2 || $uitype eq 13 || $uitype eq 7}
+			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}"><span style="color:red;">{$mandatory_field}</span>{$usefldlabel}</span>
+			<span class="mdCellInfo">
+				<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'">
+			</span>
 		{elseif $uitype eq 9}
-			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}"><font color="red">{$mandatory_field}</font>{$usefldlabel} {$APP.COVERED_PERCENTAGE}</span>
-			<span class="mdCellInfo"><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span>
+			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}"><span style="color:red;">{$mandatory_field}</span>{$usefldlabel} {$APP.COVERED_PERCENTAGE}</span>
+			<span class="mdCellInfo"><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span>
 		{elseif $uitype eq 19 || $uitype eq 20}
 			<!-- In Add Comment are we should not display anything -->
 			{if $fldlabel eq $MOD.LBL_ADD_COMMENT}
 				{assign var=fldvalue value=""}
 			{/if}
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-					<font color="red">{$mandatory_field}</font>
+				<span style="color:red;">{$mandatory_field}</span>
 				{$usefldlabel}
 			</span>
 			<span colspan=3 class="mdCellInfo">
@@ -149,15 +143,15 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</span>
 		{elseif $uitype eq 21 || $uitype eq 24}
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-					<font color="red">{$mandatory_field}</font>
+				<span style="color:red;">{$mandatory_field}</span>
 				{$usefldlabel}
 			</span>
 			<span class="mdCellInfo">
 				<textarea value="{$fldvalue}" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" rows=2>{$fldvalue}</textarea>
 			</span>
-		{elseif $uitype eq 15 || $uitype eq 16  || $uitype eq '31' || $uitype eq '32' || $uitype eq '1613' || $uitype eq '1614'}
+		{elseif $uitype eq 15 || $uitype eq 16 || $uitype eq '31' || $uitype eq '32' || $uitype eq '1613' || $uitype eq '1614'}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>
+				<span style="color:red;">{$mandatory_field}</span>
 				{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
@@ -172,7 +166,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</span>
 		{elseif $uitype eq 33 || $uitype eq 3313 || $uitype eq 3314 || $uitype eq 1024}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
 				<select MULTIPLE name="{$fldname}[]" id="{$fldname}" size="4" style="width:280px;" tabindex="{$vt_tab}" class="small">
@@ -184,7 +178,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 		{elseif $uitype eq 53}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
 				{assign var=check value=1}
@@ -240,7 +234,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</span>
 		{elseif $uitype eq 52 || $uitype eq 77}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
 				<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
@@ -254,7 +248,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 		{elseif $uitype eq 17}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
 			<input style="width:74%;" class = 'detailedViewTextBox' type="text" tabindex="{$vt_tab}" name="{$fldname}" style="border:1px solid #bababa;" size="27" onFocus="this.className='detailedViewTextBoxOn'"onBlur="this.className='detailedViewTextBox'" onkeyup="validateUrl('{$fldname}');" value="{$fldvalue}">
@@ -262,7 +256,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 		{elseif $uitype eq 85}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>
+				<span style="color:red;">{$mandatory_field}</span>
 				{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
@@ -272,7 +266,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 		{elseif $uitype eq 71 || $uitype eq 72}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
 				<input name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" type="text" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" value="{$fldvalue}">
@@ -280,7 +274,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 		{elseif $uitype eq 56}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<!-- For Portal Information we need a hidden field existing_portal with the current portal value -->
 			{if $fldname eq 'portal'}
@@ -305,7 +299,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{/if}
 		{elseif $uitype eq 23 || $uitype eq 5 || $uitype eq 6}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
 				{foreach key=date_value item=time_value from=$fldvalue}
@@ -346,7 +340,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</span>
 		{elseif $uitype eq 50}
 			<span id="td_{$fldname}" width="20%" class="mdCellInfo{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</span>
 			<span id="td_val_{$fldname}" width="30%" align=left class="mdCellInfo">
 				<span style='display:none;' id='{$fldname}_hidden'></span>
@@ -381,7 +375,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 		{elseif $uitype eq 63}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
 				<input name="{$fldname}" type="text" size="2" value="{$fldvalue}" tabindex="{$vt_tab}" >&nbsp;
@@ -392,14 +386,14 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				</select>
 		{elseif $uitype eq 22}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
 				<textarea name="{$fldname}" cols="30" tabindex="{$vt_tab}" rows="2">{$fldvalue}</textarea>
 			</span>
 		{elseif $uitype eq 14}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {"LBL_TIMEFIELD"|@getTranslatedString}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel} {"LBL_TIMEFIELD"|@getTranslatedString}
 			</span>
 			<span width=10% class="mdCellInfo">
 				<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'">
@@ -407,8 +401,9 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 		{elseif $uitype eq 69}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
-			</span><span colspan="1" width="30%" class="mdCellInfo">
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
+			</span>
+			<span colspan="1" width="30%" class="mdCellInfo">
 				<div style="display: flex;flex-direction: row; width:100%">
 				<div width="80%">
 				<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}<br /></span>
@@ -436,17 +431,17 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 		{elseif $uitype eq 61}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 
 			<span colspan="1" width="30%" class="mdCellInfo">
-				<input name="{$fldname}"  type="file" value="{$secondvalue}" tabindex="{$vt_tab}" onchange="validateFilename(this)"/>
+				<input name="{$fldname}" type="file" value="{$secondvalue}" tabindex="{$vt_tab}" onchange="validateFilename(this)"/>
 				<input type="hidden" name="{$fldname}_hidden" value="{$secondvalue}"/>
 				<input type="hidden" name="id" value=""/>{$fldvalue}
 			</span>
 		{elseif $uitype eq 156}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 				{if $fldvalue eq 'on'}
 					<span width="30%" class="mdCellInfo">
@@ -468,7 +463,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/if}
 		{elseif $uitype eq 98}<!-- Role Selection Popup -->
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
 			{if $thirdvalue eq 1}
@@ -481,7 +476,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</span>
 		{elseif $uitype eq 115}<!-- for Status field Disabled for nonadmin -->
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
 			{if $secondvalue eq 1 && $CURRENT_USERID != $smarty.request.record}
@@ -494,35 +489,16 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/foreach}
 			</select>
 			</span>
-		{elseif $uitype eq 105}
+		{elseif $uitype eq 103}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
-			</span>
-			<span width="30%" class="mdCellInfo">
-				{if $MODE eq 'edit' && $IMAGENAME neq ''}
-					<input name="{$fldname}" type="file" value="{$maindata[3].0.name}" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><div id="replaceimage">[{$IMAGENAME}]&nbsp;<a href="javascript:;" onClick="delUserImage({$ID})">Del</a></div>
-					<br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
-					<input name="{$fldname}_hidden"  type="hidden" value="{$maindata[3].0.name}" />
-				{else}
-					<input name="{$fldname}" type="file" value="" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
-					<input name="{$fldname}_hidden"  type="hidden" value="" />
-				{/if}
-					<div id="displaySize"></div>
-					<input type="hidden" name="id" value=""/>
-					{if isset($maindata[3].0.name) }
-					{$maindata[3].0.name}
-					{/if}
-			</span>
-			{elseif $uitype eq 103}
-			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" colspan="3" class="mdCellInfo">
 				<input type="text" name="{$fldname}" value="{$fldvalue}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'">
 			</span>
-			{elseif $uitype eq 101}<!-- for reportsto field USERS POPUP -->
+		{elseif $uitype eq 101}<!-- for reportsto field USERS POPUP -->
 				<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-					<font color="red">{$mandatory_field}</font>{$usefldlabel}
+					<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 				</span>
 				<span width="30%" class="mdCellInfo">
 					<input id="{$fldname}_display" name="{$fldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$fldvalue}" class="small" />&nbsp;
@@ -530,16 +506,16 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					&nbsp;<input title="{$APP.LBL_CHANGE_TITLE}" accessKey="C" type="button" class="small" value='{$APP.LBL_CHANGE}' name="btn1" onclick='return window.open("index.php?module=Users&action=Popup&html=Popup_picker&form=vtlibPopupView&form_submit=false&fromlink={$fromlink}&recordid={$ID}&forfield={$fldname}", "test", cbPopupWindowSettings);'>
 					&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 				</span>
-			{elseif $uitype eq 117}<!-- for currency in users details-->
+		{elseif $uitype eq 117}<!-- for currency in users details-->
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
-			   {if $secondvalue eq 1 || $uitype eq 117}
+				{if $secondvalue eq 1 || $uitype eq 117}
 				<select name="{$fldname}" tabindex="{$vt_tab}" class="small">
-			   {else}
+				{else}
 				<select disabled name="{$fldname}" tabindex="{$vt_tab}" class="small">
-			   {/if}
+				{/if}
 				{assign var="curr_stat" value=""}
 				{foreach item=arr key=uivalueid from=$fldvalue}
 					{foreach key=sel_value item=value from=$arr}
@@ -551,16 +527,16 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<!--code ends -->
 					{/foreach}
 				{/foreach}
-			   </select>
+				</select>
 			<!-- code added to pass Currency field value, if Disabled for nonadmin -->
 			{if $curr_stat neq '' && $uitype neq 117}
 				<input name="{$fldname}" type="hidden" value="{$curr_stat}">
 			{/if}
 			<!--code ends -->
 			</span>
-			{elseif $uitype eq 106}
+		{elseif $uitype eq 106}
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span class="mdCellInfo">
 				{if $MODE eq 'edit'}
@@ -572,7 +548,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{elseif $uitype eq 99}
 				{if $MODE eq 'create'}
 				<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-					<font color="red">{$mandatory_field}</font>{$usefldlabel}
+					<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 				</span>
 				<span class="mdCellInfo">
 					<input type="password" name="{$fldname}" tabindex="{$vt_tab}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'">
@@ -580,7 +556,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/if}
 		{elseif $uitype eq 30}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
+				<span style="color:red;">{$mandatory_field}</span>{$usefldlabel}
 			</span>
 			<span colspan="3" width="30%" class="mdCellInfo">
 				{assign var=check value=$secondvalue[0]}
@@ -611,7 +587,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</span>
 		{elseif $uitype eq 26}
 		<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-		<font color="red">{$mandatory_field}</font>{$fldlabel}
+			<span style="color:red;">{$mandatory_field}</span>{$fldlabel}
 		</span>
 		<span width="30%" class="mdCellInfo">
 			<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
@@ -622,7 +598,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		</span>
 		{elseif $uitype eq 27}
 		<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align="right" >
-			<font color="red">{$mandatory_field}</font>{$fldlabel_other}&nbsp;
+			<span style="color:red;">{$mandatory_field}</span>{$fldlabel_other}&nbsp;
 		</span>
 		<span width="30%" class="mdCellInfo">
 			<select class="small" name="{$fldname}" onchange="changeDldType((this.value=='I')? 'file': 'text');">

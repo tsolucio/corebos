@@ -26,7 +26,7 @@ class FieldDependency extends processcbMap {
 	private $mapping = array();
 
 	public function processMap($arguments) {
-		return $this->convertMap2Array();
+		return $this->convertMap2Array($arguments);
 	}
 
 	public function readResponsibleField() {
@@ -133,11 +133,63 @@ class FieldDependency extends processcbMap {
 		return $conditions;
 	}
 
-	public function convertMap2Array() {
+	private function cleanMode($dirtymode) {
+		switch (strtolower($dirtymode)) {
+			case 'create':
+			case '1':
+				$mode = 1;
+				break;
+			case 'edit':
+			case '2':
+				$mode = 2;
+				break;
+			case 'detail':
+			case '3':
+				$mode = 3;
+				break;
+			default:
+				$mode = 0; // all
+				break;
+		}
+		return $mode;
+	}
+
+	private function isModeAcceptable($mapmode, $realmode) {
+		if (strpos($mapmode, ',')) {
+			$modes = explode(',', $mapmode);
+			foreach ($modes as $mi => $mv) {
+				$modes[$mi] = $this->cleanMode($mv);
+			}
+			if (empty(array_intersect([0, $realmode], $modes))) {
+				return false;
+			}
+		} elseif ($this->cleanMode($mapmode)!=0 && $this->cleanMode($mapmode)!=$realmode) {
+			return false;
+		}
+		return true;
+	}
+
+	private function getXMLBranch($loadfrom) {
+		global $adb;
+		$bmap = $adb->pquery(
+			'select content from vtiger_cbmap inner join vtiger_crmentity on crmid=cbmapid where deleted=0 and (cbmapid=? or mapname=?)',
+			[$loadfrom, $loadfrom]
+		);
+		if ($bmap && $adb->num_rows($bmap)) {
+			$xmlcontent=html_entity_decode($bmap->fields['content'], ENT_QUOTES, 'UTF-8');
+			if (self::isXML($xmlcontent)) {
+				return simplexml_load_string($xmlcontent, null, LIBXML_NOCDATA);
+			}
+		}
+		return false;
+	}
+
+	public function convertMap2Array($arguments) {
 		$xml = $this->getXMLContent();
 		if (empty($xml)) {
 			return array();
 		}
+		$mode = empty($arguments[0]) ? 0 : $this->cleanMode($arguments[0]);
 		$mapping_arr = array();
 		$mapping_arr['origin'] = (string)$xml->originmodule->originname;
 		if (empty($xml->blocktriggerfields)) {
@@ -147,29 +199,66 @@ class FieldDependency extends processcbMap {
 		}
 		$mapping_arr['blockedtriggerfields'] = [];
 		$target_fields = array();
-		foreach ($xml->dependencies->dependency as $v) {
+		if (isset($xml->dependencies->loadfrom)) {
+			$dependencies = $this->getXMLBranch((string)$xml->dependencies->loadfrom);
+		} else {
+			$dependencies = $xml->dependencies;
+		}
+		foreach ($dependencies->dependency as $v) {
+			if (isset($v->loadfrom)) {
+				$v = $this->getXMLBranch((string)$v->loadfrom);
+				if ($v===false) {
+					continue;
+				}
+			}
+			if (isset($v->mode) && !$this->isModeAcceptable((string)$v->mode, $mode)) {
+				continue; // we ignore the whole dependency
+			}
 			$hasBlockingAction = false;
 			$conditions = $this->expandConditionColumn((string)$v->condition, $mapping_arr['origin']);
+			if (isset($v->actions->loadfrom)) {
+				$mapactions = $this->getXMLBranch((string)$v->actions->loadfrom);
+				if ($mapactions===false) {
+					continue;
+				}
+			} else {
+				$mapactions = $v->actions;
+			}
+			if (isset($mapactions->mode) && !$this->isModeAcceptable((string)$mapactions->mode, $mode)) {
+				continue; // we ignore the whole action
+			}
 			$actions=array();
-			foreach ($v->actions->change as $action) {
+			foreach ($mapactions->change as $action) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
+					continue;
+				}
 				$actions['change'][] = array('field'=>(string)$action->field,'value'=>(string)$action->value);
 				if ($mapping_arr['blocktriggerfields']) {
 					$hasBlockingAction = true;
 				}
 			}
-			foreach ($v->actions->hide as $action) {
+			foreach ($mapactions->hide as $action) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
+					continue;
+				}
 				foreach ($action->field as $fld => $name) {
 					$actions['hide'][] = array('field'=>(string)$name);
 				}
 			}
-			foreach ($v->actions->readonly as $action) {
+			foreach ($mapactions->readonly as $action) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
+					continue;
+				}
 				foreach ($action->field as $fld => $name) {
 					$actions['readonly'][] = array('field'=>(string)$name);
 				}
 			}
-			foreach ($v->actions->deloptions as $action) {
+			foreach ($mapactions->deloptions as $action) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
+					continue;
+				}
 				$opt=array();
-				foreach ($v->actions->deloptions->option as $opt2) {
+				foreach ($mapactions->deloptions->option as $opt2) {
 					$opt[]=(string)$opt2;
 				}
 				$actions['deloptions'][] = array('field'=>(string)$action->field,'options'=>$opt);
@@ -177,9 +266,12 @@ class FieldDependency extends processcbMap {
 					$hasBlockingAction = true;
 				}
 			}
-			foreach ($v->actions->setoptions as $action) {
+			foreach ($mapactions->setoptions as $action) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
+					continue;
+				}
 				$opt=array();
-				foreach ($v->actions->setoptions->option as $opt2) {
+				foreach ($mapactions->setoptions->option as $opt2) {
 					$opt[]=(string)$opt2;
 				}
 				$actions['setoptions'][] = array('field'=>(string)$action->field,'options'=>$opt);
@@ -187,42 +279,60 @@ class FieldDependency extends processcbMap {
 					$hasBlockingAction = true;
 				}
 			}
-			foreach ($v->actions->collapse as $action) {
+			foreach ($mapactions->collapse as $action) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
+					continue;
+				}
 				foreach ($action->block as $block) {
 					$bname = getTranslatedString((string)$block, $mapping_arr['origin']);
 					$bname = str_replace(' ', '', $bname);
 					$actions['collapse'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->open as $action) {
+			foreach ($mapactions->open as $action) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
+					continue;
+				}
 				foreach ($action->block as $block) {
 					$bname = getTranslatedString((string)$block, $mapping_arr['origin']);
 					$bname = str_replace(' ', '', $bname);
 					$actions['open'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->disappear as $action) {
+			foreach ($mapactions->disappear as $action) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
+					continue;
+				}
 				foreach ($action->block as $block) {
 					$bname = getTranslatedString((string)$block, $mapping_arr['origin']);
 					$bname = str_replace(' ', '', $bname);
 					$actions['disappear'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->appear as $action) {
+			foreach ($mapactions->appear as $action) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
+					continue;
+				}
 				foreach ($action->block as $block) {
 					$bname = getTranslatedString((string)$block, $mapping_arr['origin']);
 					$bname = str_replace(' ', '', $bname);
 					$actions['appear'][] = array('block'=>$bname);
 				}
 			}
-			foreach ($v->actions->setclass as $action) {
+			foreach ($mapactions->setclass as $action) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
+					continue;
+				}
 				foreach ($action->field as $name) {
 					$actions['setclass'][] = array('field'=>(string)$name);
 				}
 				$actions['setclass'][] = array('fieldclass'=>(string)$action->fieldclass);
 				$actions['setclass'][] = array('labelclass'=>(string)$action->labelclass);
 			}
-			foreach ($v->actions->function as $action) {
+			foreach ($mapactions->function as $action) {
+				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
+					continue;
+				}
 				$params=array();
 				if (isset($action->parameters)) {
 					foreach ($action->parameters->parameter as $opt2) {
@@ -249,6 +359,9 @@ class FieldDependency extends processcbMap {
 				if ($mapping_arr['blocktriggerfields']) {
 					$hasBlockingAction = true;
 				}
+			}
+			if (empty($actions)) {
+				continue;
 			}
 			foreach ($v->field as $fld) {
 				$target_fields[(string)$fld][] = array('conditions'=>$conditions,'actions'=>$actions);

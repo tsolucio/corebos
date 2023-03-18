@@ -116,13 +116,15 @@ if ($focus->is_authenticated() && $focus->is_twofaauthenticated()) {
 		header('Location: index.php');
 	}
 } else {
-	$sql = 'select failed_login_attempts from vtiger_users where user_name=?';
+	$sql = 'select id, failed_login_attempts from vtiger_users where user_name=?';
 	$result = $adb->pquery($sql, array($focus->column_fields['user_name']));
 	$failed_login_attempts = 0;
+	$userid = 0;
 	if ($result && $adb->num_rows($result)>0) {
-		$failed_login_attempts = $adb->query_result($result, 0, 0);
+		$userid = $adb->query_result($result, 0, 'id');
+		$failed_login_attempts = $adb->query_result($result, 0, 'failed_login_attempts');
 	}
-	$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
+	$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5, 'Users', $userid);
 	// Increment number of failed login attempts
 	$query = 'UPDATE vtiger_users SET failed_login_attempts=COALESCE(failed_login_attempts,0)+1 where user_name=?';
 	$adb->pquery($query, array($focus->column_fields['user_name']));

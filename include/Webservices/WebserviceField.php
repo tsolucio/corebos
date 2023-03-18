@@ -29,6 +29,7 @@ class WebserviceField {
 	private $tabid;
 	private $presence;
 	private $quickCreate;
+	private $helpinfo;
 	/**
 	 *
 	 * @var PearDatabase
@@ -304,7 +305,7 @@ class WebserviceField {
 		if (isset(WebserviceField::$tableMeta[$this->getTableName()])) {
 			$tableFields = WebserviceField::$tableMeta[$this->getTableName()];
 		} else {
-			$dbMetaColumns = $this->pearDB->database->MetaColumns($this->getTableName());
+			$dbMetaColumns = $this->pearDB->getMetaColumns($this->getTableName());
 			$tableFields = array();
 			if (is_array($dbMetaColumns)) {
 				foreach ($dbMetaColumns as $dbField) {

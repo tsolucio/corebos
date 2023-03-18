@@ -23,8 +23,5 @@ $mod_strings = array(
 	'action' => 'Azione',
 	'actiondate'  => 'Data Azione',
 	'Record' => 'Recordati',
-
-
-
 );
 ?>

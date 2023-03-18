@@ -91,6 +91,9 @@ class ConditionExpression extends processcbMap {
 			$entity = new cbexpsql_environmentstub($inModule, 0);
 			$entity->setData($arguments[0]);
 		}
+		if (isset($arguments[1])) {
+			$entity->WorkflowContext = $arguments[1];
+		}
 		$current_user = $holduser;
 		if (isset($xml->expression)) {
 			$testexpression = (string)$xml->expression;

@@ -13,7 +13,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
 
 	/**
 	 * return id of Google Record
-	 * @return <string> id
+	 * @return string id
 	 */
 	public function getId() {
 		return $this->data['entity']['id']['$t'];
@@ -21,7 +21,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
 
 	/**
 	 * return modified time of Google Record
-	 * @return <date> modified time
+	 * @return date modified time
 	 */
 	public function getModifiedTime() {
 		return $this->vtigerFormat($this->data['entity']['updated']['$t']);
@@ -40,7 +40,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
 
 	/**
 	 * return first name of Google Record
-	 * @return <string> $first name
+	 * @return string first name
 	 */
 	public function getFirstName() {
 		$fname='';
@@ -54,7 +54,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
 
 	/**
 	 * return Lastname of Google Record
-	 * @return <string> Last name
+	 * @return string Last name
 	 */
 	public function getLastName() {
 		$lname='';
@@ -68,7 +68,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
 
 	/**
 	 * return Emails of Google Record
-	 * @return <array> emails
+	 * @return array emails
 	 */
 	public function getEmails() {
 		$arr=array();
@@ -91,7 +91,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
 
 	/**
 	 * return Phone number of Google Record
-	 * @return <array> phone numbers
+	 * @return array phone numbers
 	 */
 	public function getPhones() {
 		$arr=array();
@@ -115,7 +115,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
 
 	/**
 	 * return Addresss of Google Record
-	 * @return <array> Addresses
+	 * @return array Addresses
 	 */
 	public function getAddresses() {
 		$arr=array();
@@ -218,7 +218,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
 
 	/**
 	 * Returns the Google_Contacts_Model of Google Record
-	 * @param <array> $recordValues
+	 * @param array record values
 	 * @return Google_Contacts_Model
 	 */
 	public static function getInstanceFromValues($recordValues) {
@@ -227,8 +227,8 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
 
 	/**
 	 * converts the Google Format date to
-	 * @param <date> $date Google Date
-	 * @return <date> Vtiger date Format
+	 * @param date Google Date
+	 * @return date vtiger date Format
 	 */
 	public static function vtigerFormat($date) {
 		list($date, $timestring) = explode('T', $date);

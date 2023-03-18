@@ -41,6 +41,15 @@ $pdoInformation=$element['pdoInformation'];
 $skipCurDBConv = !empty($element['__cbws_skipcurdbconv_pdo']);
 $lineitemAlreadyUsed = array();
 foreach ($pdoInformation as $pdoline) {
+	if (isset($pdoline['upsert_conditions']) && $pdoline['upsert_conditions'] !== '') {
+		$value = coreBOS_Rule::evaluate($pdoline['upsert_conditions'], $pdoline, $pdoline);
+		if ($value != 0) {
+			$pdoline['productid'] = $value;
+		} else {
+			$product = vtws_create('Products', $pdoline, $current_user);
+			$pdoline['productid'] = $product['id'];
+		}
+	}
 	$i++;
 	$_REQUEST['deleted'.$i]=(isset($pdoline['deleted']) ? $pdoline['deleted'] : 0);
 	$_REQUEST['comment'.$i]=(isset($pdoline['comment']) ? $pdoline['comment'] : '');

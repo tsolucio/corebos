@@ -19,7 +19,6 @@
 require_once 'include/integrations/cache/cache.php';
 
 $smarty = new vtigerCRM_Smarty();
-$cache = new corebos_cache();
 
 $isadmin = is_admin($current_user);
 
@@ -29,19 +28,20 @@ if ($isadmin && isset($_REQUEST['adapter_type'])) {
 	$ip = (empty($_REQUEST['ip']) ? '' : vtlib_purify($_REQUEST['ip']));
 	$port = (empty($_REQUEST['port']) ? '' : vtlib_purify($_REQUEST['port']));
 	if ($adapterType == corebos_cache::ADAPTER_MEMORY) {
-		$ip = "";
-		$port = "";
+		$ip = '';
+		$port = '';
 	} elseif (empty($ip) || empty($port)) {
 		$adapterType = corebos_cache::ADAPTER_MEMORY;
-		$ip = "";
-		$port = "";
+		$ip = '';
+		$port = '';
 	}
-	$cache->saveSettings($isActive, $adapterType, $ip, $port);
+	$cbAppCache->saveSettings($isActive, $adapterType, $ip, $port);
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Cache Activation', $currentModule));
-$cacheSettings = $cache->getSettings();
-$smarty->assign('isActive', $cache->isActive());
+$cacheSettings = $cbAppCache->getSettings();
+$smarty->assign('isActive', $cbAppCache->isActive());
+$smarty->assign('isUsable', $cbAppCache->isUsable());
 $smarty->assign('adapter', $cacheSettings['adapter']);
 $smarty->assign('ip', $cacheSettings['ip']);
 $smarty->assign('port', $cacheSettings['port']);

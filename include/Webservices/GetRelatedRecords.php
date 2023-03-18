@@ -383,6 +383,9 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 				}
 				// select the fields the user has access to and prepare query
 				$qfields = __getRLQueryFields($meta, $queryParameters['columns']);
+				if ($relatedModule=='ProductComponent') {
+					$qfields = 'vtiger_productcomponent.*,vtiger_productcomponentcf.*,'.$qfields;
+				}
 				// Remove all the \n, \r and white spaces to keep the space between the words consistent.
 				$query = preg_replace("/[\n\r\s]+/", ' ', $query);
 				$query = "select $qfields ".substr($query, stripos($query, ' FROM '), strlen($query));

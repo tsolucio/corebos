@@ -358,6 +358,7 @@ $mod_strings = array(
 	'LBL_OWNER'=>'Besitzer',
 	'LBL_MIGRATION'=>'Migriere von vorhergehender Version',
 	'LBL_MIGRATION_INFO'=>' - Migration von vorhergehenden Version',
+	'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Supported File Type .XML only',
 
 	'LBL_USER_DESCRIPTION'=>'bearbeiten Sie die CRM Benutzerliste und weisen Sie Benutzern Rollen zu',
 	'LBL_ROLE_DESCRIPTION'=>'definieren Sie die Hierarchie von Rollen und weisen Sie diesen Profile zu',
@@ -1052,6 +1053,8 @@ $mod_strings = array(
 	'LBL_MB_NEWBLOCK' => 'New Block',
 	'LBL_MB_ADDFIELD' => 'ADD FIELD',
 	'LBL_MB_ALLMODULES' => 'All modules',
+	'LBL_MB_STARTMODULE' => 'Start new module',
+	'LBL_NEWFIELDHELP' => 'Default fields for module <i>assigned_user_id</i>, <i>created_user_id</i>, <i>createdtime</i>, <i>modifiedtime</i> and <i>description</i> are created automatically!',
 	'LBL_MB_PROGRESS' => 'Progress',
 	'LBL_MB_STATUS' => 'Status',
 	'LBL_MODULE_BUILDER' => 'Module Builder',
@@ -1067,5 +1070,11 @@ $mod_strings = array(
 	'LBL_EXPORT' => 'Export',
 	'LBL_RELATED_MODULE' => 'Related Module',
 	'LBL_RL_LABEL' => 'Label',
+	//email language translate
+	'LBL_EMAIL_TRANSLATE' => 'Dies ist eine Test-E-Mail, die gesendet wird, um zu bestätigen, ob eine E-Mail tatsächlich über den von Ihnen konfigurierten SMTP-Server gesendet wird.',
+    'LBL_EMAIL_END' => 'Sie können diese Mail gerne löschen.',
+    'LBL_EMAIL_SUBJECT' => 'Testmail über die Konfiguration des Mailservers.',
+    'LBL_DEAR' => 'Liebling ',
+    'LBL_THANKS' => 'Danke und Grüße,',
 );
 ?>

@@ -72,7 +72,7 @@ if ($mode) {
 	$focus->mode = $mode;
 }
 if ($record) {
-	$focus->id  = $record;
+	$focus->id = $record;
 }
 if (isset($_REQUEST['inventory_currency'])) {
 	$focus->column_fields['currency_id'] = vtlib_purify($_REQUEST['inventory_currency']);
@@ -96,7 +96,9 @@ if (empty($_REQUEST['assigned_user_id']) && empty($_REQUEST['assigned_group_id']
 list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
 if (!$saveerror) { // if there is no error we still check the defined validations again
 	include_once 'modules/cbMap/processmap/Validations.php';
-	$validation = executefunctionsvalidate('ValidationLoad', $currentModule, json_encode(vtlib_purify(Validations::flattenMultipicklistArrays($_REQUEST))));
+	$structure = vtlib_purify(Validations::flattenMultipicklistArrays($_REQUEST));
+	$structure = Validations::addFilesFields($structure);
+	$validation = executefunctionsvalidate('ValidationLoad', $currentModule, json_encode($structure));
 	if ($validation != '%%%OK%%%') {
 		$saveerror = true;
 		$errormessage = $validation;
@@ -123,6 +125,8 @@ if ($saveerror) { // there is an error so we go back to EditView.
 			$field_values_passed.=$fieldname.'='.urlencode($value);
 		}
 	}
+	$returnvalues.=(empty($_REQUEST['FILTERFIELDSMAP']) ? '' : '&FILTERFIELDSMAP='.urlencode($_REQUEST['FILTERFIELDSMAP']));
+	$returnvalues.=(empty($_REQUEST['FILTERVALMAP']) ? '' : '&FILTERVALMAP='.urlencode($_REQUEST['FILTERVALMAP']));
 	$encode_field_values=base64_encode($field_values_passed);
 	$req->set('return_module', $currentModule);
 	$error_action = (empty($error_action) ? 'EditView' : $error_action);

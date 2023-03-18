@@ -35,8 +35,9 @@ $list_buttons=$focus->getListButtons($app_strings, $mod_strings);
 if (ListViewSession::hasViewChanged($currentModule)) {
 	coreBOS_Session::set($currentModule.'_Order_By', '');
 }
-$sorder = $focus->getSortOrder();
-$order_by = $focus->getOrderBy();
+$sortArrayList = $focus->getOrderByAndSortOrderList();
+$order_by = !empty($sortArrayList) ? $sortArrayList[0]['orderBy'] : '';
+$sorder = !empty($sortArrayList) ? $sortArrayList[0]['sortOrder'] : '';
 
 coreBOS_Session::set($currentModule.'_Order_By', $order_by);
 coreBOS_Session::set($currentModule.'_Sort_Order', $sorder);
@@ -150,8 +151,14 @@ if ($sql_error) {
 	$smarty->assign('export_where', to_html($where));
 
 	// Sorting
-	if (!empty($order_by)) {
-		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$sorder;
+	if (!empty($sortArrayList)) {
+		$list_query .= ' ORDER BY';
+		foreach ($sortArrayList as $index => $sortObj) {
+			$list_query .= ' ' . $queryGenerator->getOrderByColumn($sortObj['orderBy']).' '.$sortObj['sortOrder'];
+			if ($index + 1 < !empty($sortArrayList)) {
+				$list_query .= ',';
+			}
+		}
 	}
 	if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
 		echo '<br>'.$list_query.'<br>';
@@ -191,8 +198,10 @@ if ($sql_error) {
 		$smarty->assign('LISTHEADER', '');
 		$smarty->assign('LISTENTITY', array());
 	} else {
-		$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
-		$smarty->assign('recordListRange', $recordListRangeMsg);
+		if ($layout != 'tuigrid') {
+			$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
+			$smarty->assign('recordListRange', $recordListRangeMsg);
+		}
 
 		$smarty->assign('CUSTOMVIEW_OPTION', $customview_html);
 		if ($layout != 'tuigrid') {
@@ -209,11 +218,10 @@ if ($sql_error) {
 		if ($currentModule == 'Documents') {
 			include 'modules/Documents/ListViewCalculations.php';
 		}
+		$listview_entries = array();
 		if ($layout != 'tuigrid') {
 			$listview_header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, $skipAction);
 			$listview_entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, $skipAction);
-
-
 			$smarty->assign('LISTHEADER', $listview_header);
 			$smarty->assign('LISTENTITY', $listview_entries);
 		}
@@ -221,8 +229,8 @@ if ($sql_error) {
 		$smarty->assign('SEARCHLISTHEADER', $listview_header_search);
 	// Module Search
 		$alphabetical = AlphabeticalSearch($currentModule, 'index', $focus->def_basicsearch_col, 'true', 'basic', '', '', '', '', $viewid);
-		$fieldnames = $controller->getAdvancedSearchOptionString();
-		$fieldnames_array = $controller->getAdvancedSearchOptionArray();
+		$fieldnames = $customView->getByModule_ColumnsHTML($currentModule, $customView->getModuleColumnsList($currentModule));
+		$fieldnames_array = $customView->getModuleColumnsList($currentModule, true);
 		$smarty->assign('ALPHABETICAL', $alphabetical);
 		$smarty->assign('FIELDNAMES', $fieldnames);
 		$smarty->assign('FIELDNAMES_ARRAY', $fieldnames_array);
@@ -239,7 +247,7 @@ if ($sql_error) {
 	// Gather the custom link information to display
 		include_once 'vtlib/Vtiger/Link.php';
 		$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
-		$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
+		$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW','LISTVIEWACTION','LISTVIEWBUTTON'), $customlink_params));
 	}
 } // try query
 $smarty->assign('IS_ADMIN', is_admin($current_user));
@@ -256,6 +264,32 @@ $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS', ($DEFAULT_SEARCH_PANEL_STATUS ? '
 $smarty->assign('EDIT_FILTER_ALL', GlobalVariable::getVariable('Application_Filter_All_Edit', 1));
 $smarty->assign('moduleView', $layout);
 $smarty->assign('Apache_Tika_URL', GlobalVariable::getVariable('Apache_Tika_URL', ''));
+$smarty->assign('ShowCreateMessage', GlobalVariable::getVariable('Application_ListView_Show_Create_Message', '0'));
+$smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
+$smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
+$smarty->assign('Application_ListView_Mass_Edit_Show', GlobalVariable::getVariable('Application_ListView_Mass_Edit_Show', 1));
+$smarty->assign('Application_ListView_Mass_Delete_Show', GlobalVariable::getVariable('Application_ListView_Mass_Delete_Show', 1));
+
+// send advancedSearch business map data to the frontEnd
+$advancedSearchMapResult = 'MAP_NOT_FOUND';
+$advancedSearchMapObject = new cbMap();
+$advancedSearchbmapname = $currentModule.'_AdvancedSearch';
+$advancedSearchMapid = GlobalVariable::getVariable('BusinessMapping_'.$advancedSearchbmapname, cbMap::getMapIdByName($advancedSearchbmapname));
+if ($advancedSearchMapid) {
+	$advancedSearchMapObject->id = $advancedSearchMapid;
+	$advancedSearchMapObject->mode = '';
+	$advancedSearchMapObject->retrieve_entity_info($advancedSearchMapid, 'cbMap');
+	$advancedSearchMapResult = $advancedSearchMapObject->AdvancedSearch($currentModule);
+}
+$smarty->assign('advancedSearchMapResult', $advancedSearchMapResult);
+
+// GV responsible for showing or hiding filter panel
+$Application_ListView_FilterPanel_Open = GlobalVariable::getVariable('Application_ListView_FilterPanel_Open', '1', $currentModule);
+if (!$Application_ListView_FilterPanel_Open) {
+	$smarty->assign('Application_ListView_FilterPanel_Open', 'display: none;');
+} else {
+	$smarty->assign('Application_ListView_FilterPanel_Open', '');
+}
 
 if (!empty($custom_list_include) && file_exists($custom_list_include)) {
 	include $custom_list_include;

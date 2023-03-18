@@ -438,6 +438,8 @@ $app_strings = array (
 'Inventory' => 'Estoque',
 'Tools' => 'Ferramentas',
 'Settings' => 'Configurações',
+'Tables' => 'Tables',
+'Add Table' => 'Add Table',
 'LBL_INFORMATION' => 'Informação',
 'LBL_MORE' => 'Mais',
 'LBL_BASIC' => 'Básico',
@@ -594,6 +596,7 @@ $app_strings = array (
 'LBL_RECORDS' => 'Registros',
 'LBL_SCROLL' => '[Topo]',
 'LBL_EXPAND_COLLAPSE' => 'Expandir/Recolher',
+'LBL_COLLAPSE' => 'Recolher',
 'LBL_RCPY_ADDRESS' => 'Copiar End. entrega',
 'LBL_LCPY_ADDRESS' => 'Copiar End. faturamento',
 'LBL_RECORD_ID' => 'No. registro',
@@ -1357,6 +1360,8 @@ $app_strings = array (
 'saved' => 'salvo',
 'notsaved' => 'não foi salvo',
 'processcomplete' => 'Processo Completo',
+'processed' => 'processed',
+'notprocessed' => 'not processed',
 'typetosearch_prodser' => 'Digite p/pesquisar produto/serviço',
 'RecordIsAssignedToInactiveUser' => 'O registro é atribuído a um usuário inativo. Por favor, selecione outro usuário.',
 'Add Relation' => 'Adic. relacionamento',
@@ -1372,6 +1377,22 @@ $app_strings = array (
 'LBL_FIX_NOW' => 'Fixa Agora',
 'LBL_HIERARCHY' => 'Hierarquia',
 'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Procurar documentos',
+
+// watermark WF template
+'Watermark Value' => 'Watermark Value',
+'image field name' => 'Image Field Name',
+'Water Mark Size' => 'Water Mark Size',
+'Water Mark Position' => 'Water Mark Position',
+// watermark direction
+'Center' => 'Center',
+'Top' => 'Top',
+'Bottom' => 'Bottom',
+'Right' => 'Right',
+'Left' => 'Left',
+'Top Right' => 'Top Right',
+'Top Left' => 'Top Left',
+'Bottom Left' => 'Bottom Left',
+'Bottom Right' => 'Bottom Right',
 
 //login translation
 'LBL_Please_login_to_your_account' => 'Faça login em sua conta',
@@ -1404,6 +1425,10 @@ $app_strings = array (
 'LBL_UITYPE10_NOTALLOWED' => 'O módulo relacionado tem um campo relacionado obrigatório.',
 'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 'LBL_PREVIEW' => 'Preview',
+'Slider' => 'Slider',
+'LBL_WIZARD' => 'Wizard',
+'LBL_ROW' => 'Linha',
+'LBL_WIZARD_COMPLETED' => 'The process has been completed successfully.',
 );
 
 // Translation for currency names

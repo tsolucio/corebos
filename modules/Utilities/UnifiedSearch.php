@@ -25,8 +25,8 @@ foreach ($_SESSION as $key => $value) {
 $total_record_count = 0;
 
 $query_string = trim($_REQUEST['query_string']);
-if (substr($query_string, 0, 5)=='tag::') {
-	$query_string = substr($query_string, 5);
+if ((substr($query_string, 0, 5)=='tag::') || (substr($query_string, 0, 3)=='#::')) {
+	$query_string =substr($query_string, 0, 3) !=='#::' ? substr($query_string, 5) : substr($query_string, 3);
 	$_REQUEST['search_tag'] = 'tag_search';
 	$_REQUEST['search_module'] = 'All';
 	unset($_REQUEST['search_onlyin']);
@@ -34,6 +34,19 @@ if (substr($query_string, 0, 5)=='tag::') {
 $fieldtype = '';
 if (strpos($query_string, '::')) {
 	$resttype = substr($query_string, 0, strpos($query_string, '::'));
+	// you can add fieldtype aliases here
+	switch ($resttype) {
+		case '$':
+			$resttype = 'currency';
+			break;
+		case 'site':
+			$resttype = 'url';
+			break;
+		case '@':
+			$resttype = 'email';
+			break;
+	}
+
 	$fldtypes = array();
 	$rsft = $adb->query('SELECT distinct `fieldtype` FROM `vtiger_ws_fieldtype`');
 	while ($ft = $adb->fetch_array($rsft)) {
@@ -43,6 +56,9 @@ if (strpos($query_string, '::')) {
 		$query_string = substr($query_string, strpos($query_string, '::')+2);
 		$fieldtype = $resttype;
 	}
+}
+if (strpos($query_string, '..') !== false) {
+	$query_string = str_replace('$::', '', $query_string);
 }
 $curModule = vtlib_purify($_REQUEST['module']);
 $search_tag = isset($_REQUEST['search_tag']) ? vtlib_purify($_REQUEST['search_tag']) : '';
@@ -96,6 +112,7 @@ if (isset($query_string) && $query_string != '') {
 	$smarty->assign('SEARCH_MODULE', $search_module);
 	$smarty->assign('SEARCH_STRING', htmlentities($search_val, ENT_QUOTES, $default_charset));
 	$smarty->assign('MODULES_LIST', $object_array);
+	$Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '', 'Documents');
 	foreach ($object_array as $module => $object_name) {
 		if ($curModule == 'Utilities' || ($curModule == $module && !empty($_REQUEST['ajax']))) {
 			$focus = CRMEntity::getInstance($module);
@@ -115,17 +132,27 @@ if (isset($query_string) && $query_string != '') {
 					$search_msg = $app_strings['LBL_TAG_SEARCH'];
 					$search_msg .= '<b>'.to_html($search_val).'</b>';
 				} else { //This is for Global search
-					$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
+					$where = '';
+					$search_values = [];
+					if (strpos($search_val, 'OR') !== false) {
+						$search_values = explode('OR', $search_val);
+						$multiple_where = [];
+						foreach ($search_values as $search_values_key => $search_values_value) {
+							array_push($multiple_where, '(' . getUnifiedWhere($listquery, $module, trim($search_values_value), $fieldtype) . ')');
+						}
+						$where = implode('OR', $multiple_where);
+					} else {
+						$where = getUnifiedWhere($listquery, $module, $search_val, $fieldtype);
+					}
+					if (!empty($Apache_Tika_URL) && $module=='Documents') {
+						$where .= ' OR vtiger_documentsearchinfo.text LIKE "%'.formatForSqlLike($search_val).'%"';
+					}
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
 					$search_msg .= '<b>'.htmlentities($search_val, ENT_QUOTES, $default_charset).'</b>';
 				}
 
 				if ($where != '') {
 					$listquery .= ' and ('.$where.')';
-				}
-				$Apache_Tika_URL = GlobalVariable::getVariable('Apache_Tika_URL', '');
-				if (!empty($Apache_Tika_URL)) {
-					$listquery .= ' OR vtiger_documentsearchinfo.text LIKE "%'.$search_val.'%"';
 				}
 				if (!(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')) {
 					$count_result = $adb->query($listquery);
@@ -213,7 +240,8 @@ if (isset($query_string) && $query_string != '') {
 		$recfound = array_keys($listview_entries_for1);
 		$recfound = $recfound[0];
 		if ($recfound != '') {
-			echo "<script type='text/javascript'>gotourl('index.php?module=$modfound&record=$recfound&action=DetailView');</script>";
+			$gsAction = GlobalVariable::getVariable('Application_Global_Search_Action', 'DetailView', $modfound);
+			echo "<script type='text/javascript'>gotourl('index.php?module=$modfound&record=$recfound&action=".$gsAction."');</script>";
 		}
 	}
 	if ($total_record_count == 0) {

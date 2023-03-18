@@ -13,6 +13,15 @@
 function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname, currentID = 0) {
 	var ret = false;
 	var wodform = false;
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const params = Object.fromEntries(urlSearchParams.entries());
+	if (formname == 'Wizard') {
+		var domnode_id = window.opener.document.getElementById(`${target_fieldname}_formtemplate_${params.index}`);
+		var domnode_display = window.opener.document.getElementById(`${target_fieldname}_display_${params.index}`);
+		domnode_id.value = recordid;
+		domnode_display.value = value;
+		return true;
+	}
 	if (formname == 'ListView') {
 		var domnode_id = window.opener.document.getElementById(`txtbox_${target_fieldname}_${currentID}`);
 		var domnode_display = window.opener.document.getElementById(`txtbox_${target_fieldname}_${currentID}_display`);
@@ -62,6 +71,9 @@ function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname, 
  * Generic uitype popup open action
  */
 function vtlib_open_popup_window(fromlink, fldname, MODULE, ID) {
+	if (popup_filter_map_popup_window(fldname)) {
+		return;
+	}
 	var modfld = document.getElementById(fldname+'_type');
 	var mod = '';
 	if (modfld) {
@@ -88,6 +100,89 @@ function vtlib_open_popup_window(fromlink, fldname, MODULE, ID) {
 		window.open('index.php?module='+ mod +'&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID, 'vtlibui10', cbPopupWindowSettings);
 	}
 	return true;
+}
+
+/*
+* Generic uitype popup open action for popup filter map
+*/
+function popup_filter_map_popup_window(fldname) {
+	if (typeof PopupFilterMapResults == 'undefined') {
+		return false;
+	}
+	const fieldModule = document.getElementById(fldname+'_type').value;
+	const keys = Object.keys(PopupFilterMapResults);
+	for (let index = 0; index < keys.length; index++) {
+		const key = keys[index];
+		if (key.includes('#')) {
+			let [fieldName, dependency] = key.split('#');
+			if (fieldName == fldname && dependency == fieldModule) {
+				replaceDynamicVariableWithRecordValue(PopupFilterMapResults[key]['advft_criteria'])
+				.then((recordValue) => {
+					let advft_criteria = JSON.stringify(recordValue);
+					let advft_criteria_groups = JSON.stringify(PopupFilterMapResults[key]['advft_criteria_groups']);
+					window.open('index.php?module=' + fieldModule + '&action=Popup&html=Popup_picker&form=DetailView&forfield=' + fldname + '&query=true&search=true&searchtype=advance&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups, '_blank', cbPopupWindowSettings);
+				});
+				return true;
+			}
+		} else {
+			if (key == fldname) {
+				replaceDynamicVariableWithRecordValue(PopupFilterMapResults[key]['advft_criteria'])
+				.then((recordValue) => {
+					let advft_criteria = JSON.stringify(recordValue);
+					let advft_criteria_groups = JSON.stringify(PopupFilterMapResults[key]['advft_criteria_groups']);
+					window.open('index.php?module=' + fieldModule + '&action=Popup&html=Popup_picker&form=DetailView&forfield=' + fldname + '&query=true&search=true&searchtype=advance&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups, '_blank', cbPopupWindowSettings);
+				});
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+/**
+ * Checks if a dynamic varibale exists and if
+ * yes it replaces it with the record's field value
+*/
+async function replaceDynamicVariableWithRecordValue(arr) {
+	let array = structuredClone(arr);
+	const formTypes = ['EditView', 'DetailView'];
+	for (let index = 0; index < formTypes.length; index++) {
+		const formType = formTypes[index];
+		if (document.querySelector(`form[name="${formType}"]`)) {
+			let formValues = null;
+			if (formType == 'EditView') {
+				formValues = getFormFields('EditView');
+			} else {
+				formValues = getDetailViewFormFields();
+			}
+			for (let index = 0; index < array.length; index++) {
+				const element = array[index];
+				if (element['value'].includes('$')) {
+					let value = element['value'].substr(1);
+					if (element['value'].includes('.')) {
+						let arr = value.split('.');
+						let firstFieldRecordID = formValues[arr[0]];
+						element['value'] = await processGettingDeepFieldsValues(element['value'], firstFieldRecordID);
+					} else {
+						element['value'] = formValues[value];
+					}
+				}
+			}
+			return array;
+		}
+	}
+	return array;
+}
+
+async function processGettingDeepFieldsValues(value, firstFieldRecordID) {
+	const url = new URL(window.location.href);
+	const moduleName = url.searchParams.get('module');
+	try {
+		const res = await ExecuteFunctions('getFieldValuesFromRecordRecursively', `moduleName=${moduleName}&firstFieldRecordID=${firstFieldRecordID}&value=${value}`);
+		return JSON.parse(res)[0];
+	} catch (error) {
+		console.log('error', error);
+	}
 }
 
 /**

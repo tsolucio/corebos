@@ -172,7 +172,7 @@ class DataTransform {
 		$allFields = $meta->getFieldColumnMapping();
 		$newRow = array();
 		foreach ($allFields as $field => $col) {
-			$newRow[$field] = isset($row[$field]) ? $row[$field] : '';
+			$newRow[$field] = isset($row[$field]) ? $row[$field] : (isset($row[$col]) ? $row[$col] : '');
 		}
 		if (isset($row[$recordString])) {
 			$newRow[$recordString] = $row[$recordString];

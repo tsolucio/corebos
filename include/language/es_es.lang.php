@@ -450,6 +450,8 @@ $app_strings = array (
 	'Inventory' => 'Inventario',
 	'Tools' => 'Herramientas',
 	'Settings' => 'Configuración',
+	'Tables' => 'Tablas',
+	'Add Table' => 'Añadir Tabla',
 	'LBL_INFORMATION' => 'Información',
 	'LBL_BASIC' => 'Básico',
 	'LBL_CREATING' => 'Creando',
@@ -606,6 +608,7 @@ $app_strings = array (
 	'LBL_RECORDS' => 'Registros',
 	'LBL_SCROLL' => '[Arriba]',
 	'LBL_EXPAND_COLLAPSE' => 'Expandir/Contraer',
+	'LBL_COLLAPSE' => 'Contraer',
 	'LBL_RCPY_ADDRESS' => 'Copiar Envío a Factura',
 	'LBL_LCPY_ADDRESS' => 'Copiar Factura a Envío',
 	'LBL_RECORD_ID' => 'ID de Registro',
@@ -1319,7 +1322,7 @@ $app_strings = array (
 	'Create Sales Order' => 'Crear Orden de Venta',
 
 	'LBL_MORE'=>'Más',
-	'LBL_CRM_SETTINGS' => 'Configuración CRM',
+	'LBL_CRM_SETTINGS' => 'Configuración Aplicación',
 	'LBL_RELATED_TO_THIS' =>'relacionado con esto',
 	'LBL_DESELECT_ALL' => 'Desmarcar todo',
 	'LBL_RECORDS_IN' => 'registros en',
@@ -1350,6 +1353,8 @@ $app_strings = array (
 	'saved' => 'guardado',
 	'notsaved' => 'no guardado',
 	'processcomplete' => 'Proceso Terminado',
+	'processed' => 'procesado',
+	'notprocessed' => 'no procesado',
 	'typetosearch_prodser' => 'Busca productos o servicios',
 	'RecordIsAssignedToInactiveUser' => 'El registro está asignado a un usuario inactivo. Por favor selecciona otro usuario.',
 	'Add Relation' => 'Añadir Relación',
@@ -1367,6 +1372,23 @@ $app_strings = array (
 	'LBL_FIX_NOW' => 'Arreglar Ahora',
 	'LBL_HIERARCHY' => 'Jerarquía',
 	'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Buscar Documentos',
+
+	// watermark WF template
+	'Watermark Value' => 'Valor de la marca de agua',
+	'image field name' => 'Nombre del campo de imagen',
+	'Water Mark Size' => 'Tamaño de la marca de agua',
+	'Water Mark Position' => 'Posicón de la marca de agua',
+	// watermark direction
+	'Center' => 'Centro',
+	'Top' => 'Arriba',
+	'Bottom' => 'Abajo',
+	'Right' => 'Derecha',
+	'Left' => 'Izquierda',
+	'Top Right' => 'Arriba Derecha',
+	'Top Left' => 'Arriba Izquierda',
+	'Bottom Left' => 'Abajo Izquierda',
+	'Bottom Right' => 'Abajo Derecha',
+
 	//login translation
 	'LBL_Please_login_to_your_account' => 'Por favor accede a tu cuenta',
 	'LBL_Bussiness'	=> 'Haz que tu negocio funcione sin problemas',
@@ -1388,7 +1410,11 @@ $app_strings = array (
 	'Paste the link here' => 'Pega el enlace aquí',
 	'LBL_UITYPE10_NOTALLOWED' => 'El módulo relacionado tiene un campo relacional obligatorio.',
 	'LBL_PAINT2DOCUMENT' => 'Dibujo a Documento',
-	'LBL_PREVIEW' => 'Preview',
+	'LBL_PREVIEW' => 'Visualizar',
+	'Slider' => 'Carrusel',
+	'LBL_WIZARD' => 'Asistente',
+	'LBL_ROW' => 'Fila',
+	'LBL_WIZARD_COMPLETED' => 'El proceso ha termiando correctamente.',
 );
 
 // Translation for currency names

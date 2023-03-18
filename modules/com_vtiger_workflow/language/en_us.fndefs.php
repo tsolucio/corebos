@@ -877,6 +877,22 @@ $WFExpressionFunctionDefinitons = array(
 		'log(10, 10)',
 	),
 ),
+'char' => array(
+	'name' => 'char(number)',
+	'desc' => 'This function returns the character corresponding to the given ASCII code.',
+	'params' => array(
+		array(
+			'name' => 'number',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'ASCII code to convert to character',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		'char(39)',
+	),
+),
 'substring' => array(
 	'name' => 'substring(stringfield,start,length)',
 	'desc' => 'This function returns the portion of stringfield specified by the start and length parameters.',
@@ -1121,6 +1137,40 @@ $WFExpressionFunctionDefinitons = array(
 		"modulo(5, 3)",
 	),
 ),
+'base64encode' => array(
+	'name' => 'base64encode(field_or_string)',
+	'desc' => 'This function generates the base64 encoding of the value.',
+	'params' => array(
+		array(
+			'name' => 'field_or_string',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'Message to be encoded',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"base64encode('admin')",
+		'base64encode(accountname)',
+	),
+),
+'base64decode' => array(
+	'name' => 'base64decode(field_or_string)',
+	'desc' => 'This function decodes a base64 encoded value.',
+	'params' => array(
+		array(
+			'name' => 'field_or_string',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'Message to decoded',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"base64decode('Y29yZUJPUyBpcyBhd2Vzb21lIQ==')",
+		'base64decode(encoded_field)',
+	),
+),
 'hash' => array(
 	'name' => 'hash(field, method)',
 	'desc' => 'This function generates a hash value (message digest).',
@@ -1135,12 +1185,34 @@ $WFExpressionFunctionDefinitons = array(
 			'name' => 'method',
 			'type' => 'String',
 			'optional' => false,
-			'desc' => 'selected hashing algorithm: "md5", "sha1", "crc32"',
+			'desc' => 'selected hashing algorithm: "md5", "sha1", "crc32", "sha256"',
 		),
 	),
 	'categories' => array('Text'),
 	'examples' => array(
 		"hash('admin', 'sha1')",
+	),
+),
+'hashFile' => array(
+	'name' => 'hashFile(filePath, method)',
+	'desc' => 'This function generates a hash from a file content.',
+	'params' => array(
+		array(
+			'name' => 'filePath',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'file to be hashed',
+		),
+		array(
+			'name' => 'method',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'selected hashing algorithm: "md5", "sha1", "crc32", "sha256", etc...',
+		),
+	),
+	'categories' => array('Text'),
+	'examples' => array(
+		"hashFile(getimageurl(imagename), 'sha256')",
 	),
 ),
 'globalvariable' => array(
@@ -1269,6 +1341,22 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Information'),
 	'examples' => array(
 		"getCurrentUserField('email1')",
+	),
+),
+'getGroupID' => array(
+	'name' => 'getGroupID(groupname)',
+	'desc' => 'This function returns the group ID of the given groupname.',
+	'params' => array(
+		array(
+			'name' => 'groupname',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'any group name',
+		),
+	),
+	'categories' => array('Information'),
+	'examples' => array(
+		"getGroupID('Marketing Group')",
 	),
 ),
 'getCRMIDFromWSID' => array(
@@ -1684,6 +1772,7 @@ $WFExpressionFunctionDefinitons = array(
 		"getIDof('Contacts', 'firstname', 'Amy')",
 		"getIDof('Accounts', 'siccode', 'xyhdmsi33')",
 		"getIDof('Accounts', 'siccode', some_field)",
+		"getIDof('Accounts', ['accountname','phone'], ['Chemex Labs Ltd','03-3608-5660'])",
 	),
 ),
 'getRelatedIDs' => array(
@@ -1848,7 +1937,9 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"getFieldsOF('8509', 'Contacts')",
+		"getFieldsOF('8509,8510,IDn', 'Contacts')",
 		"getFieldsOF('8509', 'Contacts', 'field1,field2,...,fieldN')",
+		"getFieldsOF('8509,8510,IDn', 'Contacts', 'field1,field2,...,fieldN')",
 	),
 ),
 'getFromContext' => array(
@@ -1924,6 +2015,102 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"setToContext('accountname','mortein')",
+	),
+),
+'cleanArrayElements' => array(
+	'name' => 'cleanArrayElements(array, elements, invert)',
+	'desc' => 'This function deletes the indicated array elements.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'array',
+			'optional' => false,
+			'desc' => 'The array to delete the elements from',
+		),
+		array(
+			'name' => 'elements',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'comma-separated list of keys to delete from the array',
+		),
+		array(
+			'name' => 'invert',
+			'type' => 'Boolean',
+			'optional' => true,
+			'desc' => 'true (default) to use comma-separated values parameter as values to eliminate, false to use them as values to keep',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"cleanArrayElements(getFromContext('response.data'), 'field1,fieldn')",
+	),
+),
+'applyMaptoArrayElements' => array(
+	'name' => 'applyMaptoArrayElements(array, mapid)',
+	'desc' => 'This function applies the business field mapping into the array parameter.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'array',
+			'optional' => false,
+			'desc' => 'The array that will serve as context.',
+		),
+		array(
+			'name' => 'mapid',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'the field mapping business map crmid that will be applied on the array',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"applyMaptoArrayElements(getFromContext('response.data'),43980)",
+	),
+),
+'applyMaptoArrayElementsAndSubarray' => array(
+	'name' => 'applyMaptoArrayElementsAndSubarray(array, Map, SubArrayElement, SubArrayMap, cleanSubArrayElements, invert)',
+	'desc' => 'Applies the SubArrayMap business field mapping on each SubArrayElement element of the initial array, then it applies the cleanSubArrayElements list if given, finally, each element of the initial array is applied the Map.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'array',
+			'optional' => false,
+			'desc' => 'The array that will serve as context.',
+		),
+		array(
+			'name' => 'Map',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'the field mapping business map crmid that will be applied on the top level fields of the array',
+		),
+		array(
+			'name' => 'SubArrayElement',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'defines the element of the top level array that contains the subarray to process. This element will be eliminated from the result so you must copy it in the mapping',
+		),
+		array(
+			'name' => 'SubArrayMap',
+			'type' => 'Integer',
+			'optional' => false,
+			'desc' => 'the field mapping business map crmid that will be applied on the subarray fields',
+		),
+		array(
+			'name' => 'cleanSubArrayElements',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'set it to comma-separated list of fields to eliminate from the subarray after applying the map. calls cleanArrayElements',
+		),
+		array(
+			'name' => 'invert',
+			'type' => 'Boolean',
+			'optional' => true,
+			'desc' => 'true (default) to use comma-separated values parameter as values to eliminate, false to use them as values to keep',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"applyMaptoArrayElementsAndSubarray(getFromContext('response.data'), 43980, 'line_items', 43981, 'field1,fieldn')",
 	),
 ),
 'jsonEncode' => array(
@@ -2124,6 +2311,23 @@ $WFExpressionFunctionDefinitons = array(
 		"evaluateRule(ruleID)",
 	),
 ),
+'evaluateExpression' => array(
+	'name' => 'evaluateExpression(expression)',
+	'desc' => 'This function evaluates a workflow expression, which can be given as a string or a field.',
+	'params' => array(
+		array(
+			'name' => 'expression',
+			'type' => 'String|Field',
+			'optional' => false,
+			'desc' => 'string or field that holds the expression',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"evaluateExpression('8*3')",
+		"evaluateExpression(description)",
+	),
+),
 'executeSQL' => array(
 	'name' => 'executeSQL(query, parameters...)',
 	'desc' => 'Execute an SQL statement.',
@@ -2144,6 +2348,23 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Application'),
 	'examples' => array(
 		"executeSQL('select siccode from vtiger_accounts where accountname=?', field)",
+	),
+),
+'getRequest' => array(
+	'name' => 'getRequest(parameter)',
+	'desc' => 'This function returns the value of the GET/POST parameter in the call.',
+	'params' => array(
+		array(
+			'name' => 'parameter',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'a string index passing in from GET or POST',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"getRequest('my_parameter')",
+		"getRequest('action')",
 	),
 ),
 'getCRUDMode' => array(
@@ -2292,9 +2513,58 @@ $WFExpressionFunctionDefinitons = array(
 		"regex('[a-z]+', msg )",
 	),
 ),
+'uniqid' => array(
+	'name' => 'uniqid(prefix)',
+	'desc' => 'This function returns a unique ID with an optional prefix in front.',
+	'params' => array(
+		array(
+			'name' => 'prefix',
+			'type' => 'String',
+			'optional' => true,
+			'desc' => 'any string',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"uniqid('pfx')",
+		"uniqid()",
+	),
+),
+'array' => array(
+	'name' => 'array(values...)',
+	'desc' => 'This function returns an array with the given values.',
+	'params' => array(
+		array(
+			'name' => 'values',
+			'type' => 'CSV',
+			'optional' => false,
+			'desc' => 'comma-separated list of array values',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"array('value1', 1, 'other')",
+	),
+),
+'flattenarray' => array(
+	'name' => 'flattenarray(array)',
+	'desc' => 'Return a one dimensional array result of squashing a multidimensional array.',
+	'params' => array(
+		array(
+			'name' => 'array',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'array to flatten',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"flattenarray(executeSQL('select bill_country from vtiger_accountbillads'))",
+	),
+),
 'exists' => array(
-	'name' => 'exists(fieldname, value)',
-	'desc' => 'This function checks if a record with the given value in the given field exists or not.',
+	'name' => 'exists(fieldname, value, exclude_current)',
+	'desc' => 'This function checks if a record with the given value in the given field exists or not. Optionally excluding the current record.',
 	'params' => array(
 		array(
 			'name' => 'fieldname',
@@ -2308,10 +2578,18 @@ $WFExpressionFunctionDefinitons = array(
 			'optional' => false,
 			'desc' => 'value the field must have',
 		),
+		array(
+			'name' => 'exclude_current',
+			'type' => 'Boolean',
+			'optional' => true,
+			'desc' => 'true, the default value, will exclude the current record from the search, false will include it',
+		),
 	),
 	'categories' => array('Logical'),
 	'examples' => array(
 		"exists('accountname', 'Chemex Labs Ltd')",
+		"exists('accountname', 'Chemex Labs Ltd', 1)",
+		"exists('accountname', 'Chemex Labs Ltd', 'false')",
 	),
 ),
 'existsrelated' => array(
@@ -2430,6 +2708,67 @@ $WFExpressionFunctionDefinitons = array(
 		'max(employees, breakpoint)',
 	),
 ),
+'statistics' => array(
+	'name' => 'statistics(function, data, parameters...)',
+	'desc' => 'This function performs a predefined statistical calculation on the given dataset. The current set of supported calculations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>.',
+	'params' => array(
+		array(
+			'name' => 'function',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'calculation name to perform. supported calculations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>',
+		),
+		array(
+			'name' => 'data',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'values to perform the calculation',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'Multiple',
+			'optional' => true,
+			'desc' => 'any other parameters the function may need',
+		),
+	),
+	'categories' => array('Statistics'),
+	'examples' => array(
+		"statistics('median',array(1,3,5,7,9))",
+		"statistics('median',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+		"statistics('firstQuartile',array(98, 90, 70,18,92,92,55,83,45,95,88))",
+		"statistics('harmonicMean',array(40, 60), null, 1)",
+	),
+),
+'frequency' => array(
+	'name' => 'frequency(function, data, parameters...)',
+	'desc' => 'This function performs a predefined frequency calculation on the given dataset. The current set of supported calcuations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>.',
+	'params' => array(
+		array(
+			'name' => 'function',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'calculation name to perform. supported calcuations can be <a href="https://github.com/Hi-Folks/statistics" target=_blank>obtained here</a>',
+		),
+		array(
+			'name' => 'data',
+			'type' => 'Array',
+			'optional' => false,
+			'desc' => 'values to perform calculation',
+		),
+		array(
+			'name' => 'parameters',
+			'type' => 'Multiple',
+			'optional' => true,
+			'desc' => 'any other parameters the function may need',
+		),
+	),
+	'categories' => array('Statistics'),
+	'examples' => array(
+		"frequency('frequencies',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+		"frequency('relativeFrequencies',array('🍈', '🍈', '🍈', '🍉','🍉','🍉','🍉','🍉','🍌'))",
+		"frequency('frequencies',flattenarray(executeSQL('select bill_country from vtiger_accountbillads')))",
+	),
+),
 'getCurrentConfiguredTaxValues' => array(
 	'name' => 'getCurrentConfiguredTaxValues(taxname)',
 	'desc' => 'This function returns the Current Configured Tax Values.',
@@ -2460,6 +2799,40 @@ $WFExpressionFunctionDefinitons = array(
 	'categories' => array('Information'),
 	'examples' => array(
 		"getCurrencyConversionValue('currency_code')"
+	),
+),
+'EUVATValidation' => array(
+	'name' => 'EUVATValidation(vat)',
+	'desc' => 'This function validates VAT for EU countries.',
+	'params' => array(
+		array(
+			'name' => 'vat',
+			'type' => 'String',
+			'optional' => false,
+			'desc' => 'the VAT to validate',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		"EUVATValidation('IT16816050114')"
+	),
+),
+'AutoNumberDec' => array(
+	'name' => 'AutoNumberDec(ANPid)',
+	'desc' => 'Decrements the counter in the given autonumber record.',
+	'params' => array(
+		array(
+			'name' => 'ANPid',
+			'type' => 'Number/String',
+			'optional' => false,
+			'desc' => 'CRMID or AutoNumber field value of the record to decrement. Optionally it can be the name of an active module, in which case it will find the currently active default autonumber record for the given module.',
+		),
+	),
+	'categories' => array('Application'),
+	'examples' => array(
+		'AutoNumberDec(999)',
+		"AutoNumberDec('ANPx-00001')",
+		"AutoNumberDec('Accounts')",
 	),
 ),
 );

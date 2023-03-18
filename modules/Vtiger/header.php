@@ -25,6 +25,7 @@ $userName = getFullNameFromArray('Users', $current_user->column_fields);
 $smarty = new vtigerCRM_Smarty;
 require_once 'modules/evvtMenu/evvtMenuUtils.php';
 $smarty->assign('MENU', getMenuArray(0));
+$smarty->assign('MENUSEARCH', getFlatMenuJSON());
 $header_array = getAdminevvtMenu();
 $smarty->assign('evvtAdminMenu', $header_array);
 $smarty->assign('HEADERS', $header_array);
@@ -90,6 +91,7 @@ $smarty->assign('coreBOS_app_name', $appUIName);
 $appUINameHTML = decode_html(vtlib_purify(GlobalVariable::getVariable('Application_UI_NameHTML', $appUIName)));
 $smarty->assign('coreBOS_app_nameHTML', $appUINameHTML);
 $smarty->assign('coreBOS_app_coverimage', GlobalVariable::getVariable('Application_UI_CoverImage', 'themes/images/content-bg-1.png'));
+$smarty->assign('Global_Search_PlaceHolder', GlobalVariable::getVariable('Application_Global_Search_PlaceHolder', $app_strings['LBL_SEARCH_TITLE'].$appUIName));
 $NotificationSound = GlobalVariable::getVariable('Calendar_Notification_Sound', 'modules/cbCalendar/media/new_event.mp3');
 if (!isInsideApplication($NotificationSound)) {
 	$NotificationSound = 'modules/cbCalendar/media/new_event.mp3';
@@ -98,6 +100,11 @@ $smarty->assign('Calendar_Notification_Sound', $NotificationSound);
 
 $companyDetails = retrieveCompanyDetails();
 $smarty->assign('COMPANY_DETAILS', $companyDetails);
+$getTitle = GlobalVariable::getVariable('Application_TitleInformation', getTranslatedString($currentModule, $currentModule).' - '.$appUIName, $currentModule, $current_user->id, $_REQUEST['action']);
+if (is_numeric($getTitle)) {
+	$getTitle = coreBOS_Rule::evaluate($getTitle, $_REQUEST['record']);
+}
+$smarty->assign('TITLE_HEADER', $getTitle);
 
 //Global Search Autocomplete Mapping
 $bmapname = 'GlobalSearchAutocomplete';
@@ -107,11 +114,15 @@ if ($cbMapid) {
 	$cbMap = cbMap::getMapByID($cbMapid);
 	$cbMapGS = $cbMap->GlobalSearchAutocomplete();
 	$cbMapGS['entityfield']='query_string';
+	unset($cbMapGS['conditions']);
 }
 $smarty->assign('GS_AUTOCOMP', $cbMapGS);
 $Application_Global_Search_Active = GlobalVariable::getVariable('Application_Global_Search_Active', 1);
 $smarty->assign('Application_Global_Search_Active', $Application_Global_Search_Active);
 $smarty->assign('Application_Menu_Direction', GlobalVariable::getVariable('Application_Menu_Direction', 'Horizontal'));
+$smarty->assign('Application_Menu_Show', GlobalVariable::getVariable('Application_Menu_Show', '1'));
+$smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
+$smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
 
 $smarty->assign('HELP_URL', GlobalVariable::getVariable('Application_Help_URL', 'https://corebos.org/documentation'));
 $smarty->assign('SET_CSS_PROPERTIES', GlobalVariable::getVariable('Application_CSS_Properties', 'include/LD/assets/styles/properties.php'));
@@ -126,6 +137,12 @@ if (coreBOS_Settings::getSetting('onesignal_isactive', '0') == '1') {
 	$smarty->assign('ONESIGNAL_IS_ACTIVE', true);
 } else {
 	$smarty->assign('ONESIGNAL_IS_ACTIVE', false);
+}
+
+// Checking for the Application_Focus_Element global variable
+$ApplicationFocusElementValue = GlobalVariable::getVariable('Application_Focus_Element', '', '', '', $_REQUEST['action']);
+if (!empty($ApplicationFocusElementValue)) {
+	$smarty->assign('ApplicationFocusElementValue', $ApplicationFocusElementValue);
 }
 
 $smarty->display('Header.tpl');

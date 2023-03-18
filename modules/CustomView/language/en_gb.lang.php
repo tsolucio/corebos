@@ -212,10 +212,14 @@ $mod_strings = array(
 	'after' => 'After',
 	'between' => 'Between',
 	'LBL_SET_AS_PUBLIC' => 'Set as Public ',
+	'LBL_SET_AS_PRIVATE'=>'Set as Private',
 	'LBL_NEW' => 'New',
 	'LBL_EDIT' => 'Edit',
 	'LBL_STATUS_PUBLIC_APPROVE' => 'Approve',
 	'LBL_STATUS_PUBLIC_DENY' => 'Deny',
+	'LBL_FIRST_COLUMN'=>'First Column',
+	'LBL_SECOND_COLUMN'=>'Second Column',
 	'LBL_ADVANCED_FILTER' => 'Rule',
+	'LBL_SORT_BY_FIELD' => 'Sort by field',
 );
 ?>

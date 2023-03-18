@@ -54,17 +54,19 @@ function __cbwf_getimageurl($arr) {
 			where vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?';
 		$image_res = $adb->pquery($sql, array(str_replace(' ', '_', $arr[0]),$crmid));
 	}
+	$imageurl = '';
 	if ($adb->num_rows($image_res)>0) {
 		$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
 		$image_path = $adb->query_result($image_res, 0, 'path');
 		$image_name = decode_html($adb->query_result($image_res, 0, 'name'));
 		if ($image_name != '') {
 			$imageurl = $image_path . $image_id . '_' . urlencode($image_name);
-		} else {
-			$imageurl = '';
 		}
 	} else {
-		$imageurl = '';
+		$crmid = vtws_getCRMID($arr[0]);
+		if ($crmid && is_numeric($crmid)) { // it is a direct foreign key to a document record (we hope)
+			$imageurl = Documents::getAttachmentPath($crmid);
+		}
 	}
 	return $imageurl;
 }
@@ -75,6 +77,10 @@ function __cb_globalvariable($arr) {
 		$ret = GlobalVariable::getVariable($arr[0], null);
 	}
 	return $ret;
+}
+
+function __cb_getrequest($arr) {
+	return (isset($_REQUEST[$arr[0]]) ? $_REQUEST[$arr[0]] : '');
 }
 
 function __cb_getcrudmode($arr) {
@@ -312,9 +318,26 @@ function __cb_getISODate($arr) {
 
 function __cb_getidof($arr) {
 	global $current_user, $adb;
+	if (count($arr)<3 || empty($arr[0])) {
+		return 0;
+	}
 	$qg = new QueryGenerator($arr[0], $current_user);
 	$qg->setFields(array('id'));
-	$qg->addCondition($arr[1], $arr[2], 'e');
+	if (count($arr) > 3) {
+		unset($arr[0]);
+		$chunkedArr = array_chunk($arr, count($arr)/2);
+		if (count($chunkedArr[0]) != count($chunkedArr[1])) {
+			return 0;
+		}
+		foreach ($chunkedArr[1] as $k => $v) {
+			$qg->addCondition($chunkedArr[0][$k], $v, 'e', QueryGenerator::$AND);
+		}
+	} else {
+		if (empty($arr[1]) || empty($arr[2])) {
+			return 0;
+		}
+		$qg->addCondition($arr[1], $arr[2], 'e');
+	}
 	$rs = $adb->query($qg->getQuery(false, 1));
 	if ($rs && $adb->num_rows($rs)>0) {
 		return $adb->query_result($rs, 0, 0);
@@ -332,13 +355,37 @@ function __cb_getfieldsof($arr) {
 	} else {
 		$qg->setFields(array('*'));
 	}
-	$crmid = vtws_getCRMID($arr[0]);
-	$qg->addCondition('id', $crmid, 'e');
-	$rs = $adb->query($qg->getQuery(false));
-	if ($rs && $adb->num_rows($rs)>0) {
-		return array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
+	$crmids = explode(',', $arr[0]);
+	if (count($crmids) > 1) {
+		$qg->startGroup();
+		foreach ($crmids as $crmid) {
+			$crmid = vtws_getCRMID(trim($crmid));
+			$qg->addCondition('id', trim($crmid), 'e', 'or');
+		}
+		$qg->endGroup();
+		$rs = $adb->query($qg->getQuery(false));
+		$noOfRows = $adb->num_rows($rs);
+		$value = array();
+		for ($i=0; $i < $noOfRows; $i++) {
+			$result = array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
+			if (isset($arr[2])) {
+				$fields = explode(',', $arr[2]);
+				if (count($fields) == 1) {
+					$result = $result[$arr[2]];
+				}
+			}
+			$value[] = $result;
+		}
+		return $value;
 	} else {
-		return array();
+		$crmid = vtws_getCRMID($arr[0]);
+		$qg->addCondition('id', $crmid, 'e');
+		$rs = $adb->query($qg->getQuery(false));
+		if ($rs && $adb->num_rows($rs)>0) {
+			return array_filter($rs->FetchRow(), 'is_string', ARRAY_FILTER_USE_KEY);
+		} else {
+			return array();
+		}
 	}
 }
 
@@ -419,6 +466,83 @@ function __cb_setfromcontext($arr) {
 	return $arr[1];
 }
 
+/**
+ * eliminate indicated array elements
+ * @param array to clean
+ * @param string with comma-separated values to eliminate
+ * @param boolean true (default) to use comma-separated values parameter as values to eliminate, false to use them as values to keep
+ * @return array without the indicated elements
+ */
+function __cb_cleanarrayelements($params) {
+	if ((count($params)!=2 && count($params)!=3) || !is_array($params[0]) || !is_string($params[1])) {
+		return false;
+	}
+	$invert = (empty($params[2]) ? false : filter_var($params[2], FILTER_VALIDATE_BOOLEAN));
+	$d = array_flip(explode(',', $params[1]));
+	if ($invert) {
+		return array_diff_key($params[0], array_diff_key(array_flip(array_keys($params[0])), $d));
+	} else {
+		return array_diff_key($params[0], $d);
+	}
+}
+
+function __cb_applymaptoarrayelements($params) {
+	$cbMap = cbMap::getMapByID($params[1]);
+	if (empty($cbMap)) {
+		return $params[0];
+	}
+	$array = $params[0];
+	$finalarray = array();
+	foreach ($array as $value) {
+		$finalarray[]= $cbMap->Mapping($value, $value);
+	}
+	return $finalarray;
+}
+
+/**
+ * @param array to work with
+ * @param integer MapID
+ * @param string SubArray Element key. This element will be eliminated from the result so you must copy it in the mapping
+ * @param integer SubArrayMapID
+ * @param string clean SubArray Element keys
+ * @param boolean true (default) to use comma-separated values parameter as values to eliminate, false to use them as values to keep
+ */
+function __cb_applymaptoarrayelementsandsubarray($params) {
+	$cnt = count($params);
+	if (($cnt!=4 && $cnt!=5 && $cnt!=6) || !is_array($params[0]) || !is_numeric($params[1]) || !is_numeric($params[3])) {
+		return false;
+	}
+	$cbMapMaster = cbMap::getMapByID($params[1]);
+	if (empty($cbMapMaster)) {
+		return $params[0];
+	}
+	$cbMapLines = cbMap::getMapByID($params[3]);
+	if (empty($cbMapLines)) {
+		return $params[0];
+	}
+	$invert = (empty($params[5]) ? false : filter_var($params[5], FILTER_VALIDATE_BOOLEAN));
+	$finalarray = array();
+	foreach ($params[0] as &$order) {
+		$neworder = array();
+		if (!empty($order[$params[2]])) {
+			$invlines = array();
+			foreach ($order[$params[2]] as $invline) {
+				if (empty($params[4])) {
+					$invlines[] = $cbMapLines->Mapping($invline, $invline);
+				} else {
+					$invlines[] = __cb_cleanarrayelements([$cbMapLines->Mapping($invline, $invline), $params[4], $invert]);
+				}
+			}
+			$neworder[$params[2]] = $invlines;
+			$order[$params[2]] = $invlines;
+		}
+		$mappedorder = $cbMapMaster->Mapping($order, $neworder);
+		unset($mappedorder[$params[2]]); // we always eliminate the subarray
+		$finalarray[] = $mappedorder;
+	}
+	return $finalarray;
+}
+
 function __cb_getsetting($arr) {
 	if (empty($arr[0])) {
 		return '';
@@ -459,6 +583,17 @@ function __cb_readMessage($arr) {
 	$cbmq = coreBOS_MQTM::getInstance();
 	$msg = $cbmq->getMessage($channel, 'wfmessagereader', 'workflow');
 	return $msg['information'];
+}
+
+function __cb_evaluateExpression($arr) {
+	global $current_user;
+	$env = $arr[1];
+	$data = $env->getData();
+	$entity = new VTWorkflowEntity($current_user, $data['id']);
+	$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($arr[0])));
+	$expression = $parser->expression();
+	$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+	return $exprEvaluater->evaluate($entity);
 }
 
 function __cb_evaluateRule($arr) {
@@ -531,5 +666,38 @@ function __cb_getCurrencyConversionValue($arr) {
 		$currencyvalue = $adb->query_result($res, 0, 'conversion_rate');
 	}
 	return $currencyvalue;
+}
+
+function __cb_euvatvalidation($arr) {
+	if (empty($arr)) {
+		return false;
+	}
+	if (extension_loaded('soap')) {
+		ini_set('soap.wsdl_cache_enabled', '0');
+		$prefix = substr($arr[0], 0, 2);
+		$tva = substr($arr[0], 2);
+		$param = array('countryCode' => $prefix, 'vatNumber' => $tva);
+		$soap = new SoapClient('https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl');
+		try {
+			$xml = $soap->checkVat($param);
+		} catch (Exception $e) {
+			return false;
+		}
+		return (($xml->valid)=='1');
+	}
+	return false;
+}
+
+function __cb_uniqid($arr) {
+	return uniqid(empty($arr[0]) ? '' : $arr[0]);
+}
+
+function __cb_array($arr) {
+	return $arr;
+}
+
+function __cb_flattenarray($arr) {
+	global $adb;
+	return $adb->flatten_array($arr);
 }
 ?>

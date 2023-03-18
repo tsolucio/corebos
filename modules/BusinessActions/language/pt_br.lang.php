@@ -38,5 +38,10 @@ $mod_strings = array(
 'Module' => 'Lista de módulos',
 'Search'=> 'Procurar Business Actions',
 'Test' => 'Testar',
+'Error Message' => 'Error Message',
+'Success Message' => 'Success Message',
+'Widget Header' => 'Widget Header',
+'Widget Width' => 'Widget Width',
+'Widget Height' => 'Widget Height',
 );
 ?>

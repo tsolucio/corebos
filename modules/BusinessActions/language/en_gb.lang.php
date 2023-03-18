@@ -36,6 +36,11 @@ $mod_strings = array(
 'User' => 'User',
 'Module' => 'Module List',
 'Search'=> 'Search Business Actions',
-'Test' => 'Test'
+'Test' => 'Test',
+'Error Message' => 'Error Message',
+'Success Message' => 'Success Message',
+'Widget Header' => 'Widget Header',
+'Widget Width' => 'Widget Width',
+'Widget Height' => 'Widget Height',
 );
 ?>

@@ -230,11 +230,15 @@ $mod_strings = array (
 	'between' => 'Tra',
 
 	'LBL_SET_AS_PUBLIC' => 'Imposta a Pubblico ',
+	'LBL_SET_AS_PRIVATE'=>'Set as Private',
 	'LBL_NEW' => 'Nuovo',
 	'LBL_EDIT' => 'Modifica',
 	'LBL_STATUS_PUBLIC_APPROVE' => 'Approva',
 	'LBL_STATUS_PUBLIC_DENY' => 'Nega',
+	'LBL_FIRST_COLUMN'=>'Prima Colonna',
+	'LBL_SECOND_COLUMN'=>'Seconda Colonna',
 
 	'LBL_ADVANCED_FILTER' => 'Ruolo',
+	'LBL_SORT_BY_FIELD' => 'Ordina per campo',
 );
 ?>

@@ -13,6 +13,13 @@ include_once 'include/integrations/onesignal/onesignal.php';
 class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $notification_heading;
+	public $notification_subtitle;
+	public $notification_include_segment;
+	public $notification_excluded_segment;
+	public $notification_web_url;
+	public $notification_content;
+	public $external_user_id;
 
 	public function getFieldNames() {
 		return array(
@@ -23,7 +30,8 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 	}
 
 	public function doTask(&$entityData) {
-		global $current_user;
+		global $current_user, $logbg;
+		$logbg->debug('> SendOneSignalNotificationTask');
 
 		if (coreBOS_Settings::getSetting('onesignal_isactive', '') == '1') {
 			$entityCache = new VTEntityCache($current_user);
@@ -36,8 +44,7 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 			);
 			$externalUser = new VTSimpleTemplate($this->external_user_id);
 			$users_list = $externalUser->render($entityCache, $ws_id, [], $entityData->WorkflowContext);
-
-			$users_ws_id_list =  explode(',', $users_list);
+			$users_ws_id_list = explode(',', $users_list);
 			$idsList = array();
 			if (count($users_ws_id_list) > 1) {
 				foreach ($users_ws_id_list as $wsid) {
@@ -72,9 +79,13 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 				if (!empty($inBucketServeUrl)) {
 					require_once 'modules/Emails/mail.php';
 					require_once 'modules/Emails/Emails.php';
+					$logmsg = '(SendOneSignalNotificationTask) sending mail to inbucket';
+					$logbg->debug($logmsg);
+					$this->logmessages[] = $logmsg;
 					return send_mail('Email', 'desktop@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', $headings.' '.$subtitle, $contents);
 				} else {
-					corebos_onesignal::sendDesktopNotification(
+					$logbg->debug('(SendOneSignalNotificationTask) sending Desktop Notification');
+					$result = corebos_onesignal::sendDesktopNotification(
 						$contents,
 						$headings,
 						$subtitle,
@@ -83,12 +94,20 @@ class CBSendOneSignalNotificationWorkFlowTask extends VTTask {
 						$web_url,
 						$web_buttons
 					);
+					if ($result) {
+						$logmsg = '(SendOneSignalNotificationTask) Desktop Notification sent successfully';
+					} else {
+						$logmsg = '(SendOneSignalNotificationTask) not called: failed to send Desktop Notification';
+					}
 				}
 			} catch (Exception $e) {
-				global $log;
-				$log->debug('Error on Send OneSignal Notification Task');
+				$logmsg = '(SendOneSignalNotificationTask) not called: Error on Send OneSignal Notification Task: '.$e->getMessage();
 			}
+		} else {
+			$logmsg = '(SendOneSignalNotificationTask) not called: one signal is not active';
 		}
+		$this->logmessages[] = $logmsg;
+		$logbg->debug('< '.$logmsg);
 	}
 }
 ?>

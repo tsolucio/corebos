@@ -13,6 +13,10 @@
 {else}
 {include file='applicationmessage.tpl'}
 {/if}
+{if !empty($CUSTOM_LINKS.LISTVIEWACTION)}
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_9-of-12" id="lvgridcolumn">
+{/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();">
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
@@ -69,7 +73,9 @@
 			{foreachelse}
 			<tr>
 			<td style="background-color:#efefef;height:340px" align="center" colspan="{$smarty.foreach.listviewforeach.iteration+1}">
+			{if $ShowCreateMessage || $SQLERROR}
 			<div id="no_entries_found" style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative;">
+			{/if}
 				{assign var=vowel_conf value='LBL_A'}
 				{if $MODULE eq 'Accounts' || $MODULE eq 'Invoice'}
 					{assign var=vowel_conf value='LBL_AN'}
@@ -88,7 +94,7 @@
 						<td class="small" align="left" nowrap="nowrap">{'ERROR_GETTING_FILTER'|@getTranslatedString:$MODULE}</td>
 					</tr>
 					</table>
-				{else}
+				{elseif $ShowCreateMessage}
 					{if $CHECK.EditView eq 'yes' && $MODULE neq 'Emails'}
 						<table border="0" cellpadding="5" cellspacing="0" width="98%">
 						<tr>
@@ -124,7 +130,9 @@
 						</table>
 					{/if}
 				{/if} {* SQL ERROR ELSE END *}
+			{if $ShowCreateMessage || $SQLERROR}
 			</div>
+			{/if}
 			</td>
 			</tr>
 			{/foreach}
@@ -143,7 +151,7 @@
 			<td>
 				<table width="100%">
 					<tr>
-						<td class="small" nowrap align="left">{$recordListRange}</td>
+						<td class="small" nowrap align="left" id="recordListRangeb">{$recordListRange}</td>
 						<td nowrap width="50%" align="right" class="cblds-t-align_right">
 							<table border=0 cellspacing=0 cellpadding=0 class="small" style="display: inline-block;">
 							<tr>{$NAVIGATION}</tr>
@@ -156,7 +164,14 @@
 	</table>
 </form>
 <div id="basicsearchcolumns" style="display:none;">
-	<select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">
+	<select name="search_field" id="bas_searchfield" class="slds-select" style="width:150px">
 	{html_options options=$SEARCHLISTHEADER}
 	</select>
 </div>
+{if !empty($CUSTOM_LINKS.LISTVIEWACTION)}
+	</div>
+	<div class="slds-col slds-size_3-of-12" id="actioncolumn">
+	{include file='ListViewActions.tpl'}
+	</div>
+	</div>
+{/if}

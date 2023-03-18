@@ -46,11 +46,11 @@ if (coreBOS_Session::has('ME1x1Info')) {
 }
 if (!empty($_REQUEST['saverepeat'])) {
 	$_REQUEST = array_merge($_REQUEST, coreBOS_Session::get('saverepeatRequest', array()));
-	if (isset($_REQUEST['CANCELGO'])) {
-		$smarty->assign('CANCELGO', vtlib_purify($_REQUEST['CANCELGO']));
-	}
 } else {
 	coreBOS_Session::set('saverepeatRequest', $_REQUEST);
+}
+if (isset($_REQUEST['CANCELGO'])) {
+	$smarty->assign('CANCELGO', vtlib_purify($_REQUEST['CANCELGO']));
 }
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
@@ -323,6 +323,8 @@ if ($focus->mode == 'edit' || $isduplicate == 'true') {
 	$recordName = isset($recordName[0]) ? $recordName[0] : '';
 	$smarty->assign('NAME', $recordName);
 	$smarty->assign('UPDATEINFO', updateInfo($record));
+	include_once 'modules/cbMap/processmap/MasterDetailLayout.php';
+	$associated_prod = MasterDetailLayout::setMoreInfoFields($currentModule, $smarty);
 }
 
 if (isset($_REQUEST['convertmode']) && ($_REQUEST['convertmode'] == 'quotetoso' || $_REQUEST['convertmode'] == 'update_quote_val')) {
@@ -434,19 +436,21 @@ include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 $smarty->assign(
 	'CUSTOM_LINKS',
-	Vtiger_Link::getAllByType($tabid, array('EDITVIEWBUTTON','EDITVIEWBUTTONMENU','EDITVIEWWIDGET'), $customlink_params, null, $focus->id)
+	Vtiger_Link::getAllByType($tabid, array('EDITVIEWBUTTON','EDITVIEWBUTTONMENU','EDITVIEWWIDGET','EDITVIEWHTML'), $customlink_params, null, $focus->id)
 );
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 $smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
-$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
+$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule, (empty($focus->mode) ? 'create' : 'edit'));
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 //Get Service or Product by default when create
 $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('Inventory_ProductService_Default', 'Products', $currentModule, $current_user->id));
 $smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inventory_ListPrice_ReadOnly', '0', $currentModule, $current_user->id));
 $smarty->assign('Inventory_Comment_Style', GlobalVariable::getVariable('Inventory_Comment_Style', 'width:70%;height:40px;', $currentModule, $current_user->id));
+$smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
+$smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
 //Set taxt type group or individual by default when create
 $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule, $current_user->id));
 $smarty->assign('TAXFILLINMODE', GlobalVariable::getVariable('Inventory_Tax_FillInMode', 'All', $currentModule, $current_user->id));
@@ -455,5 +459,16 @@ $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Sh
 $smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $currentModule, $current_user->id));
 $smarty->assign('ShowInventoryLines', strpos(GlobalVariable::getVariable('Inventory_DoNotUseLines', '', $currentModule, $current_user->id), $currentModule)===false);
 
+// sending PopupFilter map results to the frontEnd
+$bmapname = $currentModule.'_PopupFilter';
+$Mapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($Mapid) {
+	$MapObject = new cbMap();
+	$MapObject->id = $Mapid;
+	$MapObject->mode = '';
+	$MapObject->retrieve_entity_info($Mapid, 'cbMap');
+	$MapResult = $MapObject->PopupFilter($record, $currentModule);
+	$smarty->assign('PopupFilterMapResults', $MapResult);
+}
 $smarty->display('Inventory/InventoryEditView.tpl');
 ?>

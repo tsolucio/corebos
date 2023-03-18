@@ -18,6 +18,13 @@ function __vt_concat($arr) {
 	return implode($arr);
 }
 
+function __cb_char($arr) {
+	if (count($arr)) {
+		return chr($arr[0]);
+	}
+	return '';
+}
+
 function __vt_substring($arr) {
 	if (count($arr)<2 || count($arr)>3) {
 		return $arr[0];
@@ -120,6 +127,20 @@ function __cb_translate($arr) {
 	return cbtranslation::get($arr[0]);
 }
 
+function __cb_base64encode($arr) {
+	if (empty($arr) || count($arr)>1) {
+		return -1;
+	}
+	return base64_encode($arr[0]);
+}
+
+function __cb_base64decode($arr) {
+	if (empty($arr) || count($arr)>1) {
+		return -1;
+	}
+	return base64_decode($arr[0]);
+}
+
 function __cb_hash($arr) {
 	if (empty($arr) || count($arr)>2) {
 		return -1;
@@ -127,6 +148,8 @@ function __cb_hash($arr) {
 		return sha1($arr[0]);
 	}
 	switch ($arr[1]) {
+		case 'sha256':
+			return hash('sha256', $arr[0]);
 		case 'md5':
 			return md5($arr[0]);
 		case 'crc32':
@@ -135,6 +158,13 @@ function __cb_hash($arr) {
 		default:
 			return sha1($arr[0]);
 	}
+}
+
+function __cb_hash_file($arr) {
+	if (empty($arr) || count($arr)>2) {
+		return -1;
+	}
+	return hash_file($arr[1], urldecode($arr[0]));
 }
 
 function __cb_jsonencode($arr) {

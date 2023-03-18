@@ -20,9 +20,9 @@ $noofrows = $adb->num_rows($profileListResult);
 $list_entries = array($mod_strings['LBL_LIST_NO'],$mod_strings['LBL_LIST_TOOLS'],$mod_strings['LBL_NEW_PROFILE_NAME'],$mod_strings['LBL_DESCRIPTION']);
 
 /** gives the profile list info array
-  * @param $profileListResult -- profile list database result:: Type array
-  * @param $noofrows -- no of rows in the $profileListResult:: Type integer
-  * @returns $return_date -- profile list info array:: Type array
+ * @param array profile list database result
+ * @param integer no of rows in the $profileListResult
+ * @return array profile list info array
  */
 function getStdOutput($profileListResult, $noofrows) {
 	global $adb, $current_user;
@@ -32,8 +32,8 @@ function getStdOutput($profileListResult, $noofrows) {
 		$profile_name = $adb->query_result($profileListResult, $i, 'profilename');
 		$profile_id = $adb->query_result($profileListResult, $i, 'profileid');
 		$description = $adb->query_result($profileListResult, $i, 'description');
-		$current_profile = fetchUserProfileId($current_user->id);
-		if ($profile_id != 1  && $profile_id != $current_profile) {
+		$current_profile = getUserProfile($current_user->id);
+		if ($profile_id != 1 && $profile_id != $current_profile[0]) {
 			$standCustFld['del_permission']='yes';
 		} else {
 			$standCustFld['del_permission']='no';

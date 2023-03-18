@@ -46,7 +46,12 @@ class VTSimpleTemplateOnData extends VTSimpleTemplate {
 	}
 
 	public function get($fieldName) {
-		return isset($this->data[$fieldName]) ? $this->data[$fieldName] : '';
+		if (strpos('.', $fieldName)) {
+			$datavalue = __cb_getfromcontextvalueinarrayobject($this->data, $fieldName);
+		} else {
+			$datavalue = isset($this->data[$fieldName]) ? $this->data[$fieldName] : '';
+		}
+		return $datavalue;
 	}
 
 	public function getId() {

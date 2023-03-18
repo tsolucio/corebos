@@ -39,12 +39,12 @@ if (isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='') {
 }
 
 /** returns the group members in an formatted array
-  * @param $member_array -- member_array:: Type varchar
-  * @returns $groupMemberArray:: Type varchar
-	$groupMemberArray['groups'] -- gives the array of sub groups members ;
-	$groupMemberArray['roles'] -- gives the array of roles present in the group ;
-	$groupMemberArray['rs'] -- gives the array of roles & subordinates present in the group ;
-	$groupMemberArray['users'] -- gives the array of roles & subordinates present in the group;
+  * @param array
+  * @return array
+	$groupMemberArray['groups'] -- gives the array of sub groups members
+	$groupMemberArray['roles'] -- gives the array of roles present in the group
+	$groupMemberArray['rs'] -- gives the array of roles & subordinates present in the group
+	$groupMemberArray['users'] -- gives the array of roles & subordinates present in the group
 */
 function constructGroupMemberArray($member_array) {
 	$groupMemberArray=array();

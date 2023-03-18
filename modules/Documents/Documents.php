@@ -18,7 +18,7 @@ class Documents extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
-	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-document', 'class' => 'slds-icon', 'icon'=>'document');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-document', 'class'=>'slds-icon', 'icon'=>'document');
 
 	public $customFieldTable = array('vtiger_notescf', 'notesid');
 
@@ -84,6 +84,8 @@ class Documents extends CRMEntity {
 	public $default_sort_order = 'ASC';
 	public $mandatory_fields = array('notes_title', 'createdtime', 'modifiedtime', 'filename', 'filesize', 'filetype', 'filedownloadcount');
 	public $old_filename = '';
+	public $parentid = 0;
+	public $query = '';
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
@@ -92,11 +94,13 @@ class Documents extends CRMEntity {
 		global $adb, $upload_badext;
 		$filetype_fieldname = $this->getFileTypeFieldName();
 		$filename_fieldname = $this->getFile_FieldName();
+		$tryToFindMime = false;
 		if ($this->column_fields[$filetype_fieldname] == 'I') {
 			if (!empty($_FILES[$filename_fieldname]['name'])) {
 				$filedownloadcount = 0;
 				$errCode=$_FILES[$filename_fieldname]['error'];
 				if ($errCode == 0) {
+					$tryToFindMime = true;
 					foreach ($_FILES as $files) {
 						if ($files['name'] != '' && $files['size'] > 0) {
 							$filename = $_FILES[$filename_fieldname]['name'];
@@ -110,6 +114,7 @@ class Documents extends CRMEntity {
 					}
 				}
 			} elseif ($this->mode == 'edit') {
+				$tryToFindMime = true;
 				$fileres = $adb->pquery('select filetype, filesize,filename,filedownloadcount,filelocationtype from vtiger_notes where notesid=?', array($this->id));
 				if ($adb->num_rows($fileres) > 0) {
 					$filename = $adb->query_result($fileres, 0, 'filename');
@@ -119,6 +124,7 @@ class Documents extends CRMEntity {
 					$filelocationtype = $adb->query_result($fileres, 0, 'filelocationtype');
 				}
 			} elseif ($this->column_fields[$filename_fieldname]) {
+				$tryToFindMime = true;
 				$filename = $this->column_fields[$filename_fieldname];
 				$filesize = $this->column_fields['filesize'];
 				$filetype = $this->column_fields['filetype'];
@@ -142,6 +148,21 @@ class Documents extends CRMEntity {
 			$filesize = 0;
 			$filedownloadcount = null;
 		}
+		if ($tryToFindMime && ($filetype=='' || stripos($filetype, 'x-empty') || stripos($filetype, 'octet-stream'))) {
+			$orgft = $filetype;
+			$finfo = new finfo(FILEINFO_MIME);
+			$attfpath = self::getAttachmentPath($this->id);
+			if ($attfpath!='') {
+				$filetype = explode(';', $finfo->buffer(file_get_contents($attfpath)));
+				$filetype = $filetype[0];
+			}
+			if ($orgft!=$filetype && $this->mode!='') { // we update the attachment filetype accordingly
+				$attid = self::getAttachmentID($this->id);
+				if ($attid) {
+					$adb->pquery('update vtiger_attachments set type=? where attachmentsid=?', [$filetype, $attid]);
+				}
+			}
+		}
 		$query = 'UPDATE vtiger_notes SET filename = ? ,filesize = ?, filetype = ? , filelocationtype = ? , filedownloadcount = ? WHERE notesid = ?';
 		$adb->pquery($query, array(decode_html($filename), $filesize, $filetype, $filelocationtype, $filedownloadcount, $this->id));
 		//Inserting into attachments table
@@ -156,7 +177,7 @@ class Documents extends CRMEntity {
 		$this->column_fields['filetype'] = $filetype;
 		$this->column_fields['filedownloadcount'] = $filedownloadcount;
 		if (!empty($this->parentid)) {
-			$this->save_related_module('Documents', $this->id, getSalesEntityType($this->parentid), $this->parentid);
+			relateEntities($this, 'Documents', $this->id, getSalesEntityType($this->parentid), $this->parentid);
 		}
 		$Document_DefaultFolder = GlobalVariable::getVariable('Document_DefaultFolder', '');
 		if (empty($this->mode) && !empty($Document_DefaultFolder)) {
@@ -184,6 +205,7 @@ class Documents extends CRMEntity {
 			}
 			return $query;
 		}
+		return parent::getQueryByModuleField($module, $fieldname, $srcrecord, $query);
 	}
 
 	/** Validate values trying to be saved.
@@ -234,8 +256,8 @@ class Documents extends CRMEntity {
 	/**
 	 * This function is used to add attachments.
 	 * This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
-	 * @param int $id  - entity id to which the files to be uploaded
-	 * @param string $module  - the current module name
+	 * @param int entity id to which the files to be uploaded
+	 * @param string the current module name
 	*/
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log;
@@ -331,7 +353,7 @@ class Documents extends CRMEntity {
 					concat(path,vtiger_attachments.attachmentsid,'_',filename) as storagename,
 					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact,vtiger_senotesrel.crmid as relatedid
 				FROM vtiger_notes
-				inner join ".$this->crmentityTableAlias." on vtiger_crmentity.crmid=vtiger_notes.notesid
+				inner join ".$this->crmentityTableAlias.' on vtiger_crmentity.crmid=vtiger_notes.notesid
 				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
 				left join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
 				LEFT JOIN vtiger_attachmentsfolder on vtiger_notes.folderid=vtiger_attachmentsfolder.folderid
@@ -339,8 +361,8 @@ class Documents extends CRMEntity {
 				LEFT JOIN vtiger_account ON vtiger_account.accountid=vtiger_senotesrel.crmid
 				LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid=vtiger_senotesrel.crmid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
-				LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
-				LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid ";
+				LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid=vtigerCreatedBy.id
+				LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid ';
 		$query .= getNonAdminAccessControlQuery('Documents', $current_user);
 		$where_auto=' vtiger_crmentity.deleted=0';
 		if ($where != '') {
@@ -473,9 +495,7 @@ class Documents extends CRMEntity {
 		$data['destinationRecordId'] = $return_id;
 		cbEventHandler::do_action('corebos.entity.link.delete', $data);
 		$adb->pquery('DELETE FROM vtiger_senotesrel WHERE notesid = ? AND crmid = ?', array($id, $return_id));
-		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
-		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$adb->pquery($sql, $params);
+		deleteFromCrmEntityRel($id, $return_id);
 		cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 	}
 
@@ -524,9 +544,28 @@ class Documents extends CRMEntity {
 	}
 
 	/**
+	 * Return array of folders this document belongs to
+	 */
+	public function getFolders() {
+		global $adb;
+		$result = $adb->pquery(
+			'SELECT documentfoldersid
+				FROM vtiger_documentfolders
+				INNER JOIN vtiger_crmentityreldenorm on relcrmid=documentfoldersid
+				WHERE crmid=?',
+			array($this->id)
+		);
+		$folders = [];
+		while ($fld = $adb->fetch_array($result)) {
+			$folders[] = $fld['documentfoldersid'];
+		}
+		return $folders;
+	}
+
+	/**
 	 * Function to retrieve the physical path of the file attached to the document
 	 */
-	public static function getAttachmentPath($docid) {
+	public static function getAttachmentPath($docid, $relative = false) {
 		global $adb, $root_directory;
 		$path = '';
 		if (!empty($docid)) {
@@ -537,13 +576,33 @@ class Documents extends CRMEntity {
 				WHERE crmid=? or note_no=?';
 			$res_att = $adb->pquery($SQL_att, array($docid, $docid));
 			if ($res_att && $adb->num_rows($res_att)>0) {
-				$name   = $res_att->fields['name'];
-				$ruta   = $res_att->fields['path'];
+				$name = $res_att->fields['name'];
+				$ruta = $res_att->fields['path'];
 				$prefix = $res_att->fields['attachmentsid'].'_';
-				$path   = $root_directory.$ruta.$prefix.$name;
+				$path = ($relative ? '' : $root_directory).$ruta.$prefix.$name;
 			}
 		}
 		return $path;
+	}
+
+	/**
+	 * Function to retrieve the attachment ID of the file attached to the document
+	 * @param mixed crmid or document number
+	 * @return integer related attachment ID
+	 */
+	public static function getAttachmentID($docid) {
+		global $adb;
+		$id = 0;
+		if (!empty($docid)) {
+			$res_att = $adb->pquery(
+				'SELECT attachmentsid FROM vtiger_seattachmentsrel INNER JOIN vtiger_notes ON notesid=crmid WHERE crmid=? or note_no=?',
+				array($docid, $docid)
+			);
+			if ($res_att && $adb->num_rows($res_att)>0) {
+				$id = $res_att->fields['attachmentsid'];
+			}
+		}
+		return $id;
 	}
 
 	/**
@@ -608,7 +667,7 @@ class Documents extends CRMEntity {
 			$elink = '<a href="index.php?module='.$row['setype'].'&action=DetailView&return_module=Documents&return_action=DetailView&record='.$row['crmid'].
 				'&return_id='.$id.'">'.$ename.'</a>';
 			$entries[] = $elink;
-			$entries[] = getTranslatedString($row['setype']) ;
+			$entries[] = getTranslatedString($row['setype']);
 			$entries[] = $row['user_name'];
 			$entries_list[] = $entries;
 		}

@@ -7,4 +7,4 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<div id="pivotdetailname"  class="slds-form-element"></div>
+<div id="pivotdetailname" class="slds-form-element"></div>

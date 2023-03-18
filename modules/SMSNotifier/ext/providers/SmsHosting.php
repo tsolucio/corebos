@@ -45,7 +45,7 @@ class SmsHosting implements ISMSProvider {
 
 	public function getParameter($key, $defvalue = false) {
 		if (isset($this->parameters[$key])) {
-			return $this->parameters[$key] ;
+			return $this->parameters[$key];
 		}
 		return $defvalue;
 	}
@@ -99,14 +99,14 @@ class SmsHosting implements ISMSProvider {
 			$num = $params['prefix'].$num; // ... add the prefix ...
 			$tonumbers[$key] = $num; // ... recreate recipients array with 'formatted' numbers
 		}
-		$from = $params['from'] ;	// sender alphanumeric string or number
+		$from = $params['from']; // sender alphanumeric string or number
 
 		$to = implode(',', $tonumbers);
 
 		$response = $this->SmsHosting_SEND($from, $to, $message, null, null);
 		$response = json_decode($response);
 
-		$results = array() ;
+		$results = array();
 
 		// response without errors
 		if ($response && !$response->errorCode) {
@@ -206,8 +206,8 @@ class SmsHosting implements ISMSProvider {
 					'content' => $post
 				)
 			);
-			$context = stream_context_create($opts) ;
-			$from_smsh = file_get_contents($complete_uri, false, $context) ;
+			$context = stream_context_create($opts);
+			$from_smsh = file_get_contents($complete_uri, false, $context);
 		} else {
 		// No way of sending a HTTP post : (
 			return false;

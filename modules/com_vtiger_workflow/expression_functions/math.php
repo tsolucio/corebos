@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************/
+use HiFolks\Statistics\Stat;
 
 function __vt_add($arr) {
 	if (count($arr) == 1) {
@@ -139,5 +140,15 @@ function __cb_randomnumber($arr) {
 	} else {
 		return rand((int)$arr[0], (int)$arr[1]);
 	}
+}
+
+function __cb_statistics($arr) {
+	$function = array_shift($arr);
+	return forward_static_call_array(array('HiFolks\Statistics\Stat', $function), $arr);
+}
+
+function __cb_frequency($arr) {
+	$function = array_shift($arr);
+	return forward_static_call_array(array('HiFolks\Statistics\Freq', $function), $arr);
 }
 ?>

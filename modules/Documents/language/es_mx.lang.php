@@ -140,5 +140,8 @@ $mod_strings = array(
 'accept_charge' => 'Acepto el cambio de licencia y el recargo que pueda llevar asociado',
 'LBL_DOCUMENTS_MASSUPLOAD' => 'Subida Masiva de Documentos',
 'LBL_MASSUPLOAD_DESCRIPTION' => 'Activa y desctiva el componente de subida masiva de documentos en cada módulo.',
+'Approve' => 'Aprobar',
+'Decline' => 'Rechazar',
+'View PDF' => 'Ver PDF',
 );
 ?>

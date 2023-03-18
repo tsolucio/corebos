@@ -86,5 +86,9 @@ $mod_strings = array(
 	'Created By' => 'Creato Da',
 	'ContentJson' => 'Contenuto Json',
 	'Description' => 'Descrizione',
+	'AdvancedSearch' => 'Advanced Search',
+	'Wizard' => 'Wizard',
+	'MassUpsertGridView' => 'Mass Upsert Grid View',
+	'RelatedListBlock' => 'Related List Tree View',
 );
 ?>

@@ -26,13 +26,32 @@ class VTEmailTask extends VTTask {
 	private $entityrecord = 0;
 	private $entityid = 0;
 	private $entitymodule = '';
-	private $entityinfo = '';
+	private $entityinfo = [];
+	public $fromname;
+	public $fromemail;
+	public $replyto;
+	public $subject;
+	public $content;
+	public $recepient;
+	public $emailcc;
+	public $emailbcc;
+	public $attfieldnames;
+	public $attachmentids;
+	public $attach_icalendar;
+	public $cbmsgtemplate;
+	public $cbmsgtemplate_display;
+	public $sgmsgtemplate;
+	public $linktemplate;
+	public $isDuplicateDocument = false;
 
 	public function getFieldNames() {
-		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids', 'attach_icalendar', 'cbmsgtemplate', 'cbmsgtemplate_display', 'sgmsgtemplate', 'linktemplate');
+		return array(
+			'fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames',
+			'attachmentids', 'attach_icalendar', 'cbmsgtemplate', 'cbmsgtemplate_display', 'sgmsgtemplate', 'linktemplate'
+		);
 	}
 	public function after_retrieve() {
-		global $adb, $current_user;
+		global $adb;
 		$this->attachmentsinfo = array();
 		$this->dzattinfo = array();
 		if (!empty($this->attachmentids)) {
@@ -41,12 +60,19 @@ class VTEmailTask extends VTTask {
 			$GenDocPDF = ($GenDocActive && OpenDocument::PDFConversionActive());
 			$aids = explode(',', trim($this->attachmentids, ','));
 			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_notes.filename, vtiger_notes.filesize,
-					vtiger_notes.template, vtiger_notes.template_for
+					vtiger_notes.template, vtiger_notes.template_for, vtiger_notes.title, vtiger_notes.note_no
 				FROM vtiger_attachments
 				INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 				INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
 				INNER JOIN vtiger_notes ON vtiger_notes.notesid=vtiger_seattachmentsrel.crmid
 				WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
+			$calculation = GlobalVariable::getVariable('Workflow_Email_GenDoc_Attachment_Name', 'Name', $this->entitymodule);
+			// check whether to duplicate or not
+			if (empty($entity->WorkflowContext['duplicateGenDocDocument'])) {
+				$this->$isDuplicateDocument = filter_var(GlobalVariable::getVariable('Workflow_Email_GenDoc_Save_Document', 0), FILTER_VALIDATE_BOOLEAN);
+			} else {
+				$this->$isDuplicateDocument = filter_var($entity->WorkflowContext['saveGenDocDocument'], FILTER_VALIDATE_BOOLEAN);
+			}
 			foreach ($aids as $docid) {
 				$docrs = $adb->pquery($query, array($docid));
 				if ($docrs && $adb->num_rows($docrs)==1) {
@@ -57,27 +83,24 @@ class VTEmailTask extends VTTask {
 						$format = ($GenDocPDF ? 'pdf' : 'odt');
 						$docfname = OpenDocument::doGenDocMerge($this->entityid, $docid, $format);
 						$mergeTemplateName = $adb->query_result($docrs, 0, 'filename');
-						if (GlobalVariable::getVariable('Workflow_Email_GenDoc_Attachment_Name', 'Name', $this->entitymodule)=='Number') {
-							$numfld = getModuleSequenceField($this->entitymodule);
-							if (is_null($numfld)) {
-								$name = str_replace(' ', '_', $this->entityinfo[$this->entityid]);
-							} else {
-								$queryGenerator = new QueryGenerator($this->entitymodule, $current_user);
-								$queryGenerator->setFields(array($numfld['name']));
-								$queryGenerator->addCondition('id', $this->entityid, 'e');
-								$nfq = $queryGenerator->getQuery();
-								$rsnf = $adb->query($nfq);
-								$name = str_replace(' ', '_', $rsnf->fields[$numfld['name']]);
-							}
-						} else {
-							$name = str_replace(' ', '_', $this->entityinfo[$this->entityid]);
+						$context = [
+							'GDTemplateID' => $docid,
+							'GDTemplateName' => $adb->query_result($docrs, 0, 'title'),
+							'GDTemplateNumber' => $adb->query_result($docrs, 0, 'note_no'),
+						];
+						$name = OpenDocument::getConvertedName($this->entityid, $this->entitymodule, $this->entityinfo, $calculation, $context);
+						if ($this->$isDuplicateDocument) {
+							$docid = OpenDocument::saveAsDocument($this->entityid, $this->entitymodule, $format, $mergeTemplateName, $docfname, $name);
+							$docrs = $adb->pquery($query, array($docid));
+							$this->attachmentids = str_replace($prevdocid, $docid, $this->attachmentids);
 						}
-						$docid = OpenDocument::saveAsDocument($this->entityid, $this->entitymodule, $format, $mergeTemplateName, $docfname, $name);
-						$docrs = $adb->pquery($query, array($docid));
-						$this->attachmentids = str_replace($prevdocid, $docid, $this->attachmentids);
 					}
-					$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
-					$this->attachmentsinfo[] = $attname;
+					if ($this->$isDuplicateDocument) {
+						$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
+					} else {
+						$attname = convertPathFromAbsoluteToRelative($docfname);
+					}
+					$this->attachmentsinfo[] = decode_html($attname);
 					$this->dzattinfo[] = array(
 						'docid' => $docid,
 						'name' => $adb->query_result($docrs, 0, 'filename'),
@@ -91,6 +114,7 @@ class VTEmailTask extends VTTask {
 	}
 	public function doTask(&$entity) {
 		global $logbg,$adb;
+		$logbg->debug('> EmailTask');
 		$util = new VTWorkflowUtils();
 
 		$admin = $util->adminUser();
@@ -121,9 +145,14 @@ class VTEmailTask extends VTTask {
 				$from_email = $fet->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
 			}
 		}
-		if (!empty($this->replyto)) {
-			$rt = new VTEmailRecipientsTemplate($this->replyto);
+		if (isset($entity->WorkflowContext['ReplyToEmail'])) {
+			$rt = new VTEmailRecipientsTemplate($entity->WorkflowContext['ReplyToEmail']);
 			$replyto = $rt->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+		} else {
+			if (!empty($this->replyto)) {
+				$rt = new VTEmailRecipientsTemplate($this->replyto);
+				$replyto = $rt->render($entityCache, $entity->getId(), [], $entity->WorkflowContext);
+			}
 		}
 		if (isset($entity->WorkflowContext['SendEmailTo'])) {
 			$et = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendEmailTo']);
@@ -357,42 +386,36 @@ class VTEmailTask extends VTTask {
 		if ($crmid=='') {
 			list($wsid, $crmid) = explode('x', $emailid);
 		}
+		$logArray = [
+			'To' => $to_email,
+			'FromName' => $from_name,
+			'FromEmail' => $from_email,
+			'CC' => $cc,
+			'BCC' => $bcc,
+			'AttInfo' => $this->attachmentsinfo,
+		];
 		if (!empty($this->linktemplate) && !empty($this->sgmsgtemplate)) {
 			include_once 'include/integrations/sendgrid/sendgrid.php';
 			$sdInstance = new corebos_sendgrid();
 			try {
-				$res = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $entity->moduleName, $to_email, $subject, $this->attachmentsinfo, $from_name, $from_email, $cc, $bcc, $replyto);
-				$logbg->debug(
-					'SG template mail was sent',
-					[
-						'To' => $to_email,
-						'FromName' => $from_name,
-						'FromEmail' => $from_email,
-						'CC' => $cc,
-						'BCC' => $bcc,
-						'Result' => $res,
-						'AttInfo' => $this->attachmentsinfo,
-					]
-				);
+				$logArray['Result'] = $sdInstance->sendemailtemplate($this->sgmsgtemplate, $entity->getId(), $entity->moduleName, $to_email, $subject, $this->attachmentsinfo, $from_name, $from_email, $cc, $bcc, $replyto);
+				$logmsg = '(EmailTask) SG template mail was sent';
+				$this->logmessages[] = $logmsg;
+				$this->logmessages[] = json_encode($logArray);
+				$logbg->debug($logmsg, $logArray);
 			} catch (Exception $e) {
-				$logbg->debug('SG template mail failed: '. $e->getMessage());
+				$logmsg = '(EmailTask) SG template mail failed: '. $e->getMessage();
+				$this->logmessages[] = $logmsg;
+				$logbg->debug($logmsg);
 			}
 			return;
 		}
-		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
-		$logbg->debug(
-			'EmailWFTask',
-			[
-				'To' => $to_email,
-				'FromName' => $from_name,
-				'FromEmail' => $from_email,
-				'CC' => $cc,
-				'BCC' => $bcc,
-				'Result' => $rdo,
-				'AttInfo' => $this->attachmentsinfo,
-			]
-		);
+		$logArray['Result'] = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan, $brScan);
+		$this->logmessages[] = 'Workflow email';
+		$this->logmessages[] = json_encode($logArray);
+		$logbg->debug('(EmailTask) EmailWFTask', $logArray);
 		$util->revertUser();
+		$logbg->debug('< EmailTask');
 	}
 
 	private function createEmailRecord($element) {
@@ -437,21 +460,22 @@ class VTEmailTask extends VTTask {
 
 		$focus->column_fields['messagename'] = $to_name;
 		$focus->column_fields['messagesrelatedto'] = $to_id;
-		$no_message = false;
 		switch ($to_module) {
 			case 'Accounts':
 				$focus->column_fields['account_message'] = $to_id;
 				break;
 			case 'Contacts':
 				$focus->column_fields['contact_message'] = $to_id;
+				$focus->column_fields['account_message'] = getRelatedAccountContact($to_id, 'Accounts');
 				break;
 			case 'Leads':
 				$focus->column_fields['lead_message'] = $to_id;
 				break;
 			case 'Potentials':
-				$result = $adb->pquery('SELECT potential_no,related_to FROM vtiger_potential WHERE potentialid=?', array($to_id));
+				$result = $adb->pquery('SELECT potential_no,related_to,campaignid FROM vtiger_potential WHERE potentialid=?', array($to_id));
 				$related_to = $adb->query_result($result, 0, 'related_to');
 				$potential_no = $adb->query_result($result, 0, 'potential_no');
+				$focus->column_fields['campaign_message'] = $adb->query_result($result, 0, 'campaignid');
 				$desc_name .= ' '.getTranslatedString('LBL_FROM', 'MailManager').' '.getTranslatedString('SINGLE_Potentials', 'Potentials').' '.$potential_no;
 				if (getSalesEntityType($related_to) == 'Accounts') {
 					$focus->column_fields['account_message'] = $related_to;
@@ -460,26 +484,22 @@ class VTEmailTask extends VTTask {
 				}
 				break;
 			default:
-				$no_message = true;
+				$focus->column_fields['account_message'] = getRelatedAccountContact($to_id, 'Accounts');
+				$focus->column_fields['contact_message'] = getRelatedAccountContact($to_id, 'Contacts');
 				break;
 		}
-		if (!$no_message) {
-			$focus->column_fields['messagetype'] = 'email';
-			if ($templateid != 0) {
-				$focus->column_fields['email_tplid'] = $templateid;
-				$etinfo = getEntityName('MsgTemplate', array($templateid));
-				$focus->column_fields['description'] = $etinfo[$templateid];
-			} else {
-				$focus->column_fields['description'] = "\n".getTranslatedString('Workflow', 'com_vtiger_workflow').' '.getTranslatedString('Task').': '.$desc_name."\n\n";
-			}
-			$focus->column_fields['assigned_user_id'] = $current_user->id;
-			$focus->mode = '';
-			$focus->save('Messages');
-			$message_id = $focus->id;
+		$focus->column_fields['messagetype'] = 'email';
+		if ($templateid != 0) {
+			$focus->column_fields['email_tplid'] = $templateid;
+			$etinfo = getEntityName('MsgTemplate', array($templateid));
+			$focus->column_fields['description'] = $etinfo[$templateid];
 		} else {
-			$message_id = '';
+			$focus->column_fields['description'] = "\n".getTranslatedString('Workflow', 'com_vtiger_workflow').' '.getTranslatedString('Task').': '.$desc_name."\n\n";
 		}
-		return $message_id;
+		$focus->column_fields['assigned_user_id'] = $current_user->id;
+		$focus->mode = '';
+		$focus->save('Messages');
+		return $focus->id;
 	}
 
 	private function getAttachmentName($docid) {
@@ -494,7 +514,7 @@ class VTEmailTask extends VTTask {
 		$docrs = $adb->pquery($query, array($docid));
 		if ($docrs && $adb->num_rows($docrs)==1) {
 			$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
-			$this->attachmentsinfo[] = $attname;
+			$this->attachmentsinfo[] = decode_html($attname);
 		}
 		return $attname;
 	}

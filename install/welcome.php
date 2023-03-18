@@ -14,10 +14,10 @@ phpinfo(INFO_GENERAL);
 $string = ob_get_contents();
 ob_end_clean();
 
-$pieces = explode("<h2", $string);
+$pieces = explode('<h2', $string);
 $settings = array();
 
-require_once('config.inc.php');
+require_once 'config.inc.php';
 $install_permitted = false;
 if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
 	$install_permitted = true;
@@ -32,7 +32,7 @@ foreach ($pieces as $val) {
 		<td[^>]*>(.*)<\/td>
 		<td[^>]*>(.*)<\/td>
 		<td[^>]*>(.*)<\/td>/Ux", $val, $sub_ext);
-	foreach($sub[0] as $key => $val) {
+	foreach ($sub[0] as $key => $val) {
 		if (preg_match("/Configuration File \(php.ini\) Path /", $val)) {
 			$val = preg_replace("/Configuration File \(php.ini\) Path /", '', $val);
 			$phpini = strip_tags($val);
@@ -48,13 +48,17 @@ foreach ($pieces as $val) {
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 </head>
 
-<body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
+<body class="small cwPageBg" topmargin="0" leftmargin="0">
 	<br>
 	<!-- Table for cfgwiz starts -->
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
-			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
-			<td class="cwHeadBg1" align=right><img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>"></td>
+			<td class="cwHeadBg" align=left>
+				<img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>">
+			</td>
+			<td class="cwHeadBg1" align=right>
+				<img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>">
+			</td>
 			<td class="cwHeadBg1" width=2%></td>
 		</tr>
 	</table>
@@ -88,9 +92,7 @@ foreach ($pieces as $val) {
 									<td colspan=2></span></td>
 								</tr>
 								<tr>
-									<?php
-									if($install_permitted == true){
-									?>
+									<?php if ($install_permitted) { ?>
 									<td align=center colspan=2>
 										<form action="install.php" method="post" name="installform" id="form">
 										<input type="hidden" name="file" value="LicenceAgreement.php" />
@@ -98,9 +100,7 @@ foreach ($pieces as $val) {
 										<input type="button" class="button" value='<?php echo $installationStrings['LBL_INSTALL']; ?>' alt="<?php echo $installationStrings['LBL_INSTALL']; ?>" title="<?php echo $installationStrings['LBL_INSTALL']; ?>" onClick="window.document.installform.submit();">
 										</form>
 									</td>
-									<?php
-									}
-									?>
+									<?php } ?>
 								</tr>
 							</table>
 						</td>

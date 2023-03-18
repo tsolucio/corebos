@@ -88,7 +88,6 @@ if ($cvmodule != '') {
 	}
 	//<<<<<<<columns>>>>>>>>>
 
-
 	//<<<<<<<standardfilters>>>>>>>>>
 	$std_filter_list = array();
 	$stdfiltercolumn = isset($_REQUEST['stdDateFilterField']) ? $_REQUEST['stdDateFilterField'] : '';
@@ -306,7 +305,6 @@ if ($cvmodule != '') {
 			$deletesql = 'DELETE FROM vtiger_cvadvfilter_grouping WHERE cvid = ?';
 			$deleteresult = $adb->pquery($deletesql, array($cvid));
 
-
 			$genCVid = $cvid;
 			if ($updatecvresult && isset($columnslist)) {
 				for ($i=0; $i<count($columnslist); $i++) {
@@ -439,7 +437,11 @@ if ($cvmodule != '') {
 		$setpublic = 0;
 	}
 	$roleid = $current_user->roleid;
-	$subrole = implode('|##|', getRoleSubordinates($roleid));
+	$subroles = getRoleSubordinates($roleid);
+	if (!in_array($roleid, $subroles)) {
+		$subroles[] = $roleid;
+	}
+	$subrole = implode('|##|', $subroles);
 	$default_values =  array(
 		'cvid' => $cvid,
 		'cvcreate' => '0',
@@ -449,13 +451,16 @@ if ($cvmodule != '') {
 		'cvdefault' => $setdefault,
 		'cvapprove' =>'0',
 		'setpublic' => $setpublic,
+		'setprivate' => isset($_REQUEST['setPrivate']) ? 1 : 0,
+		'sortfieldbyfirst' => $_REQUEST['sortfieldbyfirst'],
+		'sortfieldbysecond' => $_REQUEST['sortfieldbysecond'],
 		'mandatory' => '0',
 		'module_list' => $cvmodule,
 		'assigned_user_id' => vtws_getEntityId('Users').'x'.$current_user->id,
 		'cvrole' => $subrole
 	);
 	$searchOn = 'cvid';
-	$updatedfields = 'cvdefault,setpublic';
+	$updatedfields = 'cvdefault,setpublic,setprivate,sortfieldbyfirst,sortfieldbysecond';
 	vtws_upsert('cbCVManagement', $default_values, $searchOn, $updatedfields, $current_user);
 }
 

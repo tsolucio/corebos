@@ -24,6 +24,33 @@ class Workflow {
 	public static $SCHEDULED_MONTHLY_BY_WEEKDAY = 6;
 	public static $SCHEDULED_ANNUALLY = 7;
 	public static $SCHEDULED_BY_MINUTE=8;
+	public $id;
+	public $moduleName;
+	public $description;
+	public $test;
+	public $select_expressions;
+	public $executionCondition;
+	public $schtypeid;
+	public $schtime;
+	public $schdayofmonth;
+	public $schdayofweek;
+	public $schannualdates;
+	public $schminuteinterval;
+	public $defaultworkflow;
+	public $purpose;
+	public $wfstarton;
+	public $wfendon;
+	public $active;
+	public $nexttrigger_time;
+	public $options;
+	public $cbquestion;
+	public $cbquestiondisplay;
+	public $recordset;
+	public $recordsetdisplay;
+	public $onerecord;
+	public $onerecorddisplay;
+	public $relatemodule;
+	public $conditionStrategy;
 
 	public function __construct() {
 		$this->conditionStrategy = new VTJsonCondition();
@@ -241,7 +268,7 @@ class Workflow {
 		}
 	}
 
-	public function performTasks(&$entityData, $context = array(), $webservice = false) {
+	public function performTasks(&$entityData, $context = array(), $webservice = false, $logger = null, $logid = 0) {
 		global $adb,$logbg;
 		$logbg->debug('> PerformTasks for Workflow: '.$this->id);
 		$wflaunch = 0;
@@ -306,20 +333,81 @@ class Workflow {
 						);
 						$delay = max($delay-time(), 0);
 						Workflow::pushWFTaskToQueue($this->id, $this->executionCondition, $entityData->getId(), $msg, $delay);
+						if (!is_null($logger)) {
+							$logger->critical([
+								'wftkid'=>$task->id,
+								'recid'=>$entityData->getId(),
+								'parentid'=>$logid,
+								'name'=>$task->summary,
+								'wftype'=>$delay,
+								'recvalues'=>json_encode($entityData->WorkflowContext),
+								'conditions'=>$task->test,
+								'evaluation'=>0,
+								'inqueue'=>1,
+								'haserror'=>0,
+								'logsmsgs'=>[],
+							]);
+						}
 					} else {
 						$entityCache->emptyCache($entityData->getId());
 						if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
 							try {
+								if (!is_null($logger)) {
+									$logger->critical([
+										'wftkid'=>$task->id,
+										'recid'=>$entityData->getId(),
+										'parentid'=>$logid,
+										'name'=>'>>'.$task->summary,
+										'wftype'=>0,
+										'recvalues'=>$entityData->WorkflowContext,
+										'conditions'=>$task->test,
+										'evaluation'=>1,
+										'inqueue'=>0,
+										'haserror'=>0,
+										'logsmsgs'=>[],
+									]);
+								}
 								$task->startTask($entityData);
 								$task->doTask($entityData);
 								$task->endTask($entityData);
+								if (!is_null($logger)) {
+									$logger->critical([
+										'wftkid'=>$task->id,
+										'recid'=>$entityData->getId(),
+										'parentid'=>$logid,
+										'name'=>'<<'.$task->summary,
+										'wftype'=>0,
+										'recvalues'=>$entityData->WorkflowContext,
+										'conditions'=>$task->test,
+										'evaluation'=>1,
+										'inqueue'=>0,
+										'haserror'=>0,
+										'logsmsgs'=>$task->logmessages,
+									]);
+								}
 							} catch (Exception $e) {
-								$errortasks[] = array(
+								$taskerror = array(
 									'entitydata' => $entityData->data,
 									'entityid' => $entityData->getId(),
 									'taskid' => $task->id,
 									'error' => $e->getMessage(),
 								);
+								$errortasks[] = $taskerror;
+								if (!is_null($logger)) {
+									$logger->critical([
+										'wftkid'=>$task->id,
+										'recid'=>$entityData->getId(),
+										'parentid'=>$logid,
+										'name'=>'<<'.$task->summary,
+										'wftype'=>0,
+										'recvalues'=>$entityData->WorkflowContext,
+										'conditions'=>$task->test,
+										'evaluation'=>1,
+										'inqueue'=>0,
+										'haserror'=>1,
+										'logsmsgs'=>$taskerror,
+									]);
+								}
 							}
 						}
 					}
@@ -332,6 +420,21 @@ class Workflow {
 					);
 					$delay = max($delay-time(), 0);
 					Workflow::pushWFTaskToQueue($this->id, $this->executionCondition, $entityData->getId(), $msg, $delay);
+					if (!is_null($logger)) {
+						$logger->critical([
+							'wftkid'=>$task->id,
+							'recid'=>$entityData->getId(),
+							'parentid'=>$logid,
+							'name'=>$task->summary,
+							'wftype'=>$delay,
+							'recvalues'=>json_encode($entityData->WorkflowContext),
+							'conditions'=>$task->test,
+							'evaluation'=>0,
+							'inqueue'=>1,
+							'haserror'=>0,
+							'logsmsgs'=>[],
+						]);
+					}
 				}
 			}
 		}

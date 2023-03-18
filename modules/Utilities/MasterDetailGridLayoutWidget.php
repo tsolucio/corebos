@@ -49,6 +49,16 @@ class MasterDetailGridLayout_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('MasterDetaiCurrentRecord', $_REQUEST['record']);
 		$smarty->assign('MasterID', $masterid);
 		$smarty->assign('MasterDetail_Pagination', GlobalVariable::getVariable('MasterDetail_Pagination', 0));
+		$targetfield = '';
+		if (isset($mdmap['linkfields']['targetfield'])) {
+			$targetfield = $mdmap['linkfields']['targetfield'];
+		}
+		$smarty->assign('MasterTargetField', $targetfield);
+		$tabid = getTabid($mdmap['originmodule']);
+		$mdbuttons = Vtiger_Link::getAllByType($tabid, array('MASTERDETAILBUTTON'));
+		$smarty->assign('MasterButtons', $mdbuttons['MASTERDETAILBUTTON']);
+		$smarty->assign('MasterMapID', $cbMap->column_fields['record_id']);
+		$smarty->assign('MasterDetailHide', !empty($mdmap['hide']) ? $mdmap['hide'] : 0);
 		return $smarty->fetch('Components/MasterDetail/Grid.tpl');
 	}
 }

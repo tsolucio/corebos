@@ -1,4 +1,4 @@
-function fieldDep_AddDays(change_field, action_field, new_value, old_value, parameters) {
+async function fieldDep_AddDays(change_field, action_field, new_value, old_value, parameters) {
 	var datesep = '-';
 	if (new_value.indexOf('-')>=0) {
 		datesep='-';
@@ -36,21 +36,21 @@ function fieldDep_AddDays(change_field, action_field, new_value, old_value, para
 	document.getElementsByName(action_field).item(0).value=fulldate;
 }
 
-function fieldDep_SubDays(change_field, action_field, new_value, old_value, parameters) {
+async function fieldDep_SubDays(change_field, action_field, new_value, old_value, parameters) {
 	parameters[0] = -1*parseInt(parameters[0]);
 	fieldDep_AddDays(change_field, action_field, new_value, old_value, parameters);
 }
 
-function fieldDep_OnlyNumbers(change_field, action_field, new_value, old_value, parameters) {
+async function fieldDep_OnlyNumbers(change_field, action_field, new_value, old_value, parameters) {
 	document.getElementsByName(action_field).item(0).value = new_value.replace(/\D/g, '');
 }
 
-function fieldDep_OnlyLetters(change_field, action_field, new_value, old_value, parameters) {
+async function fieldDep_OnlyLetters(change_field, action_field, new_value, old_value, parameters) {
 	document.getElementsByClassName(action_field).item(0).value = new_value.replace(/[^A-Za-z]/g, '');
 }
 
-function fieldDep_GetField(change_field, action_field, new_value, old_value, parameters) {
-	ExecuteFunctions('getFieldValuesFromRecord', 'getFieldValuesFrom='+new_value+'&getTheseFields='+parameters[0]).then(function (data) {
+async function fieldDep_GetField(change_field, action_field, new_value, old_value, parameters) {
+	await ExecuteFunctions('getFieldValuesFromRecord', 'getFieldValuesFrom='+new_value+'&getTheseFields='+parameters[0]).then(function (data) {
 		let rdo = JSON.parse(data);
 		let srcfieldids = parameters[0].split(',');
 		let dstfieldids = parameters[1].split(',');
@@ -79,17 +79,22 @@ function fieldDep_GetField(change_field, action_field, new_value, old_value, par
 	});
 }
 
-function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_value, parameters) {
+var holdParameterValue = Array();
+async function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_value, parameters) {
 	let searchValue = (parameters[3]=='new value' ? new_value : parameters[3]);
 	let searchFields = parameters[2];
 	if (Array.isArray(parameters[2])) {
 		let conds = [...parameters[2]];
 		conds.forEach((element, index) => {
-			if (parameters[2][index][1]=='new value') {
+			let idx = `${parameters[1]}${parameters[3]}${conds[index][0]}`;
+			if (holdParameterValue[idx] === undefined) {
+				holdParameterValue[idx] = parameters[2][index][1];
+			}
+			if (holdParameterValue[idx]=='new value') {
 				conds[index][1] = new_value;
 			} else {
-				if (document.getElementById(element[1])) {
-					conds[index][1] = document.getElementById(element[1]).value;
+				if (document.getElementById(holdParameterValue[idx])) {
+					conds[index][1] = document.getElementById(holdParameterValue[idx]).value;
 				} else {
 					conds[index][1] = element[1];
 				}
@@ -98,7 +103,7 @@ function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_valu
 		searchFields = encodeURIComponent(JSON.stringify(conds));
 		searchValue = '';
 	}
-	ExecuteFunctions(
+	await ExecuteFunctions(
 		'getFieldValuesFromSearch',
 		'getFieldValuesFrom='+parameters[0]+'&getTheseFields='+parameters[1]+
 		'&getFieldSearchField='+searchFields+'&getFieldSearchValue='+searchValue+
@@ -135,35 +140,74 @@ function fieldDep_GetFieldSearch(change_field, action_field, new_value, old_valu
 	});
 }
 
-function fieldDep_AssignNewValue(change_field, action_field, new_value, old_value, parameters) {
+async function fieldDep_GetRule(change_field, action_field, new_value, old_value, parameters) {
+	let record = document.getElementById('record');
+	if (record === null) {
+		record = window.opener.document.getElementById('record');
+	}
+	await ExecuteFunctions(
+		'execrule',
+		'rulebmap='+encodeURIComponent(parameters[0])+'&record='+record.value+'&structure='+JSON.stringify(getFormFields(gVTviewType))
+	).then(function (data) {
+		let rdo = JSON.parse(data);
+		if (CKEDITOR.instances[parameters[1]]!=undefined) {
+			let fld = CKEDITOR.instances[parameters[1]];
+			fld.insertHtml(rdo);
+		} else {
+			let fld = document.getElementById(parameters[1]);
+			if (fld) {
+				if (fld.type == 'checkbox') {
+					fld.checked = !(rdo=='0' || rdo=='false' || rdo=='' || rdo=='null' || rdo=='yes');
+				} else if (fld.type == 'hidden' && document.getElementById(parameters[1]+'_display')!=null) {
+					// reference field
+					fld.value = rdo;
+					let dispfname = parameters[1]+'_display';
+					ExecuteFunctions('getEntityName', 'getNameFrom='+fld.value).then(function (ename) {
+						document.getElementById(dispfname).value = JSON.parse(ename);
+					});
+				} else {
+					fld.value = rdo;
+				}
+			}
+		}
+	});
+}
+
+async function fieldDep_AssignNewValue(change_field, action_field, new_value, old_value, parameters) {
 	document.getElementsByName(action_field).item(0).value = new_value;
 }
 
-function fieldDep_CopyFieldValue(change_field, action_field, new_value, old_value, parameters) {
+async function fieldDep_CopyFieldValue(change_field, action_field, new_value, old_value, parameters) {
 	document.getElementsByName(action_field).item(0).value = document.getElementsByName(parameters[0]).item(0).value;
 }
 
-function fieldDep_AssignUser(change_field, action_field, new_value, old_value, parameters) {
+async function fieldDep_AssignUser(change_field, action_field, new_value, old_value, parameters) {
 	document.querySelector('input[name="assigntype"][value="U"]').checked=true;
 	document.querySelector('input[name="assigntype"][value="T"]').checked=false;
 	toggleAssignType('U');
 	document.getElementById('assigned_user_id').value = (parameters[0]=='gVTUserID' ? gVTUserID : parameters[0]);
 }
 
-function fieldDep_AssignGroup(change_field, action_field, new_value, old_value, parameters) {
+async function fieldDep_AssignGroup(change_field, action_field, new_value, old_value, parameters) {
 	document.querySelector('input[name="assigntype"][value="U"]').checked=false;
 	document.querySelector('input[name="assigntype"][value="T"]').checked=true;
 	toggleAssignType('T');
 	document.getElementById('assigned_group_id').value = parameters[0];
 }
 
-function fieldDep_AssignUserSelect(change_field, action_field, new_value, old_value, parameters) {
+async function fieldDep_AssignUserSelect(change_field, action_field, new_value, old_value, parameters) {
 	let newuser = (parameters[0]=='gVTUserID' ? gVTUserID : parameters[0]);
-	ExecuteFunctions('getUserName', 'userid='+newuser).then(function (data) {
+	await ExecuteFunctions('getUserName', 'userid='+newuser).then(function (data) {
 		let rdo = JSON.parse(data);
 		document.getElementById(action_field+'_display').value = rdo;
 	});
 	document.getElementById(action_field).value = newuser;
+}
+
+async function fieldDep_LoadSettings(change_field, action_field, new_value, old_value, parameters) {
+	VtigerJS_DialogBox.block();
+	document.getElementById('PROCESSSETTINGS').value = parameters[0];
+	submitFormForAction('EditView', 'ProccessSettings');
 }
 
 function fieldDep_Format(change_field, action_field, new_value, old_value, parameters) {

@@ -170,6 +170,9 @@ class Validations extends processcbMap {
 					continue; // we are not saving this field in mass edit save so we don't have to check it
 				}
 				if (isset($val['msg'])) {
+					if (isset($screen_values['record'])) {
+						$val['msg'] = str_replace('$RECORD$', $screen_values['record'], $val['msg']);
+					}
 					$val['msg'] = getTranslatedString($val['msg'], $mapping['origin']);
 				}
 				$rule = $val['rule'];
@@ -465,7 +468,7 @@ class Validations extends processcbMap {
 			if ($tablename=='vtiger_crmentity') {
 				continue;
 			}
-			foreach ($adb->database->MetaColumns($tablename) as $fname => $finfo) {
+			foreach ($adb->getMetaColumns($tablename) as $fname => $finfo) {
 				if ($finfo->type == 'varchar' && !in_array($fname, $novalfields)) {
 					$fname = strtolower($fname);
 					if (isset($mapping['fields'][$fname])) {
@@ -552,6 +555,11 @@ class Validations extends processcbMap {
 					}
 				}
 			}
+			foreach ($meta->getImageFields() as $imageField) {
+				if (empty($screen_values[$imageField])) {
+					$screen_values[$imageField] = $screen_values['current_'.$imageField];
+				}
+			}
 		}
 		$valmaps = array();
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
@@ -575,6 +583,10 @@ class Validations extends processcbMap {
 					$valmaps[] = $gv['bmapid'];
 				}
 			}
+		}
+		$FILTERVALMAP = (empty($_REQUEST['FILTERVALMAP']) ? (empty($screen_values['FILTERVALMAP']) ? 0 : $screen_values['FILTERVALMAP']) : $_REQUEST['FILTERVALMAP']);
+		if (!empty($FILTERVALMAP) && is_numeric($FILTERVALMAP) && isRecordExists($FILTERVALMAP)) {
+			$valmaps[] = $FILTERVALMAP;
 		}
 		$valmaps = array_unique($valmaps);
 		$validation = true;
@@ -623,6 +635,16 @@ class Validations extends processcbMap {
 			},
 			$fields
 		);
+	}
+
+	public static function addFilesFields($structure) {
+		$filefields = array_map(
+			function ($f) {
+				return $f['name'];
+			},
+			$_FILES
+		);
+		return array_merge($structure, $filefields);
 	}
 }
 ?>

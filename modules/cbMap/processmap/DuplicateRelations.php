@@ -85,11 +85,13 @@ class DuplicateRelations extends processcbMap {
 		$mapping_arr['DuplicateDirectRelations'] = (string)$xml->DuplicateDirectRelations;
 
 		$relativemodules = array();
-		foreach ($xml->relatedmodules->relatedmodule as $r) {
-			$relativemodules[ (string)$r->module ] = array(
-				'relation' => (string)$r->relation,
-				'condition' => (string)$r->condition,
-			);
+		if (!empty($xml->relatedmodules->relatedmodule)) {
+			foreach ($xml->relatedmodules->relatedmodule as $r) {
+				$relativemodules[ (string)$r->module ] = array(
+					'relation' => (string)$r->relation,
+					'condition' => (string)$r->condition,
+				);
+			}
 		}
 		$mapping_arr["relatedmodules"] = $relativemodules;
 

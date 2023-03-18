@@ -25,6 +25,13 @@ require_once 'include/Webservices/VtigerWebserviceObject.php';
  */
 class VTWSEntityType {
 
+	public $entityTypeName;
+	public $description;
+	public $fieldTypes;
+	public $tabId;
+	public $fieldNames;
+	public $fieldLabels;
+
 	public function __construct($entityTypeName, $user) {
 		$describeResult = vtws_describe($entityTypeName, $user);
 		$this->entityTypeName = $entityTypeName;
@@ -137,6 +144,7 @@ class VTWSEntityType {
 							$et->type = 'Owner';
 							break;
 						case 'multipicklist':
+						case 'multireference':
 							$et->type = 'Select';
 							$et->values = array();
 							break;
@@ -178,6 +186,12 @@ class VTWSEntityType {
 }
 
 class VTWSFieldType {
+
+	public $type;
+	public $values;
+	public $format;
+	public $relatedTo;
+
 	public function toArray() {
 		$ro = new ReflectionObject($this);
 		$props = $ro->getProperties();

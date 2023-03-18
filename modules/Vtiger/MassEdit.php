@@ -12,7 +12,7 @@ global $mod_strings,$app_strings,$theme,$currentModule,$current_user;
 require_once 'Smarty_setup.php';
 require_once 'include/utils/utils.php';
 
-$excludedRecords = vtlib_purify($_REQUEST['excludedRecords']);
+$excludedRecords = empty($_REQUEST['excludedRecords']) ? '' : vtlib_purify($_REQUEST['excludedRecords']);
 
 $focus = CRMEntity::getInstance($currentModule);
 $focus->mode = '';
@@ -46,6 +46,7 @@ $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000
 $smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); //Convert to MB
 $smarty->assign('UPLOAD_MAXSIZE', $upload_maxsize);
 $smarty->assign('MAX_FILE_SIZE', $upload_maxsize);
+$smarty->assign('MOD_SEQ_ID', '');
 
 // Field Validation Information
 $tabid = getTabid($currentModule);
@@ -55,9 +56,12 @@ $validationArray = split_validationdataArray($validationData);
 $smarty->assign('VALIDATION_DATA_FIELDNAME', $validationArray['fieldname']);
 $smarty->assign('VALIDATION_DATA_FIELDDATATYPE', $validationArray['datatype']);
 $smarty->assign('VALIDATION_DATA_FIELDLABEL', $validationArray['fieldlabel']);
-$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
+$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule, (empty($focus->mode) ? 'create' : 'edit'));
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
+if ($currentModule == 'Products') {
+	$smarty->assign('Product_Maximum_Number_Images', GlobalVariable::getVariable('Product_Maximum_Number_Images', 6));
+}
 $smarty->display('MassEditForm.tpl');
 ?>

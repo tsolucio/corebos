@@ -27,7 +27,7 @@
 						</span>
 					</td>
 					<td class="heading2" valign="bottom"> <b>
-						<a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> 
+						<a href="index.php?module=Settings&action=ModuleManager">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a>
 						<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="{$MOD.VTLIB_LBL_MODULE_MANAGER}">
 							<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
@@ -61,7 +61,6 @@
 														</svg>
 													</span>
 												</a>
-													
 												</td>
 												<td class=big valign=top>
 													<a href="{$mod_array.location}">

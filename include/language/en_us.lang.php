@@ -438,6 +438,8 @@ $app_strings = array(
 'Inventory' => 'Inventory',
 'Tools' => 'Tools',
 'Settings' => 'Settings',
+'Tables' => 'Tables',
+'Add Table' => 'Add Table',
 'LBL_INFORMATION' => 'Information',
 'LBL_MORE' => 'More',
 'LBL_BASIC' => 'Basic',
@@ -596,6 +598,8 @@ $app_strings = array(
 'LBL_RECORDS' => 'Records',
 'LBL_SCROLL' => '[Scroll to Top]',
 'LBL_EXPAND_COLLAPSE' => 'Expand/Collapse',
+'LBL_COLLAPSE' => 'Collapse',
+'LBL_COPY_ROWS' => 'Copy Rows',
 'LBL_RCPY_ADDRESS' => 'Copy Shipping address',
 'LBL_LCPY_ADDRESS' => 'Copy Billing address',
 'LBL_RECORD_ID' => 'Record ID',
@@ -1320,7 +1324,7 @@ $app_strings = array(
 'Net Total' => 'Net Total (bGD)',
 'Send SMS' => 'Send SMS',
 'Add Payment' => 'Add Payment',
-'LBL_CRM_SETTINGS' => 'CRM Settings',
+'LBL_CRM_SETTINGS' => 'Application Settings',
 'LBL_RELATED_TO_THIS' =>'related to this',
 'LBL_DESELECT_ALL' => 'Deselect all',
 'LBL_RECORDS_IN' => 'records in',
@@ -1346,8 +1350,10 @@ $app_strings = array(
 'data' => 'data',
 'record' => 'Record',
 'saved' => 'saved',
-'notsaved' => 'notsaved',
+'notsaved' => 'not saved',
 'processcomplete' => 'Process Complete',
+'processed' => 'processed',
+'notprocessed' => 'not processed',
 'typetosearch_prodser' => 'Type to search products or services',
 'RecordIsAssignedToInactiveUser' => 'The record is assigned to an inactive user. Please select another user.',
 'Add Relation' => 'Add Relation',
@@ -1376,6 +1382,22 @@ $app_strings = array(
 'LBL_HIERARCHY' => 'Hierarchy',
 'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Search Documents',
 
+// watermark WF template
+'Watermark Value' => 'Watermark Value',
+'image field name' => 'Image Field Name',
+'Water Mark Size' => 'Water Mark Size',
+'Water Mark Position' => 'Water Mark Position',
+// watermark direction
+'Center' => 'Center',
+'Top' => 'Top',
+'Bottom' => 'Bottom',
+'Right' => 'Right',
+'Left' => 'Left',
+'Top Right' => 'Top Right',
+'Top Left' => 'Top Left',
+'Bottom Left' => 'Bottom Left',
+'Bottom Right' => 'Bottom Right',
+
 //login translation
 'LBL_Please_login_to_your_account' => 'Please login to your account',
 'LBL_Bussiness'	=> 'Make your business run smoothly',
@@ -1399,6 +1421,10 @@ $app_strings = array(
 'LBL_UITYPE10_NOTALLOWED' => 'The related module has a mandatory related field.',
 'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 'LBL_PREVIEW' => 'Preview',
+'Slider' => 'Slider',
+'LBL_WIZARD' => 'Wizard',
+'LBL_ROW' => 'Row',
+'LBL_WIZARD_COMPLETED' => 'The process has been completed successfully.',
 );
 
 // Translation for currency names

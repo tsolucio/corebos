@@ -80,7 +80,7 @@ function vtws_revise($element, $user) {
 		}
 	}
 	//  Product line support
-	$hrequest = $_REQUEST;
+	$hrequest = empty($_REQUEST) ? array() : $_REQUEST;
 	if (in_array($entityName, getInventoryModules()) && isset($element['pdoInformation']) && is_array($element['pdoInformation'])) {
 		$elementType = $entityName;
 		$elementCRMID = $idList[1];

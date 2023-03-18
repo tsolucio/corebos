@@ -31,9 +31,9 @@ $from_email = $to_email;
 if (!empty($from_email_field)) {
 	$from_email = $from_email_field;
 }
-$subject = 'Test mail about the mail server configuration.';
-$description = 'Dear '.$current_user->user_name.', <br><br><b> This is a test mail sent to confirm if a mail is actually being sent through the smtp server that you'
-	.' have configured. </b><br>Feel free to delete this mail.<br><br>Thanks and Regards,<br> '.$HELPDESK_SUPPORT_NAME.' <br>';
+$subject = getTranslatedString('LBL_EMAIL_SUBJECT');
+$description = getTranslatedString('LBL_DEAR').$current_user->user_name.',<br><br><b>'.getTranslatedString('LBL_EMAIL_TRANSLATE').'</b><br>'.
+ getTranslatedString('LBL_EMAIL_END').'<br><br>'.getTranslatedString('LBL_THANKS').'<br>'.$HELPDESK_SUPPORT_NAME.'<br>';
 
 if ($to_email != '') {
 	$mail_status = send_mail('Users', $to_email, $current_user->user_name, $from_email, $subject, $description);

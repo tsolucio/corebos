@@ -12,18 +12,16 @@
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43" aria-modal="true">
 	<div class="slds-modal__container slds-p-around_none">
 		<div class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-			<h2 id="header43" class="slds-text-heading_medium">coreBOS Settings</h2>
+			<h2 id="header43" class="slds-text-heading_medium">{'LBL_CRM_SETTINGS'|@getTranslatedString:'Settings'}</h2>
 		</div>
 		{* Loop here for block *}
 		{foreach key=BLOCKID item=BLOCKLABEL from=$BLOCKS}
 			{if $BLOCKLABEL neq 'LBL_MODULE_MANAGER'}
-				<div class="slds-modal__content slds-app-launcher__content " id="modal-content-id-1">
-					<div class="slds-section slds-is-open slds-p-around_x-large">
+				<div class="slds-modal__content slds-app-launcher__content" id="modal-content-id-1">
+					<div class="slds-section slds-is-open slds-p-around_x-small">
 						<h3 class="slds-section__title">
-							<button aria-controls="appsContent" aria-expanded="true"
-								class="slds-button slds-section__title-action">
-								<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left"
-									aria-hidden="true">
+							<button aria-controls="appsContent" aria-expanded="true" class="slds-button slds-section__title-action">
+								<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
 								</svg>
 								<span class="slds-truncate" title="{$MOD.$BLOCKLABEL}">{$MOD.$BLOCKLABEL}</span>
@@ -43,19 +41,19 @@
 									{/if}
 									{assign var=count value=$smarty.foreach.itr.iteration}
 									{* Item *}
-									<li  onclick="gotourl('{$data.link}')" class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3">
+									<li onclick="gotourl('{$data.link}')" class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3">
 										<div class="slds-app-launcher__tile slds-text-link_reset ">
 											<div class="slds-app-launcher__tile-figure" style="color: #0070ba;">
 											{* Icon *}
-												<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="User(s)">
-													<svg class="slds-icon slds-icon_large" aria-hidden="true">
+												<span class="slds-icon_container slds-icon-utility-announcement slds-current-color" title="{$label}">
+													<svg class="slds-icon" aria-hidden="true">
 														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#{$data.icon}"></use>
 													</svg>
 												</span>
 											{* Icon End *}
 											</div>
 											<div class="slds-app-launcher__tile-body">
-												<a href="{$data.link}">{$label}</a>
+												<a href="{$data.link}"><span style="font-size: medium;">{$label}</span></a>
 												{* Description *}
 												{assign var=description value=$data.description|@getTranslatedString:$data.module}
 												{if $data.description eq $description}
@@ -84,5 +82,3 @@
 		{/foreach}
 	</div>
 </section>
-
-			

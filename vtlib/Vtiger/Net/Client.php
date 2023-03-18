@@ -52,7 +52,7 @@ class Vtiger_Net_Client {
 
 	/**
 	 * Set custom HTTP Headers
-	 * @param Map HTTP Header and Value Pairs
+	 * @param array HTTP Header and Value Pairs
 	 */
 	public function setHeaders($values) {
 		foreach ($values as $key => $value) {
@@ -63,7 +63,7 @@ class Vtiger_Net_Client {
 	/**
 	 * Set File Upload
 	 * @param string fieldName name of file-upload field
-	 * @param string|resource|array  filename full name of local file, pointer to open file or an array of files
+	 * @param string|resource|array filename full name of local file, pointer to open file or an array of files
 	 * @param string sendFilename filename to send in the request
 	 * @param string contentType content-type of file being upload
 	 */
@@ -73,10 +73,10 @@ class Vtiger_Net_Client {
 
 	/**
 	 * Perform a GET request
-	 * @param Map key-value pair or false
+	 * @param array key-value pair or false
 	 * @param integer timeout value
 	 */
-	public function doGet($params = false, $timeout = null) {
+	public function doGet($params = [], $timeout = null) {
 		if ($timeout) {
 			$this->client->setConfig('connect_timeout', $timeout);
 		}
@@ -84,7 +84,7 @@ class Vtiger_Net_Client {
 		$this->client->setURL($this->url);
 		$this->client->setMethod(HTTP_Request2::METHOD_GET);
 
-		if ($params) {
+		if (!empty($params)) {
 			$urlpath = $this->client->getUrl();
 			foreach ($params as $key => $value) {
 				$urlpath->setQueryVariable($key, $value);
@@ -107,10 +107,10 @@ class Vtiger_Net_Client {
 
 	/**
 	 * Perform a POST request
-	 * @param Map key-value pair or false
+	 * @param array key-value pair or false
 	 * @param integer timeout value
 	 */
-	public function doPost($params = false, $timeout = null) {
+	public function doPost($params = [], $timeout = null) {
 		if ($timeout) {
 			$this->client->setConfig('connect_timeout', $timeout);
 		}
@@ -118,7 +118,7 @@ class Vtiger_Net_Client {
 		$this->client->setURL($this->url);
 		$this->client->setMethod(HTTP_Request2::METHOD_POST);
 
-		if ($params) {
+		if (!empty($params)) {
 			if (is_string($params)) {
 				$this->client->setBody($params);
 			} else {

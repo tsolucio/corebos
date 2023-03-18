@@ -24,14 +24,19 @@ $mu = new corebos_clickhouse();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin && isset($_REQUEST['clickhouse_active']) && isset($_REQUEST['btnchsave'])) {
+if ($isadmin && isset($_REQUEST['btnchsave'])) {
 	$isActive = ((empty($_REQUEST['clickhouse_active']) || $_REQUEST['clickhouse_active']!='on') ? '0' : '1');
 	$clickhouse_database = (empty($_REQUEST['clickhouse_database']) ? '' : vtlib_purify($_REQUEST['clickhouse_database']));
 	$clickhouse_username = (empty($_REQUEST['clickhouse_username']) ? '' : vtlib_purify($_REQUEST['clickhouse_username']));
 	$clickhouse_password = (empty($_REQUEST['clickhouse_password']) ? '' : vtlib_purify($_REQUEST['clickhouse_password']));
 	$clickhouse_host = (empty($_REQUEST['clickhouse_host']) ? '' : vtlib_purify($_REQUEST['clickhouse_host']));
 	$clickhouse_port = (empty($_REQUEST['clickhouse_port']) ? '' : vtlib_purify($_REQUEST['clickhouse_port']));
-	$mu->saveSettings($isActive, $clickhouse_host, $clickhouse_port, $clickhouse_database, $clickhouse_username, $clickhouse_password);
+	$clickhouse_webhook_secret = (empty($_REQUEST['clickhouse_webhook_secret']) ? '' : vtlib_purify($_REQUEST['clickhouse_webhook_secret']));
+
+	if ($clickhouse_database == '' || $clickhouse_username == '' || $clickhouse_password == '' || $clickhouse_host == '' || $clickhouse_port == '') {
+		$isActive = '0';
+	}
+	$mu->saveSettings($isActive, $clickhouse_host, $clickhouse_port, $clickhouse_database, $clickhouse_username, $clickhouse_password, $clickhouse_webhook_secret);
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('ClickHouse Activation', $currentModule));
@@ -42,6 +47,7 @@ $smarty->assign('clickhouse_port', $musettings['clickhouse_port']);
 $smarty->assign('clickhouse_database', $musettings['clickhouse_database']);
 $smarty->assign('clickhouse_username', $musettings['clickhouse_username']);
 $smarty->assign('clickhouse_password', $musettings['clickhouse_password']);
+$smarty->assign('clickhouse_webhook_secret', $musettings['clickhouse_webhook_secret']);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
@@ -70,5 +76,7 @@ if (!isset($_REQUEST['btnchquery']) || empty($_REQUEST['chquery']) || !$mu->isAc
 	$smarty->assign('CHQUERY', $_REQUEST['chquery']);
 	$smarty->assign('CHQUERYRDO', $rdo);
 }
+$clickhouse_tables = $mu->getTables();
+$smarty->assign('clickhouse_tables', $clickhouse_tables);
 $smarty->display('modules/Utilities/clickhouse.tpl');
 ?>

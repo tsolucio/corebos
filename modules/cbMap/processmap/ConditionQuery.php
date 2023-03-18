@@ -71,7 +71,7 @@ class ConditionQuery extends processcbMap {
 		global $adb;
 		$sql = $adb->convert2Sql($sql, $arguments);
 		$rs = $adb->query($sql);
-		if ($rs) {
+		if ($rs && $adb->num_rows($rs)>0) {
 			if (strtolower($return)=='count') {
 				return $adb->num_rows($rs);
 			}
@@ -91,6 +91,18 @@ class ConditionQuery extends processcbMap {
 	}
 
 	private function processSQL($xml, $arguments) {
+		global $current_user;
+		if (isset($xml->parameters) && !empty($arguments[0]) && is_numeric($arguments[0])) {
+			$entity = new VTWorkflowEntity($current_user, $arguments[0], true);
+			$params = [];
+			foreach ($xml->parameters->parameter as $param) {
+				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer((string)$param)));
+				$expression = $parser->expression();
+				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+				$params[] = $exprEvaluater->evaluate($entity);
+			}
+			$arguments = $params;
+		}
 		return $this->executeSQL((string)$xml->sql, $arguments, (string)$xml->return);
 	}
 

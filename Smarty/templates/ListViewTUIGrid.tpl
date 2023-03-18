@@ -13,6 +13,10 @@
 {include file='applicationmessage.tpl'}
 {/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
+{if !empty($CUSTOM_LINKS.LISTVIEWACTION)}
+	<div class="slds-grid slds-gutters">
+	<div class="slds-col slds-size_9-of-12" id="lvgridcolumn">
+{/if}
 <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();">
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
 	<input name="idlist" id="idlist" type="hidden">
@@ -28,7 +32,7 @@
 	<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
 </form>
 <!-- List View's Buttons and Filters starts -->
-<table style="width:100%;" class="slds-card">
+<table style="width:100%;{$Application_ListView_FilterPanel_Open}" class="slds-card">
 <tr>
 	<td width="25%" class="small" nowrap align="left">
 		<span id="gridRecordCountHeader"></span>
@@ -94,7 +98,14 @@
 </tr>
 </table>
 <div id="basicsearchcolumns" style="display:none;">
-	<select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">
+	<select name="search_field" id="bas_searchfield" class="slds-select" style="width:150px">
 	{html_options options=$SEARCHLISTHEADER}
 	</select>
 </div>
+{if !empty($CUSTOM_LINKS.LISTVIEWACTION)}
+	</div>
+	<div class="slds-col slds-size_3-of-12" id="actioncolumn">
+	{include file='ListViewActions.tpl'}
+	</div>
+	</div>
+{/if}

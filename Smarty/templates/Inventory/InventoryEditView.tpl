@@ -159,6 +159,21 @@
 	}
 	corebosjshook.after(window, 'corebosjshook_submitFormForAction', windowopenermasterdetailworksave);
 	{/if}
+	{if !empty($smarty.request.RelatedListGridInfo)}
+	{assign var='rlgridinfo' value=$smarty.request.RelatedListGridInfo|json_decode:true}
+	function windowopenerrelatedlistworksave() {
+		window.opener.relatedlistgrid.save('{$rlgridinfo.name|vtlib_purify}', '{$rlgridinfo.module|vtlib_purify}');
+	}
+	corebosjshook.after(window, 'corebosjshook_submitFormForAction', windowopenerrelatedlistworksave);
+	{/if}
+	{if !empty($smarty.request.WizardView)}
+	{assign var='wizardstep' value=$smarty.request.step}
+	{assign var='wizardaction' value=$smarty.request.wizardaction}
+	function windowopenerwizardworksave() {
+		window.opener.wizard.save({$wizardstep|vtlib_purify}, '{$wizardaction|vtlib_purify}');
+	}
+	corebosjshook.after(window, 'corebosjshook_submitFormForAction', windowopenerwizardworksave);
+	{/if}
 </script>
 
 <!-- vtlib customization: Help information assocaited with the fields -->

@@ -35,7 +35,7 @@ class evvtMenu {
 	public function vtlib_handler($moduleName, $eventType) {
 		global $adb;
 		if ($eventType == 'module.postinstall') {
-			$menus = $adb->query('SELECT vtiger_parenttab.parenttabid,vtiger_parenttab.parenttab_label,visible,vtiger_parenttabrel.tabid,vtiger_tab.name 
+			$menus = $adb->query('SELECT vtiger_parenttab.parenttabid,vtiger_parenttab.parenttab_label,visible,vtiger_parenttabrel.tabid,vtiger_tab.name
 				FROM vtiger_parenttabrel
 				inner join vtiger_parenttab on vtiger_parenttab.parenttabid=vtiger_parenttabrel.parenttabid
 				inner join vtiger_tab on vtiger_tab.tabid=vtiger_parenttabrel.tabid

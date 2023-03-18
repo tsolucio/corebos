@@ -80,7 +80,7 @@ class ListView {
 			$log->debug('< setQuery');
 			return;
 		}
-		$sortBy = $this->getSessionVariable($varName, 'ORDER_BY') ;
+		$sortBy = $this->getSessionVariable($varName, 'ORDER_BY');
 
 		if (empty($sortBy)) {
 			$this->setUserVariable($varName, 'ORDER_BY', $orderBy);
@@ -150,7 +150,7 @@ class ListView {
 	public function setModStrings(&$mod_strings) {
 		global $log;
 		$log->debug('> setModStrings');
-		unset($this->local_module_strings);
+		unset($this->local_mod_strings);
 		$this->local_mod_strings = $mod_strings;
 		if (isset($this->xTemplate)) {
 			$this->xTemplate->assign('MOD', $this->local_mod_strings);

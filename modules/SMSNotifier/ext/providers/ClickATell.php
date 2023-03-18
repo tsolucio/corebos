@@ -53,9 +53,9 @@ class ClickATell implements ISMSProvider {
 		if ($type) {
 			switch (strtoupper($type)) {
 				case self::SERVICE_AUTH:
-					return  self::SERVICE_URI . '/http/auth';
+					return self::SERVICE_URI . '/http/auth';
 				case self::SERVICE_SEND:
-					return  self::SERVICE_URI . '/http/sendmsg';
+					return self::SERVICE_URI . '/http/sendmsg';
 				case self::SERVICE_QUERY:
 				default:
 					return self::SERVICE_URI . '/http/querymsg';
@@ -201,7 +201,7 @@ class ClickATell implements ISMSProvider {
 			$return = $mb_hex;
 			$utf = 1;
 		} else {
-			$return = utf8_decode($data);
+			$return = mb_convert_encoding($data, 'ISO-8859-1', 'UTF-8');
 			$utf = 0;
 		}
 		return array (

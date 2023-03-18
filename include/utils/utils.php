@@ -60,7 +60,7 @@ function getBrowserVariables(&$smarty) {
 	global $currentModule,$current_user,$default_charset,$theme,$adb,$current_language;
 	$vars = array();
 	$vars['gVTModule'] = $currentModule;
-	$vars['gVTTheme']  = $theme;
+	$vars['gVTTheme'] = $theme;
 	$vars['default_charset'] = $default_charset;
 	if (empty($current_user)) {
 		$vars['gVTUserID'] = 0;
@@ -116,6 +116,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('USER_LANGUAGE', $current_language);
 		$smarty->assign('SW_MD5', $swmd5);
 		$smarty->assign('corebos_browsertabID', $corebos_browsertabID);
+		$smarty->assign('gVTviewType', isset($_REQUEST['action']) ? vtlib_purify($_REQUEST['action']) : '');
 	}
 }
 
@@ -157,6 +158,7 @@ function return_name(&$row, $first_column, $last_column) {
 
 /** Function to return language
  * @return string languages
+ * @deprecated
  */
 function get_languages() {
 	global $log, $languages;
@@ -167,6 +169,7 @@ function get_languages() {
 /** Function to return language
  * @param string key
  * @return string languages
+ * @deprecated
  */
 function get_language_display($key) {
 	global $log, $languages;
@@ -190,7 +193,7 @@ function get_assigned_user_name($assigned_user_id) {
 	return '';
 }
 
-/** Function returns the user key in user array
+/** Function returns the user key in user array for all users the current user can assign a record to
  * @param boolean add blank picklist entry
  * @param string user status to retrieve
  * @param string assigned_user id must always add this user
@@ -198,7 +201,7 @@ function get_assigned_user_name($assigned_user_id) {
  * @return array user array
  */
 function get_user_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '') {
-	global $log, $current_user;
+	global $log, $current_user, $cbAppCache;
 	$log->debug('> get_user_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
 	if (isset($current_user) && $current_user->id != '') {
 		$userprivs = $current_user->getPrivileges();
@@ -206,25 +209,28 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 	} else {
 		$current_user_parent_role_seq = '';
 	}
-	static $user_array = null;
 	$module = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
+	$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
+	$assignUP = GlobalVariable::getVariable('Application_Permit_Assign_Up', 0, $module, $current_user->id);
+	$assignBrothers = GlobalVariable::getVariable('Application_Permit_Assign_SameRole', 0, $module, $current_user->id);
+	$user_array_key = 'utilsGUA#'.(empty($add_blank) ? 'F' : 'T').$status.$assigned_user.$private.$userOrder.$assignUP.$assignBrothers.$current_user->id.$current_user_parent_role_seq;
 
-	if ($user_array == null) {
+	if ($cbAppCache->isUsable() && $cbAppCache->getCacheClient()->has($user_array_key)) {
+		$user_array = $cbAppCache->getCacheClient()->get($user_array_key);
+	} else {
 		$db = PearDatabase::getInstance();
 		$temp_result = array();
-		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
 		// Including deleted users for now.
 		if (empty($status)) {
-			$query = 'SELECT id, user_name,ename from vtiger_users';
+			$query = 'SELECT id, user_name,ename from vtiger_users where 1';
 			$params = array();
 		} else {
-			$assignUP = GlobalVariable::getVariable('Application_Permit_Assign_Up', 0, $module, $current_user->id);
 			if ($private == 'private' && empty($assignUP)) {
 				if ($userOrder != 'DO NOT SORT') {
 					$orderFields = preg_replace('/ asc\s*$| asc\s*,| desc\s*$| desc\s*,/i', ',', $userOrder);
 					$orderFields = preg_replace('/\s*/', '', $orderFields);
-					$orderFields = str_replace(array('user_name,','first_name,','last_name,'), '', $orderFields);
-					$orderFields = str_replace(array('user_name','first_name','last_name'), '', $orderFields);
+					$orderFields = str_replace(array('ename,','user_name,','first_name,','last_name,'), '', $orderFields);
+					$orderFields = str_replace(array('ename,','user_name','first_name','last_name'), '', $orderFields);
 					$orderFields = str_replace(',,', ',', $orderFields);
 					$orderFields = trim($orderFields, ',');
 					if (strlen($orderFields)>1) {
@@ -233,7 +239,6 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 				} else {
 					$orderFields = '';
 				}
-				$assignBrothers = GlobalVariable::getVariable('Application_Permit_Assign_SameRole', 0, $module, $current_user->id);
 				$query = "select $orderFields id as id,user_name as user_name,first_name,last_name,ename
 					from vtiger_users
 					where id=? and status='Active'
@@ -285,6 +290,9 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 		}
 
 		$user_array = $temp_result;
+		if ($cbAppCache->isUsable()) {
+			$cbAppCache->getCacheClient()->set($user_array_key, $temp_result);
+		}
 	}
 
 	$log->debug('< get_user_array');
@@ -1349,15 +1357,15 @@ function getEmailParentsList($module, $id, $focus = false) {
 	$res = $adb->pquery('select fieldid from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)', array(getTabid($module), $fieldname));
 	$fieldid = $adb->query_result($res, 0, 'fieldid');
 
-	$hidden  = '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
-	$hidden .= '<input type="hidden" name="pmodule" value="'.$module.'">';
+	$hidden = '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
+	$hidden.= '<input type="hidden" name="pmodule" value="'.$module.'">';
 
 	$log->debug('< getEmailParentsList');
 	return $hidden;
 }
 
 /** This Function returns the current status of the specified Purchase Order.
- *  @param integer Purchase Order Id
+ * @param integer Purchase Order Id
  */
 function getPoStatus($po_id) {
 	global $log, $adb;
@@ -1421,8 +1429,8 @@ function deductFromProductDemand($productId, $qty) {
 }
 
 /** This Function returns the current product quantity in stock
- *  @param integer Product Id
- *  @return integer quantity in stock
+ * @param integer Product Id
+ * @return integer quantity in stock
  */
 function getProductQtyInStock($product_id) {
 	global $log, $adb;
@@ -1791,7 +1799,7 @@ function Graph_n_table_format($period_type, $date_value) {
 	global $log;
 	$log->debug('> Graph_n_table_format '.$period_type.','.$date_value);
 	$date_val=explode('-', $date_value);
-	if ($period_type=='month') {  //to get the vtiger_table format dates
+	if ($period_type=='month') {
 		$table_format=date('j', mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
 		$graph_format=date('D', mktime(0, 0, 0, date($date_val[1]), (date($date_val[2])), date($date_val[0])));
 	} elseif ($period_type=='week') {
@@ -1895,7 +1903,7 @@ function utf8RawUrlDecode($source) {
 				$unicodeHexVal = substr($source, $pos, 4);
 				$unicode = hexdec($unicodeHexVal);
 				$entity = '&#'. $unicode . ';';
-				$decodedStr .= utf8_encode($entity);
+				$decodedStr .= mb_convert_encoding($entity, "UTF-8", "ISO-8859-1");
 				$pos += 4;
 			} else {
 				// we have an escaped ascii character
@@ -2011,6 +2019,19 @@ function escape_single_quotes($value) {
 }
 
 /**
+ * Function to get substring between two charachters.
+ */
+function get_string_between($string, $start, $end) {
+	$ini = strpos($string, $start);
+	if ($ini === false) {
+		return '';
+	}
+	$ini += strlen($start);
+	$len = strpos($string, $end, $ini) - $ini;
+	return substr($string, $ini, $len);
+}
+
+/**
  * Function to format the input value for SQL like clause.
  * @param string Input string value to be formatted.
  * @param integer By default set to 0 (Will look for cases %string%).
@@ -2020,6 +2041,9 @@ function escape_single_quotes($value) {
  */
 function formatForSqlLike($str, $flag = 0, $is_field = false) {
 	global $adb;
+	if ($flag == 3) {
+		return $adb->sql_escape_string($str);
+	}
 	if (isset($str)) {
 		if (!$is_field) {
 			$str = str_replace('%', '\%', $str);
@@ -2468,22 +2492,33 @@ function deleteExactDuplicates($dup_records, $module) {
 	$delete_fail_status=false;
 	foreach ($dup_records as $records_group) {
 		$record_position=0;
+		$mergeid = 0;
 		foreach ($records_group as $records) {
-			if ($record_position!=0) {
-				array_push($dup_records_ids, $records['recordid']);
+			if ($record_position==0) {
+				$mergeid = $records['recordid'];
+				$dup_records_ids[$mergeid] = [];
+			} else {
+				array_push($dup_records_ids[$mergeid], $records['recordid']);
 			}
 			$record_position++;
 		}
 	}
 	$focus = CRMEntity::getInstance($module);
-	foreach ($dup_records_ids as $id) {
-		if (isPermitted($module, 'Delete', $id) == 'yes') {
-			$del_response=DeleteEntity($module, $module, $focus, $id, '');
-			if ($del_response[0]) {
+	$canTransfer = method_exists($focus, 'transferRelatedRecords');
+	foreach ($dup_records_ids as $mergeid => $ids) {
+		foreach ($ids as $id) {
+			if (isPermitted($module, 'Delete', $id) == 'yes') {
+				// Transfer the related lists of the records to be deleted, to the primary record's related list
+				if ($canTransfer) {
+					$focus->transferRelatedRecords($module, [$id], $mergeid);
+				}
+				$del_response=DeleteEntity($module, $module, $focus, $id, '');
+				if ($del_response[0]) {
+					$delete_fail_status = true;
+				}
+			} else {
 				$delete_fail_status = true;
 			}
-		} else {
-			$delete_fail_status = true;
 		}
 	}
 	return $delete_fail_status;
@@ -2558,9 +2593,9 @@ function get_on_clause($field_list, $uitype_arr, $module) {
 }
 
 function elimina_acentos($cadena) {
-	$tofind = utf8_decode('ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊẼËèéêẽëÌÍĨÎÏìíîĩïÙÚÛŨÜúùûũüÿçÇºªñÑ');
+	$tofind = mb_convert_encoding('ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊẼËèéêẽëÌÍĨÎÏìíîĩïÙÚÛŨÜúùûũüÿçÇºªñÑ', 'ISO-8859-1', 'UTF-8');
 	$replac = 'AAAAAAaaaaaaOOOOOOooooooEEEEEeeeeeIIIIIiiiiiUUUUUuuuuuycCoanN';
-	return utf8_encode(strtr(utf8_decode($cadena), $tofind, $replac));
+	return mb_convert_encoding(strtr(mb_convert_encoding($cadena, 'ISO-8859-1', 'UTF-8'), $tofind, $replac), 'UTF-8', 'ISO-8859-1');
 }
 
 /** call back function to change the array values in to lower case */
@@ -2936,6 +2971,28 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 }
 //functions for asterisk integration end
 
+function insertIntoCrmEntityRel($crmid, $module, $relcrmid, $with_module) {
+	global $adb;
+	$rdo = $adb->pquery('INSERT INTO vtiger_crmentityrel(crmid, module, relcrmid, relmodule) VALUES(?,?,?,?)', array($crmid, $module, $relcrmid, $with_module));
+	$adb->pquery(
+		'INSERT INTO vtiger_crmentityreldenorm (crmid, module, relcrmid, relmodule) VALUES (?,?,?,?),(?,?,?,?)',
+		array($crmid, $module, $relcrmid, $with_module, $relcrmid, $with_module, $crmid, $module)
+	);
+	return $rdo;
+}
+
+function deleteFromCrmEntityRel($crmid, $relcrmid) {
+	global $adb;
+	$adb->pquery(
+		'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relcrmid=?) OR (relcrmid=? AND crmid=?)',
+		array($crmid, $relcrmid, $crmid, $relcrmid)
+	);
+	$adb->pquery(
+		'DELETE FROM vtiger_crmentityreldenorm WHERE (crmid=? AND relcrmid=?) OR (relcrmid=? AND crmid=?)',
+		array($crmid, $relcrmid, $crmid, $relcrmid)
+	);
+}
+
 //functions for settings page
 /**
  * this function returns the blocks for the settings page
@@ -3083,7 +3140,7 @@ function getFieldsResultForMerge($tabid) {
 		$params[] = $nonmergable_displaytypes;
 	}
 	if (count($nonmergable_uitypes) > 0) {
-		$where .= ' AND uitype NOT IN ('. generateQuestionMarks($nonmergable_uitypes) .')' ;
+		$where .= ' AND uitype NOT IN ('. generateQuestionMarks($nonmergable_uitypes) .')';
 		$params[] = $nonmergable_uitypes;
 	}
 
@@ -3108,7 +3165,12 @@ function getRelationTables($module, $secmodule) {
 	}
 	$primary_obj = CRMEntity::getInstance($module);
 	$secondary_obj = CRMEntity::getInstance($secmodule);
-
+	if (($module=='Documents' && $secmodule=='DocumentFolders') || ($module=='DocumentFolders' && $secmodule=='Documents')) {
+		return array(
+			'vtiger_crmentityrel' => array('crmid','relcrmid'),
+			$primary_obj->table_name => $primary_obj->table_index
+		);
+	}
 	if (method_exists($primary_obj, 'setRelationTables')) {
 		$reltables = $primary_obj->setRelationTables($secmodule);
 	}
@@ -3308,7 +3370,7 @@ function isRecordExists($recordId) {
 /** Function to check if a number is an attachment ID
  * @param integer entity ID
  * @return boolean true if ID belongs to an attachment, false otherwise
-  */
+ */
 function is_attachmentid($id) {
 	global $adb, $log;
 	$log->debug('> is_attachmentid '.$id);
@@ -3584,7 +3646,7 @@ function getSelectedRecords($input, $module, $idstring, $excludedRecords) {
 	global $adb;
 
 	if ($idstring == 'relatedListSelectAll') {
-		$recordid = vtlib_purify($input['recordid']);
+		$recordid = filter_var($input['recordid'], FILTER_SANITIZE_NUMBER_INT);
 		if ($module == 'Accounts') {
 			$result = getCampaignAccountIds($recordid);
 		}
@@ -3620,6 +3682,12 @@ function getSelectedRecords($input, $module, $idstring, $excludedRecords) {
 		} else {
 			$storearray = explode(';', $idstring);
 		}
+		array_walk(
+			$storearray,
+			function (&$val, $key) {
+				$val = filter_var($val, FILTER_SANITIZE_NUMBER_INT);
+			}
+		);
 	} elseif ($idstring == 'all') {
 		$result = getSelectAllQuery($input, $module);
 		$storearray = array();
@@ -3633,6 +3701,12 @@ function getSelectedRecords($input, $module, $idstring, $excludedRecords) {
 		$storearray = array_diff($storearray, $excludedRecords);
 	} else {
 		$storearray = explode(';', $idstring);
+		array_walk(
+			$storearray,
+			function (&$val, $key) {
+				$val = filter_var($val, FILTER_SANITIZE_NUMBER_INT);
+			}
+		);
 	}
 
 	return $storearray;
@@ -3766,25 +3840,25 @@ function retrieveCompanyDetails() {
 		array()
 	);
 	if ($query && $adb->num_rows($query) > 0) {
-		$companyDetails['name']     = $companyDetails['companyname'] = decode_html($adb->query_result($query, 0, 'companyname'));
-		$companyDetails['website']  = $adb->query_result($query, 0, 'website');
-		$companyDetails['email']  = $adb->query_result($query, 0, 'email');
-		$companyDetails['siccode']  = $adb->query_result($query, 0, 'siccode');
-		$companyDetails['accid']  = $adb->query_result($query, 0, 'accid');
-		$companyDetails['address']  = decode_html($adb->query_result($query, 0, 'address'));
-		$companyDetails['city']     = decode_html($adb->query_result($query, 0, 'city'));
-		$companyDetails['state']    = decode_html($adb->query_result($query, 0, 'state'));
-		$companyDetails['country']  = decode_html($adb->query_result($query, 0, 'country'));
+		$companyDetails['name'] = $companyDetails['companyname'] = decode_html($adb->query_result($query, 0, 'companyname'));
+		$companyDetails['website'] = $adb->query_result($query, 0, 'website');
+		$companyDetails['email'] = $adb->query_result($query, 0, 'email');
+		$companyDetails['siccode'] = $adb->query_result($query, 0, 'siccode');
+		$companyDetails['accid'] = $adb->query_result($query, 0, 'accid');
+		$companyDetails['address'] = decode_html($adb->query_result($query, 0, 'address'));
+		$companyDetails['city'] = decode_html($adb->query_result($query, 0, 'city'));
+		$companyDetails['state'] = decode_html($adb->query_result($query, 0, 'state'));
+		$companyDetails['country'] = decode_html($adb->query_result($query, 0, 'country'));
 		$companyDetails['postalcode'] = $companyDetails['code'] = decode_html($adb->query_result($query, 0, 'postalcode'));
-		$companyDetails['phone']    = $adb->query_result($query, 0, 'phone');
-		$companyDetails['fax']      = $adb->query_result($query, 0, 'fax');
+		$companyDetails['phone'] = $adb->query_result($query, 0, 'phone');
+		$companyDetails['fax'] = $adb->query_result($query, 0, 'fax');
 		for ($i=0; $i<$adb->num_rows($query); $i++) {
-			$path           = $adb->query_result($query, $i, 'path');
-			$attachmentsid  = $adb->query_result($query, $i, 'attachmentsid');
-			$favicon        = decode_html($adb->query_result($query, $i, 'favicon'));
-			$companylogo    = decode_html($adb->query_result($query, $i, 'companylogo'));
-			$applogo        = decode_html($adb->query_result($query, $i, 'applogo'));
-			$name           = $adb->query_result($query, $i, 'name'); // attachmentname
+			$path          = $adb->query_result($query, $i, 'path');
+			$attachmentsid = $adb->query_result($query, $i, 'attachmentsid');
+			$favicon       = decode_html($adb->query_result($query, $i, 'favicon'));
+			$companylogo   = decode_html($adb->query_result($query, $i, 'companylogo'));
+			$applogo       = decode_html($adb->query_result($query, $i, 'applogo'));
+			$name          = $adb->query_result($query, $i, 'name'); // attachmentname
 			if ($name == $favicon && !isset($companyDetails['favicon'])) {
 				$companyDetails['favicon'] = $path.$attachmentsid.'_'.$favicon;
 			}
@@ -3831,5 +3905,24 @@ function validateMauticSecret($signedvalue, $signedkey, $input) {
 	$receivedSignature = $headers['Webhook-Signature'];
 	$computedSignature = base64_encode(hash_hmac('sha256', $input, $signedvalue, true));
 	return ($receivedSignature === $computedSignature);
+}
+
+/**
+ * Function to validate clickhouse secret
+ */
+function validateClickHouseSecret($signedvalue, $signedkey, $input) {
+	$headers = getallheaders();
+	$receivedSignature = $headers['CH-Webhook-Signature'];
+	$computedSignature = base64_encode(hash_hmac('sha256', $input, $signedvalue, true));
+	return ($receivedSignature === $computedSignature);
+}
+
+function convertPathFromAbsoluteToRelative($absolutePath) {
+	global $root_directory;
+	$prefix_pos = strpos($absolutePath, $root_directory);
+	if ($prefix_pos===false) {
+		return '';
+	}
+	return substr($absolutePath, $prefix_pos + strlen($root_directory));
 }
 ?>

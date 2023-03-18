@@ -11,7 +11,7 @@
 
 {if $WORLD_CLOCK_DISPLAY eq 'true'}
 
-<div id="wclock" style="z-index:10000001;" class="slds-grid slds-badge_lightest">
+<div id="wclock" style="z-index:10000001;" class="slds-grid slds-badge_lightest slds-card">
 <div class="slds-grid">
 	<div class="slds-col slds-size_5-of-6 slds-align_absolute-center slds-page-header__title" id="Handle">
 		<b>{$APP.LBL_WORLD_CLOCK}</b>

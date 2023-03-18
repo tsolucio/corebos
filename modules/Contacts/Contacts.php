@@ -592,16 +592,16 @@ class Contacts extends CRMEntity {
 		$query = "SELECT vtiger_contactdetails.salutation as 'Salutation',$fields_list,
 				case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
 			FROM vtiger_contactdetails
-			inner join ".$crmEntityTable." on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
-			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id and vtiger_users.status='Active'
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
+			inner join ".$crmEntityTable.' on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
+			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
+			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid=vtigerCreatedBy.id
 			LEFT JOIN vtiger_account on vtiger_contactdetails.accountid=vtiger_account.accountid
 			left join vtiger_contactaddress on vtiger_contactaddress.contactaddressid=vtiger_contactdetails.contactid
 			left join vtiger_contactsubdetails on vtiger_contactsubdetails.contactsubscriptionid=vtiger_contactdetails.contactid
 			left join vtiger_contactscf on vtiger_contactscf.contactid=vtiger_contactdetails.contactid
 			left join vtiger_customerdetails on vtiger_customerdetails.customerid=vtiger_contactdetails.contactid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_contactdetails vtiger_contactdetails2 ON vtiger_contactdetails2.contactid = vtiger_contactdetails.reportsto";
+			LEFT JOIN vtiger_contactdetails vtiger_contactdetails2 ON vtiger_contactdetails2.contactid=vtiger_contactdetails.reportsto';
 		include_once 'include/fields/metainformation.php';
 		$tabid = getTabid('Contacts');
 		$result = $adb->pquery('select tablename, fieldname, columnname from vtiger_field where tabid=? and uitype=?', array($tabid, Field_Metadata::UITYPE_ACTIVE_USERS));
@@ -941,8 +941,8 @@ class Contacts extends CRMEntity {
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Potentials');
 		$crmEntityTable1 = CRMEntity::getcrmEntityTableAlias('Potentials', true);
 		$pot_q = 'SELECT vtiger_crmentity.crmid
-			FROM '.$crmEntityTable.' 
-			INNER JOIN vtiger_potential ON vtiger_crmentity.crmid=vtiger_potential.potentialid
+			FROM '.$crmEntityTable
+			.' INNER JOIN vtiger_potential ON vtiger_crmentity.crmid=vtiger_potential.potentialid
 			LEFT JOIN vtiger_account ON vtiger_account.accountid=vtiger_potential.related_to
 			WHERE vtiger_crmentity.deleted=0 AND vtiger_potential.related_to=?';
 		$pot_res = $adb->pquery($pot_q, array($id));

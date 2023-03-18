@@ -93,7 +93,9 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 								} else {
 									$value = $dvdata[$column['fieldname']];
 								}
-								$column['value'] = $value;
+								$orgtabid = getTabid($module);
+								$value = getDetailViewOutputHtml($column['uitype'], $column['fieldname'], $column['fieldlabel'], $dvdata, $column['generatedtype'], $orgtabid, $module);
+								$column['value'] = $value[1];
 							}
 						}
 						$layoutdataArr['data'] = $blockinfo['layout'];
@@ -124,8 +126,17 @@ class showSetOfFields_DetailViewBlock extends DeveloperBlock {
 						} else {
 							$handlerclass = $blockinfo['handler_class'];
 							$handler = $blockinfo['handler'];
+							$parameters = $blockinfo['parameters'];
+							$conditions = $blockinfo['conditions'];
 							include_once $blockinfo['loadfrom'];
-							$classhandler = new $handlerclass();
+							if (!empty($parameters)) {
+								$classhandler = new $handlerclass($parameters);
+							} else {
+								$classhandler = new $handlerclass();
+							}
+							if (!empty($conditions)) {
+								$classhandler->conditions = $conditions;
+							}
 							$layoutdataArr['data'] = $classhandler->$handler();
 						}
 					}

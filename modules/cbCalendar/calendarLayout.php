@@ -51,9 +51,9 @@ function display_date($view, $date_time) {
 }
 
 /**
- *  Function to get css class name for date
- *  @param date
- *  @return string  css class name or empty string
+ * Function to get css class name for date
+ * @param date
+ * @return string css class name or empty string
  */
 function dateCheck($slice_date) {
 	global $cal_log;
@@ -72,9 +72,9 @@ function dateCheck($slice_date) {
 
 /**
  * Fuction constructs Events ListView depends on the view
- * @param   array  $cal            - collection of objects and strings
- * @param   string $mode           - string 'listcnt' or empty. if empty means get Events ListView else get total no. of events and no. of pending events Info.
- * @return  string $activity_list  - total no. of events and no. of pending events Info(Eg: Total Events : 2, 1 Pending).
+ * @param array collection of objects and strings
+ * @param string 'listcnt' or empty. if empty means get Events ListView else get total no. of events and no. of pending events Info.
+ * @return string total no. of events and no. of pending events Info(Eg: Total Events : 2, 1 Pending).
  */
 function getEventListView(&$cal, $mode = '') {
 	global $cal_log,$theme;
@@ -131,8 +131,8 @@ function getEventListView(&$cal, $mode = '') {
 
 /**
  * Fuction constructs Todos ListView depends on the view
- * @param  array collection of objects and strings
- * @param  string 'listcnt' or empty. if empty means get Calendar ListView else get total no. of Events and no. of pending events information
+ * @param array collection of objects and strings
+ * @param string 'listcnt' or empty. if empty means get Calendar ListView else get total no. of Events and no. of pending events information
  * @return string total no. of events and no. of pending events information (Eg: Total Events : 2, 1 Pending).
  */
 function getTodosListView($cal, $check = '', $subtab = '') {
@@ -187,8 +187,8 @@ function getTodosListView($cal, $check = '', $subtab = '') {
 
 /**
  * Function creates HTML to display Calendar DayView
- * @param  array     $cal            - collections of objects and strings.
- * @return string    $dayview_layout - html tags in string format
+ * @param array collections of objects and strings.
+ * @return string html tags in string format
  */
 function getDayViewLayout(&$cal) {
 	global $theme, $cal_log;
@@ -241,7 +241,7 @@ function getDayViewLayout(&$cal) {
 				.$time_arr['startmin']."','".$time_arr['startfmt']."','".$time_arr['endhour']."','".$time_arr['endmin']."','".$time_arr['endfmt']
 				."', 'hourview', 'event')\"";
 		}
-		$dayview_layout .= '<tr><td style="cursor:pointer;" class="lvtCol" valign=top height="75"  width="10%" '.$js_string.'>'.$sub_str.'</td>';
+		$dayview_layout .= '<tr><td style="cursor:pointer;" class="lvtCol" valign=top height="75" width="10%" '.$js_string.'>'.$sub_str.'</td>';
 		//To display events in Dayview
 		$dayview_layout .= getdayEventLayer($cal, $cal['calendar']->slices[$i], $no_of_rows);
 		$dayview_layout .= '</tr>';
@@ -254,8 +254,8 @@ function getDayViewLayout(&$cal) {
 
 /**
  * Function creates HTML to display Calendar WeekView
- * @param  array     $cal             - collections of objects and strings.
- * @return string    $weekview_layout - html tags in string format
+ * @param array collections of objects and strings.
+ * @return string html tags in string format
  */
 function getWeekViewLayout(&$cal) {
 	global $cal_log, $theme;
@@ -346,8 +346,8 @@ function getWeekViewLayout(&$cal) {
 
 /**
  * Function creates HTML to display Calendar MonthView
- * @param  array     $cal            - collections of objects and strings.
- * @return  string    $monthview_layout - html tags in string format
+ * @param array collections of objects and strings.
+ * @return string html tags in string format
  */
 function getMonthViewLayout(&$cal) {
 	global $current_user, $cal_log, $theme;
@@ -412,7 +412,7 @@ function getMonthViewLayout(&$cal) {
 						.$time_arr['starthour']."','".$time_arr['startmin']."','".$time_arr['startfmt']."','".$time_arr['endhour']."','".$time_arr['endmin']."','"
 						.$time_arr['endfmt']."', 'hourview','event')".'" href="javascript:void(0)"><img src="'.vtiger_imageurl('cal_add.gif', $theme).'" border="0"></a>';
 				}
-					$monthview_layout .= '  </div></td>';
+					$monthview_layout .= '</div></td>';
 			} else {
 				$monthview_layout .= '<td class="dvtCellLabel" width="14%">&nbsp;</td>';
 			}
@@ -435,8 +435,8 @@ function getMonthViewLayout(&$cal) {
 
 /**
  * Function creates HTML to display Calendar YearView
- * @param  array     $cal            - collections of objects and strings.
- * @return  string    $yearview_layout - html tags in string format
+ * @param array collections of objects and strings.
+ * @return string html tags in string format
  */
 function getYearViewLayout(&$cal) {
 	global $mod_strings, $cal_log;
@@ -529,9 +529,9 @@ function getYearViewLayout(&$cal) {
 
 /**
  * Function creates HTML To display events in day view
- * @param  array     $cal         - collection of objects and strings
- * @param  string    $slice       - date:time(eg: 2006-07-13:10)
- * @return string    $eventlayer  - hmtl in string format
+ * @param array collection of objects and strings
+ * @param string date:time(eg: 2006-07-13:10)
+ * @return string hmtl in string format
  */
 function getdayEventLayer(&$cal, $slice, $rows) {
 	global $mod_strings, $cal_log, $listview_max_textlength, $adb, $current_user, $theme;
@@ -540,7 +540,7 @@ function getdayEventLayer(&$cal, $slice, $rows) {
 	$arrow_img_name = '';
 	$rows = $rows + 1;
 	$last_colwidth = 100 / $rows;
-	$width = 100 / $rows ;
+	$width = 100 / $rows;
 	$act = $cal['calendar']->day_slice[$slice]->activities;
 	if (!empty($act)) {
 		for ($i=0; $i<count($act); $i++) {
@@ -652,9 +652,9 @@ function getdayEventLayer(&$cal, $slice, $rows) {
 
 /**
  * Function creates HTML To display events in week view
- * @param  array     $cal         - collection of objects and strings
- * @param  string    $slice       - date:time(eg: 2006-07-13:10)
- * @return string    $eventlayer  - hmtl in string format
+ * @param array collection of objects and strings
+ * @param string date:time(eg: 2006-07-13:10)
+ * @return string hmtl in string format
  */
 function getweekEventLayer(&$cal, $slice) {
 	global $mod_strings,$cal_log,$listview_max_textlength,$adb,$current_user,$theme;
@@ -678,7 +678,7 @@ function getweekEventLayer(&$cal, $slice) {
 			$eventstatus = $act[$i]->eventstatus;
 			$user = $act[$i]->owner;
 			$priority = $act[$i]->priority;
-			$image =  vtiger_imageurl($act[$i]->image_name, $theme);
+			$image = vtiger_imageurl($act[$i]->image_name, $theme);
 			$idShared = 'normal';
 			if ($act[$i]->shared) {
 				$idShared = 'shared';
@@ -757,9 +757,9 @@ function getweekEventLayer(&$cal, $slice) {
 
 /**
  * Function creates HTML To display events in month view
- * @param  array     $cal         - collection of objects and strings
- * @param  string    $slice       - date(eg: 2006-07-13)
- * @return string    $eventlayer  - hmtl in string format
+ * @param array collection of objects and strings
+ * @param string date(eg: 2006-07-13)
+ * @return string hmtl in string format
  */
 function getmonthEventLayer(&$cal, $slice) {
 	global $mod_strings,$cal_log,$adb,$current_user,$theme;
@@ -833,8 +833,8 @@ function getmonthEventLayer(&$cal, $slice) {
  * @param array collection of objects and strings
  * @param date
  * @param date
- * @param string  'listcnt'|empty. if 'listcnt' means it returns no. of events and no. of pending events in array format else it returns events list in array format
- * @return array  eventslists in array format
+ * @param string 'listcnt'|empty. if 'listcnt' means it returns no. of events and no. of pending events in array format else it returns events list in array format
+ * @return array eventslists in array format
  */
 function getEventList(&$calendar, $start_date, $end_date, $info = '') {
 	global $adb, $current_user, $mod_strings, $app_strings, $cal_log, $theme, $currentModule;
@@ -885,7 +885,7 @@ function getEventList(&$calendar, $start_date, $end_date, $info = '') {
 		}
 
 		$pending_query = $query." AND (vtiger_activity.eventstatus = 'Planned')".$com_q;
-		$total_q =  $query.$com_q;
+		$total_q = $query.$com_q;
 		$info_params[] = $current_user->id;
 
 		if (count($groupids) > 0) {
@@ -1074,11 +1074,11 @@ function getTodoList(&$calendar, $start_date, $end_date, $info = '') {
 	$query .= getNonAdminAccessControlQuery('cbCalendar', $current_user);
 	$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_activity.activitytype != 'Emails'".
 		" AND ((CAST(CONCAT(date_start,' ',time_start) AS DATETIME) >= ? AND CAST(CONCAT(date_start,' ',time_start) AS DATETIME) <= ?)
-				OR	(CAST(CONCAT(due_date,' ',time_end) AS DATETIME) >= ? AND CAST(CONCAT(due_date,' ',time_end) AS DATETIME) <= ? )
-				OR	(CAST(CONCAT(date_start,' ',time_start) AS DATETIME) <= ? AND CAST(CONCAT(due_date,' ',time_end) AS DATETIME) >= ?)
-			)";
+			OR (CAST(CONCAT(due_date,' ',time_end) AS DATETIME) >= ? AND CAST(CONCAT(due_date,' ',time_end) AS DATETIME) <= ? )
+			OR (CAST(CONCAT(date_start,' ',time_start) AS DATETIME) <= ? AND CAST(CONCAT(due_date,' ',time_end) AS DATETIME) >= ?)
+		)";
 
-	$list_query = $query.' AND vtiger_crmentity.smownerid = '  . $current_user->id;
+	$list_query = $query.' AND vtiger_crmentity.smownerid='.$current_user->id;
 
 	$startDate = new DateTimeField($start_date.' 00:00');
 	$endDate = new DateTimeField($end_date. ' 23:59');
@@ -1103,7 +1103,7 @@ function getTodoList(&$calendar, $start_date, $end_date, $info = '') {
 		}
 
 		$pending_query = $query." AND (vtiger_activity.status != 'Completed')".$com_q;
-		$total_q =  $query.$com_q;
+		$total_q = $query.$com_q;
 		$total_res = $adb->pquery($total_q, $info_params);
 		$total = $adb->num_rows($total_res);
 		$res = $adb->pquery($pending_query, $info_params);
@@ -1252,8 +1252,8 @@ function getTodoInfo(&$cal, $mode) {
 
 /**
  * Function creates HTML to display Events ListView
- * @param array  $entry_list    - collection of strings(Event Information)
- * @return string $list_view     - html tags in string format
+ * @param array collection of strings(Event Information)
+ * @return string html tags in string format
  */
 function constructEventListView(&$cal, $entry_list, $navigation_array = '') {
 	global $mod_strings,$app_strings,$adb,$cal_log,$current_user,$theme;
@@ -1342,7 +1342,7 @@ function constructEventListView(&$cal, $entry_list, $navigation_array = '') {
 					if (($key=='eventdetail'|| $key=='action')
 						&& ($current_user->column_fields['is_admin']!='on'
 						&& $adb->num_rows($role_list)==0
-						&& ($adb->num_rows($is_shared)==0  || $entry_list[$i]['visibility']=='Private'))
+						&& ($adb->num_rows($is_shared)==0 || $entry_list[$i]['visibility']=='Private'))
 						&& $userName!=$entry_list[$i]['assignedto']
 					) {
 						if ($key=='eventdetail') {
@@ -1508,7 +1508,7 @@ function constructTodoListView($todo_list, $cal, $subtab, $navigation_array = ''
 	} else {
 		$list_view .='<tr><td>&nbsp;</td>';
 	}
-	$list_view .="<td align='center' width='60%'><span  id='total_activities'>".getTodoInfo($cal, 'listcnt')."</span>&nbsp;</td>
+	$list_view .="<td align='center' width='60%'><span id='total_activities'>".getTodoInfo($cal, 'listcnt')."</span>&nbsp;</td>
 				<td align='right' width='28%'>&nbsp;</td>
 			</tr>
 		</table>
@@ -1568,7 +1568,7 @@ function constructTodoListView($todo_list, $cal, $subtab, $navigation_array = ''
 
 /**
  * Function returns the list of privileges and permissions of the events that the current user can view the details of.
- * @return string - query that is used as secondary parameter to fetch the events that the user can view and the schedule of the users
+ * @return string query that is used as secondary parameter to fetch the events that the user can view and the schedule of the users
  */
 function getCalendarViewSecurityParameter() {
 	global $current_user;

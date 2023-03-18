@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * modified by crm-now  www.crm-now.com
  ************************************************************************************/
 include_once __DIR__ . '/../ISMSProvider.php';
 include_once 'vtlib/Vtiger/Net/Client.php';
@@ -52,9 +51,9 @@ class Nexmo implements ISMSProvider {
 		if ($type) {
 			switch (strtoupper($type)) {
 				case self::SERVICE_AUTH:
-					return  self::SERVICE_URI . '/sms/json';
+					return self::SERVICE_URI . '/sms/json';
 				case self::SERVICE_SEND:
-					return  self::SERVICE_URI . '/sms/json';
+					return self::SERVICE_URI . '/sms/json';
 				case self::SERVICE_QUERY:
 				default:
 					return self::SERVICE_URI . '/search/message';
@@ -94,7 +93,7 @@ class Nexmo implements ISMSProvider {
 			$result = array( 'error' => false, 'statusmessage' => '' );
 			if (isset($message_content['error-text'])) {
 				$result['error'] = true;
-				$result['to'] =  $message_content['to'];
+				$result['to'] = $message_content['to'];
 				$result['statusmessage'] = $message_content['messages'][0]['error-text'];
 			} else {
 				$result['id'] = $message_content['message-id'];

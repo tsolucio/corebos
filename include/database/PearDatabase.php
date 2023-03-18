@@ -23,6 +23,9 @@ $logsqltm = LoggerManager::getLogger('SQLTIME');
 // Callback class useful to convert PreparedStatement Question Marks to SQL value
 // See function convertPS2Sql in PearDatabase below
 class PreparedQMark2SqlValue {
+	public $ctr;
+	public $vals;
+
 	// Constructor
 	public function __construct($vals) {
 		$this->ctr = 0;
@@ -125,9 +128,9 @@ class PearDatabase {
 	public $userName=null;
 	public $userPassword=null;
 	public $query_time = 0;
-	public $log = null;
 	public $lastmysqlrow = -1;
 	public $enableSQLlog = false;
+	public $logEnabled = true;
 	public $continueInstallOnError = true;
 
 	// If you want to avoid executing PreparedStatement, set this to true
@@ -193,8 +196,9 @@ class PearDatabase {
 
 	public function println($msg) {
 		global $log;
-		$log->info('', (array)$msg);
-		return $msg;
+		if ($this->logEnabled && $log) {
+			$log->debug('', (array)$msg);
+		}
 	}
 
 	public function setDieOnError($value) {
@@ -353,16 +357,15 @@ class PearDatabase {
 	}
 
 	public function query($sql, $dieOnError = false, $msg = '') {
-		global $log;
 		// Performance Tuning: Have we cached the result earlier?
 		if ($this->isCacheEnabled()) {
 			$fromcache = $this->getCacheInstance()->getCacheResult($sql);
 			if ($fromcache) {
-				$log->debug(">< query result from cache: $sql");
+				$this->println(">< query result from cache: $sql");
 				return $fromcache;
 			}
 		}
-		$log->debug('> query '.$sql);
+		$this->println('> query '.$sql);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
@@ -416,7 +419,6 @@ class PearDatabase {
 	* @param string Error message on query execution failure
 	*/
 	public function pquery($sql, $params, $dieOnError = false, $msg = '') {
-		global $log;
 		if (!isset($params)) {
 			$params = array();
 		}
@@ -424,11 +426,11 @@ class PearDatabase {
 		if ($this->isCacheEnabled()) {
 			$fromcache = $this->getCacheInstance()->getCacheResult($sql, $params);
 			if ($fromcache) {
-				$log->debug("> pquery result from cache: $sql");
+				$this->println("> pquery result from cache: $sql");
 				return $fromcache;
 			}
 		}
-		$log->debug('> pquery '.$sql);
+		$this->println('> pquery '.$sql);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
@@ -436,7 +438,7 @@ class PearDatabase {
 		$sql_start_time = microtime(true);
 		$params = $this->flatten_array($params);
 		if (!is_null($params) && is_array($params)) {
-			$log->debug('parameters', $params);
+			$this->println($params);
 		}
 
 		if ($this->avoidPreparedSql || empty($params)) {
@@ -517,8 +519,7 @@ class PearDatabase {
 	}
 
 	public function limitQuery($sql, $start, $count, $dieOnError = false, $msg = '') {
-		global $log;
-		$log->debug('> limitQuery '.$sql .','.$start .','.$count);
+		$this->println('> limitQuery '.$sql .','.$start .','.$count);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
@@ -810,10 +811,9 @@ class PearDatabase {
 	 * WARNING: this method returns false for SELECT statements
 	 */
 	public function getAffectedRowCount(&$result) {
-		global $log;
-		$log->debug('> getAffectedRowCount');
+		$this->println('> getAffectedRowCount');
 		$rows =$this->database->Affected_Rows();
-		$log->debug('< getAffectedRowCount '.$rows);
+		$this->println('< getAffectedRowCount '.$rows);
 		return $rows;
 	}
 
@@ -823,7 +823,7 @@ class PearDatabase {
 		if ($this->getRowCount($result) == 1) {
 			return $result;
 		}
-		$this->log->error('Rows Returned:'. $this->getRowCount($result) .' More than 1 row returned for '. $sql);
+		$this->println('Rows Returned:'. $this->getRowCount($result) .' More than 1 row returned for '. $sql);
 		return '';
 	}
 
@@ -834,17 +834,20 @@ class PearDatabase {
 		if ($this->getRowCount($result) == 1) {
 			return $result;
 		}
-		$this->log->error('Rows Returned:'. $this->getRowCount($result) .' More than 1 row returned for '. $sql);
+		$this->println('Rows Returned:'. $this->getRowCount($result) .' More than 1 row returned for '. $sql);
 		return '';
 	}
 
-	public function fetchByAssoc(&$result, $rowNum = -1, $encode = true) {
+	public function fetchByAssoc(&$result, $rowNum = -1, $encode = true, $keycase = ADODB_ASSOC_CASE_LOWER) {
 		if ($result->EOF) {
 			$this->println('DB fetchByAssoc return null');
 			return null;
 		}
 		if (isset($result) && $rowNum < 0) {
-			$row = $this->change_key_case($result->GetRowAssoc(false));
+			$row = $result->GetRowAssoc($keycase);
+			if ($keycase != ADODB_ASSOC_CASE_NATIVE) {
+				$row = $this->change_key_case($row);
+			}
 			$result->MoveNext();
 			if ($encode && is_array($row)) {
 				return array_map('to_html', $row);
@@ -856,7 +859,10 @@ class PearDatabase {
 			$result->Move($rowNum);
 		}
 		$this->lastmysqlrow = $rowNum;
-		$row = $this->change_key_case($result->GetRowAssoc(false));
+		$row = $result->GetRowAssoc($keycase);
+		if ($keycase != ADODB_ASSOC_CASE_NATIVE) {
+			$row = $this->change_key_case($row);
+		}
 		$result->MoveNext();
 		$this->println($row);
 
@@ -916,7 +922,6 @@ class PearDatabase {
 	 * Constructor
 	 */
 	public function __construct($dbtype = '', $host = '', $dbname = '', $username = '', $passwd = '') {
-		$this->log = LoggerManager::getLogger('DB');
 		$this->resetSettings($dbtype, $host, $dbname, $username, $passwd);
 
 		if (!isset($this->dbType)) {
@@ -993,9 +998,6 @@ class PearDatabase {
 		$this->checkConnection();
 		$db = $this->database;
 		$schema = new adoSchema($db);
-		//Debug Adodb XML Schema
-		$schema->XMLS_DEBUG = true;
-		//Debug Adodb
 		$schema->debug = true;
 		$sql = $schema->ParseSchema($schemaFile);
 
@@ -1035,8 +1037,18 @@ class PearDatabase {
 		return false;
 	}
 
+	public function getMetaColumns($tablename) {
+		$this->println('DB getMetaColumns '.$tablename);
+		$this->checkConnection();
+		$return = @$this->database->MetaColumns($tablename);
+		foreach ($return as $colname => $colinfo) {
+			$return[$colname] = $colinfo;
+		}
+		return $return;
+	}
+
 	public function getColumnNames($tablename) {
-		$this->println('DB getColumnNames table='.$tablename);
+		$this->println('DB getColumnNames '.$tablename);
 		$this->checkConnection();
 		$adoflds = @$this->database->MetaColumns($tablename);
 		$i=0;

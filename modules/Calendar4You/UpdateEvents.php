@@ -40,7 +40,7 @@ if ($num_rows1 > 0) {
 
 			if ($GoogleSync4You->isLogged()) {
 				$sql2 = 'SELECT its4you_googlesync4you_events.*, vtiger_activity.activitytype
-					FROM its4you_googlesync4you_events 
+					FROM its4you_googlesync4you_events
 					INNER JOIN vtiger_activity ON vtiger_activity.activityid = its4you_googlesync4you_events.crmid
 					WHERE '.$where.' AND userid = ?';
 				$result2 = $adb->pquery($sql2, array($controldate,$userid));
@@ -109,7 +109,7 @@ if ($num_rows1 > 0) {
 								$duration_time = $new_time_end_time - $new_time_start_time;
 
 								$duration_hour = floor($duration_time / 3600);
-								$duration_minutes = ($duration_time - ($duration_hour * 3600 ))  / 60;
+								$duration_minutes = ($duration_time - ($duration_hour * 3600 )) / 60;
 
 								$focus->column_fields['duration_hours'] = $duration_hours;
 								$focus->column_fields['duration_minutes'] = $duration_minutes;

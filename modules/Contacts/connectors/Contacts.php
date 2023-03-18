@@ -102,7 +102,7 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Function to get Fields
-	 * @return <Array>
+	 * @return array
 	 */
 	public function getFields() {
 		return $this->fields;
@@ -110,9 +110,9 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Function to get the mapped value
-	 * @param <Array> $valueSet
-	 * @param <Array> $mapping
-	 * @return <Mixed>
+	 * @param array $valueSet
+	 * @param array $mapping
+	 * @return mixed
 	 */
 	public function getMappedValue($valueSet, $mapping) {
 		$key = $mapping['google_field_type'];
@@ -128,9 +128,9 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Function to get field value of google field
-	 * @param <Array> $googleFieldDetails
-	 * @param <Google_Contacts_Model> $user
-	 * @return <Mixed>
+	 * @param array $googleFieldDetails
+	 * @param Google_Contacts_Model $user
+	 * @return mixed
 	 */
 	public function getGoogleFieldValue($googleFieldDetails, $googleRecord, $user) {
 		$googleFieldValue = '';
@@ -182,8 +182,8 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Tarsform Google Records to Vtiger Records
-	 * @param <array> $targetRecords
-	 * @return <array> tranformed Google Records
+	 * @param array $targetRecords
+	 * @return array tranformed Google Records
 	 */
 	public function transformToSourceRecord($targetRecords) {
 		$entity = array();
@@ -249,8 +249,8 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Pull the contacts from google
-	 * @param <object> $SyncState
-	 * @return <array> google Records
+	 * @param object $SyncState
+	 * @return array google Records
 	 */
 	public function pull(WSAPP_SyncStateModel $SyncState) {
 		return $this->getContacts($SyncState);
@@ -258,11 +258,11 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Helper to send http request using NetClient
-	 * @param <String> $url
-	 * @param <Array> $headers
-	 * @param <Array> $params
-	 * @param <String> $method
-	 * @return <Mixed>
+	 * @param string $url
+	 * @param array $headers
+	 * @param array $params
+	 * @param string $method
+	 * @return mixed
 	 */
 	protected function fireRequest($url, $headers, $params = array(), $method = 'POST') {
 		$httpClient = new Vtiger_Net_Client($url);
@@ -311,8 +311,8 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Pull the contacts from google
-	 * @param <object> $SyncState
-	 * @return <array> google Records
+	 * @param object $SyncState
+	 * @return array google Records
 	 */
 	public function getContacts($SyncState) {
 		global $current_user;
@@ -399,10 +399,10 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 		return $googleRecords;
 	}
 
-/**
+	/**
 	 * Function to send a batch request
-	 * @param <String> <Xml> $batchFeed
-	 * @return <Mixed>
+	 * @param string <Xml> $batchFeed
+	 * @return mixed
 	 */
 	protected function sendBatchRequest($batchFeed) {
 		if ($this->apiConnection->isTokenExpired()) {
@@ -431,26 +431,26 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 	 */
 	protected function addEntityDetailsToAtomEntry(&$entry, $entity, $user) {
 		$gdNS = $this->NS['gd'];
-		$gdName = $entry->addChild("name", '', $gdNS);
+		$gdName = $entry->addChild('name', '', $gdNS);
 		if ($entity->get('salutationtype')) {
-			$gdName->addChild("namePrefix", $entity->get('salutationtype'), $gdNS);
+			$gdName->addChild('namePrefix', $entity->get('salutationtype'), $gdNS);
 		}
 		if ($entity->get('firstname')) {
-			$gdName->addChild("givenName", $entity->get('firstname'), $gdNS);
+			$gdName->addChild('givenName', $entity->get('firstname'), $gdNS);
 		}
 		if ($entity->get('lastname')) {
-			$gdName->addChild("familyName", $entity->get('lastname'), $gdNS);
+			$gdName->addChild('familyName', $entity->get('lastname'), $gdNS);
 		}
 		$gdRel = $gdNS . '#';
 
 		if ($entity->get('account_id') || $entity->get('title')) {
-			$gdOrganization = $entry->addChild("organization", null, $gdNS);
-			$gdOrganization->addAttribute("rel", "http://schemas.google.com/g/2005#other");
+			$gdOrganization = $entry->addChild('organization', null, $gdNS);
+			$gdOrganization->addAttribute('rel', 'http://schemas.google.com/g/2005#other');
 			if ($entity->get('account_id')) {
-				$gdOrganization->addChild("orgName", $entity->get('account_id'), $gdNS);
+				$gdOrganization->addChild('orgName', $entity->get('account_id'), $gdNS);
 			}
 			if ($entity->get('title')) {
-				$gdOrganization->addChild("orgTitle", $entity->get('title'), $gdNS);
+				$gdOrganization->addChild('orgTitle', $entity->get('title'), $gdNS);
 			}
 		}
 
@@ -466,32 +466,32 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 			switch ($googleFieldDetails['google_field_name']) {
 				case 'gd:email':
 					if ($entity->get($vtFieldName)) {
-						$gdEmail = $entry->addChild("email", '', $gdNS);
+						$gdEmail = $entry->addChild('email', '', $gdNS);
 						if ($googleFieldDetails['google_field_type'] == 'custom') {
-							$gdEmail->addAttribute("label", $this->mbEncode(decode_html($googleFieldDetails['google_custom_label'])));
+							$gdEmail->addAttribute('label', $this->mbEncode(decode_html($googleFieldDetails['google_custom_label'])));
 						} else {
-							$gdEmail->addAttribute("rel", $gdRel . $googleFieldDetails['google_field_type']);
+							$gdEmail->addAttribute('rel', $gdRel . $googleFieldDetails['google_field_type']);
 						}
-						$gdEmail->addAttribute("address", $entity->get($vtFieldName));
+						$gdEmail->addAttribute('address', $entity->get($vtFieldName));
 						if ($vtFieldName == 'email') {
-							$gdEmail->addAttribute("primary", 'true');
+							$gdEmail->addAttribute('primary', 'true');
 						}
 					}
 					break;
 				case 'gContact:birthday':
 					if ($entity->get('birthday')) {
 						$gContactNS = $this->NS['gContact'];
-						$gContactBirthday = $entry->addChild("birthday", '', $gContactNS);
-						$gContactBirthday->addAttribute("when", $entity->get('birthday'));
+						$gContactBirthday = $entry->addChild('birthday', '', $gContactNS);
+						$gContactBirthday->addAttribute('when', $entity->get('birthday'));
 					}
 					break;
 				case 'gd:phoneNumber':
 					if ($entity->get($vtFieldName)) {
-						$gdPhoneMobile = $entry->addChild("phoneNumber", $entity->get($vtFieldName), $gdNS);
+						$gdPhoneMobile = $entry->addChild('phoneNumber', $entity->get($vtFieldName), $gdNS);
 						if ($googleFieldDetails['google_field_type'] == 'custom') {
-							$gdPhoneMobile->addAttribute("label", $this->mbEncode(decode_html($googleFieldDetails['google_custom_label'])));
+							$gdPhoneMobile->addAttribute('label', $this->mbEncode(decode_html($googleFieldDetails['google_custom_label'])));
 						} else {
-							$gdPhoneMobile->addAttribute("rel", $gdRel . $googleFieldDetails['google_field_type']);
+							$gdPhoneMobile->addAttribute('rel', $gdRel . $googleFieldDetails['google_field_type']);
 						}
 					}
 					break;
@@ -499,57 +499,57 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 					if ($vtFieldName == 'mailingaddress') {
 						if ($entity->get('mailingstreet') || $entity->get('mailingpobox') || $entity->get('mailingzip') ||
 								$entity->get('mailingcity') || $entity->get('mailingstate') || $entity->get('mailingcountry')) {
-							$gdAddressHome = $entry->addChild("structuredPostalAddress", null, $gdNS);
+							$gdAddressHome = $entry->addChild('structuredPostalAddress', null, $gdNS);
 							if ($googleFieldDetails['google_field_type'] == 'custom') {
-								$gdAddressHome->addAttribute("label", $this->mbEncode(decode_html($googleFieldDetails['google_custom_label'])));
+								$gdAddressHome->addAttribute('label', $this->mbEncode(decode_html($googleFieldDetails['google_custom_label'])));
 							} else {
-								$gdAddressHome->addAttribute("rel", $gdRel . $googleFieldDetails['google_field_type']);
+								$gdAddressHome->addAttribute('rel', $gdRel . $googleFieldDetails['google_field_type']);
 							}
 							if ($entity->get('mailingstreet')) {
-								$gdAddressHome->addChild("street", $entity->get('mailingstreet'), $gdNS);
+								$gdAddressHome->addChild('street', $entity->get('mailingstreet'), $gdNS);
 							}
 							if ($entity->get('mailingpobox')) {
-								$gdAddressHome->addChild("pobox", $entity->get('mailingpobox'), $gdNS);
+								$gdAddressHome->addChild('pobox', $entity->get('mailingpobox'), $gdNS);
 							}
 							if ($entity->get('mailingzip')) {
-								$gdAddressHome->addChild("postcode", $entity->get('mailingzip'), $gdNS);
+								$gdAddressHome->addChild('postcode', $entity->get('mailingzip'), $gdNS);
 							}
 							if ($entity->get('mailingcity')) {
-								$gdAddressHome->addChild("city", $entity->get('mailingcity'), $gdNS);
+								$gdAddressHome->addChild('city', $entity->get('mailingcity'), $gdNS);
 							}
 							if ($entity->get('mailingstate')) {
-								$gdAddressHome->addChild("region", $entity->get('mailingstate'), $gdNS);
+								$gdAddressHome->addChild('region', $entity->get('mailingstate'), $gdNS);
 							}
 							if ($entity->get('mailingcountry')) {
-								$gdAddressHome->addChild("country", $entity->get('mailingcountry'), $gdNS);
+								$gdAddressHome->addChild('country', $entity->get('mailingcountry'), $gdNS);
 							}
 						}
 					} else {
 						if ($entity->get('otherstreet') || $entity->get('otherpobox') || $entity->get('otherzip') ||
 								$entity->get('othercity') || $entity->get('otherstate') || $entity->get('othercountry')) {
-							$gdAddressWork = $entry->addChild("structuredPostalAddress", null, $gdNS);
+							$gdAddressWork = $entry->addChild('structuredPostalAddress', null, $gdNS);
 							if ($googleFieldDetails['google_field_type'] == 'custom') {
-								$gdAddressWork->addAttribute("label", $this->mbEncode(decode_html($googleFieldDetails['google_custom_label'])));
+								$gdAddressWork->addAttribute('label', $this->mbEncode(decode_html($googleFieldDetails['google_custom_label'])));
 							} else {
-								$gdAddressWork->addAttribute("rel", $gdRel . $googleFieldDetails['google_field_type']);
+								$gdAddressWork->addAttribute('rel', $gdRel . $googleFieldDetails['google_field_type']);
 							}
 							if ($entity->get('otherstreet')) {
-								$gdAddressWork->addChild("street", $entity->get('otherstreet'), $gdNS);
+								$gdAddressWork->addChild('street', $entity->get('otherstreet'), $gdNS);
 							}
 							if ($entity->get('otherpobox')) {
-								$gdAddressWork->addChild("pobox", $entity->get('otherpobox'), $gdNS);
+								$gdAddressWork->addChild('pobox', $entity->get('otherpobox'), $gdNS);
 							}
 							if ($entity->get('otherzip')) {
-								$gdAddressWork->addChild("postcode", $entity->get('otherzip'), $gdNS);
+								$gdAddressWork->addChild('postcode', $entity->get('otherzip'), $gdNS);
 							}
 							if ($entity->get('othercity')) {
-								$gdAddressWork->addChild("city", $entity->get('othercity'), $gdNS);
+								$gdAddressWork->addChild('city', $entity->get('othercity'), $gdNS);
 							}
 							if ($entity->get('otherstate')) {
-								$gdAddressWork->addChild("region", $entity->get('otherstate'), $gdNS);
+								$gdAddressWork->addChild('region', $entity->get('otherstate'), $gdNS);
 							}
 							if ($entity->get('othercountry')) {
-								$gdAddressWork->addChild("country", $entity->get('othercountry'), $gdNS);
+								$gdAddressWork->addChild('country', $entity->get('othercountry'), $gdNS);
 							}
 						}
 					}
@@ -583,9 +583,9 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Function to add update entry to the atomfeed
-	 * @param <SimpleXMLElement> $feed
-	 * @param <Google_Contacts_Model> $entity
-	 * @param <Users_Record_Model> $user
+	 * @param SimpleXMLElement $feed
+	 * @param Google_Contacts_Model $entity
+	 * @param Users_Record_Model $user
 	 */
 	protected function addUpdateContactEntry(&$feed, $entity, $user) {
 		$batchNS = $this->NS['batch'];
@@ -596,9 +596,9 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 		$entry->addChild('id', 'update', $batchNS);
 		$batchOperation = $entry->addChild('operation', '', $batchNS);
 		$batchOperation->addAttribute('type', 'update');
-		$category = $entry->addChild("category");
-		$category->addAttribute("scheme", "http://schemas.google.com/g/2005#kind");
-		$category->addAttribute("term", "http://schemas.google.com/g/2008#contact");
+		$category = $entry->addChild('category');
+		$category->addAttribute('scheme', 'http://schemas.google.com/g/2005#kind');
+		$category->addAttribute('term', 'http://schemas.google.com/g/2008#contact');
 		$entry->addChild('id', $entryId);
 		global $current_user;
 		if (!$user) {
@@ -619,8 +619,8 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Function to add delete contact entry to atom feed
-	 * @param <SimpleXMLElement> $feed
-	 * @param <Google_Contacts_Model> $entity
+	 * @param SimpleXMLElement $feed
+	 * @param Google_Contacts_Model $entity
 	 */
 	protected function addDeleteContactEntry(&$feed, $entity) {
 		$batchNS = $this->NS['batch'];
@@ -636,9 +636,9 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Function to add create entry to the atomfeed
-	 * @param <SimpleXMLElement> $feed
-	 * @param <Google_Contacts_Model> $entity
-	 * @param <Users_Record_Model> $user
+	 * @param SimpleXMLElement $feed
+	 * @param Google_Contacts_Model $entity
+	 * @param Users_Record_Model $user
 	 */
 	protected function addCreateContactEntry(&$feed, $entity, $user) {
 		$entry = $feed->addChild('entry');
@@ -669,10 +669,10 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 	/**
 	 * Function to push records in a batch
 	 * https://developers.google.com/google-apps/contacts/v3/index#batch_operations
-	 * @global <String> $default_charset
-	 * @param <Array> $records
-	 * @param <Users_Record_Model> $user
-	 * @return <Array> - pushedRecords
+	 * @global string $default_charset
+	 * @param array $records
+	 * @param Users_Record_Model $user
+	 * @return array pushedRecords
 	 */
 	protected function pushChunk($records, $user) {
 		global $default_charset;
@@ -714,9 +714,9 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Function to push records in batch of maxBatchSize
-	 * @param <Array Google_Contacts_Model> $records
-	 * @param <Users_Record_Model> $user
-	 * @return <Array> - pushed records
+	 * @param array Google_Contacts_Model $records
+	 * @param Users_Record_Model $user
+	 * @return array pushed records
 	 */
 	protected function batchPush($records, $user) {
 		$chunks = array_chunk($records, $this->maxBatchSize);
@@ -730,8 +730,8 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Push the vtiger records to google
-	 * @param <array> $records vtiger records to be pushed to google
-	 * @return <array> pushed records
+	 * @param array $records vtiger records to be pushed to google
+	 * @return array pushed records
 	 */
 	public function push($records, $user = false) {
 		global $current_user;
@@ -799,8 +799,8 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * Tarsform  Vtiger Records to Google Records
-	 * @param <array> $vtContacts
-	 * @return <array> tranformed vtiger Records
+	 * @param array $vtContacts
+	 * @return array tranformed vtiger Records
 	 */
 	public function transformToTargetRecord($vtContacts) {
 		$records = array();
@@ -816,7 +816,7 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	/**
 	 * returns if more records exits or not
-	 * @return <boolean> true or false
+	 * @return boolean true or false
 	 */
 	public function moreRecordsExits() {
 		return $this->totalRecords - $this->createdRecords > 0;
@@ -824,8 +824,8 @@ class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
 	 /**
 	 * Function to pull contact groups for user
-	 * @param <Boolean> $onlyIds
-	 * @return <Array>
+	 * @param boolean $onlyIds
+	 * @return array
 	 */
 	public function pullGroups($onlyIds = false) {
 		$query = array(

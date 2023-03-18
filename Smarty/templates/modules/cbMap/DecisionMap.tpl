@@ -1,20 +1,20 @@
 <style>
 .slds-dropdown__scroll::-webkit-scrollbar {
-  width: 8px;
+	width: 8px;
 }
 
 .slds-dropdown__scroll::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
-  border-radius: 5px;
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 5px;
 }
 
 .slds-dropdown__scroll::-webkit-scrollbar-thumb {
-  background: grey;
-  border-radius: 5px;
+	background: grey;
+	border-radius: 5px;
 }
 
 .slds-dropdown__scroll::-webkit-scrollbar-thumb:hover {
-  background: #d3d3d3;
+	background: #d3d3d3;
 }
 </style>
 <script src="modules/com_vtiger_workflow/resources/functional.js" type="text/javascript" charset="utf-8"></script>
@@ -150,7 +150,7 @@ function saveModuleMapAction() {
 			const mapid = document.getElementById('bmapid_'+ruleData[r].sequence).value;
 			const mapRule = {
 				sequence: parseInt(ruleData[r].sequence),
-				mapid: mapid  == '' ? '' : mapid,
+				mapid: mapid == '' ? '' : mapid,
 				output: ruleData[r].output,
 			}
 			newRuleData.push(mapRule);

@@ -62,7 +62,7 @@ class Purchase {
 		}
 
 		$items = json_decode($data['cartitems'], true);
-		$salesorder =  array (
+		$salesorder = array (
 			'subject' => $data['subject'],
 			'bill_city' => '',
 			'bill_code' => '',
@@ -100,26 +100,26 @@ class Purchase {
 			'start_period' => null,
 			'salesorder_no' => null,
 			'terms_conditions' => null,
-			'discount_type_final' => 'percentage',  //  zero/amount/percentage
-			'hdnDiscountAmount' => '0',  // only used if 'discount_type_final' == 'amount'
-			'hdnDiscountPercent' => '0',  // only used if 'discount_type_final' == 'percentage'
+			'discount_type_final' => 'percentage', // zero/amount/percentage
+			'hdnDiscountAmount' => '0', // only used if 'discount_type_final' == 'amount'
+			'hdnDiscountPercent' => '0', // only used if 'discount_type_final' == 'percentage'
 			'shipping_handling_charge' => 0,
-			'shtax1' => 0,   // apply this tax, MUST exist in the application with this internal taxname
-			'shtax2' => 0,   // apply this tax, MUST exist in the application with this internal taxname
-			'shtax3' => 0,   // apply this tax, MUST exist in the application with this internal taxname
-			'adjustmentType' => 'none',  //  none/add/deduct
+			'shtax1' => 0, // apply this tax, MUST exist in the application with this internal taxname
+			'shtax2' => 0, // apply this tax, MUST exist in the application with this internal taxname
+			'shtax3' => 0, // apply this tax, MUST exist in the application with this internal taxname
+			'adjustmentType' => 'none', // none/add/deduct
 			'adjustment' => '0',
-			'taxtype' => 'group',  // group or individual  taxes are obtained from the application
+			'taxtype' => 'group', // group or individual taxes are obtained from the application
 			'pdoInformation' => array(
 				array(
 					'productid'=>$data['pdoid'],
 					'comment'=>$data['fecha'],
 					'qty'=>$items[0]['quantity'],
 					'listprice'=>($items[0]['amount']/1.21),
-					'discount'=>0,  // 0 no discount, 1 discount
-					'discount_type'=>0,  //  amount/percentage
-					'discount_percentage'=>0,  // not needed nor used if type is amount
-					'discount_amount'=>0,  // not needed nor used if type is percentage
+					'discount'=>0, // 0 no discount, 1 discount
+					'discount_type'=>0, // amount/percentage
+					'discount_percentage'=>0, // not needed nor used if type is amount
+					'discount_amount'=>0, // not needed nor used if type is percentage
 				),
 			),
 		);
@@ -233,8 +233,8 @@ class Purchase {
 			$notifyUrl = json_decode($extraData);
 			$options = array(
 				'http' => array(
-					'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-					'method'  => 'POST',
+					'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+					'method' => 'POST',
 					'content' => http_build_query($response->getData()),
 				),
 			);

@@ -435,6 +435,8 @@ $app_strings = array(
 'Inventory'=>'Bestand',
 'Tools'=>'Werkzeuge',
 'Settings'=>'Einstellungen',
+'Tables' => 'Tables',
+'Add Table' => 'Add Table',
 'LBL_INFORMATION'=>'Information',
 'LBL_BASIC'=>'Stammdaten',
 'LBL_CREATING'=>'Erstelle',
@@ -589,6 +591,7 @@ $app_strings = array(
 'LBL_RECORDS'=>'Datensätze',
 'LBL_SCROLL'=>'[Nach oben]',
 'LBL_EXPAND_COLLAPSE'=>'Mehr/Weniger',
+'LBL_COLLAPSE' => 'Weniger',
 'LBL_RCPY_ADDRESS'=>'Kopiere Lieferadresse',
 'LBL_LCPY_ADDRESS'=>'Kopiere Rechnungsadresse',
 'LBL_RECORD_ID'=>'Datensatz ID',
@@ -1373,6 +1376,8 @@ $app_strings = array(
 'saved' => 'gespeichert',
 'notsaved' => 'nicht gespeichert',
 'processcomplete' => 'Prozess vollständig',
+'processed' => 'processed',
+'notprocessed' => 'not processed',
 'typetosearch_prodser' => 'Tippen Sie für die Suche nach Produkten und Dienstleistungen',
 'RecordIsAssignedToInactiveUser' => 'Der Eintrag ist einem inaktiven Benutzer zugeordnet. Bitte wählen Sie einen anderen Benutzer.',
 'Add Relation' => 'Add Relation',
@@ -1388,6 +1393,22 @@ $app_strings = array(
 'LBL_FIX_NOW' => 'Fix Now',
 'LBL_HIERARCHY' => 'Hierarchy',
 'LBL_SEARCH_DOCUMENTS_BUTTON' => 'Search Documents',
+
+// watermark WF template
+'Watermark Value' => 'Watermark Value',
+'image field name' => 'Image Field Name',
+'Water Mark Size' => 'Water Mark Size',
+'Water Mark Position' => 'Water Mark Position',
+// watermark direction
+'Center' => 'Center',
+'Top' => 'Top',
+'Bottom' => 'Bottom',
+'Right' => 'Right',
+'Left' => 'Left',
+'Top Right' => 'Top Right',
+'Top Left' => 'Top Left',
+'Bottom Left' => 'Bottom Left',
+'Bottom Right' => 'Bottom Right',
 
 //login translation
 'LBL_Please_login_to_your_account' => 'Please login to your account',
@@ -1412,6 +1433,10 @@ $app_strings = array(
 'LBL_UITYPE10_NOTALLOWED' => 'The related module has a mandatory related field.',
 'LBL_PAINT2DOCUMENT' => 'Paint to Document',
 'LBL_PREVIEW' => 'Preview',
+'Slider' => 'Slider',
+'LBL_WIZARD' => 'Wizard',
+'LBL_ROW' => 'Row',
+'LBL_WIZARD_COMPLETED' => 'The process has been completed successfully.',
 );
 
 // Translation for currency names

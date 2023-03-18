@@ -94,7 +94,7 @@ class pdfutil {
 
 	/**
 	 * Search the given PDF for a NIF value (custom PDF layout), if found, search the indicated module and field for that NIF value
-	 *  and return the CRMID of the record found. In case no record is found return -1
+	 * and return the CRMID of the record found. In case no record is found return -1
 	 * @param string $filename full path to the inital PDF file
 	 * @return concat_pdf
 	 */

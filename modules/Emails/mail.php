@@ -154,7 +154,7 @@ function send_mail(
 		array('Emails', 'modules/Emails/Emails.php')
 	);
 	require_once $systemEmailClassPath;
-	if (!call_user_func(array($systemEmailClassName, 'useEmailHook'))) {
+	if (!call_user_func(array($systemEmailClassName, 'useEmailHook'), $from_email, $to_email, $replyToEmail)) {
 		$systemEmailClassName = 'Emails'; // default system method
 	}
 
@@ -353,8 +353,8 @@ function setMailServerProperties($mail) {
 	$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', '');
 	if (!empty($inBucketServeUrl)) {
 		$mail->Host = $inBucketServeUrl; // Url for InBucket Server
-		$mail->Username = '';	// SMTP username
-		$mail->Password = '' ;	// SMTP password
+		$mail->Username = ''; // SMTP username
+		$mail->Password = ''; // SMTP password
 		$mail->SMTPAuth = false;
 	} else {
 		$adb->println('> setMailServerProperties');
@@ -417,9 +417,9 @@ function setMailServerProperties($mail) {
 				$mail->SMTPSecure = $smtp_auth;
 			}
 		}
-		$mail->Host = $server;		// specify main and backup server
-		$mail->Username = $username ;	// SMTP username
-		$mail->Password = $password ;	// SMTP password
+		$mail->Host = $server; // specify main and backup server
+		$mail->Username = $username; // SMTP username
+		$mail->Password = $password; // SMTP password
 
 		$debugEmail = GlobalVariable::getVariable('Debug_Email_Sending', 0);
 		if ($debugEmail) {

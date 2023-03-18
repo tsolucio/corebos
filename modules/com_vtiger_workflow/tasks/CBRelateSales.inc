@@ -21,13 +21,18 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 class CBRelateSales extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $relpdo;
+	public $relsrv;
+	public $withaccvnd;
+	public $withcto;
 
 	public function getFieldNames() {
 		return array('relpdo','relsrv','withaccvnd','withcto');
 	}
 
 	public function doTask(&$entity) {
-		global $adb;
+		global $adb, $logbg;
+		$logbg->debug('> RelateSales');
 		$invinfo = array(
 			'Quotes' => array('id'=>'quoteid','account'=>'accountid','contact'=>'contactid'),
 			'SalesOrder' => array('id'=>'salesorderid','account'=>'accountid','contact'=>'contactid'),
@@ -36,6 +41,7 @@ class CBRelateSales extends VTTask {
 		);
 		list($inv,$inv_id) = explode('x', $entity->getId());
 		if (!empty($inv_id)) {
+			$logmsg = '(RelateSales) inv_id: ' . $inv_id;
 			$setype = getSalesEntityType($inv_id);
 			$query = 'select productid from vtiger_inventoryproductrel inner join vtiger_crmobject on crmid=productid where deleted=0 and id=?';
 			$srvs = $adb->pquery($query, array($inv_id));
@@ -66,7 +72,11 @@ class CBRelateSales extends VTTask {
 					}
 				}
 			}
+		} else {
+			$logmsg = '(RelateSales) not called: inv_id is empty';
 		}
+		$this->logmessages[] = $logmsg;
+		$logbg->debug('< '.$logmsg);
 	}
 }
 ?>

@@ -24,6 +24,7 @@ require_once 'include/Webservices/WebserviceField.php';
 require_once 'include/Webservices/EntityMeta.php';
 require_once 'include/Webservices/VtigerWebserviceObject.php';
 require_once 'VTWorkflowUtils.php';
+require_once 'include/logging/cbWFLogger.php';
 
 class VTWorkflowEventHandler extends VTEventHandler {
 
@@ -43,7 +44,7 @@ class VTWorkflowEventHandler extends VTEventHandler {
 		$entityData = $entityCache->forId($wsId);
 		$wfs = new VTWorkflowManager($adb);
 		$workflows = $wfs->getWorkflowsForModule($entityData->getModuleName(), true);
-
+		$cbwflog = new cbWFLogger();
 		foreach ($workflows as $workflow) {
 			if (!is_a($workflow, 'Workflow')) {
 				continue;
@@ -81,12 +82,39 @@ class VTWorkflowEventHandler extends VTEventHandler {
 					throw new LogicException('Should never come here! Execution Condition:' . $workflow->executionCondition);
 			}
 			if ($doEvaluate && $workflow->activeWorkflow() && $workflow->evaluate($entityCache, $entityData->getId())) {
+				$logid = $cbwflog->critical([
+					'wftkid'=>$workflow->id,
+					'recid'=>$entityData->getId(),
+					'parentid'=>0,
+					'name'=>$workflow->description,
+					'wftype'=>$workflow->executionCondition,
+					'recvalues'=>json_encode($entityData->getData()),
+					'conditions'=>$workflow->test,
+					'evaluation'=>1,
+					'inqueue'=>0,
+					'haserror'=>0,
+					'logsmsgs'=>[],
+				]);
 				$entity_id = vtws_getIdComponents($entityData->getId());
 				$entity_id = $entity_id[1];
-				$workflow->performTasks($entityData);
+				$workflow->performTasks($entityData, array(), false, $cbwflog, $logid);
 				if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
 					$workflow->markAsCompletedForRecord($entity_id);
 				}
+			} else {
+				$cbwflog->critical([
+					'wftkid'=>$workflow->id,
+					'recid'=>$entityData->getId(),
+					'parentid'=>0,
+					'name'=>$workflow->description,
+					'wftype'=>$workflow->executionCondition,
+					'recvalues'=>json_encode($entityData->getData()),
+					'conditions'=>$workflow->test,
+					'evaluation'=>0,
+					'inqueue'=>0,
+					'haserror'=>0,
+					'logsmsgs'=>[],
+				]);
 			}
 		}
 		$util->revertUser();

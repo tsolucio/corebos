@@ -16,6 +16,21 @@ class Homestuff {
 	public $userid;
 	public $dashdetails=array();
 	public $reportdetails=array();
+	public $defaulttitle;
+	public $stufftitle;
+	public $stufftype;
+	public $fieldvalue;
+	public $selmodule;
+	public $maxentries;
+	public $selFiltername;
+	public $selAggregatename;
+	public $txtRss;
+	public $seldashbd;
+	public $seldashtype;
+	public $defaultvalue;
+	public $txtURL;
+	public $selreport;
+	public $selreportcharttype;
 
 	/**
 	 * this is the constructor for the class
@@ -376,7 +391,7 @@ class Homestuff {
 					$currencyField = new CurrencyField($r);
 					$list[$i][]= '<a href="'.$wlisturl.'">'.$currencyField->getDisplayValue($current_user).'</a>';
 				} else {
-					$list[$i][]='<a href="'.$wlisturl.'">'.$r.'</a>' ;
+					$list[$i][]='<a href="'.$wlisturl.'">'.$r.'</a>';
 				}
 			} else {
 				echo "<font color='red'>getTranslatedString('LBL_FILTERSELECTEDNOTFOUND')</font>";

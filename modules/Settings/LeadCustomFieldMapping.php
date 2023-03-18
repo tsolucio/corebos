@@ -20,7 +20,7 @@ $smarty->assign('IMAGE_PATH', $image_path);
 
 /**
  * Function to get leads mapping custom fields
- * return array   $leadcf - mapping custom fields
+ * @return array mapping custom fields
  */
 function customFieldMappings() {
 	global $adb;
@@ -69,7 +69,7 @@ function customFieldMappings() {
 	return $leadcf;
 }
 
-/*
+/**
  * function to get all the field in given module, with the corresponding field mapping
  */
 function getModuleValues($moduleid, $module) {

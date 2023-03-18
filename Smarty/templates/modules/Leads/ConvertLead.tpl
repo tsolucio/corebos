@@ -237,7 +237,8 @@
 								<span class="slds-radio_faux">{'LBL_USER'|@getTranslatedString:$MODULE}</span>
 							</label>
 						</span>
-						{if $UIINFO->getOwnerList('group')|@count neq 0}
+						{assign var="isGroupSelectionPermitted" value=(GlobalVariable::getVariable('Application_Group_Selection_Permitted', 1) == 1) && ($UIINFO->getOwnerList('group')|@count neq 0)}
+						{if $isGroupSelectionPermitted}
 						<span class="slds-button slds-radio_button">
 							<input type="radio" name="c_assigntype" id="c_assigntypeg" value="T" onclick="javascript: c_toggleAssignType(this.value)" {$UIINFO->getGroupSelected()} />
 							<label class="slds-radio_button__label" for="c_assigntypeg">
@@ -253,15 +254,15 @@
 							{/foreach}
 						</select>
 					</span>
+					{if $isGroupSelectionPermitted}
 					<span id="c_assign_team" style="display:{$UIINFO->getGroupDisplay()}">
-						{if $UIINFO->getOwnerList('group')|@count neq 0}
 						<select name="c_assigned_group_id" class="slds-select slds-page-header__meta-text" style="width:80%;"
 							{foreach item=group from=$UIINFO->getOwnerList('group') name=grouploop}
 								<option value="{$group.groupid}" {if $group.selected eq true}selected="selected"{/if}>{$group.groupname}</option>
 							{/foreach}
 						</select>
-						{/if}
 					</span>
+					{/if}
 				</div>
 
 				<label class="slds-form-element__label slds-page-header__meta-text slds-m-top_x-small" for="transferto">

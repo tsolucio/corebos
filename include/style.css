@@ -95,6 +95,15 @@
 	color: #CC2E26;
 }
 
+.detailview_wrapper_table .tui-grid-table,
+#RLContents .tui-grid-table {
+  border: 1px solid #e3e3e3;
+}
+
+.tui-grid-cell {
+  padding-left: 5px;
+}
+
 .cbds-bg-compl-red--faint {
 	background-color: #FF7656;
 }

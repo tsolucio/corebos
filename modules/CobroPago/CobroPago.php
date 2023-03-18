@@ -19,7 +19,7 @@ class CobroPago extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
-	public $moduleIcon = array('library' => 'utility', 'containerClass' => 'slds-icon_container slds-icon-standard-contract', 'class' => 'slds-icon slds-box--xx-small ', 'icon'=>'money');
+	public $moduleIcon = array('library' => 'utility', 'containerClass' => 'slds-icon_container slds-icon-standard-contract', 'class' => 'slds-icon slds-box_xx-small ', 'icon'=>'money');
 
 	/**
 	 * Mandatory table for supporting custom fields.
@@ -38,7 +38,7 @@ class CobroPago extends CRMEntity {
 	 */
 	public $tab_name_index = array(
 		'vtiger_crmentity' => 'crmid',
-		'vtiger_cobropago'   => 'cobropagoid',
+		'vtiger_cobropago' => 'cobropagoid',
 		'vtiger_cobropagocf' => 'cobropagoid',
 	);
 
@@ -139,7 +139,7 @@ class CobroPago extends CRMEntity {
 		$data = $this->column_fields;
 		// Entity has been saved, take next action
 		if (empty($data['register']) && $this->mode=='') {
-			$refDateValue = new DateTimeField();  // right now
+			$refDateValue = new DateTimeField(); // right now
 			$this->column_fields['register'] = $refDateValue->getDisplayDate();
 			$adb->pquery('update vtiger_cobropago set register=? where cobropagoid=?', array($refDateValue->getDBInsertDateValue(), $cypid));
 		}

@@ -175,5 +175,16 @@ $mod_strings = array(
 	'clickhouse_active' => 'Activado',
 	'clickhouse_database' => 'Base de Datos',
 	'clickhouse_query' => 'Consulta ClickHouse (limitado a 100 filas)',
+	'clickhouse_webhook_secret' => 'Clave Acceso Webhook',
+	'clickhouse_tableexists' => 'Ya existe una tabla de servicio web con ese nombre.',
+	'clickhouse_upserterror' => 'Error con la consulta del servicio web de Clickhouse.',
+	'mautic_webhook_secret' => 'Secreto Webhook',
+	'Facebook Activation' => 'Activación Facebook',
+	'Facebook Activation_Desc' => 'Configuración Facebook',
+	'facebook_hub_verification_token' => 'Código de Verification Hub',
+	'facebook_access_token' => 'Token de Acceso',
+	'facebook_destination_module' => 'Módulo Destino',
+	'Unable2Connect' => 'No se ha podido conectar',
+	'Able2Connect' => 'Se ha podido conectar',
 );
 ?>

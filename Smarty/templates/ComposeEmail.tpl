@@ -475,10 +475,10 @@ var conf_srvr_storage_err_msg = '{$MOD.LBL_CONF_SERVERSTORAGE_ERROR}';
 var remove_image_url = "{'no.gif'|@vtiger_imageurl:$THEME}";
 document.getElementById('attach_cont').innerHTML = document.getElementById('attach_temp_cont').innerHTML;
 var textAreaName = 'description';
-CKEDITOR.replace(textAreaName, {
+CKEDITOR.replace(textAreaName, {ldelim}
 	extraPlugins : 'uicolor',
 	uiColor: '#dfdff1'
-});
+{rdelim});
 var oCKeditor = CKEDITOR.instances[textAreaName];
 </script>
 {if vt_hasRTESpellcheck()}

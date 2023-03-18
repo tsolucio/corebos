@@ -52,6 +52,8 @@ $mod_strings = array(
 	'FieldInfo' => 'Field Information',
 	'GlobalSearchAutocomplete' => 'Global Search Autocomplete',
 	'RelatedPanes' => 'Related Panes',
+	'ApplicationMenu' => 'Application Menu',
+	'MassUpsertGridView' => 'Mass Upsert Grid View',
 	'Function' => 'Function',
 	'TypeOfExpression' => 'Type of Expression',
 	'FunctionName' => 'Function Name',
@@ -81,5 +83,8 @@ $mod_strings = array(
 	'Reset content' => 'Reset content',
 	'Clear content' => 'Clear content',
 	'Content Holder' => 'Content Holder',
+	'AdvancedSearch' => 'Advanced Search',
+	'Wizard' => 'Wizard',
+	'RelatedListBlock' => 'Related List Tree View',
 );
 ?>

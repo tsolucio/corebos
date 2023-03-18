@@ -31,7 +31,9 @@ if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status'] == '_DB_STAT_') {
 
 require_once 'include/utils/utils.php';
 
-global $currentModule;
+global $currentModule, $log, $seclog;
+$log = LoggerManager::getLogger('APPLICATION');
+$seclog = LoggerManager::getLogger('SECURITY');
 
 header('Content-Type: text/html; charset='. $default_charset);
 
@@ -43,17 +45,11 @@ if (isset($_REQUEST['view'])) {
 	coreBOS_Session::set('view', $view);
 }
 
-require_once 'include/logging.php';
 require_once 'modules/Users/Users.php';
 $calculate_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time', 0, '', Users::getActiveAdminId());
 if ($calculate_response_time) {
 	$startTime = microtime(true);
 }
-
-$log = LoggerManager::getLogger('APPLICATION');
-
-global $seclog;
-$seclog = LoggerManager::getLogger('SECURITY');
 
 // We use the REQUEST_URI later to construct dynamic URLs.  IIS does not pass this field
 // to prevent an error, if it is not set, we will assign it to ''

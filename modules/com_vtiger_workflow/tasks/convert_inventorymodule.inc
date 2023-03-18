@@ -25,6 +25,7 @@ require_once 'include/utils/EditViewUtils.php';
 class ConvertInventoryModule extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $convertto;
 
 	public function getFieldNames() {
 		return array('convertto');
@@ -32,6 +33,7 @@ class ConvertInventoryModule extends VTTask {
 
 	public function doTask(&$entity) {
 		global $current_user, $logbg, $from_wf;
+		$logbg->debug('> ConvertInventoryModule');
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
@@ -83,7 +85,9 @@ class ConvertInventoryModule extends VTTask {
 			if (empty($associated_prod[1]['entityType1'])) {
 				$from_wf = false;
 				$util->revertUser();
-				$logbg->debug('ConvertInventoryModule: converting from {$cbfrommodule} to {$this->convertto} failed because there is no related products');
+				$logmsg = "(ConvertInventoryModule) not called: converting from $cbfrommodule to {$this->convertto} failed because there is no related products";
+				$this->logmessages[] = $logmsg;
+				$logbg->debug($logmsg);
 				return;
 			}
 
@@ -107,8 +111,8 @@ class ConvertInventoryModule extends VTTask {
 				require_once 'modules/Accounts/Accounts.php';
 				$acct_focus = new Accounts();
 				$acct_focus->retrieve_entity_info($data['account_id'], 'Accounts');
-				$data['bill_city'] =  isset($acct_focus->column_fields['bill_city']) ? $acct_focus->column_fields['bill_city'] : '';
-				$data['ship_city'] =  isset($acct_focus->column_fields['ship_city']) ? $acct_focus->column_fields['ship_city'] : '';
+				$data['bill_city'] = isset($acct_focus->column_fields['bill_city']) ? $acct_focus->column_fields['bill_city'] : '';
+				$data['ship_city'] = isset($acct_focus->column_fields['ship_city']) ? $acct_focus->column_fields['ship_city'] : '';
 				$data['bill_street'] = isset($acct_focus->column_fields['bill_street']) ? $acct_focus->column_fields['bill_street'] : '';
 				$data['ship_street'] = isset($acct_focus->column_fields['ship_street']) ? $acct_focus->column_fields['ship_street'] : '';
 				$data['bill_state'] = isset($acct_focus->column_fields['bill_state']) ? $acct_focus->column_fields['bill_state'] : '';
@@ -159,7 +163,7 @@ class ConvertInventoryModule extends VTTask {
 				$related['qty'] = empty($data['qty'.$i]) ? $associated_prod[$i]['qty'.$i] : $data['qty'.$i];
 				$related['listprice'] = empty($data['listPrice'.$i]) ? $associated_prod[$i]['listPrice'.$i] : $data['listPrice'.$i];
 				$list_price_sum += ($related['qty'] * $related['listprice']);
-				$related['discount'] = 0 ;
+				$related['discount'] = 0;
 				$related['discount_type'] = 0;
 				$related['discount_percentage'] = 0;
 				$related['discount_amount'] = 0;
@@ -173,17 +177,24 @@ class ConvertInventoryModule extends VTTask {
 		$holdajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 		$_REQUEST['action'] = '';
 		$_REQUEST['ajxaction'] = '';
-
 		$invmod = vtws_create($this->convertto, $data, $current_user);
-
 		$_REQUEST['action'] = $holdaction;
 		$_REQUEST['ajxaction'] = $holdajxaction;
 		$from_wf = false;
 		$util->revertUser();
-		$logbg->debug('ConvertInventoryModule: From '.$cbfrommodule.' '.$entity->getId().' to '.$this->convertto);
-		$logbg->debug('ConvertInventoryModule: From', $wsso);
-		$logbg->debug('ConvertInventoryModule: To', $data);
-		$logbg->debug('ConvertInventoryModule: Result', $invmod);
+		$logmsg = '(ConvertInventoryModule) From '.$cbfrommodule.' '.$entity->getId().' to '.$this->convertto;
+		$this->logmessages[] = $logmsg;
+		$this->logmessages[] = 'FROM';
+		$this->logmessages[] = json_encode($wsso);
+		$this->logmessages[] = 'TO';
+		$this->logmessages[] = json_encode($data);
+		$this->logmessages[] = 'RESULT';
+		$this->logmessages[] = json_encode($invmod);
+		$logbg->debug($logmsg);
+		$logbg->debug('(ConvertInventoryModule) From', $wsso);
+		$logbg->debug('(ConvertInventoryModule) To', $data);
+		$logbg->debug('(ConvertInventoryModule) Result', $invmod);
+		$logbg->debug('< ConvertInventoryModule');
 	}
 }
 ?>

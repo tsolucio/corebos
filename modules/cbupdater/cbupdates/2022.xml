@@ -161,4 +161,143 @@
 	<classname>changeUITypeFinancialFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Drop Foreign Keys</description>
+	<filename>build/changeSets/2022/dropForeignKeys.php</filename>
+	<classname>dropForeignKeys</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Business Action types for ListView Action</description>
+	<filename>build/changeSets/2022/addBAtypesForListViewAction.php</filename>
+	<classname>addBAtypesForListViewAction</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Adding ClickHouse cron.</description>
+	<filename>build/changeSets/2022/cronClickHouse.php</filename>
+	<classname>cronClickHouse</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete uitype 105 to support image fields on Users module.</description>
+	<filename>build/changeSets/2022/delUitype105UserImageField.php</filename>
+	<classname>delUitype105UserImageField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Add Handler to control Deleting InventoryDetail when check invoice lines</description>
+	<filename>build/changeSets/2022/add_InventoryDetails_Delete_Handler_cb.php</filename>
+	<classname>add_InventoryDetails_Delete_Handler_cb</classname>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Adding Query Type picklist to cbQuestion.</description>
+	<filename>build/changeSets/2022/addQueryTypePicklistTocbQuestion.php</filename>
+	<classname>addQueryTypePicklistTocbQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add BusinessActions Message Fields</description>
+	<filename>build/changeSets/2022/addBAMessageFields.php</filename>
+	<classname>addBAMessageFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Update DETAILVIEWWIDGET Sequence</description>
+	<filename>build/changeSets/2022/updateDetailViewWidgetSequence.php</filename>
+	<classname>updateDetailViewWidgetSequence</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Adding Sign PDF Document workflow task.</description>
+	<filename>build/changeSets/2022/add_workflow_signpdfdocument.php</filename>
+	<classname>add_workflow_signpdfdocument</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Add ClickHouse Table</description>
+	<filename>build/changeSets/2022/addClickHouseTable.php</filename>
+	<classname>addClickHouseTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Add BusinessAction Widget fields</description>
+	<filename>build/changeSets/2022/addBAWidgetFields.php</filename>
+	<classname>addBAWidgetFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Question Type Field(Hackathon 2022)</description>
+	<filename>build/changeSets/2022/addQuestionTypeField.php</filename>
+	<classname>addQuestionTypeField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>maliknajjar</author>
+	<description>Add view type to global variable module</description>
+	<filename>build/changeSets/2022/addtypeofviewGV.php</filename>
+	<classname>addtypeofviewGV</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make user first and last name fields larger.</description>
+	<filename>build/changeSets/2022/makeusernamefieldslarger.php</filename>
+	<classname>makeusernamefieldslarger</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Business Action type for Detail View Action Button.</description>
+	<filename>build/changeSets/2022/addBAtypesForDVActionButton.php</filename>
+	<classname>addBAtypesForDVActionButton</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>CRMEntityRel denormalization.</description>
+	<filename>build/changeSets/2022/addDenormCRMEntityRel.php</filename>
+	<classname>addDenormCRMEntityRel</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Notify Panel Fields for events not related to module records.</description>
+	<filename>build/changeSets/2022/addNotifyPanelFields.php</filename>
+	<classname>addNotifyPanelFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Notification workflow task.</description>
+	<filename>build/changeSets/2022/add_workflow_addnotification.php</filename>
+	<classname>add_workflow_addnotification</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add Watermark worfklow task</description>
+	<filename>build/changeSets/2022/addWFWatermark.php</filename>
+	<classname>addWFWatermark</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Add maps for Shopify to coreBOS integration</description>
+	<filename>build/changeSets/2022/addMapsForShopify2coreBOSIntegration.php</filename>
+	<classname>addMapsForShopify2coreBOSIntegration</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -21,6 +21,7 @@ let SearchColumns = 0;
 let ListViewCopy = 0;
 let Application_Filter_All_Edit = 1;
 let Application_DetailView_Inline_Edit = 1;
+let Application_Inline_Edit = 1;
 let DocumentFolderView = 1;
 let Application_MassAction_Multipage = 0;
 let lastPage = sessionStorage.getItem(gVTModule+'_lastPage');
@@ -28,6 +29,10 @@ let urlParams = new URLSearchParams(window.location.search);
 GlobalVariable_getVariable('Application_DetailView_Inline_Edit', 1).then(function (response) {
 	let obj = JSON.parse(response);
 	Application_DetailView_Inline_Edit = parseInt(obj.Application_DetailView_Inline_Edit);
+});
+GlobalVariable_getVariable('Application_Inline_Edit', 1, gVTModule, gVTUserID, gVTviewType).then(function (response) {
+	let obj = JSON.parse(response);
+	Application_Inline_Edit = parseInt(obj.Application_Inline_Edit);
 });
 GlobalVariable_getVariable('Application_ListView_PageSize', 20, gVTModule, '').then(function (response) {
 	let obj = JSON.parse(response);
@@ -48,6 +53,11 @@ GlobalVariable_getVariable('Document_Folder_View', 1).then(function (response) {
 GlobalVariable_getVariable('Application_MassAction_Multipage', 0).then(function (response) {
 	let obj = JSON.parse(response);
 	Application_MassAction_Multipage = obj.Application_MassAction_Multipage;
+});
+Application_ListView_Show_Create_Message = 1;
+GlobalVariable_getVariable('Application_ListView_Show_Create_Message', 1).then(function (response) {
+	let obj = JSON.parse(response);
+	Application_ListView_Show_Create_Message = parseInt(obj.Application_ListView_Show_Create_Message);
 });
 document.addEventListener('DOMContentLoaded', function () {
 	ListView.loader('show');
@@ -191,7 +201,8 @@ const ListView = {
 				edit = false;
 				sortable = false;
 			}
-			if (edit && Application_DetailView_Inline_Edit) {
+			Application_Inline_Edit_boolean = !(!Application_DetailView_Inline_Edit || !Application_Inline_Edit);
+			if (edit && Application_Inline_Edit_boolean) {
 				if (uitype == 10) {
 					ListView.RelatedModule = headerObj[index].relatedModule;
 				}
@@ -231,21 +242,12 @@ const ListView = {
 							showClearBtn: true
 						};
 					}
-					if (uitype == '15' || uitype == '52' || uitype == '53' || uitype == '56') {
-						if (edit) {
-							formatter = 'listItemText';
-						} else {
-							formatter = false;
-						}
-					} else {
-						formatter = false;
-					}
 					header = {
 						name: fieldname,
 						header: fieldvalue,
 						sortingType: 'desc',
 						sortable: sortable,
-						formatter: formatter,
+						formatter: false,
 						editor: editor,
 						filter: filter,
 						whiteSpace: 'normal',
@@ -384,7 +386,7 @@ const ListView = {
 			const advft_criteria = urlParams.get('advft_criteria');
 			const advft_criteria_groups = urlParams.get('advft_criteria_groups');
 			const searchtype = urlParams.get('searchtype');
-			if (advft_criteria != null && searchtype == null) {
+			if (advft_criteria != null && searchtype == 'advance') {
 				url += `&search=${advft_criteria}&advft_criteria_groups=${advft_criteria_groups}&searchtype=${searchtype}`;
 			}
 			let headers = ListView.getColumnHeaders(response[0]);
@@ -1005,7 +1007,7 @@ const ListView = {
 								</span>
 							</div>
 							<div class="slds-media__body">
-								<h2 class="slds-truncate slds-text-heading_medium" title="${alert_arr.QuickView}">${alert_arr.QuickView}</h2>
+								<h2 class="slds-truncate" title="${alert_arr.QuickView}">${alert_arr.QuickView}</h2>
 							</div>
 							</div>
 						</header>
@@ -1056,31 +1058,32 @@ const ListView = {
 						${alert_arr.LBL_IMPORT} ${gVTModuleLabel}
 					</a>`;
 				}
-				no_data_template.innerHTML = `
-				<article class="slds-card" style="width: 40%;margin-left: auto;margin-right: auto;">
-					<div class="slds-card__header slds-grid">
-						<header class="slds-media slds-media_center slds-has-flexi-truncate">
-							<div class="slds-media__figure">
-								<span class="slds-icon_container slds-icon-standard-record-create">
-									<svg class="slds-icon slds-icon_small" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#record_create"></use>
-									</svg>
-								</span>
-							</div>
-							<div class="slds-media__body">
-								<h2 class="slds-card__header-title">
-									<span>${alert_arr.LBL_NO_DATA}</span>
-								</h2>
-							</div>
-							<div class="slds-no-flex">
-								${create_template}
-							</div>
-						</header>
-					</div>
-					<footer class="slds-card__footer">
-						${import_template}
-					</footer>
-				</article>`;
+				no_data_template.innerHTML = Application_ListView_Show_Create_Message ?
+					`<article class="slds-card" style="width: 40%;margin-left: auto;margin-right: auto;">
+						<div class="slds-card__header slds-grid">
+							<header class="slds-media slds-media_center slds-has-flexi-truncate">
+								<div class="slds-media__figure">
+									<span class="slds-icon_container slds-icon-standard-record-create">
+										<svg class="slds-icon slds-icon_small" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#record_create"></use>
+										</svg>
+									</span>
+								</div>
+								<div class="slds-media__body">
+									<h2 class="slds-card__header-title">
+										<span>${alert_arr.LBL_NO_DATA}</span>
+									</h2>
+								</div>
+								<div class="slds-no-flex">
+									${create_template}
+								</div>
+							</header>
+						</div>
+						<footer class="slds-card__footer">
+							${import_template}
+						</footer>
+					</article>` :
+					'';
 			});
 		}
 	},
@@ -1241,7 +1244,6 @@ const ListView = {
 	}
 };
 
-
 const DocumentsView = {
 
 	Show: (url, viewname = '') => {
@@ -1386,10 +1388,9 @@ const DocumentsView = {
 				content = `
 				<ul class="slds-has-dividers_top slds-has-block-links_space">
 					${list}
-				</ul>
-				`;
+				</ul>`;
 			}
-			ldsModal.show('Move file', content, 'small');
+			ldsModal.show(alert_arr.MoveFile, content, 'small');
 		});
 	},
 

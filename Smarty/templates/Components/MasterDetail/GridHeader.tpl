@@ -25,35 +25,40 @@
 <div class="slds-page-header__col-actions">
 <div class="slds-page-header__controls">
 <div class="slds-page-header__control">
-<ul class="slds-button-group-list">
-{if !empty($MasterDetailLayoutMap.toolbar.expandall)}
-<li>
-<div>
-<button class="slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_EXPAND_COLLAPSE}">
-<svg class="slds-button__icon" aria-hidden="true">
-<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#expand_all"></use>
-</svg>
-<span class="slds-assistive-text">{$APP.LBL_EXPAND_COLLAPSE}</span>
+<div class="slds-button-group" role="group">
+{if !empty($MasterDetailLayoutMap.toolbar.massedit)}
+<button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_MASS_EDIT}" onclick="masterdetailwork.MDMassEditRecords(this, '{$MasterDetailLayoutMap.targetmodule}', '{$MasterDetailLayoutMap.mapname}')" data-id="{$MasterDetailLayoutMap.mapname}_massedit" id="btn-{$MasterDetailLayoutMap.mapname}_massedit">
+	{$APP.LBL_MASS_EDIT}
 </button>
-</div>
-</li>
+{/if}
+{if !empty($MasterDetailLayoutMap.toolbar.actions)}
+{foreach from=$MasterDetailLayoutMap.toolbar.actions item=$i}
+	<button type="button" class="slds-button slds-button_neutral" title="{$i.label}" onclick="masterdetailwork.CallToAction(this, '{$i.workflow}')" data-id="{$MasterDetailLayoutMap.mapname}--actions" id="btn-{$MasterDetailLayoutMap.mapname}--actions">
+		{$i.label}
+	</button>
+{/foreach}
+{/if}
+{if !empty($MasterDetailLayoutMap.toolbar.expandall)}
+<button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_EXPAND_COLLAPSE}" onclick="masterdetailwork.MDToggle(this)" data-id="{$MasterDetailLayoutMap.mapname}" id="btn-{$MasterDetailLayoutMap.mapname}">
+	{$APP.LBL_COLLAPSE}
+</button>
 {/if}
 {if !empty($MasterDetailLayoutMap.toolbar.create)}
-<li>
-<div>
-<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_CREATE_BUTTON_LABEL}"
+<button type="button" class="slds-button slds-button_neutral" title="{$APP.LBL_CREATE_BUTTON_LABEL}"
 	onclick="masterdetailwork.MDUpsert('mdgrid{$MasterDetailLayoutMap.mapname}', '{$MasterDetailLayoutMap.targetmodule}', '', {$MasterDetaiCurrentRecord})">
-<svg class="slds-button__icon" aria-hidden="true">
-<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
-</svg>
-<span class="slds-assistive-text">{$APP.LBL_CREATE_BUTTON_LABEL}</span>
+	{$APP.LBL_CREATE_BUTTON_LABEL}
 </button>
-</div>
-</li>
 {/if}
-</ul>
 </div>
 </div>
 </div>
 </div>
+</div>
+<script>
+window.addEventListener('load', (event) => {
+	if (document.getElementById('module') != null && document.getElementById('record').value != null) {
+		dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
+	}
+});
+</script>
 </div>

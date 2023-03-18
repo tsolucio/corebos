@@ -114,14 +114,18 @@
 	</td>
 {elseif ($keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614')}
 	<!--ComboBox-->
-	{if picklistHasDependency($keyfldname,$MODULE) || fieldHasDependency($keyfldname,$MODULE)}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
-				id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+	{if $keyid eq '15' || $keyid eq '16'}
+		{assign var=i18nValue value=$keyval|@getTranslatedString:$MODULE}
 	{else}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"
-			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');"
-			onclick='handleEdit(event);'>
-			<span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$keyval}</span>
+		{assign var=i18nValue value=$keyval|@getTranslatedString:$keyval}
+	{/if}
+	{if picklistHasDependency($keyfldname,$MODULE) || fieldHasDependency($keyfldname,$MODULE)}
+		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">
+			<span id="dtlview_{$keyfldname}">{$i18nValue}</span>
+	{else}
+		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onclick='handleEdit(event);'
+			onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');">
+			<span id="dtlview_{$keyfldname}">{$i18nValue}</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small" style="width:280px;">
 					{foreach item=arr from=$keyoptions}
@@ -170,7 +174,7 @@
 	</td>
 {elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}
 	<!--Multi Select Combo box-->
-	<!--{assign var="MULTISELECT_COMBO_BOX_ITEM_SEPARATOR_STRING" value=", "}  {* Separates Multi-Select Combo Box items *}
+	<!--{assign var="MULTISELECT_COMBO_BOX_ITEM_SEPARATOR_STRING" value=", "} {* Separates Multi-Select Combo Box items *}
 						{assign var="DETAILVIEW_WORDWRAP_WIDTH" value="70"} {* No. of chars for word wrapping long lines of Multi-Select Combo Box items *}-->
 	{if fieldHasDependency($keyfldname,$MODULE)}
 		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span
@@ -286,7 +290,7 @@
 	{if isset($MOD.LBL_ADD_COMMENT) && $label eq $MOD.LBL_ADD_COMMENT}
 		{assign var=keyval value=''}
 	{/if}
-	<!--{assign var="DESCRIPTION_SEPARATOR_STRING" value=" "}  {* Separates Description *}-->
+	<!--{assign var="DESCRIPTION_SEPARATOR_STRING" value=" "} {* Separates Description *}-->
 	<!--{assign var="DESCRIPTION_WORDWRAP_WIDTH" value="70"} {* No. of chars for word wrapping long lines of Description *}-->
 	{if $MODULE eq 'Documents' || ($MODULE eq 'Users' && $keyfldname eq 'signature')}
 		<!--To give hyperlink to URL-->
@@ -614,7 +618,7 @@
 	</td>
 {elseif $keyid eq 69 || $keyid eq '69m'}
 	<!-- for Image Reflection -->
-	<td align="left" width=25%>{$keyval}</td>
+	<td id="mouseArea_{$keyfldname}" align="left" width="25%" class="imageDetailViewFields">{$keyval}</td>
 {elseif $keyid eq 68 || $keyid eq 101}
 	<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25%
 		onmouseover="vtlib_listview.trigger('cell.onmouseover', this);"
@@ -660,7 +664,7 @@
 					<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
 				</button>
 				<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button"
-					onclick="document.getElementById('txtbox_{$keyfldname}').value='0'; document.getElementById('{$keyfldname}_display').value='';">
+					onclick="clearValues(document.getElementById('txtbox_{$keyfldname}'), document.getElementById('{$keyfldname}_display'));">
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 					</svg>

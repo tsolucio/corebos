@@ -314,6 +314,7 @@ $mod_strings = array (
 		'LBL_OWNER' => 'Propriétaire',
 		'LBL_MIGRATION' => 'Migration',
 		'LBL_MIGRATION_INFO' => 'Migration depuis une version antérieure',
+		'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Supported File Type .XML only',
 		'LBL_USER_DESCRIPTION' => 'Gestion des collaborateurs ayant un accès CRM',
 		'LBL_ROLE_DESCRIPTION' => 'Gestion des droits verticaux',
 		'LBL_PROFILE_DESCRIPTION' => 'Gestion des droits sur le système',
@@ -932,6 +933,8 @@ $mod_strings = array (
 	'LBL_MB_NEWBLOCK' => 'New Block',
 	'LBL_MB_ADDFIELD' => 'ADD FIELD',
 	'LBL_MB_ALLMODULES' => 'All modules',
+	'LBL_MB_STARTMODULE' => 'Start new module',
+	'LBL_NEWFIELDHELP' => 'Default fields for module <i>assigned_user_id</i>, <i>created_user_id</i>, <i>createdtime</i>, <i>modifiedtime</i> and <i>description</i> are created automatically!',
 	'LBL_MB_PROGRESS' => 'Progress',
 	'LBL_MB_STATUS' => 'Status',
 	'LBL_MODULE_BUILDER' => 'Module Builder',
@@ -947,5 +950,11 @@ $mod_strings = array (
 	'LBL_EXPORT' => 'Export',
 	'LBL_RELATED_MODULE' => 'Related Module',
 	'LBL_RL_LABEL' => 'Label',
+	//email language translate
+    'LBL_EMAIL_TRANSLATE' => 'Ceci est un e-mail de test envoyé pour confirmer si un e-mail est effectivement envoyé via le serveur smtp que vous avez configuré.',
+    'LBL_EMAIL_END' => 'N`hésitez pas à supprimer ce mail.',
+    'LBL_EMAIL_SUBJECT' => 'Testez le courrier sur la configuration du serveur de messagerie.',
+    'LBL_DEAR' => 'Chère ',
+    'LBL_THANKS' => 'Merci et salutations,',
 );
 ?>

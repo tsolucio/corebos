@@ -13,7 +13,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 	<meta name="robots" content="noindex">
-	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
+	<title>{$TITLE_HEADER}</title>
 	<link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
 	{if !empty($SET_CSS_PROPERTIES) && is_file($SET_CSS_PROPERTIES)}
 		<link rel="stylesheet" type="text/css" media="all" href="{$SET_CSS_PROPERTIES}">
@@ -75,8 +75,18 @@
 			});
 		</script>
 	{/if}
+	{if isset($ApplicationFocusElementValue)}
+		<script>
+			window.onload = () => {
+				let element = document.getElementById('{$ApplicationFocusElementValue}');
+				if (element) {
+					element.focus();
+				}
+			}
+		</script>
+	{/if}
 </head>
-<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%">
+<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%" ondrop="cbdzdropHandler(event);" ondragover="cbdzdragOverHandler(event);">
 	<!-- header -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
@@ -133,7 +143,6 @@
 {if empty($Module_Popup_Edit)}
 
 <!-- LDS Global header -->
-
 <header class="slds-global-header_container noprint" id="global-header" style="position:sticky;">
 	<div class="slds-global-header slds-grid slds-grid_align-spread">
 		<div class="slds-global-header__item">
@@ -185,7 +194,7 @@
 													<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 												</svg>
 											</span>
-										<input name="query_string" id="query_string" class="slds-input slds-combobox__input{if $GLOBAL_AC} autocomplete-input{/if}" type="text" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$coreBOS_app_name}" aria-autocomplete="list" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
+										<input name="query_string" id="query_string" class="slds-input slds-combobox__input{if $GLOBAL_AC} autocomplete-input{/if}" type="text" role="textbox" placeholder="{$Global_Search_PlaceHolder}" aria-autocomplete="list" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
 										{if $GLOBAL_AC}
 										<div role="listbox" class="">
 											<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0;display:block;visibility: visible;" role="presentation"></ul>
@@ -357,11 +366,11 @@
 		</div>
 	</div>
 	{if $COREBOS_HEADER_PREMENU}
-	<div style="width:100%; background-color:#fff;"  id="premenu-wrapper">
+	<div style="width:100%; background-color:#fff;" id="premenu-wrapper">
 	{$COREBOS_HEADER_PREMENU}
 	</div>
 	{/if}
-	{if $Application_Menu_Direction!='Vertical'}
+	{if $Application_Menu_Direction!='Vertical' && $Application_Menu_Show != 0}
 	<div class="noprint">
 		<div class="slds-context-bar">
 			<div class="slds-context-bar__primary slds-context-bar__item_divider-right">
@@ -393,10 +402,19 @@
 </header>
 <!-- END LDS Global header -->
 <a name="top"></a>
-{if $Application_Menu_Direction=='Vertical'}
+<div id="corebosdropzonemsg" class="slds-m-top_x-small slds-m-bottom_x-small" style="display:none;position:absolute;top:0;left:25%;width:50%;margin:auto;z-index:1000;">
+	<div class="slds-notify slds-notify_alert slds-theme_info slds-theme_alert-texture slds-p-around_xx-small" role="alert">
+	<h2>
+		<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true">
+		<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+		</svg>drop now
+	</h2>
+	</div>
+</div>
+{if $Application_Menu_Direction=='Vertical' && $Application_Menu_Show != 0}
 <style>
 #page-header {
-  top: 3.625rem;
+ top: 3.625rem;
 }
 </style>
 <table>
@@ -420,7 +438,7 @@
 			</a>
 		</div>
 		<span id="wafflelabel" class="slds-context-bar__label-action slds-context-bar__app-name slds-m-left_xx-small" onclick="hideVerticalMenu()">
-			<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}d dfgxcv xdfv xcv cv cv </span>
+			<span class="slds-truncate" style="cursor: pointer;" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}</span>
 		</span>
 	</div>
 	{call cbmenuvertical menu=$MENU}
@@ -506,8 +524,7 @@
 <!-- Last visited panel -->
 <div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
-	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{$APP.LBL_LAST_VIEWED}">{$APP.LBL_LAST_VIEWED}
-	</h2>
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{$APP.LBL_LAST_VIEWED}">{$APP.LBL_LAST_VIEWED}</h2>
 	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'Close LAST_VIEWED'|@getTranslatedString}" onclick="panelViewHide(document.getElementById('cbds-last-visited'));">
 		<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
@@ -525,8 +542,8 @@
 							<svg class="{$trackelements.__ICONClass}" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use>
 							</svg>
-						<span class="slds-assistive-text">{$trackelements.module_name}</span>
-					</span>
+							<span class="slds-assistive-text">{$trackelements.module_name}</span>
+						</span>
 					</div>
 					<div class="slds-media__body">
 						<h2 class="slds-card__header-title slds-truncate">
@@ -564,13 +581,11 @@
 	jQuery('#tracker').draggable({ldelim} handle: "#Track_Handle" {rdelim});
 </script>
 <script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
-</div>
 <!-- ActivityReminder Customization for callback -->
 <audio id="newEvents" src="{$Calendar_Notification_Sound}" preload="auto"></audio>
 <div id="cbds-notificationpanel" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
 <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
-	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}">{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}
-	</h2>
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}">{'LBL_NOTIFICATION'|@getTranslatedString:'Settings'}</h2>
 	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__refresh" title="{'LBL_REFRESH'|@getTranslatedString}" onclick="ActivityReminderCallback();">
 		<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
@@ -588,7 +603,20 @@
 <ul id="todolist"></ul>
 </div>
 </div>
-<!-- End -->
+<div id="cbds-helppanel" class="slds-panel slds-size_xx-large slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited containernpanel" aria-hidden="false" style="height: 90%;">
+<div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{'LNK_HELP'|@getTranslatedString:'Settings'}">{'LNK_HELP'|@getTranslatedString:'Settings'}
+	</h2>
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'LBL_CLOSE'|@getTranslatedString}" onclick="panelViewHide(document.getElementById('cbds-helppanel'));">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+		</svg>
+		<span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString}</span>
+	</button>
+</div>
+<div id="helppanelcontent" class="slds-panel__body containernpanel" style="height: 92%;">
+</div>
+</div>
 
 <!-- divs for asterisk integration -->
 <div class="lvtCol fixedLay1" id="notificationDiv" style="float: right; padding-right: 5px; overflow: hidden; border-style: solid; right: 0px; border-color: rgb(141, 141, 141); bottom: 0px; display: none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
@@ -603,11 +631,48 @@
 		</tr>
 	</table>
 	<table border='0' cellpadding='0' cellspacing='0' width='100%' class='hdrNameBg'>
+		<tr>
+			<td style='padding:10px;' colspan='2'>{$APP.LBL_OUTGOING_CALL_MESSAGE}</td>
 		</tr>
-		<tr><td style='padding:10px;' colspan='2'>
-			{$APP.LBL_OUTGOING_CALL_MESSAGE}
-		</td></tr>
 	</table>
 </div>
 <!-- divs for asterisk integration :: end-->
+{/if}
+{if GlobalVariable::getVariable('Application_Menu_Search_Active', 1)}
+<div id="searchmenu" class="slds-form-element slds-align_absolute-center" style="display: none;width:36%;position:fixed;top:25%;z-index:2;left: 50%;transform: translate(-50%, -50%);">
+	<div class="slds-form-element__control">
+		<div class="slds-combobox_container">
+			<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click">
+				<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+					<input type="text" readonly class="slds-input slds-combobox__input" id="typemenusearch" aria-autocomplete="list" aria-controls="searchmenulistbox" aria-expanded="false" aria-haspopup="listbox" autoComplete="off" role="combobox" placeholder="{'mt_menu'|getTranslatedString:'evvtMenu'}..." />
+					<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+						<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+						</svg>
+					</span>
+				</div>
+				<div id="searchmenulistbox" class="slds-dropdown slds-dropdown_length-with-icon-10 slds-dropdown_fluid" role="listbox">
+				<ul id="searchmenuul" class="slds-listbox slds-listbox_vertical" role="presentation">
+					{if empty($MENUSEARCH)}
+						{assign var=SEARCHMENU value=[]}
+					{else}
+						{assign var=SEARCHMENU value=$MENUSEARCH|json_decode:true}
+					{/if}
+					{foreach key=menulabel item=menulink from=$SEARCHMENU}
+					<li id="smenu{$menulabel}" role="presentation" class="slds-listbox__item">
+						<a style="text-decoration: none" href="{$menulink}">
+						<div class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">
+							<span class="slds-media__body">
+								<span class="slds-listbox__option-text slds-listbox__option-text_entity">{$menulabel}</span>
+							</span>
+						</div>
+						</a>
+					</li>
+					{/foreach}
+				</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 {/if}

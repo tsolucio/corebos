@@ -220,10 +220,14 @@ $mod_strings = array(
 	'after' => 'After',
 	'between' => 'Between',
 	'LBL_SET_AS_PUBLIC' => 'Seteaza Public',
+	'LBL_SET_AS_PRIVATE'=>'Set as Private',
 	'LBL_NEW' => 'Nou',
 	'LBL_EDIT' => 'Editare',
 	'LBL_STATUS_PUBLIC_APPROVE' => 'Aprobare',
 	'LBL_STATUS_PUBLIC_DENY' => 'Refuz',
+	'LBL_FIRST_COLUMN'=>'Prima coloană',
+	'LBL_SECOND_COLUMN'=>'A doua coloană',
 	'LBL_ADVANCED_FILTER' => 'Regula',
+	'LBL_SORT_BY_FIELD' => 'Sortați după câmp',
 );
 ?>

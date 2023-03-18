@@ -71,13 +71,13 @@ class ModComments_DetailViewBlockCommentWidget {
 		if (vtlib_isModuleActive($moduleName)) {
 			$entityInstance = CRMEntity::getInstance($moduleName);
 
-			$queryCriteria  = '';
+			$queryCriteria = '';
 			switch ($criteria) {
 				case 'All':
 					$queryCriteria = sprintf(' ORDER BY %s.%s DESC ', $entityInstance->table_name, $entityInstance->table_index);
 					break;
 				case 'Last5':
-					$queryCriteria =  sprintf(' ORDER BY %s.%s DESC LIMIT 5', $entityInstance->table_name, $entityInstance->table_index) ;
+					$queryCriteria = sprintf(' ORDER BY %s.%s DESC LIMIT 5', $entityInstance->table_name, $entityInstance->table_index);
 					break;
 				case 'Mine':
 					$queryCriteria = ' AND '.$entityInstance->crmentityTable.'.smcreatorid=' . $current_user->id.
@@ -105,7 +105,7 @@ class ModComments_DetailViewBlockCommentWidget {
 
 	public function process($context = false) {
 		$this->context = $context;
-		$sourceRecordId =  $this->getFromContext('ID', true);
+		$sourceRecordId = $this->getFromContext('ID', true);
 		$usecriteria = ($this->criteria === false)? $this->defaultCriteria : $this->criteria;
 
 		$viewer = $this->getViewer();

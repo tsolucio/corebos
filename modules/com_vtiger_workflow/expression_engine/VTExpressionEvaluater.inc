@@ -14,6 +14,16 @@ interface VTExpressionEnv {
 
 class VTFieldExpressionEvaluater {
 
+	public $debug;
+	public $env;
+	public $expr;
+	public $functions;
+	public $needscontext;
+	public $operations;
+	public $operationsSQL;
+	public $operators;
+	public $rawparams;
+
 	public function __construct($expr) {
 		global $adb;
 		$this->debug = array();
@@ -52,6 +62,7 @@ class VTFieldExpressionEvaluater {
 			'sub_time' => '__vt_sub_time',
 			'power' => '__vt_power',
 			'log' => '__cb_logarithm',
+			'char' => '__cb_char',
 			'substring' => '__vt_substring',
 			'stringposition' => '__cb_stringposition',
 			'stringlength' => '__cb_stringlength',
@@ -71,6 +82,9 @@ class VTFieldExpressionEvaluater {
 			'floor' => '__vt_floor',
 			'modulo' => '__cb_modulo',
 			'hash' => '__cb_hash',
+			'hashFile' => '__cb_hash_file',
+			'base64encode' => '__cb_base64encode',
+			'base64decode' => '__cb_base64decode',
 			'globalvariable' => '__cb_globalvariable',
 			'aggregation' => '__cb_aggregation',
 			'aggregation_fields_operation' => '__cb_aggregation_operation',
@@ -78,6 +92,7 @@ class VTFieldExpressionEvaluater {
 			'getCurrentUserID' => '__getCurrentUserID',
 			'getCurrentUserName' => '__getCurrentUserName',
 			'getCurrentUserField' => '__getCurrentUserField',
+			'getGroupID' => '__getGroupID',
 			'getCRMIDFromWSID' => 'cb_getCRMIDFromWSID',
 			'getEntityType' => '__cbwf_setype',
 			'getLatitude' => '__cb_getLatitude',
@@ -105,6 +120,9 @@ class VTFieldExpressionEvaluater {
 			'getFromContext' => '__cb_getfromcontext',
 			'getFromContextSearching' => '__cb_getfromcontextsearching',
 			'setToContext' => '__cb_setfromcontext',
+			'cleanArrayElements' => '__cb_cleanarrayelements',
+			'applyMaptoArrayElements' => '__cb_applymaptoarrayelements',
+			'applyMaptoArrayElementsAndSubarray' => '__cb_applymaptoarrayelementsandsubarray',
 			'jsonEncode' => '__cb_jsonencode',
 			'jsonDecode' => '__cb_jsondecode',
 			'implode' => '__cb_implode',
@@ -115,8 +133,10 @@ class VTFieldExpressionEvaluater {
 			'sendMessage' => '__cb_sendMessage',
 			'readMessage' => '__cb_readMessage',
 			'evaluateRule' => '__cb_evaluateRule',
+			'evaluateExpression' => '__cb_evaluateExpression',
 			'executeSQL' => '__cb_executesql',
 			'getCRUDMode' => '__cb_getcrudmode',
+			'getRequest' => '__cb_getrequest',
 			'Importing' => '__cb_currentlyimporting',
 			'isNumeric' => '__cb_is_numeric',
 			'isString' => '__cb_is_string',
@@ -124,6 +144,9 @@ class VTFieldExpressionEvaluater {
 			'AND' => '__cb_and',
 			'NOT' => '__cb_not',
 			'regex' => '__cb_regex',
+			'uniqid' => '__cb_uniqid',
+			'array' => '__cb_array',
+			'flattenarray' => '__cb_flattenarray',
 			'exists' => '__cb_exists',
 			'existsrelated' => '__cb_existsrelated',
 			'allrelatedare' => '__cb_allrelatedare',
@@ -132,10 +155,14 @@ class VTFieldExpressionEvaluater {
 			'number_format' => '__cb_number_format',
 			'min' => '__cb_min',
 			'max' => '__cb_max',
+			'statistics' => '__cb_statistics',
+			'frequency' => '__cb_frequency',
 			'sub_workdays' => '__cb_sub_workdays',
 			'average' => 'cb_average',
 			'getCurrentConfiguredTaxValues' => '__cb_getCurrentConfiguredTaxValues',
 			'getCurrencyConversionValue' => '__cb_getCurrencyConversionValue',
+			'EUVATValidation' => '__cb_euvatvalidation',
+			'AutoNumberDec' => '__cb_autonumber_dec',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',
@@ -168,6 +195,7 @@ class VTFieldExpressionEvaluater {
 			'add_time' => 'cbexpsql_add_time',
 			'sub_time' => 'cbexpsql_sub_time',
 			'power' => 'cbexpsql_power',
+			'char' => 'cbexpsql_char',
 			'substring' => 'cbexpsql_substring',
 			'stringposition' => 'cbexpsql_stringposition',
 			'stringlength' => 'cbexpsql_stringlength',
@@ -186,7 +214,10 @@ class VTFieldExpressionEvaluater {
 			'ceil' => 'cbexpsql_ceil',
 			'floor' => 'cbexpsql_floor',
 			'modulo' => 'cbexpsql_modulo',
+			'uniqid' => 'cbexpsql_uniqid',
 			'hash' => 'cbexpsql_hash',
+			'base64encode' => 'cbexpsql_base64encode',
+			'base64decode' => 'cbexpsql_base64decode',
 			'globalvariable' => 'cbexpsql_globalvariable',
 			'aggregation' => 'cbexpsql_aggregation',
 			'aggregation_fields_operation' => 'cbexpsql_aggregation_operation',
@@ -194,6 +225,8 @@ class VTFieldExpressionEvaluater {
 			'getCurrentUserID' => 'cbexpsql_getCurrentUserID',
 			'getCurrentUserName' => 'cbexpsql_getCurrentUserName',
 			'getCurrentUserField' => 'cbexpsql_getCurrentUserField',
+			'getGroupID' => 'cbexpsql_getGroupID',
+			'getRequest' => 'cbexpsql_getrequest',
 			'getCRMIDFromWSID' => 'cbexpsql_getCRMIDFromWSID',
 			'getEntityType' => 'cbexpsql_setype',
 			'getLatitude' => 'cbexpsql_getLatitude',
@@ -254,11 +287,13 @@ class VTFieldExpressionEvaluater {
 			'__cb_getfromcontext',
 			'__cb_getfromcontextsearching',
 			'__cb_setfromcontext',
+			'__cb_applymaptoarrayelements',
 			'__cb_exists',
 			'__cb_existsrelated',
 			'__cb_allrelatedare',
 			'__cb_allrelatedarethesame',
 			'__cb_evaluateRule',
+			'__cb_evaluateExpression',
 			'__cb_getrelatedids',
 			'__cb_getRelatedMassCreateArray',
 			'__cb_getRelatedMassCreateArrayConverting',
@@ -332,9 +367,9 @@ class VTFieldExpressionEvaluater {
 						$params[] = ''; // no conditions
 					}
 				} else {
-					if (empty($this->env->WorkflowContext)) {
+					if ($this->env && empty($this->env->WorkflowContext)) {
 						$this->env->WorkflowContext = array(
-							'current_row' => $this->env->data
+							'current_row' => $this->env->getData()
 						);
 					}
 					$params = array_map(array($this, 'exec'), $expr->getParams());
@@ -447,7 +482,11 @@ class VTFieldExpressionEvaluater {
 	public function env($sym, $raw = false, $formatValue = true) {
 		if ($this->env) {
 			$this->env->formatReferenceValues = $formatValue;
-			$val = $this->env->get($sym->value);
+			$WorkflowContext = array();
+			if (isset($this->env->WorkflowContext)) {
+				$WorkflowContext = $this->env->WorkflowContext;
+			}
+			$val = $this->env->get($sym->value, $WorkflowContext);
 			if (isset($this->env->moduleName)) {
 				$module = Vtiger_Module::getInstance($this->env->moduleName);
 			} else {

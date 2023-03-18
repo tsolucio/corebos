@@ -18,7 +18,7 @@
 require_once 'include/utils/utils.php';
 require_once 'modules/cbQuestion/cbQuestion.php';
 require_once 'include/ListView/ListView.php';
-require_once 'include/ListView/ListViewJSON.php';
+require_once 'include/ListView/ListViewGrid.php';
 
 if (isset($_REQUEST['page'])) {
 	$page = vtlib_purify($_REQUEST['page']);

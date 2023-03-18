@@ -49,12 +49,12 @@
 		</td>
 		<td class="small" nowrap width="30%">
 			<div class="slds-button-group" role="group">
-				<a onClick="callSearch('Basic');document.basicSearch.searchtype.searchlaunched='basic';" class="slds-button slds-button_neutral">
+				<button onclick="callSearch('Basic');document.basicSearch.searchtype.searchlaunched='basic';" class="slds-button slds-button_neutral" type="button">
 					<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 					</svg>
 					{$APP.LBL_SEARCH_NOW_BUTTON}
-				</a>
+				</button>
 				{if isset($Apache_Tika_URL) && $Apache_Tika_URL neq '' && $MODULE == 'Documents'}
 				{assign var="searchfunction" value="callSearch('Basic', 'SearchDocuments');document.basicSearch.searchtype.searchlaunched='basic';"}
 				{if $moduleView=='tuigrid'}

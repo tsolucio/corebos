@@ -32,6 +32,7 @@ function cbexpsql_supportedFunctions() {
 		'stringlength' => 'stringlength(string)',
 		'stringreplace' => 'stringreplace(search,replace,subject)',
 		'regexreplace' => 'regexreplace(pattern,replace,subject)',
+		'char' => 'char(number)',
 		'substring' => 'substring(stringfield,start,length)',
 		'randomstring' => 'randomstring(length)',
 		'randomnumber' => 'randomnumber(min,max)',
@@ -77,7 +78,10 @@ function cbexpsql_supportedFunctions() {
 		'gt' => '>',
 		'ifelse' => 'if else then end',
 		'coalesce' => 'coalesce(a,...,n)',
+		'uniqid' => 'uniqid(prefix)',
 		'hash' => 'hash(field, method)',
+		'base64encode' => 'base64encode(string)',
+		'base64decode' => 'base64decode(string)',
 		'getEntityType' => 'getEntityType(field)',
 		'number_format' => 'number_format(number, format)',
 		// 'add_workdays' => 'add_workdays(date, numofdays, addsaturday, holidays)',
@@ -170,6 +174,15 @@ function __cbexpsql_functionparamsvalue($prm, $mmodule) {
 
 function __cbexpsql_mathparams($func, $arr, $mmodule) {
 	return new VTExpressionSymbol(__cbexpsql_functionparamsvalue($arr[0], $mmodule).$func.__cbexpsql_functionparamsvalue($arr[1], $mmodule), 'math');
+}
+
+function cbexpsql_uniqid($arr, $mmodule) {
+	if (count($arr)) {
+		$arr[] = new VTExpressionSymbol('uuid_short()', 'function');
+		return __cbexpsql_functionparams('concat', $arr, $mmodule);
+	} else {
+		return __cbexpsql_functionparams('uuid_short', [], $mmodule);
+	}
 }
 
 function cbexpsql_concat($arr, $mmodule) {
@@ -301,6 +314,20 @@ function cbexpsql_isnumber($arr, $mmodule) {
 	return __cbexpsql_functionparams("concat('',".__cbexpsql_functionparamsvalue($arr[0], $mmodule).'*1)=', $arr, $mmodule);
 }
 
+function cbexpsql_base64encode($arr, $mmodule) {
+	if (is_object($arr[0])) {
+		$arr[0] = $arr[0]->value;
+	}
+	return __cbexpsql_functionparams('TO_BASE64', $arr, $mmodule);
+}
+
+function cbexpsql_base64decode($arr, $mmodule) {
+	if (is_object($arr[0])) {
+		$arr[0] = $arr[0]->value;
+	}
+	return __cbexpsql_functionparams('FROM_BASE64', $arr, $mmodule);
+}
+
 function cbexpsql_hash($arr, $mmodule) {
 	if (count($arr)==1) {
 		$arr[1] = 'sha1';
@@ -317,6 +344,14 @@ function cbexpsql_hash($arr, $mmodule) {
 	}
 	unset($arr[1]);
 	return __cbexpsql_functionparams($func, $arr, $mmodule);
+}
+
+function cbexpsql_char($arr, $mmodule) {
+	if (count($arr)) {
+		return __cbexpsql_functionparams('char', [$arr[0]], $mmodule);
+	} else {
+		return '""';
+	}
 }
 
 function cbexpsql_substring($arr, $mmodule) {
@@ -520,7 +555,8 @@ function cbexpsql_number_format($arr, $mmodule) {
 		$decimals = isset($arr[1]) ? $arr[1] : 0;
 		$dec_points = isset($arr[2]) ? $arr[2] : '.';
 		$thousands_sep = isset($arr[3]) ? $arr[3] : ',';
-		return 'REPLACE(REPLACE(REPLACE(FORMAT('.__cbexpsql_functionparamsvalue($number, $mmodule).', '.$decimals.'), ".", "@"), ",", '.__cbexpsql_functionparamsvalue($thousands_sep, $mmodule).'), "@", '.__cbexpsql_functionparamsvalue($dec_points, $mmodule).')';
+		return 'REPLACE(REPLACE(REPLACE(FORMAT('.__cbexpsql_functionparamsvalue($number, $mmodule).', '.$decimals.'), ".", "@"), ",", '
+			.__cbexpsql_functionparamsvalue($thousands_sep, $mmodule).'), "@", '.__cbexpsql_functionparamsvalue($dec_points, $mmodule).')';
 	}
 	return '""';
 }
@@ -565,7 +601,12 @@ function cbexpsql_getCurrentUserName($arr, $mmodule) {
 function cbexpsql_getCurrentUserField($arr, $mmodule) {
 	return 'TRUE';
 }
-
+function cbexpsql_getrequest($arr, $mmodule) {
+	return 'TRUE';
+}
+function cbexpsql_getGroupID($arr, $mmodule) {
+	return '(select groupid from vtiger_groups where groupname='.__cbexpsql_functionparamsvalue($arr[0], $mmodule).')';
+}
 function cbexpsql_getCRMIDFromWSID($arr, $mmodule) {
 	return 'crmid';
 }
@@ -652,6 +693,7 @@ class cbexpsql_environmentstub {
 	private $module;
 	private $data;
 	public $returnReferenceValue = true;
+	public $WorkflowContext = array();
 
 	public function __construct($module, $crmid) {
 		$this->crmid = $crmid;

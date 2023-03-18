@@ -21,6 +21,7 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 class CBPushNotificationTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $url_query;
 
 	public function getFieldNames() {
 		return array('url_query');
@@ -28,6 +29,7 @@ class CBPushNotificationTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $logbg;
+		$logbg->debug('> PushNotificationTask');
 		if (!empty($this->url_query)) {
 			list($ent, $ent_id) = explode('x', $entity->getId());
 			$url = getMergedDescriptionForURL(vtlib_purify($this->url_query), $ent_id, 0);
@@ -35,15 +37,21 @@ class CBPushNotificationTask extends VTTask {
 			if (!empty($inBucketServeUrl)) {
 				require_once 'modules/Emails/mail.php';
 				require_once 'modules/Emails/Emails.php';
+				$logmsg = "(PushNotificationTask) sending email to inbucket ($url)";
 				return send_mail('Email', 'push@notification.tld', 'corebos inbucket', 'corebos@inbucket.tld', 'Push Notification', $url);
 			} else {
 				$curl = curl_init($url);
 				curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-				curl_exec($curl);
+				$result = curl_exec($curl);
+				$logmsg = "(PushNotificationTask) curl ($url) result: $result";
 			}
-			$logbg->debug('Send Push Notification: '.$url);
+		} else {
+			$logmsg = '(PushNotificationTask) not called: the url_query is empty';
 		}
+		$logbg->debug($logmsg);
+		$this->logmessages[] = $logmsg;
+		$logbg->debug('< PushNotificationTask');
 	}
 }
 ?>

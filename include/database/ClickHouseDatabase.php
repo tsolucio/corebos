@@ -24,6 +24,7 @@ class ClickHouseDatabase extends PearDatabase {
 	public $dbType = 'clickhouse';
 	public $chdatabase;
 	public $lastResult;
+	public $log;
 
 	/**
 	 * Manage instance usage of this class
@@ -352,7 +353,7 @@ class ClickHouseDatabase extends PearDatabase {
 		return ($result->iterator>=$result->count());
 	}
 
-	public function fetchByAssoc(&$result, $rowNum = -1, $encode = true) {
+	public function fetchByAssoc(&$result, $rowNum = -1, $encode = true, $keycase = ADODB_ASSOC_CASE_LOWER) {
 		if (empty($result) || !is_object($result) || $this->EOF($result)) {
 			$this->println('CHDB fetchByAssoc return null');
 			return null;
@@ -445,9 +446,6 @@ class ClickHouseDatabase extends PearDatabase {
 		$this->checkConnection();
 		$db = $adb->database;
 		$schema = new adoSchema($db);
-		//Debug Adodb XML Schema
-		$schema->XMLS_DEBUG = true;
-		//Debug Adodb
 		$schema->debug = true;
 		$sql = $schema->ParseSchema($schemaFile);
 
@@ -512,6 +510,43 @@ class ClickHouseDatabase extends PearDatabase {
 			return $rdo;
 		}
 		return false;
+	}
+
+	public function getMetaColumns($tablename) {
+		$rsf = $this->chdatabase->select("DESCRIBE $tablename;");
+		try {
+			$rsf->error();
+		} catch (\Throwable $th) {
+			$this->lastResult = $rsf;
+			return false;
+		}
+		$rspk = $this->chdatabase->select("SELECT name FROM system.columns WHERE table='$tablename' and is_in_primary_key=1;");
+		$pks = array();
+		while ($pk = $rspk->FetchRow()) {
+			$pks[] = $pk['name'];
+		}
+		$field_array = array();
+		while ($meta = $rsf->FetchRow()) {
+			$mf = new ADOFieldObject();
+			$mf->name = $meta['name'];
+			$mf->max_length = $meta['type'] == 'String' ? 200 : -1;
+			$mf->type = $meta['type'];
+			$mf->scale = null;
+			$mf->not_null = true;
+			$mf->primary_key = in_array($meta['name'], $pks);
+			$mf->auto_increment = false;
+			$mf->binary = false;
+			$mf->unsigned = false;
+			$mf->zerofill = false;
+			$mf->has_default = false;
+			$mf->default_type = '';
+			$mf->default_expression = '';
+			$mf->comment = '';
+			$mf->codec_expression = '';
+			$mf->ttl_expression = '';
+			$field_array[$meta['name']] = $mf;
+		}
+		return $field_array;
 	}
 
 	public function getColumnNames($tablename) {

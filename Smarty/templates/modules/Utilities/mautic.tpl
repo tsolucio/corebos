@@ -57,7 +57,6 @@
 				</div>
 			</div>
 		</div>
-		
 		<div class="oauth2-fields" style="display: none;">
 			<div class="slds-form-element slds-m-top_small">
 				<label class="slds-form-element__label" for="clientkey">{'mautic_clientkey'|@getTranslatedString:$MODULE}</label>

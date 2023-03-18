@@ -22,18 +22,21 @@ require_once 'data/CRMEntity.php';
 class CBSelectcbMap extends VTTask {
 	public $executeImmediately = true;
 	public $queable = false;
+	public $bmapid;
+	public $bmapid_display;
 
 	public function getFieldNames() {
 		return array('bmapid', 'bmapid_display');
 	}
 
 	public function doTask(&$recordid) {
-		global $adb;
+		global $adb, $logbg;
+		$logbg->debug('> SelectcbMap');
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
-		$maprs = $adb->pquery('select 1
-			from vtiger_cbmap
-			inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid
-			where vtiger_crmentity.deleted=0 and cbmapid=?', array($this->bmapid));
+		$maprs = $adb->pquery(
+			'select 1 from vtiger_cbmap inner join '.$crmEntityTable.' on vtiger_crmentity.crmid=cbmapid where vtiger_crmentity.deleted=0 and cbmapid=?',
+			array($this->bmapid)
+		);
 		if ($maprs && $adb->num_rows($maprs)>0) {
 			require_once 'modules/cbMap/cbMap.php';
 			require_once 'modules/cbMap/processmap/processMap.php';
@@ -43,15 +46,22 @@ class CBSelectcbMap extends VTTask {
 			$focus->retrieve_entity_info($this->bmapid, 'cbMap');
 			$contentok = processcbMap::isXML(htmlspecialchars_decode($focus->column_fields['content']));
 			if ($contentok !== true) {
+				$logmsg = '(SelectcbMap) Incorrect map cbMapid: ' . $this->bmapid;
+				$this->logmessages[] = $logmsg;
+				$logbg->debug($logmsg);
 				return false;
 			}
 			$return = $focus->RecordAccessControl();
 			list($mod,$rec) = explode('x', $recordid);
+			$logmsg = '(SelectcbMap) cbMapid: '.$this->bmapid.', recordid: '.$recordid;
 			$return->setRelatedRecordID($rec);
-			return $return;
 		} else {
-			return false;
+			$logmsg = '(SelectcbMap) not called: maprs is empty';
+			$return = false;
 		}
+		$this->logmessages[] = $logmsg;
+		$logbg->debug('< '.$logmsg);
+		return $return;
 	}
 }
 ?>

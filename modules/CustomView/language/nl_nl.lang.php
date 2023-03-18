@@ -267,9 +267,14 @@ $mod_strings = array(
 
 //Added for Role based Custom filters
 'LBL_SET_AS_PUBLIC'=>'Maak publiek toegankelijk ',
+'LBL_SET_AS_PRIVATE'=>'Set as Private',
 'LBL_NEW'=>'Nieuw',
 'LBL_EDIT'=>'Bewerk',
 'LBL_STATUS_PUBLIC_APPROVE'=>'Goedkeuren',
 'LBL_STATUS_PUBLIC_DENY'=>'Verbieden',
+'LBL_FIRST_COLUMN'=>'Eerste kolom',
+'LBL_SECOND_COLUMN'=>'Tweede colonne',
+'LBL_ADVANCED_FILTER' => 'Rule',
+'LBL_SORT_BY_FIELD' => 'Sorteer op veld',
 );
 ?>

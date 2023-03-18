@@ -12,10 +12,13 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/cbMap/cbMap.php';
 require_once 'include/events/include.inc';
 
-
 class CBMassiveUpdateRelatedTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $field_value_mapping;
+	public $bmapid;
+	public $bmapid_display;
+	public $launchrelwf;
 
 	public function getFieldNames() {
 		return array('field_value_mapping','bmapid', 'bmapid_display', 'launchrelwf');
@@ -23,8 +26,8 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user, $logbg, $from_wf, $currentModule;
+		$logbg->debug('> MassiveUpdateRelatedTask');
 		$from_wf = true;
-		$logbg->debug('> CBMassiveUpdateRelatedTask');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 		$isqueue=$entity->isqueue;
@@ -55,7 +58,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
-		$logbg->debug('field mapping', $fieldValueMapping);
+		$logbg->debug('field mapping', (array)$fieldValueMapping);
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			include_once 'data/CRMEntity.php';
 			$focus = CRMEntity::getInstance($moduleName);
@@ -92,7 +95,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
 			if ($fldmod!='') {
-				$focusrel[] = array();
+				$focusrel = array();
 				$fieldmodule = explode('__', $fldmod);
 				$relmodule = $fieldmodule[0];
 				$relfield = $fieldmodule[1];
@@ -102,11 +105,15 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				$condition = '';
 				if ($businessMap == 'Condition Query') {
 					$ids = $focusmap->ConditionQuery($recordId);
-					foreach ($ids as $recid) {
-						$getids[] = $recid[$mainid];
+					if (is_array($ids)) {
+						foreach ($ids as $recid) {
+							$getids[] = $recid[$mainid];
+						}
+					} else {
+						$getids = array($ids);
 					}
 					if (count($getids)>0) {
-						$condition = " and $mainid in (".implode(',', $getids).')';
+						$condition = " and $maintable.$mainid in (".implode(',', $getids).')';
 					}
 				}
 
@@ -122,6 +129,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				$relationInfo = $adb->fetch_array($relationResult);
 				$params = array($recordId, $rectabid, $relatedModuleId);
 				$logbg->debug(['rel func' => $relationInfo['name'], 'params' => $params]);
+				$this->logmessages[] = 'rel func: '.$relationInfo['name'].', params: '.json_encode($params);
 				if (empty($holdCM)) {
 					$holdCM = $currentModule;
 				}
@@ -134,9 +142,12 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 					preg_match('/[\t ]from /i', $query, $matches, PREG_OFFSET_CAPTURE);
 					$query = 'select vtiger_crmentity.crmid'.substr($query, $matches[0][1]).$condition;
 					$rs = $adb->query($query);
+					$relwsid = vtws_getEntityId($relmodule).'x';
 					while ($row = $adb->fetch_array($rs)) {
 						$relId = $row['crmid'];
-						if ($businessMap == '' || ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression(vtws_getEntityId($relmodule).'x'.$relId))) {
+						if ($businessMap == '' || $businessMap == 'Condition Query'
+							|| ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression($relwsid.$relId))
+						) {
 							$focusrel[$fldmod]->id = $relId;
 							$focusrel[$fldmod]->mode = 'edit';
 							$focusrel[$fldmod]->retrieve_entity_info($relId, $relmodule, false, $from_wf);
@@ -146,7 +157,10 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 								$focusrel[$fldmod]->column_fields[$key]=$value;
 							}
 							$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
-							$logbg->debug("Saving: $relmodule", $focusrel[$fldmod]->column_fields);
+							$logmsg = "Saving: $relmodule, trigger WF: ".($this->launchrelwf ? 'T' : 'F');
+							$logbg->debug($logmsg, $focusrel[$fldmod]->column_fields);
+							$this->logmessages[] = $logmsg;
+							$this->logmessages[] = json_encode($focusrel[$fldmod]->column_fields);
 							if ($this->launchrelwf) {
 								$focusrel[$fldmod]->save($relmodule);
 							} else {
@@ -159,16 +173,32 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 								$em->triggerEvent('corebos.aftersave.workflow', $entityData);
 								$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
 							}
+						} else {
+							$logmsg = '(MassiveUpdateRelatedTask) not called: business map is empty or of a non supported type';
+							$logbg->debug($logmsg);
+							$this->logmessages[] = $logmsg;
 						}
 					}
+				} else {
+					$logmsg = '(MassiveUpdateRelatedTask) not called: relationData query is empty';
+					$logbg->debug($logmsg);
+					$this->logmessages[] = $logmsg;
 				}
+			} else {
+				$logmsg = '(MassiveUpdateRelatedTask) not called: relation field (fldmod) is empty';
+				$logbg->debug($logmsg);
+				$this->logmessages[] = $logmsg;
 			}
 			$util->revertUser();
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
+		} else {
+			$logmsg = '(MassiveUpdateRelatedTask) not called: fieldValueMapping is empty';
+			$logbg->debug($logmsg);
+			$this->logmessages[] = $logmsg;
 		}
 		$util->revertUser();
 		$from_wf = false;
-		$logbg->debug('< CBMassiveUpdateRelatedTask');
+		$logbg->debug('< MassiveUpdateRelatedTask');
 	}
 }
 ?>

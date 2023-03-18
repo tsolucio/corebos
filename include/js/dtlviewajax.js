@@ -147,6 +147,10 @@ function handleEdit(event) {
 	if (event) {
 		event.stopPropagation();
 	}
+	let smenu = document.getElementById('searchmenu');
+	if (smenu) {
+		smenu.style.display = 'none';
+	}
 	return false;
 }
 
@@ -212,7 +216,8 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	var editArea = 'editarea_'+ fieldLabel;
 	var groupurl = '';
 
-	if (globaluitype == 53) {
+	globaluitype = uitype;
+	if (uitype == 53) {
 		var assigntype = document.getElementsByName('assigntype');
 		if (assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
@@ -232,16 +237,22 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		}
 	} else if (uitype == 15 || uitype == 16 || uitype == 1613 || uitype == 1614 || uitype == 1615) {
 		var txtBox= 'txtbox_'+ fieldLabel;
+		if (document.getElementById(txtBox) === null) {
+			txtBox= 'dtlview_'+ fieldLabel;
+		}
 		var not_access =document.getElementById(txtBox);
-		if (not_access.options[not_access.selectedIndex]==undefined || not_access.options[not_access.selectedIndex].value == alert_arr.LBL_NOT_ACCESSIBLE) {
+		if (not_access.options !== undefined && (not_access.options[not_access.selectedIndex]==undefined || not_access.options[not_access.selectedIndex].value == alert_arr.LBL_NOT_ACCESSIBLE)) {
 			document.getElementById(editArea).style.display='none';
 			document.getElementById(dtlView).style.display='block';
 			itsonview=false; //to show the edit link again after hiding the editdiv.
 			alert(alert_arr.ERR_FIELD_SELECTION);
 			return false;
 		}
-	} else if (globaluitype == 33 || globaluitype == 3313 || globaluitype == 3314) {
+	} else if (uitype == 33 || uitype == 3313 || uitype == 3314) {
 		var txtBox= 'txtbox_'+ fieldLabel;
+		if (document.getElementById(txtBox) === null) {
+			txtBox= 'dtlview_'+ fieldLabel;
+		}
 		var oMulSelect = document.getElementById(txtBox);
 		var r = new Array();
 		var notaccess_label = new Array();
@@ -253,6 +264,9 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		}
 	} else {
 		var txtBox= 'txtbox_'+ fieldLabel;
+		if (document.getElementById(txtBox) === null) {
+			txtBox= 'dtlview_'+ fieldLabel;
+		}
 	}
 
 	VtigerJS_DialogBox.showbusy();
@@ -302,7 +316,8 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 
 	var data = {
 		'fldName' : fieldName,
-		'fieldValue' : encodeURIComponent(tagValue)
+		'fieldValue' : encodeURIComponent(tagValue),
+		'_logwf': document.getElementById('_logwf').value
 	};
 	data = corebosjshook_dtlViewAjaxFinishSave_moredata(data);
 	var url = 'file=DetailViewAjax&module=' + module + '&action=' + module + 'Ajax&record=' + crmId + '&recordid=' + crmId + '&ajxaction=DETAILVIEW' + groupurl;
@@ -355,6 +370,26 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	itsonview=false;
 }
 
+function dtlViewReload(module, record) {
+	fetch('index.php?action='+module+'Ajax&file=DetailViewAjax&module='+module+'&ajxaction=DETAILVIEWLOAD&record='+record)
+	.then(response => response.text())
+	.then(response => {
+		if (response.indexOf(':#:SUCCESS')>-1) {
+			let result = response.split(':#:');
+			if (result[2] != null) {
+				var target = null;
+				if (module == 'Users') {
+					target = document.getElementsByClassName('user-detailview')[0];
+				} else {
+					target = document.getElementsByClassName('detailview_wrapper_table')[0];
+				}
+				target.innerHTML = result[2];
+				vtlib_executeJavascriptInElement(target);
+			}
+		}
+	});
+}
+
 function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldName, crmId) {
 	var formName = 'DetailView';
 	if (doformValidation('')) { //base function which validates form data
@@ -365,6 +400,10 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 		for (var f=0; f<myFields.length; f++) {
 			sentForm[myFields[f].name] = myFields[f].value;
 		}
+		var txtBox = 'txtbox_'+ fieldLabel;
+		if (document.getElementById(txtBox) === null) {
+			txtBox = 'dtlview_'+ fieldLabel;
+		}
 		// field being edited
 		switch (uitype) {
 		case '33':
@@ -373,7 +412,6 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 		case 3313:
 		case '3314':
 		case 3314:
-			var txtBox= 'txtbox_'+ fieldLabel;
 			var oMulSelect = document.getElementById(txtBox);
 			var r = new Array();
 			var notaccess_label = new Array();
@@ -387,7 +425,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			break;
 		case '56':
 		case 56:
-			if (document.getElementById('txtbox_'+fieldName).checked) {
+			if (document.getElementById(txtBox).checked) {
 				sentForm[fieldName] = 1;
 			} else {
 				sentForm[fieldName] = 0;
@@ -395,7 +433,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			break;
 		case '50':
 		case 50:
-			sentForm[fieldName] = document.getElementById('txtbox_' + fieldName).value;
+			sentForm[fieldName] = document.getElementById(txtBox).value;
 			sentForm['timefmt_' + fieldName] = document.getElementById('inputtimefmt_' + fieldName).value;
 			break;
 		case '53':
@@ -420,7 +458,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 			sentForm[fieldName] = document.getElementById(txtBox).value;
 			break;
 		default:
-			sentForm[fieldName] = document.getElementById('txtbox_'+fieldName).value;
+			sentForm[fieldName] = document.getElementById(txtBox).value;
 			break;
 		}
 		sentForm['action'] = 'DetailViewEdit';

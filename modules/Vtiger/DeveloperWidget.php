@@ -68,7 +68,7 @@ class DeveloperBlock {
 		global $adb;
 		$smarty = $this->getViewer();
 		$this->context = $context;
-		$sourceRecordId =  $this->getFromContext('ID', true);
+		$sourceRecordId = $this->getFromContext('ID', true);
 		if (!empty($sourceRecordId)) {
 			return 'Hello World!';
 		}

@@ -196,11 +196,11 @@ class Vtiger_Request {
 
 	public static function validateRequest($die = true, $msg = true) {
 		require_once 'Smarty_setup.php';
-		$smarty = new vtigerCRM_Smarty();
 		$request = new Vtiger_Request($_REQUEST);
 		try {
 			$request->validateWriteAccess();
 		} catch (\Throwable $th) {
+			$smarty = new vtigerCRM_Smarty();
 			$message = $th->getMessage();
 			if ($message == 'Site URL mismatch') {
 				$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
@@ -218,6 +218,10 @@ class Vtiger_Request {
 				die();
 			}
 		}
+	}
+
+	public static function addCRSF2URL($url = '', $separator = '&') {
+		return $url.$separator.$GLOBALS['csrf']['input-name'].'='.csrf_get_tokens('');
 	}
 
 	public static function get_ip() {

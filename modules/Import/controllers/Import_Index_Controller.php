@@ -254,7 +254,7 @@ class Import_Index_Controller {
 			$viewer->display('OperationNotPermitted.tpl', 'Vtiger');
 			exit;
 		}
-		$result = $adb->query("SELECT recordid FROM $dbTableName WHERE status = ". Import_Data_Controller::$IMPORT_RECORD_CREATED.' AND recordid IS NOT NULL');
+		$result = $adb->query("SELECT recordid FROM $dbTableName WHERE status=". Import_Data_Controller::$IMPORT_RECORD_CREATED.' AND recordid IS NOT NULL');
 		$noOfRecords = $adb->num_rows($result);
 		$noOfRecordsDeleted = 0;
 		for ($i=0; $i<$noOfRecords; ++$i) {

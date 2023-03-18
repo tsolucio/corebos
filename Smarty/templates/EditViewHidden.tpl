@@ -8,20 +8,27 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<script>
+	{if isset($PopupFilterMapResults)}
+		let PopupFilterMapResults = JSON.parse(`{$PopupFilterMapResults}`);
+	{/if}
+</script>
 {include file='applicationmessage.tpl'}
+{if empty($EDITFORMID)}
+	{assign var="EDITFORMID" value='frmEditView'}
+{/if}
 {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Quotes' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards'}
-	<!-- (id="frmEditView") content added to form tag and new hidden field added,  -->
-	<form id="frmEditView" name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="settotalnoofrows();calcTotal();">
+	<form id="{$EDITFORMID}" name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="VtigerJS_DialogBox.block();settotalnoofrows();calcTotal();">
 	<input type="hidden" name="hidImagePath" id="hidImagePath" value="{$IMAGE_PATH}"/>
 	{if isset($OP_MODE) && $OP_MODE eq 'create_view'}
 		<input type="hidden" name="convert_from" value="{$CONVERT_MODE}">
 		<input type="hidden" name="duplicate_from" value="{if isset($DUPLICATE_FROM)}{$DUPLICATE_FROM}{/if}">
 	{/if}
 	{if $MODULE neq 'Quotes'}
-		 <input type="hidden" name="convertmode">
+		<input type="hidden" name="convertmode">
 	{/if}
 {else}
-	<form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php">
+	<form id="{$EDITFORMID}" name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 	<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="{$UPLOAD_MAXSIZE}">
 {/if}
 {if $MODULE eq 'Emails'}
@@ -47,13 +54,13 @@
 {elseif $MODULE eq 'Documents'}
 	<input type="hidden" name="max_file_size" value="{$MAX_FILE_SIZE}">
 	<input type="hidden" name="form">
-	<input type="hidden" name="email_id" value="{if isset($EMAILID)}{$EMAILID}{/if}">
-	<input type="hidden" name="ticket_id" value="{if isset($TICKETID)}{$TICKETID}{/if}">
-	<input type="hidden" name="fileid" value="{if isset($FILEID)}{$FILEID}{/if}">
-	<input type="hidden" name="parentid" value="{if isset($PARENTID)}{$PARENTID}{/if}">
+	<input type="hidden" name="email_id" value="{if isset($EMAILID)}{$EMAILID|@urlencode}{/if}">
+	<input type="hidden" name="ticket_id" value="{if isset($TICKETID)}{$TICKETID|@urlencode}{/if}">
+	<input type="hidden" name="fileid" value="{if isset($FILEID)}{$FILEID|@urlencode}{/if}">
+	<input type="hidden" name="parentid" value="{if isset($PARENTID)}{$PARENTID|@urlencode}{/if}">
 
 {elseif $MODULE eq 'Products'}
-	<input type="hidden" name="activity_mode" value="{if isset($ACTIVITY_MODE)}{$ACTIVITY_MODE}{/if}">
+	<input type="hidden" name="activity_mode" value="{if isset($ACTIVITY_MODE)}{$ACTIVITY_MODE|@urlencode}{/if}">
 {/if}
 
 <input type="hidden" name="pagenumber" value="{if isset($smarty.request.start)}{$smarty.request.start|@vtlib_purify}{/if}">
@@ -62,13 +69,14 @@
 <input type="hidden" name="mode" value="{$MODE}">
 <input type="hidden" name="action">
 <input type="hidden" name="saverepeat" value="0">
-<input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
-<input type="hidden" name="return_id" value="{if isset($RETURN_ID)}{$RETURN_ID}{/if}">
-<input type="hidden" name="return_action" value="{if isset($RETURN_ACTION)}{$RETURN_ACTION}{/if}">
-<input type="hidden" name="return_viewname" value="{if isset($RETURN_VIEWNAME)}{$RETURN_VIEWNAME}{/if}">
-<input type="hidden" name="createmode" value="{$CREATEMODE}" />
+<input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE|@urlencode}{/if}">
+<input type="hidden" name="return_id" value="{if isset($RETURN_ID)}{$RETURN_ID|@urlencode}{/if}">
+<input type="hidden" name="return_action" value="{if isset($RETURN_ACTION)}{$RETURN_ACTION|@urlencode}{/if}">
+<input type="hidden" name="return_viewname" value="{if isset($RETURN_VIEWNAME)}{$RETURN_VIEWNAME|@urlencode}{/if}">
+<input type="hidden" name="createmode" value="{$CREATEMODE|@urlencode}" />
 <input type="hidden" name="cbcustominfo1" id="cbcustominfo1" value="{if isset($smarty.request.cbcustominfo1)}{$smarty.request.cbcustominfo1|@urlencode}{/if}" />
 <input type="hidden" name="cbcustominfo2" id="cbcustominfo2" value="{if isset($smarty.request.cbcustominfo2)}{$smarty.request.cbcustominfo2|@urlencode}{/if}" />
+<input type="hidden" name="_logwf" id="_logwf" value="{if isset($smarty.request._logwf)}{$smarty.request._logwf|@urlencode}{/if}" />
 {if isset($DUPLICATE) && $DUPLICATE eq 'true'}
 <input type="hidden" name="__cbisduplicatedfromrecordid" value="{$__cbisduplicatedfromrecordid}" />
 {/if}
@@ -76,7 +84,11 @@
 <input type="hidden" name="Module_Popup_Save" value="{if isset($smarty.request.Module_Popup_Save)}{$smarty.request.Module_Popup_Save|@urlencode}{/if}" />
 <input type="hidden" name="Module_Popup_Save_Param" value="{if isset($smarty.request.Module_Popup_Save_Param)}{$smarty.request.Module_Popup_Save_Param|@urlencode}{/if}" />
 <input type="hidden" name="FILTERFIELDSMAP" value="{if isset($smarty.request.FILTERFIELDSMAP)}{$smarty.request.FILTERFIELDSMAP|@urlencode}{/if}" />
-<input name='search_url' id="search_url" type='hidden' value='{if isset($SEARCH)}{$SEARCH}{/if}'>
+<input type="hidden" name="FILTERVALMAP" value="{if isset($smarty.request.FILTERVALMAP)}{$smarty.request.FILTERVALMAP|@urlencode}{/if}" />
+<input type="hidden" name="PROCESSSETTINGS" id="PROCESSSETTINGS" value="{if isset($smarty.request.PROCESSSETTINGS)}{$smarty.request.PROCESSSETTINGS|@urlencode}{/if}" />
+<input name='search_url' id="search_url" type='hidden' value='{if isset($SEARCH)}{$SEARCH|@urlencode}{/if}'>
+<input type="hidden" name="WizardAction" value="{if isset($smarty.request.wizardaction)}{$smarty.request.wizardaction|@urlencode}{/if}" />
+<input type="hidden" name="WizardStep" value="{if isset($smarty.request.step)}{$smarty.request.step|@urlencode}{/if}" />
 {if isset($CUSTOM_LINKS) && !empty($CUSTOM_LINKS.EDITVIEWHTML)}
 {foreach from=$CUSTOM_LINKS.EDITVIEWHTML item=evhtml}
 	{eval var=$evhtml->linkurl}

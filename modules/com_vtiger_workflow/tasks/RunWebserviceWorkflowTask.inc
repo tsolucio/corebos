@@ -16,6 +16,8 @@ require_once 'modules/com_vtiger_workflow/expression_functions/application.php';
 class RunWebserviceWorkflowTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $bmapid;
+	public $bmapid_display;
 
 	public function getFieldNames() {
 		return array('bmapid', 'bmapid_display');
@@ -23,8 +25,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $logbg, $from_wf, $current_user;
+		$logbg->debug('> RunWebserviceTask');
 		$from_wf = true;
-		$logbg->debug('> RunWebservice');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 
@@ -34,6 +36,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$origin_module = $entity->getModuleName();
 		$mapid = $this->bmapid;
 		$cbMap = cbMap::getMapByID($mapid);
+
+		$WriteLogs = GlobalVariable::getVariable('Webservice_WriteRunWS_Logs', 1);
 
 		$WSCall_ReturnResultWithNoSave = isset($entity->WorkflowContext['WSCall_ReturnResultWithNoSave']);
 		unset($entity->WorkflowContext['WSCall_ReturnResultWithNoSave']);
@@ -81,14 +85,16 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 			$listreq = $arrconv;
 
-			//write logs for request
-			$logname = 'logs/'.$methodname;
-			$dateofcall = date('l jS \of F Y h:i:s A');
-			$LogContent = "\n*****************\nDate of call $dateofcall";
-			error_log($LogContent, 3, $logname.'.log');
-			error_log("\nRecordid: ".$therecid, 3, $logname.'.log');
-			error_log("\nMethod Called: $method $url", 3, $logname.'.log');
-			error_log("\nParameters: ".json_encode($listreq), 3, $logname.'.log');
+			if ($WriteLogs) {
+				//write logs for request
+				$logname = 'logs/'.$methodname;
+				$dateofcall = date('l jS \of F Y h:i:s A');
+				$LogContent = "\n*****************\nDate of call $dateofcall";
+				error_log($LogContent, 3, $logname.'.log');
+				error_log("\nRecordid: ".$therecid, 3, $logname.'.log');
+				error_log("\nMethod Called: $method $url", 3, $logname.'.log');
+				error_log("\nParameters: ".json_encode($listreq), 3, $logname.'.log');
+			}
 
 			//authorization code replacement
 			$nr = 0;
@@ -146,11 +152,13 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 			curl_close($channel);
 
-			//write logs for response
-			$dateofresponse = date('l jS \of F Y h:i:s A');
-			error_log("\n\nResponse header: ".json_encode($headers), 3, $logname.'.log');
-			error_log("\n\nResponse: ".$respp, 3, $logname.'.log');
-			error_log("\n\n".$dateofresponse."\n", 3, $logname.'.log');
+			if ($WriteLogs) {
+				//write logs for response
+				$dateofresponse = date('l jS \of F Y h:i:s A');
+				error_log("\n\nResponse header: ".json_encode($headers), 3, $logname.'.log');
+				error_log("\n\nResponse: ".$respp, 3, $logname.'.log');
+				error_log("\n\n".$dateofresponse."\n", 3, $logname.'.log');
+			}
 
 			//write response to record fields
 			if (count($target_fields['Response']) > 0) {
@@ -243,14 +251,16 @@ class RunWebserviceWorkflowTask extends VTTask {
 				$url = str_replace("$key", "$value", $url);
 			}
 
-			//write logs for request
-			$logname = 'logs/'.$methodname;
-			$dateofcall = date('l jS \of F Y h:i:s A');
-			$LogContent = "\n*****************\nDate of call $dateofcall";
-			error_log($LogContent, 3, $logname.'.log');
-			error_log("\nRecordid: ".$therecid, 3, $logname.'.log');
-			error_log("\nMethod Called: $method $url", 3, $logname.'.log');
-			error_log("\nURL: ".$url, 3, $logname.'.log');
+			if ($WriteLogs) {
+				//write logs for request
+				$logname = 'logs/'.$methodname;
+				$dateofcall = date('l jS \of F Y h:i:s A');
+				$LogContent = "\n*****************\nDate of call $dateofcall";
+				error_log($LogContent, 3, $logname.'.log');
+				error_log("\nRecordid: ".$therecid, 3, $logname.'.log');
+				error_log("\nMethod Called: $method $url", 3, $logname.'.log');
+				error_log("\nURL: ".$url, 3, $logname.'.log');
+			}
 
 			try {
 				$arrContextOptions=stream_context_create(array(
@@ -269,14 +279,13 @@ class RunWebserviceWorkflowTask extends VTTask {
 				} else {
 					$options = array(
 						//'soap_version' => SOAP_1_2,
-						'trace'      => 1,      // enable trace to view what is happening
-						'exceptions' => 0,      // disable exceptions
-						'cache_wsdl' => 0,      // disable any caching on the wsdl, encase you alter the wsdl
+						'trace'      => 1, // enable trace to view what is happening
+						'exceptions' => 0, // disable exceptions
+						'cache_wsdl' => 0, // disable any caching on the wsdl, encase you alter the wsdl
 						'stream_context' => $arrContextOptions,
 					);
 					$soapclient = new SoapClient($url, $options);
 				}
-
 				$response = $soapclient->__soapCall($methodname, array('parameters' => $arrconv));
 				$methodResult = $methodname.'Result';
 				if (isset($response->$methodResult)) {
@@ -356,16 +365,22 @@ class RunWebserviceWorkflowTask extends VTTask {
 						$_REQUEST['ajxaction'] = $hold_ajxaction;
 					}
 				}
-				//write logs for response
-				$dateofresponse = date('l jS \of F Y h:i:s A');
-				error_log("\n\nResponse header: ".json_encode($options), 3, $logname.'.log');
-				error_log("\n\nResponse: ".json_encode($response), 3, $logname.'.log');
+				if ($WriteLogs) {
+					//write logs for response
+					$dateofresponse = date('l jS \of F Y h:i:s A');
+					error_log("\n\nResponse header: ".json_encode($options), 3, $logname.'.log');
+					error_log("\n\nResponse: ".json_encode($response), 3, $logname.'.log');
+				}
 			} catch (Exception $e) {
 				echo $e->getMessage();
-				$dateofresponse = date('l jS \of F Y h:i:s A');
-				error_log("\n\nError: ".json_encode($e->getMessage()), 3, $logname.'.log');
+				if ($WriteLogs) {
+					$dateofresponse = date('l jS \of F Y h:i:s A');
+					error_log("\n\nError: ".json_encode($e->getMessage()), 3, $logname.'.log');
+				}
 			}
-			error_log("\n\n".$dateofresponse."\n", 3, $logname.'.log');
+			if ($WriteLogs) {
+				error_log("\n\n".$dateofresponse."\n", 3, $logname.'.log');
+			}
 		}
 
 		$util->revertUser();
@@ -381,7 +396,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$end = strpos($url, ')', $start);
 			$first = substr($url, 0, $start);
 			$setting = substr($url, $start, $end-$start);
-			$last =  substr($url, $end+1);
+			$last = substr($url, $end+1);
 			$setkey = str_replace('getSetting(', '', $setting);
 			$value = coreBOS_Settings::getSetting($setkey, '');
 			$url = $first.$value.$last;

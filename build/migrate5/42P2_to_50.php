@@ -2818,8 +2818,7 @@ foreach($query_array2 as $query)
 //This code will retrieve all the attachments from db and write it in a file
 $attach_query_result = $conn->query("select vtiger_crmentity.createdtime, vtiger_attachments.* from vtiger_attachments inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid");
 $noof_attachments = $conn->num_rows($attach_query_result);
-for($attach_count = 0;$attach_count < $noof_attachments ;$attach_count++)
-{
+for ($attach_count = 0; $attach_count < $noof_attachments; $attach_count++) {
 	$attach_id   = $conn->query_result($attach_query_result,$attach_count,'attachmentsid');
 	$attach_name = $conn->query_result($attach_query_result,$attach_count,'name');
 	$attach_data = $conn->query_result($attach_query_result,$attach_count,'attachmentcontents');

@@ -115,6 +115,8 @@ if (isset($_REQUEST['Edit']) && $_REQUEST['Edit'] == ' Edit ') {
 if (!$canDuplicate && isset($_REQUEST['record'])) {
 	$smarty->assign('USERNAME_READONLY', 'readonly');
 }
+$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
+$smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); //Convert to MB
 $HomeValues = $focus->getHomeStuffOrder($focus->id);
 $smarty->assign('TAGCLOUDVIEW', $HomeValues['Tag Cloud']);
 $smarty->assign('SHOWTAGAS', $HomeValues['showtagas']);

@@ -16,6 +16,11 @@ class VTWorkflowEntity {
 	public $WorkflowID = 0;
 	public $WorkflowEvent = 0;
 	public $WorkflowContext = array();
+	public $data;
+	public $moduleName;
+	public $id;
+	public $user;
+	public $isqueue;
 
 	public function __construct($user, $id, $deleted = false, $queue = false) {
 		$this->moduleName = null;
@@ -75,10 +80,9 @@ class VTWorkflowEntity {
 	 * @return string module name.
 	 */
 	public function getModuleName() {
-		if ($this->moduleName==null) {
+		if ($this->moduleName==null && !empty($this->data['id'])) {
 			global $adb;
-			$wsId = $this->data['id'];
-			$parts = explode('x', $wsId);
+			$parts = explode('x', $this->data['id']);
 			$result = $adb->pquery('select name from vtiger_ws_entity where id=?', array($parts[0]));
 			$rowData = $adb->raw_query_result_rowdata($result, 0);
 			$this->moduleName = $rowData['name'];
@@ -86,7 +90,7 @@ class VTWorkflowEntity {
 		return $this->moduleName;
 	}
 
-	public function get($fieldName) {
+	public function get($fieldName, $WorkflowContext = array()) {
 		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
 		if (count($matches)>0) {
 			global $current_user;
@@ -97,7 +101,7 @@ class VTWorkflowEntity {
 			}
 			$entityCache = new VTEntityCache($current_user);
 			$entityCache->setCache($this->getId(), $this);
-			return $ct->render($entityCache, $this->getId());
+			return $ct->render($entityCache, $this->getId(), array(), $WorkflowContext);
 		}
 		if (substr($fieldName, 0, 14)=='previousvalue_') {
 			$entityDelta = new VTEntityDelta();
@@ -138,6 +142,8 @@ class VTWorkflowEntity {
 }
 
 class VTEntityCache {
+	public $cache;
+	public $user;
 
 	public function __construct($user) {
 		$this->user = $user;

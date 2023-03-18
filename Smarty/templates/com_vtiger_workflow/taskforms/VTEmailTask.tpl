@@ -403,7 +403,7 @@ var selectedSGTemplate = {if !empty($task->sgmsgtemplate)}{$task->sgmsgtemplate}
 	<div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_xx-large slds-border_top">
 		<div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
 			<div class="slds-form-element">
-				<span class="slds-form-element__label slds-size--1-of-3" style="display: inline-flex;">
+				<span class="slds-form-element__label slds-size_1-of-3" style="display: inline-flex;">
 					<input type='hidden' class='small' name="sgmsgtemplate" id="sgmsgtemplate" value="{if isset($task->sgmsgtemplate)}{$task->sgmsgtemplate}{else}''{/if}">
 					<div class="slds-select_container" style="width: 80%;">
 						<select class="slds-select slds-page-header__meta-text" id="sgMsgTemplate" onclick="document.getElementById('cbmsgtemplate').value=''; document.getElementById('cbmsgtemplate_display').value=''; return false;">
@@ -433,9 +433,9 @@ function handleToggle() {
 </script>
 <script type="text/javascript" defer="1">
 	var textAreaName = 'save_content';
-	CKEDITOR.replace( textAreaName,	{ldelim}
+	CKEDITOR.replace(textAreaName, {ldelim}
 		extraPlugins : 'uicolor',
 		uiColor: '#dfdff1'
-	{rdelim} ) ;
+	{rdelim});
 	var oCKeditor = CKEDITOR.instances[textAreaName];
 </script>

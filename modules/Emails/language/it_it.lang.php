@@ -105,7 +105,6 @@ $mod_strings = array (
 	'CC' => 'CC',
 	'BCC' => 'BCC',
 
-
 	'MESSAGE_CHECK_MAIL_SERVER_NAME' => 'Controlla le impostazioni del Server di Posta',
 	'MESSAGE_CHECK_MAIL_ID' => 'Controlla l`Indirizzo email dell`utente `Assegnato A`',
 	'MESSAGE_MAIL_HAS_SENT_TO_USERS' => 'Mail mandata al seguente utente(i)',

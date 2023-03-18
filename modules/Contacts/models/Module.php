@@ -17,8 +17,8 @@ class Google_Module_Model {
 
 	/**
 	 * Function to delete google synchronization completely. Deletes all mapping information stored.
-	 * @param <string> $module - Module Name
-	 * @param <integer> $user - User Id
+	 * @param string Module Name
+	 * @param integer User Id
 	 */
 	public static function deleteSync($module, $user) {
 		if ($module == 'Contacts' || $module == 'cbCalendar') {

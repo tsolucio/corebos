@@ -58,7 +58,7 @@ class Installation_Utils {
 					// drop the current database if it exists
 					$dropdb_conn = NewADOConnection($db_type);
 					if (@$dropdb_conn->Connect($db_hostname, $root_user, $root_password, $db_name)) {
-						$query = "drop database ".$db_name;
+						$query = 'drop database '.$db_name;
 						$dropdb_conn->Execute($query);
 						$dropdb_conn->Close();
 					}
@@ -67,10 +67,10 @@ class Installation_Utils {
 					$db_creation_failed = true;
 					$createdb_conn = NewADOConnection($db_type);
 					if (@$createdb_conn->Connect($db_hostname, $root_user, $root_password)) {
-						$query = "create database ".$db_name;
+						$query = 'create database '.$db_name;
 						if ($create_utf8_db == 'true') {
 							if (Common_Install_Wizard_Utils::isMySQL($db_type)) {
-								$query .= " default character set utf8 default collate utf8_general_ci";
+								$query .= ' default character set utf8 default collate utf8_general_ci';
 							}
 							$db_utf8_support = true;
 						}
@@ -88,6 +88,13 @@ class Installation_Utils {
 						// Check if the database that we are going to use supports UTF-8
 						$db_utf8_support = check_db_utf8_support($conn);
 					}
+				} else {
+					$dbCheckResult['flag'] = false;
+					$error_msg = $db_name.' -> '.$installationStrings['ERR_DB_NOT_FOUND'];
+					$error_msg_info = $installationStrings['MSG_DB_ROOT_USER_NOT_AUTHORIZED'];
+					$dbCheckResult['error_msg'] = $error_msg;
+					$dbCheckResult['error_msg_info'] = $error_msg_info;
+					return $dbCheckResult;
 				}
 				$conn->Close();
 			}
@@ -136,15 +143,15 @@ class Migration_Utils {
 			$configInfo['root_directory'] = $migrationInfo['root_directory'];
 		}
 		if (is_dir($source_directory)) {
-			if (!is_file($source_directory."config.inc.php")) {
+			if (!is_file($source_directory.'config.inc.php')) {
 				$dbVerifyResult['error_msg'] = $installationStrings['ERR_NO_CONFIG_FILE'];
 				return $dbVerifyResult;
 			}
-			if (!is_dir($source_directory."user_privileges")) {
+			if (!is_dir($source_directory.'user_privileges')) {
 				$dbVerifyResult['error_msg'] = $installationStrings['ERR_NO_USER_PRIV_DIR'];
 				return $dbVerifyResult;
 			}
-			if (!is_dir($source_directory."storage")) {
+			if (!is_dir($source_directory.'storage')) {
 				$dbVerifyResult['error_msg'] = $installationStrings['ERR_NO_STORAGE_DIR'];
 				return $dbVerifyResult;
 			}
@@ -153,7 +160,7 @@ class Migration_Utils {
 			return $dbVerifyResult;
 		}
 		global $dbconfig;
-		require_once $source_directory."config.inc.php";
+		require_once $source_directory.'config.inc.php';
 		$old_db_name = $dbconfig['db_name'];
 		$db_hostname = $dbconfig['db_server'].$dbconfig['db_port'];
 		$db_username = $dbconfig['db_username'];
@@ -220,7 +227,7 @@ class Migration_Utils {
 							'status' => "<span style='color: red;font-weight: bold'>".
 									$installationStrings['LBL_IMPORTANT_NOTE']."</span>",
 								'msg' => "<span style='color: #3488cc;font-weight: bold'>".
-									$installationStrings['LBL_USER_PASSWORD_CHANGE_NOTE']."</span>"
+									$installationStrings['LBL_USER_PASSWORD_CHANGE_NOTE'].'</span>'
 							);
 						}
 
@@ -249,7 +256,7 @@ class Migration_Utils {
 						$new_db_has_tables = true;
 					}
 					$db_utf8_support = check_db_utf8_support($newdb_conn);
-					$configInfo['vt_charset'] = ($db_utf8_support)? "UTF-8" : "ISO-8859-1";
+					$configInfo['vt_charset'] = ($db_utf8_support)? 'UTF-8' : 'UTF-8';
 					$newdb_conn->Close();
 				}
 			}
@@ -259,8 +266,8 @@ class Migration_Utils {
 		if (!$db_type_status || !$db_server_status) {
 			$error_msg = $installationStrings['ERR_DATABASE_CONNECTION_FAILED'].'. '.$installationStrings['ERR_INVALID_MYSQL_PARAMETERS'];
 			$error_msg_info = $installationStrings['MSG_LIST_REASONS'].':<br>
-					-  '.$installationStrings['MSG_DB_PARAMETERS_INVALID'].'.<BR>
-					-  '.$installationStrings['MSG_DB_USER_NOT_AUTHORIZED'];
+				-  '.$installationStrings['MSG_DB_PARAMETERS_INVALID'].'.<BR>
+				-  '.$installationStrings['MSG_DB_USER_NOT_AUTHORIZED'];
 		} elseif (Common_Install_Wizard_Utils::isMySQL($db_type) && $mysql_server_version < '4.1') {
 			$error_msg = $mysql_server_version.' -> '.$installationStrings['ERR_INVALID_MYSQL_VERSION'];
 		} elseif (!$old_db_exist_status) {
@@ -270,10 +277,10 @@ class Migration_Utils {
 		} elseif (!$new_db_has_tables) {
 			$error_msg = $new_db_name.' -> '.$installationStrings['ERR_MIGRATION_DATABASE_IS_EMPTY'];
 		} else {
-			$web_root = ($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"]:$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];
-			$web_root .= $_SERVER["REQUEST_URI"];
-			$web_root = preg_replace("/\/install.php(.)*/i", "", $web_root);
-			$site_URL = "http://".$web_root;
+			$web_root = ($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST']:$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];
+			$web_root .= $_SERVER['REQUEST_URI'];
+			$web_root = preg_replace('/\/install.php(.)*/i', '', $web_root);
+			$site_URL = 'http://'.$web_root;
 			$configInfo['site_URL'] = $site_URL;
 			$dbVerifyResult['config_info'] = $configInfo;
 			$dbVerifyResult['flag'] = true;
@@ -321,12 +328,12 @@ class Migration_Utils {
 		if (realpath($sourceDirectory) == realpath($destinationDirectory)) {
 			return;
 		}
-		@Migration_Utils::getFilesFromFolder($sourceDirectory."user_privileges/", $destinationDirectory."user_privileges/");
-		@Migration_Utils::getFilesFromFolder($sourceDirectory."storage/", $destinationDirectory."storage/");
-		@Migration_Utils::getFilesFromFolder($sourceDirectory."test/contact/", $destinationDirectory."test/contact/");
-		@Migration_Utils::getFilesFromFolder($sourceDirectory."test/logo/", $destinationDirectory."test/logo/");
-		@Migration_Utils::getFilesFromFolder($sourceDirectory."test/product/", $destinationDirectory."test/product/");
-		@Migration_Utils::getFilesFromFolder($sourceDirectory."test/user/", $destinationDirectory."test/user/");
+		@Migration_Utils::getFilesFromFolder($sourceDirectory.'user_privileges/', $destinationDirectory.'user_privileges/');
+		@Migration_Utils::getFilesFromFolder($sourceDirectory.'storage/', $destinationDirectory.'storage/');
+		@Migration_Utils::getFilesFromFolder($sourceDirectory.'test/contact/', $destinationDirectory.'test/contact/');
+		@Migration_Utils::getFilesFromFolder($sourceDirectory.'test/logo/', $destinationDirectory.'test/logo/');
+		@Migration_Utils::getFilesFromFolder($sourceDirectory.'test/product/', $destinationDirectory.'test/product/');
+		@Migration_Utils::getFilesFromFolder($sourceDirectory.'test/user/', $destinationDirectory.'test/user/');
 	}
 
 	private static function getFilesFromFolder($source, $dest, $forcecopy = false) {
@@ -343,7 +350,7 @@ class Migration_Utils {
 						copy($source.$file, $dest.$file);
 					}
 				} elseif ($file != '.' && $file != '..' && is_dir($source.$file)) {
-					if (!file_exists("$dest.$file")) {
+					if (!file_exists($dest.$file)) {
 						mkdir($dest.$file.'/', 0777);
 					}
 					Migration_Utils::getFilesFromFolder($source.$file.'/', $dest.$file.'/');
@@ -422,7 +429,7 @@ class Migration_Utils {
 
 	private static function copyCustomModules($selectedModules, $sourceDirectory, $destinationDirectory) {
 		global $adb;
-		$selectedModules = explode(":", $selectedModules);
+		$selectedModules = explode(':', $selectedModules);
 
 		$customModulesResult = $adb->pquery('SELECT tabid, name FROM vtiger_tab WHERE customized = 1', array());
 		$noOfCustomModules = $adb->num_rows($customModulesResult);
@@ -482,7 +489,7 @@ class Migration_Utils {
 		global $adb,$migrationlog;
 		$adb = new PearDatabase($dbtype, $host, $dbname, $username, $passwd);
 
-		$query = " ALTER DATABASE ".$adb->escapeDbName($dbname)." DEFAULT CHARACTER SET utf8";
+		$query = ' ALTER DATABASE '.$adb->escapeDbName($dbname).' DEFAULT CHARACTER SET utf8';
 		$adb->query($query);
 
 		$source_directory = $migrationInfo['source_directory'];
@@ -496,12 +503,12 @@ class Migration_Utils {
 		}
 		if (!isset($source_version) || empty($source_version)) {
 			//If source version is not set then we cannot proceed
-			echo "<br> ".$installationStrings['LBL_SOURCE_VERSION_NOT_SET'];
+			echo '<br> '.$installationStrings['LBL_SOURCE_VERSION_NOT_SET'];
 			exit;
 		}
 
 		$reach = 0;
-		include $migrationInfo['root_directory']."/modules/Migration/versions.php";
+		include $migrationInfo['root_directory'].'/modules/Migration/versions.php';
 		foreach ($versions as $version => $label) {
 			if ($version == $source_version || $reach == 1) {
 				$reach = 1;
@@ -519,24 +526,24 @@ class Migration_Utils {
 		echo '<table width="98%" border="1px" cellpadding="3" cellspacing="0" height="100%">';
 		if (is_array($_SESSION['migration_info']['user_messages'])) {
 			foreach ($_SESSION['migration_info']['user_messages'] as $infoMap) {
-				echo "<tr><td>".$infoMap['status']."</td><td>".$infoMap['msg']."</td></tr>";
+				echo '<tr><td>'.$infoMap['status'].'</td><td>'.$infoMap['msg'].'</td></tr>';
 			}
 		}
 		echo "<tr><td colspan='2'><b>{$installationStrings['LBL_GOING_TO_APPLY_DB_CHANGES']}...</b></td></tr>";
 
 		for ($patch_count=0; $patch_count<count($temp); $patch_count++) {
 			//Here we have to include all the files (all db differences for each release will be included)
-			$filename = "modules/Migration/DBChanges/".$temp[$patch_count]."_to_".$temp[$patch_count+1].".php";
+			$filename = 'modules/Migration/DBChanges/'.$temp[$patch_count].'_to_'.$temp[$patch_count+1].'.php';
 			$empty_tag = "<tr><td colspan='2'>&nbsp;</td></tr>";
 			$start_tag = "<tr><td colspan='2'><b><font color='red'>&nbsp;";
-			$end_tag = "</font></b></td></tr>";
+			$end_tag = '</font></b></td></tr>';
 
 			if (is_file($filename)) {
-				echo $empty_tag.$start_tag.$temp[$patch_count]." ==> ".$temp[$patch_count+1]. " " .$installationStrings['LBL_DATABASE_CHANGES'] ." -- ". $installationStrings['LBL_STARTS'] .".".$end_tag;
+				echo $empty_tag.$start_tag.$temp[$patch_count].' ==> '.$temp[$patch_count+1]. ' ' .$installationStrings['LBL_DATABASE_CHANGES'] .' -- '. $installationStrings['LBL_STARTS'] .'.'.$end_tag;
 
 				include $filename;//include the file which contains the corresponding db changes
 
-				echo $start_tag.$temp[$patch_count]." ==> ".$temp[$patch_count+1]. " " .$installationStrings['LBL_DATABASE_CHANGES'] ." -- ". $installationStrings['LBL_ENDS'] .".".$end_tag;
+				echo $start_tag.$temp[$patch_count].' ==> '.$temp[$patch_count+1]. ' ' .$installationStrings['LBL_DATABASE_CHANGES'] .' -- '. $installationStrings['LBL_ENDS'] .'.'.$end_tag;
 			}
 		}
 
@@ -552,7 +559,7 @@ class Migration_Utils {
 			$res = ExecuteQuery("UPDATE vtiger_version SET old_version='$versions[$source_version]',current_version='$vtiger_current_version'");
 			$completed = true;
 		} else {
-			ExecuteQuery("INSERT INTO vtiger_version (id, old_version, current_version) values (".$adb->getUniqueID('vtiger_version').", '$versions[$source_version]', '$vtiger_current_version');");
+			ExecuteQuery('INSERT INTO vtiger_version (id, old_version, current_version) values ('.$adb->getUniqueID('vtiger_version').", '$versions[$source_version]', '$vtiger_current_version');");
 			$completed = true;
 		}
 		echo '</table><br><br>';
@@ -578,7 +585,7 @@ class Migration_Utils {
 				$row['user_name']
 			);
 			$userId = $row['id'];
-			$sql = "update vtiger_users set user_password=?,crypt_type=? where id=?";
+			$sql = 'update vtiger_users set user_password=?,crypt_type=? where id=?';
 			$updateResult = $con->Execute($sql, array($encryptedPassword, $cryptType, $userId));
 			if (!is_object($updateResult)) {
 				$_SESSION['migration_info']['user_messages'][] = array(
@@ -684,8 +691,8 @@ class ConfigFile_Utils {
 		}
 
 		if (isset($configFileParameters['db_hostname'])) {
-			if (strpos($configFileParameters['db_hostname'], ":")) {
-				list($this->dbHostname,$this->dbPort) = explode(":", $configFileParameters['db_hostname']);
+			if (strpos($configFileParameters['db_hostname'], ':')) {
+				list($this->dbHostname,$this->dbPort) = explode(':', $configFileParameters['db_hostname']);
 			} else {
 				$this->dbHostname = $configFileParameters['db_hostname'];
 			}
@@ -736,40 +743,40 @@ class ConfigFile_Utils {
 
 		/* open template configuration file read only */
 		$templateFilename = 'config.template.php';
-		$templateHandle = fopen($templateFilename, "r");
+		$templateHandle = fopen($templateFilename, 'r');
 		if ($templateHandle) {
 			/* open include configuration file write only */
 			$includeFilename = 'config.inc.php';
-			$includeHandle = fopen($includeFilename, "w");
+			$includeHandle = fopen($includeFilename, 'w');
 			if ($includeHandle) {
 				while (!feof($templateHandle)) {
 					$buffer = fgets($templateHandle);
 
 					/* replace _DBC_ variable */
-					$buffer = str_replace("_DBC_SERVER_", $this->dbHostname, $buffer);
-					$buffer = str_replace("_DBC_PORT_", $this->dbPort, $buffer);
-					$buffer = str_replace("_DBC_USER_", $this->dbUsername, $buffer);
-					$buffer = str_replace("_DBC_PASS_", $this->dbPassword, $buffer);
-					$buffer = str_replace("_DBC_NAME_", $this->dbName, $buffer);
-					$buffer = str_replace("_DBC_TYPE_", $this->dbType, $buffer);
+					$buffer = str_replace('_DBC_SERVER_', $this->dbHostname, $buffer);
+					$buffer = str_replace('_DBC_PORT_', $this->dbPort, $buffer);
+					$buffer = str_replace('_DBC_USER_', $this->dbUsername, $buffer);
+					$buffer = str_replace('_DBC_PASS_', $this->dbPassword, $buffer);
+					$buffer = str_replace('_DBC_NAME_', $this->dbName, $buffer);
+					$buffer = str_replace('_DBC_TYPE_', $this->dbType, $buffer);
 
-					$buffer = str_replace("_SITE_URL_", $this->siteUrl, $buffer);
+					$buffer = str_replace('_SITE_URL_', $this->siteUrl, $buffer);
 
 					/* replace dir variable */
-					$buffer = str_replace("_VT_ROOTDIR_", $this->rootDirectory, $buffer);
-					$buffer = str_replace("_VT_CACHEDIR_", $this->cacheDir, $buffer);
-					$buffer = str_replace("_VT_TMPDIR_", $this->cacheDir."images/", $buffer);
-					$buffer = str_replace("_VT_UPLOADDIR_", $this->cacheDir."upload/", $buffer);
-					$buffer = str_replace("_DB_STAT_", "true", $buffer);
+					$buffer = str_replace('_VT_ROOTDIR_', $this->rootDirectory, $buffer);
+					$buffer = str_replace('_VT_CACHEDIR_', $this->cacheDir, $buffer);
+					$buffer = str_replace('_VT_TMPDIR_', $this->cacheDir.'images/', $buffer);
+					$buffer = str_replace('_VT_UPLOADDIR_', $this->cacheDir.'upload/', $buffer);
+					$buffer = str_replace('_DB_STAT_', 'true', $buffer);
 
 					/* replace charset variable */
-					$buffer = str_replace("_VT_CHARSET_", $this->vtCharset, $buffer);
+					$buffer = str_replace('_VT_CHARSET_', $this->vtCharset, $buffer);
 
 					/* replace master currency variable */
-					$buffer = str_replace("_MASTER_CURRENCY_", $this->currencyName, $buffer);
+					$buffer = str_replace('_MASTER_CURRENCY_', $this->currencyName, $buffer);
 
 					/* replace the application unique key variable */
-					$buffer = str_replace("_VT_APP_UNIQKEY_", md5((time() + rand(1, 9999999)) . $this->rootDirectory), $buffer);
+					$buffer = str_replace('_VT_APP_UNIQKEY_', md5((time() + rand(1, 9999999)) . $this->rootDirectory), $buffer);
 
 					fwrite($includeHandle, $buffer);
 				}
@@ -794,7 +801,7 @@ class Common_Install_Wizard_Utils {
 		'register_globals' => 'Off',
 		'output_buffering' => 'On',
 		'max_execution_time' => '600',
-		'memory_limit' => '32',
+		'memory_limit' => '1024M',
 		'error_reporting' => 'E_ERROR',
 		'allow_call_time_pass_reference' => 'Off',
 		'short_open_tag' => 'Off',
@@ -909,10 +916,10 @@ class Common_Install_Wizard_Utils {
 		if (ini_get('max_execution_time') < 600) {
 			$directiveValues['max_execution_time'] = ini_get('max_execution_time');
 		}
-		if (ini_get('memory_limit') < 32) {
+		if ((int)trim(ini_get('memory_limit'), 'M') < (int)trim(Common_Install_Wizard_Utils::$recommendedDirectives['memory_limit'], 'M')) {
 			$directiveValues['memory_limit'] = ini_get('memory_limit');
 		}
-		if (ini_get('max_input_vars') < 9000) {
+		if (ini_get('max_input_vars') < (int)Common_Install_Wizard_Utils::$recommendedDirectives['max_input_vars']) {
 			$directiveValues['max_input_vars'] = ini_get('max_input_vars');
 		}
 		eval('$errorReportingValue = '.self::$recommendedDirectives['error_reporting'].';');
@@ -954,12 +961,12 @@ class Common_Install_Wizard_Utils {
 		$optionalModules = array();
 
 		while (false !== ($file = readdir($handle))) {
-			$packageNameParts = explode(".", $file);
+			$packageNameParts = explode('.', $file);
 			if ($packageNameParts[count($packageNameParts)-1] != 'zip') {
 				continue;
 			}
 			array_pop($packageNameParts);
-			$packageName = implode("", $packageNameParts);
+			$packageName = implode('', $packageNameParts);
 			if (!empty($packageName)) {
 				$packagepath = "$packageDir/$file";
 				$package = new Vtiger_Package();
@@ -1093,12 +1100,12 @@ class Common_Install_Wizard_Utils {
 
 		if ($handle = opendir(cbPackageDirectory.'mandatory')) {
 			while (false !== ($file = readdir($handle))) {
-				$packageNameParts = explode(".", $file);
+				$packageNameParts = explode('.', $file);
 				if ($packageNameParts[count($packageNameParts)-1] != 'zip') {
 					continue;
 				}
 				array_pop($packageNameParts);
-				$packageName = implode("", $packageNameParts);
+				$packageName = implode('', $packageNameParts);
 				if (!empty($packageName)) {
 					$packagepath = cbPackageDirectory."mandatory/$file";
 					$package = new Vtiger_Package();
@@ -1125,12 +1132,12 @@ class Common_Install_Wizard_Utils {
 		$moduleList = array();
 		if ($handle = opendir(cbPackageDirectory.'mandatory')) {
 			while (false !== ($file = readdir($handle))) {
-				$packageNameParts = explode(".", $file);
+				$packageNameParts = explode('.', $file);
 				if ($packageNameParts[count($packageNameParts)-1] != 'zip') {
 					continue;
 				}
 				array_pop($packageNameParts);
-				$packageName = implode("", $packageNameParts);
+				$packageName = implode('', $packageNameParts);
 				if (!empty($packageName)) {
 					$packagepath = cbPackageDirectory."mandatory/$file";
 					$package = new Vtiger_Package();
@@ -1147,12 +1154,12 @@ class Common_Install_Wizard_Utils {
 		require_once 'vtlib/Vtiger/Module.php';
 		require_once 'include/utils/utils.php';
 
-		$selected_modules = explode(":", $selected_modules);
+		$selected_modules = explode(':', $selected_modules);
 
 		$languagePacks = array();
 		if ($handle = opendir(cbPackageDirectory.'optional')) {
 			while (false !== ($file = readdir($handle))) {
-				$filename_arr = explode(".", $file);
+				$filename_arr = explode('.', $file);
 				if ($filename_arr[count($filename_arr)-1] != 'zip') {
 					continue;
 				}
@@ -1281,9 +1288,9 @@ class Common_Install_Wizard_Utils {
 		$renamefile = uniqid(rand(), true);
 
 		$ins_file_renamed = true;
-		if (!@rename("install.php", $renamefile."install.php.txt")) {
-			if (@copy("install.php", $renamefile."install.php.txt")) {
-				if (!@unlink("install.php")) {
+		if (!@rename('install.php', $renamefile.'install.php.txt')) {
+			if (@copy('install.php', $renamefile.'install.php.txt')) {
+				if (!@unlink('install.php')) {
 					$ins_file_renamed = false;
 				}
 			} else {
@@ -1292,9 +1299,9 @@ class Common_Install_Wizard_Utils {
 		}
 
 		$ins_dir_renamed = true;
-		if (!@rename("install/", $renamefile."install/")) {
-			if (@copy("install/", $renamefile."install/")) {
-				if (!@unlink("install/")) {
+		if (!@rename('install/', $renamefile.'install/')) {
+			if (@copy('install/', $renamefile.'install/')) {
+				if (!@unlink('install/')) {
 					$ins_dir_renamed = false;
 				}
 			} else {
@@ -1341,7 +1348,7 @@ function ExecuteQuery($query) {
 					<td width="5%"><font color="red"> '.$installationStrings['LBL_FAILURE'].' </font></td>
 				<td width="70%">'.$query.'</td>
 			</tr>';
-		$migrationlog->debug("Query Failed ==> $query \n Error is ==> [".$adb->database->ErrorNo()."]".$adb->database->ErrorMsg());
+		$migrationlog->debug("Query Failed ==> $query \n Error is ==> [".$adb->database->ErrorNo().']'.$adb->database->ErrorMsg());
 	}
 }
 
@@ -1366,7 +1373,7 @@ function ExecutePQuery($query, $params) {
 					<td width="5%"><font color="red"> '.$installationStrings['LBL_FAILURE'].' </font></td>
 				<td width="70%">'.$query.'</td>
 			</tr>';
-		$migrationlog->debug("Query Failed ==> $query \n Error is ==> [".$adb->database->ErrorNo()."]".$adb->database->ErrorMsg());
+		$migrationlog->debug("Query Failed ==> $query \n Error is ==> [".$adb->database->ErrorNo().']'.$adb->database->ErrorMsg());
 	}
 }
 ?>

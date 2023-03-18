@@ -10,24 +10,24 @@
 -->*}
 
 <script>
-if(typeof(e) != 'undefined')
+if (typeof(e) != 'undefined') {
 	window.captureEvents(Event.MOUSEMOVE);
-
-//  window.onmousemove= displayCoords;
-//  window.onclick = fnRevert;
+}
+// window.onmousemove= displayCoords;
+// window.onclick = fnRevert;
 function displayCoords(currObj,obj,mode,curr_row) {ldelim}
 	if(mode != 'discount_final' && mode != 'sh_tax_div_title' && mode != 'group_tax_div_title')
 	{ldelim}
-		var curr_productid = document.getElementById("hdnProductId"+curr_row).value;
+		var curr_productid = document.getElementById('hdnProductId'+curr_row).value;
 		if(curr_productid == '')
 		{ldelim}
-			alert("{$APP.PLEASE_SELECT_LINE_ITEM}");
+			alert('{$APP.PLEASE_SELECT_LINE_ITEM|escape:"quotes":"UTF-8"}');
 			return false;
 		{rdelim}
-		var curr_quantity = document.getElementById("qty"+curr_row).value;
+		var curr_quantity = document.getElementById('qty'+curr_row).value;
 		if(curr_quantity == '')
 		{ldelim}
-			alert("{$APP.PLEASE_FILL_QUANTITY}");
+			alert('{$APP.PLEASE_FILL_QUANTITY}');
 			return false;
 		{rdelim}
 	{rdelim}
@@ -35,42 +35,42 @@ function displayCoords(currObj,obj,mode,curr_row) {ldelim}
 	//Set the Header value for Discount
 	if(mode == 'discount')
 	{ldelim}
-		document.getElementById("discount_div_title"+curr_row).innerHTML = '<b>{$APP.LABEL_SET_DISCOUNT_FOR_COLON} '+document.getElementById("productTotal"+curr_row).innerHTML+'</b>';
+		document.getElementById('discount_div_title'+curr_row).innerHTML = '<b>{$APP.LABEL_SET_DISCOUNT_FOR_COLON} '+document.getElementById('productTotal'+curr_row).innerHTML+'</b>';
 	{rdelim}
 	else if(mode == 'tax')
 	{ldelim}
-		document.getElementById("tax_div_title"+curr_row).innerHTML = "<b>{$APP.LABEL_SET_TAX_FOR} "+document.getElementById("totalAfterDiscount"+curr_row).innerHTML+'</b>';
+		document.getElementById('tax_div_title'+curr_row).innerHTML = '<b>{$APP.LABEL_SET_TAX_FOR} '+document.getElementById('totalAfterDiscount'+curr_row).innerHTML+'</b>';
 	{rdelim}
 	else if(mode == 'discount_final')
 	{ldelim}
-		document.getElementById("discount_div_title_final").innerHTML = '<b>{$APP.LABEL_SET_DISCOUNT_FOR} '+document.getElementById("netTotal").innerHTML+'</b>';
+		document.getElementById('discount_div_title_final').innerHTML = '<b>{$APP.LABEL_SET_DISCOUNT_FOR} '+document.getElementById('netTotal').innerHTML+'</b>';
 	{rdelim}
 	else if(mode == 'sh_tax_div_title')
 	{ldelim}
-		document.getElementById("sh_tax_div_title").innerHTML = '<b>{$APP.LABEL_SET_SH_TAX_FOR_COLON} '+document.getElementById("shipping_handling_charge").value+'</b>';
+		document.getElementById('sh_tax_div_title').innerHTML = '<b>{$APP.LABEL_SET_SH_TAX_FOR_COLON} '+document.getElementById('shipping_handling_charge').value+'</b>';
 	{rdelim}
 	else if(mode == 'group_tax_div_title')
 	{ldelim}
-		var net_total_after_discount = eval(document.getElementById("netTotal").innerHTML)-eval(document.getElementById("discountTotal_final").innerHTML);
-		document.getElementById("group_tax_div_title").innerHTML = '<b>{$APP.LABEL_SET_GROUP_TAX_FOR_COLON} '+net_total_after_discount+'</b>';
+		var net_total_after_discount = eval(document.getElementById('netTotal').innerHTML)-eval(document.getElementById('discountTotal_final').innerHTML);
+		document.getElementById('group_tax_div_title').innerHTML = '<b>{$APP.LABEL_SET_GROUP_TAX_FOR_COLON} '+net_total_after_discount+'</b>';
 	{rdelim}
 
 	fnvshobj(currObj,'tax_container');
 	if(document.all)
 	{ldelim}
-		var divleft = document.getElementById("tax_container").style.left;
+		var divleft = document.getElementById('tax_container').style.left;
 		var divabsleft = divleft.substring(0,divleft.length-2);
 		document.getElementById(obj).style.left = eval(divabsleft) - 120;
 
-		var divtop = document.getElementById("tax_container").style.top;
-		var divabstop =  divtop.substring(0,divtop.length-2);
+		var divtop = document.getElementById('tax_container').style.top;
+		var divabstop = divtop.substring(0,divtop.length-2);
 		document.getElementById(obj).style.top = eval(divabstop);
 	{rdelim}else
 	{ldelim}
-		document.getElementById(obj).style.left =  document.getElementById("tax_container").left;
-		document.getElementById(obj).style.top = document.getElementById("tax_container").top;
+		document.getElementById(obj).style.left = document.getElementById('tax_container').left;
+		document.getElementById(obj).style.top = document.getElementById('tax_container').top;
 	{rdelim}
-	document.getElementById(obj).style.display = "block";
+	document.getElementById(obj).style.display = 'block';
 {rdelim}
 {if empty($moreinfofields)}
 	var moreInfoFields = Array();
@@ -81,7 +81,7 @@ function displayCoords(currObj,obj,mode,curr_row) {ldelim}
 
 <tr><td colspan="4" align="left">
 
-<table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable" id="proTab">
+<table width="100%" border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable" id="proTab">
 	<tr>
 	<td colspan="3" class="dvInnerHeader">
 		<b>{$APP.LBL_ITEM_DETAILS}</b>

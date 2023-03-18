@@ -27,7 +27,7 @@ if ($org_fax != '') {
 	$fax ="\n".$app_strings["Fax"].":        ".$org_fax;
 }
 $companyBlockPositions=array( "10","220","60" );
-$companyText=$org_address."\n".$org_city.", ".$org_state." ".$org_code." ".$org_country." ".$phone." ".$fax."\n".$org_website ;
+$companyText=$org_address."\n".$org_city.", ".$org_state." ".$org_code." ".$org_country." ".$phone." ".$fax."\n".$org_website;
 $pdf->addTextBlock($org_name, $companyText, $companyBlockPositions);
 
 // billing Address

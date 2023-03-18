@@ -9,6 +9,11 @@
  ************************************************************************************/
 
 class VTWorkflowApplication {
+	public $name;
+	public $label;
+	public $action;
+	public $returnUrl;
+
 	public function __construct($action, $returnUrl = false) {
 		global $_REQUEST;
 		$this->name = 'com_vtiger_workflow';
@@ -42,7 +47,7 @@ class VTWorkflowApplication {
 	}
 
 	public function deleteWorkflowUrl($id, $withReturn = true) {
-		$idPart="&workflow_id=$id";
+		$idPart = Vtiger_Request::addCRSF2URL("&workflow_id=$id");
 		return "index.php?module={$this->name}&action=deleteworkflow$idPart".($withReturn ? '&return_url='.urlencode($this->returnUrl()) : '');
 	}
 
@@ -54,12 +59,12 @@ class VTWorkflowApplication {
 	}
 
 	public function deleteTaskUrl($id) {
-		$idPart="&task_id=$id";
+		$idPart = "&task_id=$id&".$GLOBALS['csrf']['input-name'].'='.csrf_get_tokens();
 		return "index.php?module={$this->name}&action=deletetask$idPart&return_url=".urlencode($this->returnUrl());
 	}
 
 	public function onoffTaskUrl($id, $active = 0) {
-		$idPart="&task_id=$id";
+		$idPart = "&task_id=$id&".$GLOBALS['csrf']['input-name'].'='.csrf_get_tokens();
 		return "index.php?module={$this->name}&action=onofftask$idPart&isactive=$active&return_url=".urlencode($this->returnUrl());
 	}
 

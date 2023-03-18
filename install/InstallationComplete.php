@@ -26,14 +26,18 @@
 	</script>
 </head>
 
-<body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
+<body class="small cwPageBg" topmargin="0">
 
 	<br>
 	<!-- Table for cfgwiz starts -->
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
-			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
-			<td class="cwHeadBg1" align=right><img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>"></td>
+			<td class="cwHeadBg" align=left>
+				<img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>">
+			</td>
+			<td class="cwHeadBg1" align=right>
+				<img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME'];?>" title="<?php echo $installationStrings['APP_NAME'];?>">
+			</td>
 			<td class="cwHeadBg1" width=2%></td>
 		</tr>
 	</table>
@@ -66,7 +70,7 @@ $renamefile = $renameResult['renamefile'];
 $ins_file_renamed = $renameResult['install_file_renamed'];
 $ins_dir_renamed = $renameResult['install_directory_renamed'];
 
-@include_once('config.inc.php');
+@include_once 'config.inc.php';
 
 ?>
 	<table border=0 cellspacing=0 cellpadding=5 align="center" width="80%" class="contentDisplay">
@@ -100,7 +104,7 @@ $ins_dir_renamed = $renameResult['install_directory_renamed'];
 					<strong><?php echo $installationStrings['LBL_DOCUMENTATION_TUTORIAL']; ?></strong>
 					<ul>
 						<li><?php echo $installationStrings['LBL_DOCUMENTATION_TEXT']; ?>
-							<a href="http://corebos.org/documentation" target="_blank">http://corebos.org/documentation</a>
+							<a href="https://corebos.org/documentation" target="_blank">https://corebos.org/documentation</a>
 						</li>
 						<li><?php echo $installationStrings['LBL_TUTORIAL_TEXT']; ?>
 							<a href="https://www.youtube.com/user/coreBOSFamily" target="_blank">https://www.youtube.com/user/coreBOSFamily</a>
@@ -115,7 +119,7 @@ $ins_dir_renamed = $renameResult['install_directory_renamed'];
 						</li>
 					</b></ul>
 					<ul>
-						<?php if($ins_file_renamed==true){ ?>
+						<?php if ($ins_file_renamed) { ?>
 						<li><?php echo $installationStrings['LBL_INSTALL_PHP_FILE_RENAMED']. ' ' .$renamefile;?>install.php.txt.</li>
 						<?php } else { ?>
 						<li><font color='red'><?php echo $installationStrings['WARNING_RENAME_INSTALL_PHP_FILE']; ?>.</font></li>
@@ -126,7 +130,7 @@ $ins_dir_renamed = $renameResult['install_directory_renamed'];
 						<?php } else { ?>
 						<li><font color='red'><?php echo $installationStrings['WARNING_RENAME_MIGRATE_PHP_FILE']; ?>.</font></li>
 						<?php } */ ?>
-						<?php if($ins_dir_renamed==true){ ?>
+						<?php if ($ins_dir_renamed) { ?>
 						<li><?php echo $installationStrings['LBL_INSTALL_DIRECTORY_RENAMED']. ' ' .$renamefile;?>install.</li>
 						<?php } else { ?>
 						<li><font color='red'><?php echo $installationStrings['WARNING_RENAME_INSTALL_DIRECTORY']; ?>.</font></li>
@@ -142,7 +146,7 @@ $ins_dir_renamed = $renameResult['install_directory_renamed'];
 			<td colspan=2 align="center">
 				<form action="index.php" method="get" name="form" id="form">
 					<input type="hidden" name="default_user_name" value="admin">
-					<input type="submit" class="button" value="<?php echo $installationStrings['LBL_FINISH']; ?>" title="<?php echo $installationStrings['LBL_FINISH']; ?>" />
+					<input type="submit" class="button" value="<?php echo $installationStrings['LBL_FINISH'];?>" title="<?php echo $installationStrings['LBL_FINISH'];?>" />
 				</form>
 			</td>
 		</tr>

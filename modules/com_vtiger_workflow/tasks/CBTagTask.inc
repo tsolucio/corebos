@@ -21,13 +21,17 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 class CBTagTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $listoftags;
+	public $addrel;
+	public $forallusers;
 
 	public function getFieldNames() {
 		return array('listoftags', 'addrel', 'forallusers');
 	}
 
 	public function doTask(&$entity) {
-		global $current_user;
+		global $current_user, $logbg;
+		$logbg->debug('> TagTask');
 		list($cto, $cto_id) = explode('x', $entity->getId());
 		if (!empty($cto_id) && !empty($this->listoftags)) {
 			$setype = getSalesEntityType($cto_id);
@@ -47,14 +51,31 @@ class CBTagTask extends VTTask {
 					$users = $current_user->id;
 				}
 				$freetag->tag_object($users, $cto_id, $this->listoftags, $setype);
+				$logmsg = '(TagTask) ADD object tag';
+				$this->logmessages[] = $logmsg;
+				$this->logmessages[] = json_encode([$users, $cto_id, $this->listoftags, $setype]);
+				$logbg->debug($logmsg, [$users, $cto_id, $this->listoftags, $setype]);
 			} else {
 				if ($this->forallusers) {
+					$logmsg = '(TagTask) DELETE object tags for all users';
+					$this->logmessages[] = $logmsg;
+					$this->logmessages[] = json_encode([$cto_id, $this->listoftags]);
+					$logbg->debug($logmsg, [$cto_id, $this->listoftags]);
 					$freetag->delete_object_tags($cto_id, $this->listoftags);
 				} else {
+					$logmsg = '(TagTask) DELETE object tag for';
+					$this->logmessages[] = $logmsg;
+					$this->logmessages[] = json_encode([$current_user->id, $cto_id, $this->listoftags]);
+					$logbg->debug($logmsg, [$current_user->id, $cto_id, $this->listoftags]);
 					$freetag->delete_object_tag($current_user->id, $cto_id, $this->listoftags);
 				}
 			}
+		} else {
+			$logmsg = '(TagTask) not called: cto_id or listoftags are empty';
+			$this->logmessages[] = $logmsg;
+			$logbg->debug($logmsg);
 		}
+		$logbg->debug('< TagTask');
 	}
 }
 ?>

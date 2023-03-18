@@ -196,7 +196,11 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo = $focus->GlobalSearchAutocomplete();
 		break;
 	case 'FieldDependency':
-		$mapinfo = $focus->FieldDependency();
+		$fdepmode = isset($_REQUEST['fdepmode']) ? $_REQUEST['fdepmode'] : 0;
+		$mapinfo = $focus->FieldDependency($fdepmode);
+		break;
+	case 'Wizard':
+		$mapinfo = $focus->Wizard();
 		break;
 	case 'Validations':
 		$mapinfo = $focus->Validations(
@@ -257,7 +261,19 @@ switch ($focus->column_fields['maptype']) {
 			'info' => $focus->mapExecutionInfo,
 		);
 		break;
+	case 'AdvancedSearch':
+		$xml = $focus->AdvancedSearch();
+		$mapinfo = array(
+			'result' => json_encode($xml),
+		);
+		break;
 	default:
+		break;
+	case 'PopupFilter':
+		$xml = $focus->PopupFilter();
+		$mapinfo = array(
+			'result' => json_encode($xml),
+		);
 		break;
 }
 $smarty->assign('MAPINFO', $mapinfo);

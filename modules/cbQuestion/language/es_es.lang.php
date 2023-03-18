@@ -110,5 +110,7 @@ $mod_strings = array(
 	'Add variable' => 'Añadir variable',
 	'Export Results' => 'Exportar Resultados',
 	'Value' => 'Valor',
+	'querytype' => 'Tipo Consulta',
+	'Direct Sql' => 'SQL Directo',
 );
 ?>

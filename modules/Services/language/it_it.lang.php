@@ -23,7 +23,6 @@ $mod_strings = array(
 'LBL_MODULE_NAME' => 'Servizi',
 'LBL_PRICEBOOK' => 'Listino:',
 
-
 'LBL_ADD_PRICEBOOK_BUTTON_LABEL' => 'Aggiungi a Listino',
 
 'serviceid' => 'ID Servizio',

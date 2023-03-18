@@ -14,7 +14,7 @@ include_once __DIR__ . '/../api/ws/Controller.php';
 include_once __DIR__ . '/../api/ws/Utils.php';
 include_once 'include/Webservices/Query.php';
 
-global $adb, $log;
+global $adb, $log, $current_user;
 
 class crmtogo_UI_ExecuteFunctions extends crmtogo_WS_Controller {
 
@@ -70,6 +70,12 @@ class crmtogo_UI_ExecuteFunctions extends crmtogo_WS_Controller {
 				foreach ($tkeys as $tr) {
 					$ret[$tr] = getTranslatedString($tr, $i18nm);
 				}
+				break;
+			case 'cbwsExecuteWorkflow':
+				include_once 'include/Webservices/ExecuteWorkflow.php';
+				$recordId = vtws_getCRMID($request->get('recordId'));
+				$crmids = array($recordId);
+				$ret = cbwsExecuteWorkflow($request->get('wfid'), json_encode($crmids), $current_user);
 				break;
 			case 'ismoduleactive':
 			default:

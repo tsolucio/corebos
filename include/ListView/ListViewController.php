@@ -203,10 +203,20 @@ class ListViewController {
 			}
 		}
 
+		$bmapname = $module.'_FieldInfo';
+		$cbMapFI = array();
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapFI = $cbMap->FieldInfo();
+			$cbMapFI = $cbMapFI['fields'];
+		}
+
 		$useAsterisk = get_use_asterisk($this->user->id);
 		$wfs = new VTWorkflowManager($adb);
 		$totals = array();
 		$data = array();
+		$sum = array();
 
 		$tabid = getTabid($currentModule);
 		include_once 'vtlib/Vtiger/Link.php';
@@ -312,6 +322,18 @@ class ListViewController {
 					} else {
 						$value = ' --';
 					}
+				} elseif ($field->getUIType() == Field_Metadata::UITYPE_NUMERIC) {
+					if ($value != '') {
+						if (!isset($sum[$fieldName])) {
+							$sum[$fieldName]=0;
+						}
+						$sum[$fieldName] = $sum[$fieldName] + $value;
+						$value = CurrencyField::convertToUserFormat($value);
+						if ($field->getFieldType()=='I') {
+							$value = substr($value, 0, strrpos($value, $current_user->currency_decimal_separator));
+						}
+						$value = '<span style="float:right;padding-right:10px;">'.$value.'</span>';
+					}
 				} elseif ($field->getFieldDataType() == 'date' || $field->getFieldDataType() == 'datetime') {
 					if (!empty($value) && $value != '0000-00-00' && $value != '0000-00-00 00:00') {
 						$date = new DateTimeField($value);
@@ -357,6 +379,13 @@ class ListViewController {
 						$value = CurrencyField::convertToUserFormat($value, $current_user, true);
 					}
 				} elseif ($field->getFieldDataType() == 'url') {
+					if (isset($cbMapFI[$fieldName])) {
+						$key = array_keys($cbMapFI[$fieldName]);
+						if ($key[0] == 'url_label') {
+							$fieldToShow = $cbMapFI[$fieldName][$key[0]];
+							$value = $adb->query_result($result, $i, $fieldToShow);
+						}
+					}
 					$matchPattern = "^[\w]+:\/\/^";
 					preg_match($matchPattern, $rawValue, $matches);
 					if (!empty($matches[0])) {
@@ -556,8 +585,8 @@ class ListViewController {
 						$temp_val = html_entity_decode($value, ENT_QUOTES, $default_charset);
 						$value = vt_suppressHTMLTags(implode(',', json_decode($temp_val, true)));
 					}
-				} elseif (in_array($uitype, array(7,9,90))) {
-					$value = "<span align='right'>".textlength_check($value).'</div>';
+				} elseif (in_array($uitype, array(9,90))) {
+					$value = '<span style="float:right;padding-right:10px;">'.$value.'</span>';
 				} elseif ($field->getUIType() == 55) {
 					$value = getTranslatedString($value, $currentModule);
 				} elseif ($module == 'Emails' && ($fieldName == 'subject')) {
@@ -566,7 +595,7 @@ class ListViewController {
 					$field_val = trim(vt_suppressHTMLTags(vtlib_purify($value), true));
 					$value = textlength_check($value);
 					if (substr($value, -3) == '...') {
-						$value = '<span title="'.$field_val.'">'.$value.'<span>';
+						$value = '<span title="'.$field_val.'">'.$value.'</span>';
 					}
 				}
 				if ($field->getFieldDataType() != 'reference') {
@@ -643,13 +672,15 @@ class ListViewController {
 			list($row,$unused,$unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($row,$this->db->query_result_rowdata($result, $i),$recordId));
 			$data[$recordId] = $row;
 		}
-		if (!empty($totals) && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
+		if ((!empty($totals) || !empty($sum)) && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
 			$trow = array();
 			foreach ($listViewFields as $fieldName) {
 				if (isset($totals[$fieldName])) {
 					$currencyField = new CurrencyField($totals[$fieldName]);
 					$currencyValue = $currencyField->getDisplayValueWithSymbol();
 					$trow[] = '<span class="listview_row_total">'.$currencyValue.'</span>';
+				} elseif (isset($sum[$fieldName])) {
+					$trow[] = '<span class="listview_row_total">'.CurrencyField::convertToUserFormat($sum[$fieldName]).'</span>';
 				} else {
 					$trow[] = '';
 				}
@@ -709,6 +740,7 @@ class ListViewController {
 		$change_sorder = array('ASC'=>'DESC','DESC'=>'ASC');
 		$arrow_gif = array('ASC'=>'arrow_down.gif','DESC'=>'arrow_up.gif');
 		$default_sort_order = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_Sort_Order', 'ASC', $module));
+		$Application_Filter_Remove_RelatedModule_Label = GlobalVariable::getVariable('Application_Filter_Remove_RelatedModule_Label', '0', '', $current_user->id);
 		foreach ($listViewFields as $fieldName) {
 			if (!empty($moduleFields[$fieldName])) {
 				$field = $moduleFields[$fieldName];
@@ -719,6 +751,11 @@ class ListViewController {
 				}
 			}
 			$fieldLabel = $field->getFieldLabelKey();
+			$fieldModule = getTabModuleName($field->getTabId());
+			if ($fieldModule != $module && !$Application_Filter_Remove_RelatedModule_Label) {
+				$fieldModuleLabel = getTranslatedString($fieldModule, $fieldModule);
+				$fieldLabel = $field->getFieldLabelKey() . " (" . $fieldModuleLabel . ")";
+			}
 			if (in_array($field->getColumnName(), $focus->sortby_fields)) {
 				if ($orderBy == $field->getFieldName() || ($orderBy == 'title' && $field->getFieldName() == 'notes_title')) {
 					$temp_sorder = $change_sorder[$sorder];
@@ -809,99 +846,6 @@ class ListViewController {
 			$basicSearchFieldInfoList[$fieldName] = getTranslatedString($field->getFieldLabelKey(), $this->queryGenerator->getModule());
 		}
 		return $basicSearchFieldInfoList;
-	}
-
-	public function getAdvancedSearchOptionString() {
-		$module = $this->queryGenerator->getModule();
-		$meta = $this->queryGenerator->getMeta($module);
-
-		$moduleFields = $meta->getModuleFields();
-		$i =0;
-		$OPTION_SET = array();
-		foreach ($moduleFields as $fieldName => $field) {
-			if ($field->getFieldDataType() == 'reference') {
-				$typeOfData = 'V';
-			} elseif ($field->getFieldDataType() == 'boolean') {
-				$typeOfData = 'C';
-			} else {
-				$typeOfData = $field->getTypeOfData();
-				$typeOfData = explode('~', $typeOfData);
-				$typeOfData = $typeOfData[0];
-			}
-			$label = getTranslatedString($field->getFieldLabelKey(), $module);
-			$label = str_replace(array("\n","\r"), '', $label);
-			if (empty($label)) {
-				$label = $field->getFieldLabelKey();
-			}
-			$selected = '';
-			if ($i++ == 0) {
-				$selected = 'selected';
-			}
-
-			// place option in array for sorting later
-			$blockName = getTranslatedString($field->getBlockName(), $module);
-
-			$fieldLabelEscaped = str_replace(' ', '_', $field->getFieldLabelKey());
-			$optionvalue = $field->getTableName().':'.$field->getColumnName().':'.$fieldName.':'.$module.'_'.$fieldLabelEscaped.':'.$typeOfData;
-
-			$OPTION_SET[$blockName][$label] = "<option value=\'$optionvalue\' $selected>$label</option>";
-		}
-		// sort array on block label
-		ksort($OPTION_SET, SORT_STRING);
-		$shtml = '';
-		foreach ($OPTION_SET as $key => $value) {
-			$shtml .= "<optgroup label='$key' class='select' style='border:none'>";
-			// sort array on field labels
-			ksort($value, SORT_STRING);
-			$shtml .= implode('', $value);
-		}
-		return $shtml;
-	}
-
-	public function getAdvancedSearchOptionArray() {
-		$module = $this->queryGenerator->getModule();
-		$meta = $this->queryGenerator->getMeta($module);
-
-		$moduleFields = $meta->getModuleFields();
-		$i =0;
-		$OPTION_SET = array();
-		foreach ($moduleFields as $fieldName => $field) {
-			if ($field->getFieldDataType() == 'reference') {
-				$typeOfData = 'V';
-			} elseif ($field->getFieldDataType() == 'boolean') {
-				$typeOfData = 'C';
-			} else {
-				$typeOfData = $field->getTypeOfData();
-				$typeOfData = explode("~", $typeOfData);
-				$typeOfData = $typeOfData[0];
-			}
-			$label = getTranslatedString($field->getFieldLabelKey(), $module);
-			$label = str_replace(array("\n","\r"), '', $label);
-			if (empty($label)) {
-				$label = $field->getFieldLabelKey();
-			}
-
-			$selected = '';
-			if ($i++ == 0) {
-				$selected = true;
-			}
-
-			// place option in array for sorting later
-			$blockName = getTranslatedString($field->getBlockName(), $module);
-
-			$fieldLabelEscaped = str_replace(" ", "_", $field->getFieldLabelKey());
-			$optionvalue = $field->getTableName().":".$field->getColumnName().":".$fieldName.":".$module."_".$fieldLabelEscaped.":".$typeOfData;
-
-			$OPTION_SET[$blockName][$label] = array('label' => $label, 'value' => $optionvalue, 'selected' => $selected, 'typeofdata' => $typeOfData);
-		}
-		// sort array on block label
-		ksort($OPTION_SET, SORT_STRING);
-		$OPTIONS = array();
-		foreach ($OPTION_SET as $key => $value) {
-			$OPTIONS[$key] = $value;
-			ksort($OPTIONS[$key], SORT_STRING);
-		}
-		return array($module => $OPTIONS);
 	}
 }
 ?>

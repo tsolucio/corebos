@@ -8,8 +8,8 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-{*//Hidden fields for modules DetailView//  *}
-<input type="hidden"  name="allselectedboxes" id="allselectedboxes">
+{*//Hidden fields for modules DetailView// *}
+<input type="hidden" name="allselectedboxes" id="allselectedboxes">
 <input name="from_link" id="from_link" type="hidden" value="DetailView">
 <input type="hidden" name="cbfromid" id="cbfromid" value="{$ID}">
 <input type="hidden" id="module" name="module" value="{$MODULE}">
@@ -19,6 +19,7 @@
 <input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
 <input type="hidden" name="return_id" value="{if isset($RETURN_ID)}{$RETURN_ID}{/if}">
 <input type="hidden" name="return_action" value="{if isset($RETURN_ACTION)}{$RETURN_ACTION}{/if}">
+<input type="hidden" name="_logwf" id="_logwf" value="{if isset($smarty.request._logwf)}{$smarty.request._logwf|@urlencode}{/if}" />
 {if $MODULE eq 'Accounts'}
 	<input type="hidden" name="contact_id">
 	<input type="hidden" name="member_id">

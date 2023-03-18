@@ -326,6 +326,40 @@
             "install-path": null
         },
         {
+            "name": "gaufrette/phpseclib-sftp-adapter",
+            "version": "v0.4.0",
+            "version_normalized": "0.4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Gaufrette/phpseclib-sftp-adapter.git",
+                "reference": "d307de5053eb5e2bb9cca82e1c70af76d553777c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Gaufrette/phpseclib-sftp-adapter/zipball/d307de5053eb5e2bb9cca82e1c70af76d553777c",
+                "reference": "d307de5053eb5e2bb9cca82e1c70af76d553777c",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/gaufrette": "~0.3",
+                "phpseclib/phpseclib": "^2.0"
+            },
+            "time": "2017-06-17T16:04:15+00:00",
+            "type": "metapackage",
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "KnpLabs",
+                    "email": "hello@knplabs.com"
+                }
+            ],
+            "description": "PhpseclibSftp adapter for Gaufrette",
+            "support": {
+                "source": "https://github.com/Gaufrette/phpseclib-sftp-adapter/tree/master"
+            },
+            "install-path": null
+        },
+        {
             "name": "geocoder-php/common-http",
             "version": "4.4.0",
             "version_normalized": "4.4.0.0",
@@ -1179,6 +1213,121 @@
                 "url"
             ],
             "install-path": "../guzzlehttp/psr7"
+        },
+        {
+            "name": "hi-folks/statistics",
+            "version": "v0.2.1",
+            "version_normalized": "0.2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Hi-Folks/statistics.git",
+                "reference": "bbb6c8a5e4fb6cc47008649cb2dade23db928192"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Hi-Folks/statistics/zipball/bbb6c8a5e4fb6cc47008649cb2dade23db928192",
+                "reference": "bbb6c8a5e4fb6cc47008649cb2dade23db928192",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "pestphp/pest": "^1.20",
+                "phpstan/phpstan": "^1.3",
+                "spatie/ray": "^1.28"
+            },
+            "time": "2022-02-22T21:12:17+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "HiFolks\\Statistics\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Roberto B.",
+                    "email": "roberto.butti@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP package that provides functions for calculating mathematical statistics of numeric data.",
+            "homepage": "https://github.com/hi-folks/statistics",
+            "keywords": [
+                "hi-folks",
+                "statistics"
+            ],
+            "support": {
+                "issues": "https://github.com/Hi-Folks/statistics/issues",
+                "source": "https://github.com/Hi-Folks/statistics/tree/v0.2.1"
+            },
+            "install-path": "../hi-folks/statistics"
+        },
+        {
+            "name": "josemmo/facturae-php",
+            "version": "v1.7.5",
+            "version_normalized": "1.7.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/josemmo/Facturae-PHP.git",
+                "reference": "b86496891625dc292afb36b5b7ec8946ebe54aa1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/josemmo/Facturae-PHP/zipball/b86496891625dc292afb36b5b7ec8946ebe54aa1",
+                "reference": "b86496891625dc292afb36b5b7ec8946ebe54aa1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "*"
+            },
+            "suggest": {
+                "ext-curl": "For communicating with remote TSA Servers and SOAP Web Services",
+                "ext-fileinfo": "For getting MIME types when using FacturaeFile",
+                "ext-openssl": "For signing and timestamping both invoices and SOAP requests",
+                "lib-libxml": "For parsing SOAP XML responses for FACe and FACeB2B"
+            },
+            "time": "2023-01-21T10:58:59+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "josemmo\\Facturae\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "josemmo",
+                    "email": "josemmo@pm.me",
+                    "homepage": "https://github.com/josemmo"
+                }
+            ],
+            "description": "Librería para la generación, firma y envío de facturas electrónicas",
+            "homepage": "https://github.com/josemmo/Facturae-PHP",
+            "keywords": [
+                "face",
+                "faceb2b",
+                "facturae",
+                "xades"
+            ],
+            "support": {
+                "issues": "https://github.com/josemmo/Facturae-PHP/issues",
+                "source": "https://github.com/josemmo/Facturae-PHP/tree/v1.7.5"
+            },
+            "install-path": "../josemmo/facturae-php"
         },
         {
             "name": "knplabs/gaufrette",
@@ -2722,31 +2871,32 @@
         },
         {
             "name": "mautic/api-library",
-            "version": "3.0.0",
-            "version_normalized": "3.0.0.0",
+            "version": "3.1.0",
+            "version_normalized": "3.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mautic/api-library.git",
-                "reference": "557ce71ca1603324a781270f73334852fce10d0e"
+                "reference": "5b0d9051a3a42eea132fa6da35b712e947804d2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mautic/api-library/zipball/557ce71ca1603324a781270f73334852fce10d0e",
-                "reference": "557ce71ca1603324a781270f73334852fce10d0e",
+                "url": "https://api.github.com/repos/mautic/api-library/zipball/5b0d9051a3a42eea132fa6da35b712e947804d2c",
+                "reference": "5b0d9051a3a42eea132fa6da35b712e947804d2c",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
                 "php": ">=7.2.0",
-                "psr/log": "~1.0"
+                "psr/log": "~1.0 || ~2.0 || ~3.0"
             },
             "require-dev": {
+                "brianium/paratest": "^6.2",
                 "friendsofphp/php-cs-fixer": "~2.16.1",
-                "phpunit/phpunit": "~9.4.0",
-                "raveren/kint": "~0.9"
+                "kint-php/kint": "^4.1",
+                "phpunit/phpunit": "~9.5.0"
             },
-            "time": "2020-10-17T14:04:17+00:00",
+            "time": "2022-05-04T13:59:18+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2761,7 +2911,7 @@
             "description": "Mautic API Connector Library",
             "support": {
                 "issues": "https://github.com/mautic/api-library/issues",
-                "source": "https://github.com/mautic/api-library/tree/3.0.0"
+                "source": "https://github.com/mautic/api-library/tree/3.1.0"
             },
             "install-path": "../mautic/api-library"
         },
@@ -5385,17 +5535,17 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.26.0",
-            "version_normalized": "1.26.0.0",
+            "version": "v1.27.0",
+            "version_normalized": "1.27.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4"
+                "reference": "5bbc823adecdae860bb64756d639ecfec17b050a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4",
-                "reference": "6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/5bbc823adecdae860bb64756d639ecfec17b050a",
+                "reference": "5bbc823adecdae860bb64756d639ecfec17b050a",
                 "shasum": ""
             },
             "require": {
@@ -5407,11 +5557,11 @@
             "suggest": {
                 "ext-ctype": "For best performance"
             },
-            "time": "2022-05-24T11:49:31+00:00",
+            "time": "2022-11-03T14:55:06+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.26-dev"
+                    "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -5450,7 +5600,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.26.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -5470,17 +5620,17 @@
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
-            "version": "v1.26.0",
-            "version_normalized": "1.26.0.0",
+            "version": "v1.27.0",
+            "version_normalized": "1.27.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-grapheme.git",
-                "reference": "433d05519ce6990bf3530fba6957499d327395c2"
+                "reference": "511a08c03c1960e08a883f4cffcacd219b758354"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/433d05519ce6990bf3530fba6957499d327395c2",
-                "reference": "433d05519ce6990bf3530fba6957499d327395c2",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/511a08c03c1960e08a883f4cffcacd219b758354",
+                "reference": "511a08c03c1960e08a883f4cffcacd219b758354",
                 "shasum": ""
             },
             "require": {
@@ -5489,11 +5639,11 @@
             "suggest": {
                 "ext-intl": "For best performance"
             },
-            "time": "2022-05-24T11:49:31+00:00",
+            "time": "2022-11-03T14:55:06+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.26-dev"
+                    "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -5534,7 +5684,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.26.0"
+                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -5554,17 +5704,17 @@
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.26.0",
-            "version_normalized": "1.26.0.0",
+            "version": "v1.27.0",
+            "version_normalized": "1.27.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
-                "reference": "219aa369ceff116e673852dce47c3a41794c14bd"
+                "reference": "19bd1e4fcd5b91116f14d8533c57831ed00571b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/219aa369ceff116e673852dce47c3a41794c14bd",
-                "reference": "219aa369ceff116e673852dce47c3a41794c14bd",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/19bd1e4fcd5b91116f14d8533c57831ed00571b6",
+                "reference": "19bd1e4fcd5b91116f14d8533c57831ed00571b6",
                 "shasum": ""
             },
             "require": {
@@ -5573,11 +5723,11 @@
             "suggest": {
                 "ext-intl": "For best performance"
             },
-            "time": "2022-05-24T11:49:31+00:00",
+            "time": "2022-11-03T14:55:06+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.26-dev"
+                    "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -5621,7 +5771,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.26.0"
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -5703,27 +5853,27 @@
         },
         {
             "name": "symfony/polyfill-php73",
-            "version": "v1.26.0",
-            "version_normalized": "1.26.0.0",
+            "version": "v1.27.0",
+            "version_normalized": "1.27.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php73.git",
-                "reference": "e440d35fa0286f77fb45b79a03fedbeda9307e85"
+                "reference": "9e8ecb5f92152187c4799efd3c96b78ccab18ff9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/e440d35fa0286f77fb45b79a03fedbeda9307e85",
-                "reference": "e440d35fa0286f77fb45b79a03fedbeda9307e85",
+                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/9e8ecb5f92152187c4799efd3c96b78ccab18ff9",
+                "reference": "9e8ecb5f92152187c4799efd3c96b78ccab18ff9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
-            "time": "2022-05-24T11:49:31+00:00",
+            "time": "2022-11-03T14:55:06+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.26-dev"
+                    "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -5765,7 +5915,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php73/tree/v1.26.0"
+                "source": "https://github.com/symfony/polyfill-php73/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -5785,27 +5935,27 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.26.0",
-            "version_normalized": "1.26.0.0",
+            "version": "v1.27.0",
+            "version_normalized": "1.27.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "cfa0ae98841b9e461207c13ab093d76b0fa7bace"
+                "reference": "7a6ff3f1959bb01aefccb463a0f2cd3d3d2fd936"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/cfa0ae98841b9e461207c13ab093d76b0fa7bace",
-                "reference": "cfa0ae98841b9e461207c13ab093d76b0fa7bace",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/7a6ff3f1959bb01aefccb463a0f2cd3d3d2fd936",
+                "reference": "7a6ff3f1959bb01aefccb463a0f2cd3d3d2fd936",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
-            "time": "2022-05-10T07:21:04+00:00",
+            "time": "2022-11-03T14:55:06+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.26-dev"
+                    "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -5851,7 +6001,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.26.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.27.0"
             },
             "funding": [
                 {

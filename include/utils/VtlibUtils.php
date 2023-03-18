@@ -160,7 +160,7 @@ function vtlib_toggleModuleAccess($module, $enable_disable, $noevents = false) {
 
 	$adb->pquery('UPDATE vtiger_tab set presence=? WHERE name=?', array($enable_disable,$module));
 	$adb->pquery(
-		'UPDATE vtiger_businessactions set active=? WHERE linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'[^a-zA-Z0-9_.]" OR linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'$" OR linkurl RLIKE  "^'.$module.'[^a-zA-Z0-9_.]"',
+		'UPDATE vtiger_businessactions set active=? WHERE linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'[^a-zA-Z0-9_.]" OR linkurl RLIKE "[^a-zA-Z0-9_.]'.$module.'$" OR linkurl RLIKE "^'.$module.'[^a-zA-Z0-9_.]"',
 		array($enable_disable_BA)
 	);
 
@@ -185,7 +185,7 @@ function vtlib_getToggleModuleInfo() {
 		FROM vtiger_tab
 		WHERE name NOT IN ('Users') AND presence IN (0,1) ORDER BY name"
 	);
-	$num_rows  = $adb->num_rows($sqlresult);
+	$num_rows = $adb->num_rows($sqlresult);
 	for ($idx = 0; $idx < $num_rows; ++$idx) {
 		$module = $adb->query_result($sqlresult, $idx, 'name');
 		$presence=$adb->query_result($sqlresult, $idx, 'presence');
@@ -294,7 +294,7 @@ function vtlib_tosingular($text) {
 function vtlib_getPicklistValues_AccessibleToAll($field_columnname) {
 	global $adb;
 
-	$columnname =  $adb->sql_escape_string($field_columnname);
+	$columnname = $adb->sql_escape_string($field_columnname);
 	$tablename = "vtiger_$columnname";
 
 	// Gather all the roles (except H1 which is organization role)
@@ -344,7 +344,7 @@ function vtlib_getPicklistValues_AccessibleToAll($field_columnname) {
 function vtlib_getPicklistValues($field_columnname) {
 	global $adb;
 
-	$columnname =  $adb->sql_escape_string($field_columnname);
+	$columnname = $adb->sql_escape_string($field_columnname);
 	$tablename = "vtiger_$columnname";
 
 	$picklistres = $adb->query("SELECT $columnname as pickvalue FROM $tablename");
@@ -441,7 +441,7 @@ function vtlib_purify($input, $ignore = false) {
 
 	static $purified_cache = array();
 
-	if (!is_array($input)) {  // thank you Boris and Adam (from developers list)
+	if (!is_array($input)) {
 		$md5OfInput = md5($input.($ignore?'T':'F'));
 		if (array_key_exists($md5OfInput, $purified_cache)) {
 			return $purified_cache[$md5OfInput];
@@ -484,12 +484,7 @@ function vtlib_purify($input, $ignore = false) {
 		}
 	}
 	if (is_array($value)) {
-		$value = array_map(
-			function ($v) {
-				return str_replace('&amp;', '&', $v);
-			},
-			$value
-		);
+		$value = changeHTMLAmpersandsInArray($value);
 	} elseif (is_string($value)) {
 		$value = str_replace('&amp;', '&', $value);
 	}
@@ -499,6 +494,13 @@ function vtlib_purify($input, $ignore = false) {
 	return $value;
 }
 
+function changeHTMLAmpersandsInArray($v) {
+	if (is_array($v)) {
+		return array_map('changeHTMLAmpersandsInArray', $v);
+	}
+	return str_replace('&amp;', '&', $v);
+}
+
 /**
  * Process the UI Widget requested
  * @param Vtiger_Link $widgetLinkInfo
@@ -506,7 +508,8 @@ function vtlib_purify($input, $ignore = false) {
  * @return
  */
 function vtlib_process_widget($widgetLinkInfo, $context = false) {
-	if (preg_match("/^block:\/\/(.*)/", trim($widgetLinkInfo->linkurl), $matches)) {
+	$linkurl = trim($widgetLinkInfo->linkurl);
+	if (preg_match("/^block:\/\/(.*)/", $linkurl, $matches) || preg_match("/^top:\/\/(.*)/", $linkurl, $matches)) {
 		$widgetInfo = explode(':', $matches[1]);
 		$widgetControllerClass = $widgetInfo[0];
 		$widgetControllerClassFile = $widgetInfo[1];
@@ -525,6 +528,7 @@ function vtlib_process_widget($widgetLinkInfo, $context = false) {
 					}
 					$context = array_merge($context, $widgetContext);
 				}
+				$context['BusinessActionInformation'] = json_encode($widgetLinkInfo);
 				return $widgetInstance->process($context);
 			}
 		}

@@ -198,7 +198,7 @@ function Search($module, $input = '') {
 function get_usersid($table_name, $column_name, $search_string) {
 	global $log;
 	$log->debug('> get_usersid '.$table_name.','.$column_name.','.$search_string);
-	$where = "(trim(vtiger_users.ename) like '". formatForSqlLike($search_string)  . "' or vtiger_groups.groupname like '". formatForSqlLike($search_string) ."')";
+	$where = "(trim(vtiger_users.ename) like '".formatForSqlLike($search_string)."' or vtiger_groups.groupname like '".formatForSqlLike($search_string)."')";
 	$log->debug('< get_usersid');
 	return $where;
 }
@@ -219,7 +219,7 @@ function getValuesforColumns($column_name, $search_string, $criteria = 'cts', $i
 	if (isset($input['type']) && $input['type'] == 'entchar') {
 		$criteria = 'is';
 	}
-
+	$where = '';
 	for ($i=0, $iMax = count($column_array); $i< $iMax; $i++) {
 		if ($column_name == $column_array[$i]) {
 			$val = $table_col_array[$i];
@@ -368,12 +368,12 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 				}
 			} elseif (($uitype == 15 || $uitype == 16) && hasMultiLanguageSupport($field_name)) {
 				$currlang = $current_user->language;
-				$where = "$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name'"
-					." and i18n LIKE '".formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
+				$where = "($table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name'"
+					." and i18n LIKE '".formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."')";
 			} elseif ($table_name == 'vtiger_crmentity' && $column_name == 'smownerid') {
 				$where = get_usersid($table_name, $column_name, $search_string);
 			} elseif ($table_name == 'vtiger_crmentity' && $column_name == 'modifiedby') {
-				$where = "(trim(vtiger_users2.ename) like '". formatForSqlLike($search_string) . "' or vtiger_groups2.groupname like '". formatForSqlLike($search_string) ."')";
+				$where ="(trim(vtiger_users2.ename) like '".formatForSqlLike($search_string)."' or vtiger_groups2.groupname like '".formatForSqlLike($search_string)."')";
 			} elseif (in_array($column_name, $column_array)) {
 				$where = getValuesforColumns($column_name, $search_string, 'cts', $input);
 			} elseif (isset($input['type']) && $input['type'] == 'entchar') {
@@ -794,7 +794,7 @@ function getdashboardcondition($input = '') {
 	}
 
 	$where_clauses = array();
-	$url_string = "";
+	$url_string = '';
 
 	if (isset($input['leadsource'])) {
 		$lead_source = $input['leadsource'];
@@ -905,15 +905,50 @@ function str_replace_once($needle, $replace, $haystack) {
 }
 
 /**
+ * Build the where condition for the exclude keywords
+ */
+function exclude_keywords_where_builder($table_name, $column_name, $exclude_keywords) {
+	$where = '';
+	$dot = $column_name == '' ? '' : '.';
+	$path = $table_name . $dot . $column_name;
+	foreach ($exclude_keywords as $key => $value) {
+		$where .= 'AND ' . $path . " NOT LIKE'" . formatForSqlLike($value) . "'";
+	}
+	return $where;
+}
+
+/**
  * Function to get the where condition for a module based on the field table entries
- * @param  string $listquery  -- ListView query for the module
- * @param  string $module     -- module name
- * @param  string $search_val -- entered search string value
- * @return string $where      -- where condition for the module based on field table entries
+ * @param string ListView query for the module
+ * @param string module name
+ * @param string entered search string value
+ * @return string where condition for the module based on field table entries
  */
 function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 	global $adb, $current_user;
+	$is_range = strpos($search_val, '..') !== false ? true : false;
 	$userprivs = $current_user->getPrivileges();
+
+	// checking if search should be exact or not
+	$formatForSqlLikeFlag = 0;
+	if (substr_count($search_val, '"') == 2) {
+		$formatForSqlLikeFlag = 3;
+		$search_val = get_string_between($search_val, '"', '"');
+	}
+
+	// checking for exclude keywords
+	$exclude_keywords = [];
+	if (strpos($search_val, '-') !== false) {
+		$filtered_val = preg_replace('/\s+/', ' ', $search_val);
+		$search_arr = explode(' ', $filtered_val);
+		foreach ($search_arr as $key => $value) {
+			if (strpos($value, '-') !== false) {
+				array_push($exclude_keywords, str_replace('-', '', $value));
+				$search_val = str_replace($value, '', $search_val);
+				$search_val = preg_replace('/\s+/', ' ', $search_val);
+			}
+		}
+	}
 
 	$search_val = $adb->sql_escape_string($search_val);
 	if ($userprivs->hasGlobalReadPermission()) {
@@ -921,7 +956,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 			$query = 'SELECT columnname, tablename, fieldname, uitype FROM vtiger_field WHERE tabid=? and vtiger_field.presence in (0,2)';
 			$qparams = array(getTabid($module));
 		} else {
-			$query = 'SELECT columnname, tablename, fieldname, uitype
+			$query = 'SELECT columnname, tablename, fieldname, vtiger_field.uitype
 				FROM vtiger_field
 				LEFT JOIN vtiger_ws_fieldtype ON vtiger_field.uitype=vtiger_ws_fieldtype.uitype
 				WHERE tabid = ? and vtiger_field.presence in (0,2) and fieldtype=?';
@@ -930,7 +965,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 	} else {
 		$profileList = getCurrentUserProfileList();
 		if ($fieldtype=='') {
-			$query = 'SELECT columnname, tablename, fieldname, uitype
+			$query = 'SELECT columnname, tablename, fieldname, vtiger_field.uitype
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
@@ -938,7 +973,7 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 					.') AND vtiger_def_org_field.visible = 0 and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid';
 			$qparams = array(getTabid($module), $profileList);
 		} else {
-			$query = 'SELECT columnname, tablename, fieldname, uitype
+			$query = 'SELECT columnname, tablename, fieldname, vtiger_field.uitype
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
@@ -974,9 +1009,10 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 					$where .= ' OR ';
 				}
 				if ($binary_search) {
-					$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
+					$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."')";
 				} else {
-					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."'"
+					. exclude_keywords_where_builder($tablename, $columnname, $exclude_keywords);
 				}
 			}
 			$columnname = 'firstname';
@@ -989,14 +1025,21 @@ function getUnifiedWhere($listquery, $module, $search_val, $fieldtype = '') {
 				$where .= ' OR ';
 			}
 			if ($binary_search) {
-				$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
+				$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."')";
 			} else {
 				if (is_uitype($field_uitype, '_picklist_') && hasMultiLanguageSupport($fieldname)) {
 					$where .= '('.$tablename.'.'.$columnname.' IN (select translation_key from vtiger_cbtranslation
-						where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'.formatForSqlLike($search_val).'") OR '
-						.$tablename.'.'.$columnname.' LIKE "'. formatForSqlLike($search_val).'")';
+						where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'
+						.formatForSqlLike($search_val, $formatForSqlLikeFlag).'"' . exclude_keywords_where_builder('i18n', '', $exclude_keywords) . ') OR '
+						.$tablename.'.'.$columnname.' LIKE "'. formatForSqlLike($search_val, $formatForSqlLikeFlag).'")';
 				} else {
-					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+					if ($is_range) {
+						$range = explode('..', $search_val);
+						$where .= $tablename.'.'.$columnname.' BETWEEN '. $range[0] . ' AND ' . $range[1];
+					} else {
+						$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val, $formatForSqlLikeFlag) ."'"
+						. exclude_keywords_where_builder($tablename, $columnname, $exclude_keywords);
+					}
 				}
 			}
 		}
@@ -1243,6 +1286,15 @@ function getAdvancedSearchComparator($comparator, $value, $datatype = '') {
 	if ($comparator == 'a') {
 		$rtvalue = ' > '.$adb->quote($value);
 	}
+	if ($comparator == 'rgxp') {
+		$rtvalue = ' REGEXP '.$adb->quote($value);
+	}
+	if ($comparator == 'sx') {
+		$rtvalue = ' SOUNDEX '.$adb->quote($value);
+	}
+	if ($comparator == 'nsx') {
+		$rtvalue = ' NOT SOUNDEX '.$adb->quote($value);
+	}
 	return $rtvalue;
 }
 
@@ -1319,7 +1371,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 		if ($field_uitype == 56) {
 			if (strtolower($value) == 'yes') {
 				$value = 1;
-			} elseif (strtolower($value) ==  'no') {
+			} elseif (strtolower($value) == 'no') {
 				$value = 0;
 			}
 		}
@@ -1346,9 +1398,9 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 
 /**
  * Function to get the Tags where condition
- * @param  string $search_val -- entered search string value
- * @param  string $current_user_id     -- current user id
- * @return string $where      -- where condition with the list of crmids, will like vtiger_crmentity.crmid in (1,3,4,etc.,)
+ * @param string entered search string value
+ * @param string current user id
+ * @return string where condition with the list of crmids, will like vtiger_crmentity.crmid in (1,3,4,etc.,)
  */
 function getTagWhere($search_val, $current_user_id) {
 	require_once 'include/freetag/freetag.class.php';
@@ -1586,7 +1638,7 @@ function getCriteriaJS($formName) {
 				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
 			} else if( type == "last14days" ) {
 				document.'.$formName.'.startdate.value = "'.$last14DaysDateTime->getDisplayDate().'";
-				document.'.$formName.'.enddate.value =  "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
 			} else if( type == "last30days" ) {
 				document.'.$formName.'.startdate.value = "'.$last30DaysDateTime->getDisplayDate().'";
 				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
@@ -1617,7 +1669,7 @@ function getCriteriaJS($formName) {
 			} else if( type == "thisfq" ) {
 				document.'.$formName.'.startdate.value = "'.$cFqStartDateTime->getDisplayDate().'";
 				document.'.$formName.'.enddate.value = "'.$cFqEndDateTime->getDisplayDate().'";
-			} else {
+			} else if (type != "custom") {
 				document.'.$formName.'.startdate.value = "";
 				document.'.$formName.'.enddate.value = "";
 			}
@@ -1627,8 +1679,8 @@ function getCriteriaJS($formName) {
 
 function getDateforStdFilterBytype($type) {
 	$today = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y')));
-	$tomorrow  = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
-	$yesterday  = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-1, date('Y')));
+	$tomorrow = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
+	$yesterday = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-1, date('Y')));
 	$bigbang = date('Y-m-d', mktime(0, 0, 0, '01', '01', '2000'));
 
 	$currentmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m'), '01', date('Y')));
@@ -1750,7 +1802,7 @@ function getDateforStdFilterBytype($type) {
 		$datevalue[1] = $today;
 	} elseif ($type == 'last30days') {
 		$datevalue[0] = $last30days;
-		$datevalue[1] =  $today;
+		$datevalue[1] = $today;
 	} elseif ($type == 'last60days') {
 		$datevalue[0] = $last60days;
 		$datevalue[1] = $today;

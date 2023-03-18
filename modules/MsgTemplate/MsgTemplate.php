@@ -119,9 +119,9 @@ class MsgTemplate extends CRMEntity {
 	}
 
 	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
-		$wherepos = stripos($query, 'where'); // there is always a where
-		$query_body = substr($query, 0, $wherepos+5);
-		$query_cond = substr($query, $wherepos+5);
+		$wherepos = stripos($query, ' where '); // there is always a where
+		$query_body = substr($query, 0, $wherepos+6);
+		$query_cond = substr($query, $wherepos+7);
 		$query_module_cond = '';
 		if (isset($_REQUEST['relmod_id']) && !empty($srcrecord)) {
 			if (preg_match('/^[a-zA-Z]+$/', $srcrecord)) {

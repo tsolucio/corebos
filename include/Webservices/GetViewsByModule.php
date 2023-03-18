@@ -21,16 +21,23 @@ function getViewsByModule($module, $user) {
 	$result = array();
 	$types = vtws_listtypes(null, $user);
 	foreach ($modules as $module) {
-		// pickup meta data of module
-		$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
-		$handlerPath = $webserviceObject->getHandlerPath();
-		$handlerClass = $webserviceObject->getHandlerClass();
-		require_once $handlerPath;
-		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
-		$meta = $handler->getMeta();
-		$mainModule = $meta->getTabName();  // normalize module name
-		// check modules
-		if (!$meta->isModuleEntity()) {
+		try {
+			// pickup meta data of module
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $module);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
+			require_once $handlerPath;
+			$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+			$meta = $handler->getMeta();
+			$mainModule = $meta->getTabName();  // normalize module name
+			// check modules
+			if (!$meta->isModuleEntity()) {
+				if ($isMoreThanOne) {
+					continue;
+				}
+				throw new WebServiceException('INVALID_MODULE', "Given module ($module) cannot be found");
+			}
+		} catch (\Throwable $th) {
 			if ($isMoreThanOne) {
 				continue;
 			}
@@ -102,6 +109,7 @@ function getViewsByModule($module, $user) {
  */
 function cbws_getViewsInformation($viewids, $module) {
 	global $adb, $app_strings, $currentModule;
+	$cModule = $currentModule;
 	$currentModule = $module;
 	$dft = cbCVManagement::getDefaultView($module);
 	$customView = new CustomView($module);
@@ -180,6 +188,7 @@ function cbws_getViewsInformation($viewids, $module) {
 		$filter['userid'] = $cvrow['userid'];
 		$filters[$cvrow['cvid']] = $filter;
 	}
+	$currentModule = $cModule;
 	return $filters;
 }
 ?>

@@ -27,7 +27,6 @@ if ($calculate_response_time) {
 	echo '&nbsp;&nbsp;Server response time: '.round(microtime(true) - $startTime, 2).' seconds.';
 }
 ?>
-	</span>
 </span>
 </div>
 <div class="slds-col slds-size_1-of-2 cblds-t-align_right">

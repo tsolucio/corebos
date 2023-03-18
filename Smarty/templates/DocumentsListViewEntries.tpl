@@ -26,7 +26,7 @@
 			{if $NO_FOLDERS eq 'yes'}
 				<td width="100%" valign="top" height="250px;"><br><br>
 					<div align="center"> <br><br><br><br><br>
-						<table width="80%" cellpadding="5" cellspacing="0"  class="searchUIBasic small" align="center" border=0>
+						<table width="80%" cellpadding="5" cellspacing="0" class="searchUIBasic small" align="center" border=0>
 							<tr>
 								<td align="center" style="padding:20px;">
 									<a href="javascript:;" onclick="fnvshobj(this,'orgLay');">{$MOD.LBL_CLICK_HERE}</a>&nbsp;{$MOD.LBL_TO_ADD_FOLDER}
@@ -50,16 +50,16 @@
 								</table>
 								<!-- List View's Buttons and Filters ends -->
 
-                                {foreach item=folder from=$FOLDERS}
+								{foreach item=folder from=$FOLDERS}
 									<!-- folder division starts -->
 									{assign var=foldercount value=$FOLDERS|@count}
 
-                                    <div id='{$folder.folderid}' class="documentModuleFolderView">
+									<div id='{$folder.folderid}' class="documentModuleFolderView">
 										<input type="hidden" name="numOfRows" id="numOfRows_selectall{$folder.folderid}" value="">
 										<input type="hidden" name="folderidVal" id="folderid_selectall{$folder.folderid}" value="{$folder.folderid}">
 										<input type="hidden" name="selectedboxes" id="selectedboxes_selectall{$folder.folderid}" value="">
 										<input type="hidden" name="excludedRecords" id="excludedRecords_selectall{$folder.folderid}" value="">
-                                        <table class="reportsListTable" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+										<table class="reportsListTable" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 											<tr>
 												<td class="mailSubHeader" width="40%" align="left">
 													<b>{$folder.foldername}</b>
@@ -71,15 +71,15 @@
 												<td class="mailSubHeader small" align="center" nowrap>{$folder.recordListRange}</td>
 												{$folder.navigation}
 											</tr>
-                                            <tr>
+											<tr>
 												<td colspan="4" >
 													<div id="FileList_{$folder.folderid}">
 														<!-- File list table for a folder starts -->
 														<table border=0 cellspacing=1 cellpadding=3 width=100%>
-                                                        <!-- Table Headers -->
+														<!-- Table Headers -->
 															{assign var="header_count" value=$folder.header|@count}
 																<tr>
-																	<td class="lvtCol" width="10px"><input type="checkbox"  name="selectall{$folder.folderid}" id="currentPageRec_selectall{$folder.folderid}" onClick='toggleSelect_ListView(this.checked,"selected_id{$folder.folderid}","selectall{$folder.folderid}");'></td>
+																	<td class="lvtCol" width="10px"><input type="checkbox" name="selectall{$folder.folderid}" id="currentPageRec_selectall{$folder.folderid}" onClick='toggleSelect_ListView(this.checked,"selected_id{$folder.folderid}","selectall{$folder.folderid}");'></td>
 																	{foreach name="listviewforeach" item=header from=$folder.header}
 																		<td class="lvtCol">{$header}</td>
 																	{/foreach}
@@ -93,10 +93,10 @@
 
 																<!-- Table Contents -->
 
-                                                                {foreach item=entity key=entity_id from=$folder.entries}
-                                                                <tr class="lvtColData" bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
+																{foreach item=entity key=entity_id from=$folder.entries}
+																<tr class="lvtColData" bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
 																	<td width="2%"><input type="checkbox" name="selected_id{$folder.folderid}" id="{$entity_id}" value= '{$entity_id}' onClick='check_object(this,"selectall{$folder.folderid}")'></td>
-                                                                    {foreach item=recordid key=record_id from=$entity}
+																	{foreach item=recordid key=record_id from=$entity}
 																		{foreach item=data from=$recordid}
 																			{* vtlib customization: Trigger events on listview cell *}
 																				<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$data}</td>
@@ -105,8 +105,8 @@
 																	{/foreach}
 																</tr>
 
-                                                                <!-- If there are no entries for a folder -->
-                                                                {foreachelse}
+																<!-- If there are no entries for a folder -->
+																{foreachelse}
 																	{if $foldercount eq 1}
 																		<tr>
 																			<td align="center" style="background-color:#efefef;height:340px" colspan="{$header_count+1}">
@@ -169,14 +169,14 @@
 																{/foreach}
 														</table>
 													</div>
-                                                    <!-- File list table for a folder ends -->
+													<!-- File list table for a folder ends -->
 												</td>
 											</tr>
 										</table>
 									</div>
-                                    <!-- folder division ends -->
+									<!-- folder division ends -->
 								{/foreach}
-                                <!-- $FOLDERS ends -->
+								<!-- $FOLDERS ends -->
 							</td>
 						{/if}
 						<!-- conditional statement for $NO_FOLDERS ends -->
@@ -186,18 +186,18 @@
 		</tr>
 	</table>
 </form>
-<div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options  options=$SEARCHLISTHEADER}</select></div>
+<div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="slds-select" style="width:150px">{html_options options=$SEARCHLISTHEADER}</select></div>
 <script>
-	{literal}
-		function showHideFolders(show_ele, hide_ele) {
-			var show_obj = document.getElementById(show_ele);
-			var hide_obj = document.getElementById(hide_ele);
-			if (show_obj != null) {
-				show_obj.style.display="block";
-			}
-			if (hide_obj != null) {
-				hide_obj.style.display="none";
-			}
-		}
-	{/literal}
+{literal}
+function showHideFolders(show_ele, hide_ele) {
+	var show_obj = document.getElementById(show_ele);
+	var hide_obj = document.getElementById(hide_ele);
+	if (show_obj != null) {
+		show_obj.style.display='block';
+	}
+	if (hide_obj != null) {
+		hide_obj.style.display='none';
+	}
+}
+{/literal}
 </script>

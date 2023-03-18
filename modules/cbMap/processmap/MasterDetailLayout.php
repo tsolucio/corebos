@@ -27,10 +27,20 @@
   <condition>querycondition</condition>
   </linkfields>
   <sortfield>designquotesid</sortfield>
+  <defaultorder>DESC</defaultorder>
+  <hide>0|1</hide>//default 0
   <toolbar>
 	<title></title>
 	<expandall>1</expandall>
 	<create>1</create>
+	<actions>
+		<action>
+			<label></label>
+			<workflow>
+				<id></id>
+			</workflow>
+		</action>
+	</actions>
   </toolbar>
   <listview>
 	<toolbar>
@@ -113,6 +123,7 @@ class MasterDetailLayout extends processcbMap {
 		$mapping_arr['originmodule'] = (string)$xml->originmodule;
 		$mapping_arr['targetmodule'] = (string)$xml->targetmodule;
 		$mapping_arr['condition'] = (string)$xml->condition;
+		$mapping_arr['hide'] = boolval((string)$xml->hide);
 		$this->detailModule = $mapping_arr['targetmodule'];
 		$dmf = CRMEntity::getInstance($this->detailModule);
 		$mapping_arr['targetmoduleidfield'] = $dmf->table_index;
@@ -121,11 +132,22 @@ class MasterDetailLayout extends processcbMap {
 			'targetfield' => (string)$xml->linkfields->targetfield,
 		);
 		$mapping_arr['sortfield'] = (string)$xml->sortfield;
+		$mapping_arr['defaultorder'] = (string)$xml->defaultorder;
+		$actions = array();
+		if (isset($xml->toolbar->actions)) {
+			foreach ($xml->toolbar->actions->action as $action) {
+				$actions[] = array(
+					'label' => (string)$action->label,
+					'workflow' => implode(',', (array)$action->workflow->id)
+				);
+			}
+		}
 		$mapping_arr['toolbar'] = array(
 			'title' => (string)$xml->toolbar->title,
 			'icon' => (string)$xml->toolbar->icon,
 			'expandall' => (string)$xml->toolbar->expandall,
 			'create' => (string)$xml->toolbar->create,
+			'actions' => $actions
 		);
 		$mapping_arr['listview'] = array();
 		if (isset($xml->listview->datasource)) {
@@ -327,6 +349,15 @@ class MasterDetailLayout extends processcbMap {
 			}
 		}
 		return $product_Detail;
+	}
+
+	public static function setMoreInfoFields($module, &$smarty) {
+		$cbMap = cbMap::getMapByName($module.'InventoryDetails', 'MasterDetailLayout');
+		$smarty->assign('moreinfofields', '');
+		if ($cbMap!=null) {
+			$cbMapFields = $cbMap->MasterDetailLayout();
+			$smarty->assign('moreinfofields', "'".implode("','", $cbMapFields['detailview']['fieldnames'])."'");
+		}
 	}
 }
 ?>

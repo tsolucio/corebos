@@ -5,7 +5,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|01/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|20/05/2022|Sao Paulo/SP/Brasil.|www.ecrm360.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|14/02/2023|Sao Paulo/SP/Brasil.|www.ecrm360.com.br
  ********************************************************************************/
 
 var alert_arr = {
@@ -28,7 +28,7 @@ var alert_arr = {
 	'NOT_ALLOWED_TO_EDIT_FIELDS':'você não tem permissão para editar o(s) campo(s)',
 	'COLUMNS_CANNOT_BE_EMPTY':'A coluna selecionada não pode estar vazia',
 	'CANNOT_BE_EMPTY':' não pode estar vazio',
-	'CANNOT_BE_NONE':' não pode ser nula',
+	'CANNOT_BE_NONE':' não pode ser nenhum',
 	'ENTER_VALID':'Por favor, digite um registro válido ',
 	'SHOULDBE_LESS':' deve ser menos que ',
 	'SHOULDBE_LESS_EQUAL':' deve ser menos que ou igual a ',
@@ -411,9 +411,11 @@ var alert_arr = {
 	'INTEGERVALS':'Somente valores inteiros são permitidos',
 	'JSLBL_Delete': 'Apagar',
 	'JSLBL_Edit': 'Edit',
+	'JSLBL_Create': 'Create',
 	'JSLBL_Loading': 'Carregando',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'O anexo não pode ser excluído',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Limite de carregamento do arquivo excedido!!',
+	'JSLBL_DRAW': 'Desenhar',
 	'JSLBL_CANCEL': 'Cancelar',
 	'JSLBL_SAVEAS': 'Salvar como',
 	'JSLBL_SAVE': 'Salvar',
@@ -469,11 +471,27 @@ var alert_arr = {
 	'LBL_MATCH_COLUMNS': 'Selecione colunas para combinar na grade',
 	'LBL_MATCH_ERROR': 'Você só pode corresponder com campos selecionados para mostrar',
 	'ERROR_CREATING_TRY_AGAIN': 'Erro ao criar. Os campos não podem estar vazios ou ter um valor errado.',
-	'LBL_REQUIRED_FIELDS': 'Please fill all required fields',
-	'LBL_ERROR_CREATING': 'Error while creating. Please try again.',
-	'LBL_ERROR_DROPZONE': 'Error uploading link. Check the link and try again.',
+	'LBL_REQUIRED_FIELDS': 'Por favor, preencha todos os campos obrigatórios',
+	'LBL_ERROR_CREATING': 'Erro ao criar. Por favor, tente novamente.',
+	'LBL_ERROR_DROPZONE': 'Erro ao carregar o link. Verifique o link e tente novamente.',
 	'LBL_PREVIEW_MAIL': 'Preview Email',
 	'LBL_SEND_MAIL': 'Send Mail',
 	'LBL_EXPAND_PANEL': 'Expand Panel',
 	'LBL_MIN_PANEL': 'Minimize Panel',
+	'LBL_DUPLICATE_PRODUCT': 'Por favor, duplique o produto',
+	'LBL_SELECT_MORE_ROWS': 'Selecione pelo menos uma linha',
+	'LBL_SELECT_ROW': 'Selecione uma linha',
+	'LBL_DELETE_SUCCESS': 'Apagado com sucesso',
+	'LBL_WRONG': 'Algo deu errado. Tente novamente!',
+	'LBL_UNABLE_TO_FILTER': 'Não foi possível filtrar os dados. Tente novamente!',
+	'LNK_DUPLICATE': 'Duplicado',
+	'LBL_COLLAPSE': 'Recolher',
+	'LBL_EXPAND': 'Expandir',
+	'currentuser': 'Current User',
+	'wfmodule': 'Workflow Module',
+	'RelatedList': 'Related List',
+	'SelectField': 'Select field',
+	'MoveFile': 'Move file',
+	'JSLBL_BACK': 'Back',
+	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 };

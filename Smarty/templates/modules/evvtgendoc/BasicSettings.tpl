@@ -17,7 +17,7 @@
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tr>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-	<div align="center">
+		<div align="center">
 		<table border=0 cellspacing=1 cellpadding=0 width="100%" class="lvtBg">
 		<tr>
 			<td>
@@ -44,15 +44,9 @@
 			</td>
 		</tr>
 		</table>
-		</td>
-		</tr>
-	</table>
+		</div>
 	</td>
-	</tr>
-	</table>
-   </div>
-		</td>
-	</tr>
+</tr>
 </table>
 </div>
 </section>

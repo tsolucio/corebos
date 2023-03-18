@@ -150,7 +150,7 @@ class Vtiger_DependencyPicklist {
 			$mapping['sourcevalue'] = $sourceValue;
 			$mapping['targetvalues'] = $unserializedTargetValues;
 
-			$valueMapping[$i] = $mapping ;
+			$valueMapping[$i] = $mapping;
 		}
 		$dependencyMap['valuemapping'] = $valueMapping;
 
@@ -223,13 +223,17 @@ class Vtiger_DependencyPicklist {
 		return $fields;
 	}
 
-	public static function getFieldDependencyDatasource($module) {
-		$bmapname = $module.'_FieldDependency';
-		$cbMapFDEP = array();
-		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	public static function getFieldDependencyDatasource($module, $mode = 0) {
+		if (empty($_REQUEST['FILTERDEPMAP']) || !is_numeric($_REQUEST['FILTERDEPMAP']) || !isRecordExists($_REQUEST['FILTERDEPMAP'])) {
+			$bmapname = $module.'_FieldDependency';
+			$cbMapFDEP = array();
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		} else {
+			$cbMapid = $_REQUEST['FILTERDEPMAP'];
+		}
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
-			$cbMapFDEP = $cbMap->FieldDependency();
+			$cbMapFDEP = $cbMap->FieldDependency($mode);
 			$cbMapFDEP = $cbMapFDEP['fields'];
 		} else {
 			$cbMapFDEP = self::getMapPicklistDependencyDatasource($module);

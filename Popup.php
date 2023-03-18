@@ -292,8 +292,9 @@ $smarty->assign('SEARCHLISTHEADER', $listview_header_search);
 $smarty->assign('ALPHABETICAL', $alphabetical);
 $queryGenerator = new QueryGenerator($currentModule, $current_user);
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
-$fieldnames = $controller->getAdvancedSearchOptionString();
-$fieldnames_array = $controller->getAdvancedSearchOptionArray();
+$customView = new CustomView($currentModule);
+$fieldnames = $customView->getByModule_ColumnsHTML($currentModule, $customView->getModuleColumnsList($currentModule));
+$fieldnames_array = $customView->getModuleColumnsList($currentModule, true);
 $smarty->assign('FIELDNAMES', $fieldnames);
 $smarty->assign('FIELDNAMES_ARRAY', $fieldnames_array);
 $smarty->assign('CRITERIA_GROUPS', array());
@@ -404,11 +405,42 @@ $smarty->assign('VALIDATION_DATA_FIELDNAME', $validationArray['fieldname']);
 $smarty->assign('VALIDATION_DATA_FIELDDATATYPE', $validationArray['datatype']);
 $smarty->assign('VALIDATION_DATA_FIELDLABEL', $validationArray['fieldlabel']);
 
+// send advancedSearch business map data to the frontEnd
+$advancedSearchMapResult = "MAP_NOT_FOUND";
+$advancedSearchMapObject = new cbMap();
+$advancedSearchbmapname = $currentModule.'_AdvancedSearch';
+$advancedSearchMapid = GlobalVariable::getVariable('BusinessMapping_'.$advancedSearchbmapname, cbMap::getMapIdByName($advancedSearchbmapname));
+if ($advancedSearchMapid) {
+	$advancedSearchMapObject->id = $advancedSearchMapid;
+	$advancedSearchMapObject->mode = '';
+	$advancedSearchMapObject->retrieve_entity_info($advancedSearchMapid, "cbMap");
+	$advancedSearchMapResult = $advancedSearchMapObject->AdvancedSearch($currentModule);
+}
+$smarty->assign('advancedSearchMapResult', $advancedSearchMapResult);
+
 if (isset($_REQUEST['cbcustompopupinfo'])) {
 	$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
 	$smarty->assign('CBCUSTOMPOPUPINFO_ARRAY', $cbcustompopupinfo);
 	$smarty->assign('CBCUSTOMPOPUPINFO', $_REQUEST['cbcustompopupinfo']);
 }
+
+// sending PopupFilter map results to the frontEnd
+$bmapname = $currentModule.'_PopupFilter';
+$Mapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($Mapid) {
+	$MapObject = new cbMap();
+	$MapObject->id = $Mapid;
+	$MapObject->mode = '';
+	$MapObject->retrieve_entity_info($Mapid, 'cbMap');
+	$MapResult = $MapObject->PopupFilter($record, $currentModule);
+	$smarty->assign('PopupFilterMapResults', $MapResult);
+}
+
+// sending json condition data to the frontEnd
+// this fixes pagination issue when using advanced search in Popup
+$smarty->assign('searchtype', !empty($_REQUEST['searchtype']) ? $_REQUEST['searchtype'] : 'BasicSearch');
+$smarty->assign('advft_criteria', !empty($_REQUEST['advft_criteria']) ? $_REQUEST['advft_criteria'] : '');
+$smarty->assign('advft_criteria_groups', !empty($_REQUEST['advft_criteria_groups']) ? $_REQUEST['advft_criteria_groups'] : '');
 
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 	$smarty->display('PopupContents.tpl');

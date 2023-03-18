@@ -24,8 +24,8 @@ $mode = vtlib_purify($_REQUEST['mergemode']);
 if ($mode == 'mergesave') {
 	$return_module = vtlib_purify($_REQUEST['return_module']);
 	$return_action = vtlib_purify($_REQUEST['return_action']);
-	$merge_id      = vtlib_purify($_REQUEST['record']);
-	$recordids     = vtlib_purify($_REQUEST['pass_rec']);
+	$merge_id = vtlib_purify($_REQUEST['record']);
+	$recordids = vtlib_purify($_REQUEST['pass_rec']);
 	// Here we check if user have the rights to see this data.
 	if (isPermitted($currentModule, 'EditView', $merge_id) !== 'yes') {
 		$smarty = new vtigerCRM_Smarty();
@@ -65,7 +65,7 @@ if ($mode == 'mergesave') {
 	}
 	echo '<script>window.opener.location.href=window.opener.location.href;window.self.close();</script>';
 } elseif ($mode == 'mergefields') {
-	$idstring   = vtlib_purify($_REQUEST['passurl']);
+	$idstring = vtlib_purify($_REQUEST['passurl']);
 
 	$exploded_id=explode(',', $idstring, -1);
 	$record_count = count($exploded_id);
@@ -74,28 +74,30 @@ if ($mode == 'mergesave') {
 	$smarty->assign('EDIT_DUPLICATE', '');
 	if ($record_count == 2) {
 		if (isPermitted($currentModule, 'EditView', $exploded_id[0]) == 'yes' && isPermitted($currentModule, 'EditView', $exploded_id[1]) == 'yes'
-			 && isPermitted($currentModule, 'Delete', $exploded_id[0]) == 'yes' && isPermitted($currentModule, 'Delete', $exploded_id[1]) == 'yes') {
+			&& isPermitted($currentModule, 'Delete', $exploded_id[0]) == 'yes' && isPermitted($currentModule, 'Delete', $exploded_id[1]) == 'yes'
+		) {
 			$smarty->assign('EDIT_DUPLICATE', 'permitted');
 		}
 	} else {
 		if (isPermitted($currentModule, 'EditView', $exploded_id[0]) == 'yes' && isPermitted($currentModule, 'EditView', $exploded_id[1]) == 'yes'
 			&& isPermitted($currentModule, 'EditView', $exploded_id[2]) == 'yes' && isPermitted($currentModule, 'Delete', $exploded_id[0]) == 'yes'
-			&& isPermitted($currentModule, 'Delete', $exploded_id[1]) == 'yes' && isPermitted($currentModule, 'Delete', $exploded_id[2]) == 'yes') {
+			&& isPermitted($currentModule, 'Delete', $exploded_id[1]) == 'yes' && isPermitted($currentModule, 'Delete', $exploded_id[2]) == 'yes'
+		) {
 			$smarty->assign('EDIT_DUPLICATE', 'permitted');
 		}
 	}
 
 	$all_values_array= getRecordValues($exploded_id, $module);
-	$all_values      = $all_values_array[0];
-	$js_arr_val      = $all_values_array[1];
-	$fld_array       = $all_values_array[2];
-	$js_arr          = implode(',', $js_arr_val);
+	$all_values = $all_values_array[0];
+	$js_arr_val = $all_values_array[1];
+	$fld_array = $all_values_array[2];
+	$js_arr = implode(',', $js_arr_val);
 
 	$imported_records = array();
 	$sql = 'select bean_id from vtiger_users_last_import where bean_type=? and deleted=0';
-	$result   = $adb->pquery($sql, array($module));
+	$result = $adb->pquery($sql, array($module));
 	$num_rows = $adb->num_rows($result);
-	$count    = 0;
+	$count = 0;
 	for ($i=0; $i<$num_rows; $i++) {
 		foreach ($exploded_id as $value) {
 			if ($value == $adb->query_result($result, $i, 'bean_id')) {

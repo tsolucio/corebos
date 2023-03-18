@@ -55,7 +55,15 @@ if ($fieldname=='invoice_product') {
 			echo json_encode($text);
 			return;
 		}
-		$tip = getToolTip($text);
+		if (in_array($modname, getInventoryModules())) {
+			$id = explode('x', $result[0]['id']);
+			$tip = getToolTip($text, 'default', array(
+				'id' => $id[1],
+				'module' => $modname
+			));
+		} else {
+			$tip = getToolTip($text);
+		}
 		echo $tip;
 	} else {
 		echo false;

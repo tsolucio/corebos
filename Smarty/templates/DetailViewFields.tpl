@@ -68,6 +68,8 @@
 				{if $keyid eq '1615' && $keyval!=''}
 					{assign var=plinfo value='::'|explode:$keyval}
 					{$plinfo[0]|@getTranslatedString:$plinfo[0]} {$plinfo[1]|@getTranslatedString:$plinfo[0]}
+				{elseif $keyid eq '15' || $keyid eq '16'}
+					{$keyval|@getTranslatedString:$MODULE}
 				{else}
 					{$keyval|@getTranslatedString:$keyval}
 				{/if}
@@ -127,7 +129,7 @@
 			</tr>
 			{/foreach}
 		{elseif $keyid eq 69}<!-- for Image Reflection -->
-			<td align="left" width=25%>&nbsp;{$keyval}</td>
+			<td id="mouseArea_{$keyfldname}" align="left" width="25%">&nbsp;{$keyval}</td>
 		{elseif $keyid eq 10 || $keyid eq 101 || $keyid eq 68}<!-- for vtlib reference field -->
 			<td class="dvtCellInfo" align="left" width=25% id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;{$keyval}</td>
 		{else}

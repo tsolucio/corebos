@@ -98,6 +98,8 @@ $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('BUTTONS', $other_text);
 $smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
 $smarty->assign('Document_Folder_View', 1);
+$smarty->assign('Application_ListView_Mass_Edit_Show', GlobalVariable::getVariable('Application_ListView_Mass_Edit_Show', 1));
+$smarty->assign('Application_ListView_Mass_Delete_Show', GlobalVariable::getVariable('Application_ListView_Mass_Delete_Show', 1));
 //<<<<<<<<<customview>>>>>>>>>
 global $current_user;
 $queryGenerator = new QueryGenerator($currentModule, $current_user);
@@ -263,7 +265,7 @@ $smarty->assign('CURRENT_PAGE_BOXES', '');
 ListViewSession::setSessionQuery($currentModule, $focus->query, $viewid);
 
 $alphabetical = AlphabeticalSearch($currentModule, 'index', 'notes_title', 'true', 'basic', '', '', '', '', $viewid);
-$fieldnames_array = $controller->getAdvancedSearchOptionArray();
+$fieldnames_array = $oCustomView->getModuleColumnsList($currentModule, true);
 $smarty->assign('ALPHABETICAL', $alphabetical);
 $smarty->assign('FIELDNAMES_ARRAY', $fieldnames_array);
 $adminuser = is_admin($current_user);
@@ -277,11 +279,33 @@ $smarty->assign('Apache_Tika_URL', GlobalVariable::getVariable('Apache_Tika_URL'
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']));
-$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
+$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW','LISTVIEWACTION','LISTVIEWBUTTON'), $customlink_params));
 
 // Search Panel Status
 $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_ListView_SearchPanel_Open', 1);
 $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS', ($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));
+
+// send advancedSearch business map data to the frontEnd
+$advancedSearchMapResult = 'MAP_NOT_FOUND';
+$advancedSearchMapObject = new cbMap();
+$advancedSearchbmapname = $currentModule.'_AdvancedSearch';
+$advancedSearchMapid = GlobalVariable::getVariable('BusinessMapping_'.$advancedSearchbmapname, cbMap::getMapIdByName($advancedSearchbmapname));
+if ($advancedSearchMapid) {
+	$advancedSearchMapObject->id = $advancedSearchMapid;
+	$advancedSearchMapObject->mode = '';
+	$advancedSearchMapObject->retrieve_entity_info($advancedSearchMapid, 'cbMap');
+	$advancedSearchMapResult = $advancedSearchMapObject->AdvancedSearch($currentModule);
+}
+$smarty->assign('advancedSearchMapResult', $advancedSearchMapResult);
+
+// GV responsible for showing or hiding filter panel
+$Application_ListView_FilterPanel_Open = GlobalVariable::getVariable('Application_ListView_FilterPanel_Open', '1', $currentModule);
+if (!$Application_ListView_FilterPanel_Open) {
+	$smarty->assign('Application_ListView_FilterPanel_Open', 'display: none;');
+} else {
+	$smarty->assign('Application_ListView_FilterPanel_Open', '');
+}
+$smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
 
 if ((isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') || (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'ajax')) {
 	$smarty->display('DocumentsListViewEntries.tpl');

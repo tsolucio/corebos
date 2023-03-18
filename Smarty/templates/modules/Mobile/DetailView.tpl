@@ -27,6 +27,7 @@
 		<a href="?_operation=edit&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_EDIT}</a>
 		<a href="?_operation=getrelatedlists&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_RELATED_LISTS}</a>
 		<a href="?_operation=duplicate&module={$_MODULE->name()}&record={$_RECORD->id()}&duplicatedfrom={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-recycle ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_DUPLICATE}</a>
+		<a href="?_operation=listModuleRecords&module={$_MODULE->name()}" class="ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext" data-transition="slideup" >{$_MODULE->label()}</a>
 		<a href="#" onclick="window.history.back()" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
 	{else}
 		<a href="?_operation=getrelatedlists&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_RELATED_LISTS}</a>
@@ -129,7 +130,12 @@
 										{elseif $_FIELD->uitype() eq '9'}
 											{$_FIELD->valueLabel()}{if $_FIELD->name() eq 'probability'} %{/if}
 										{elseif $_FIELD->uitype() eq '17'}
-											<a href="#" onclick="window.open('https://{$_FIELD->valueLabel()}','_blank');" rel=external> {$_FIELD->valueLabel()} </a>
+											{if substr($_FIELD->valueLabel(), 0, 4)=='http'}
+												{assign var=prefix value=''}
+											{else}
+												{assign var=prefix value='https://'}
+											{/if}
+											<a href="#" onclick="window.open('{$prefix}{$_FIELD->valueLabel()}','_blank');" rel=external> {$_FIELD->valueLabel()} </a>
 										{elseif ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m')}
 											<!-- do nothing here for image -->
 										{elseif $_FIELD->uitype() eq '70'}

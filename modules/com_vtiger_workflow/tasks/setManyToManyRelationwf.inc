@@ -24,6 +24,8 @@ require_once 'include/Webservices/SetRelation.php';
 class setManyToManyRelationwf extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $relAction;
+	public $idlist;
 
 	public function getFieldNames() {
 		return array('relAction', 'idlist');
@@ -31,6 +33,7 @@ class setManyToManyRelationwf extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user, $logbg;
+		$logbg->debug('> setManyToManyRelation');
 		if (empty($entity->WorkflowContext['SetManyToManyRelation_Records'])) {
 			$idlistArr = explode(',', $this->idlist);
 		} else {
@@ -47,7 +50,10 @@ class setManyToManyRelationwf extends VTTask {
 			$recid = vtws_getCRMID($entity->WorkflowContext['SetManyToManyRelation_Record']);
 			$recmod = getSalesEntityType($recid);
 		}
-		$logbg->debug($this->relAction.' '.$recid.' with '.print_r($idlistArr, true));
+		$logmsg = '(setManyToManyRelation) '.$this->relAction.' '.$recid.'/'.$recmod.' with';
+		$this->logmessages[] = $logmsg;
+		$this->logmessages[] = json_encode($idlistArr);
+		$logbg->debug($logmsg, $idlistArr);
 		if ($this->relAction == 'addrel') {
 			$idlistNewArr = array();
 			foreach ($idlistArr as $recId) {
@@ -95,10 +101,15 @@ class setManyToManyRelationwf extends VTTask {
 							$modobj->unlinkRelationship($recid, $mod2unrelate, $row['crmid']);
 							$modobj->trackUnLinkedInfo($mod2unrelate, $row['crmid'], $recmod, $recid);
 						}
+					} else {
+						$logmsg = '(setManyToManyRelation) not called: $relationData query is not set';
+						$this->logmessages[] = $logmsg;
+						$logbg->debug($logmsg);
 					}
 				}
 			}
 		}
+		$logbg->debug('< setManyToManyRelation');
 	}
 }
 ?>

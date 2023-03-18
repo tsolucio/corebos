@@ -2,12 +2,12 @@
 /*+********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
+ * The Original Code is: TSolucio Open Source
+ * The Initial Developer of the Original Code is TSolucio.
+ * Portions created by TSolucio are Copyright (C) TSolucio.
  * All Rights Reserved.
  ********************************************************************************/
-require_once "modules/Vtiger/ExecuteFunctionsfromphp.php";
+require_once 'modules/Vtiger/ExecuteFunctionsfromphp.php';
 
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache'); // recommended to prevent caching of event data.
@@ -15,8 +15,8 @@ set_time_limit(0);
 
 global $app_strings;
 
-function send_message($id, $message, $progress, $processed, $total) {
-	$d = array('message' => $message , 'progress' => $progress, 'processed' => $processed, 'total' => $total);
+function send_message($id, $message, $progress, $processed, $total, $refreshLV = false) {
+	$d = array('message' => $message , 'progress' => $progress, 'processed' => $processed, 'total' => $total, 'refreshLV' => $refreshLV);
 	echo "id: $id" . PHP_EOL;
 	echo 'data:'. json_encode($d) . PHP_EOL;
 	echo PHP_EOL;
@@ -89,10 +89,16 @@ if (!empty($idlist)) {
 			$recname = getEntityName($currentModule, $recordid);
 			$recname = $reclink.$recordid.'">'.$recname[$recordid].'</a>';
 			if (!$saveerror) { // if there is an error we ignore this record
-				$validation = executefunctionsvalidate('ValidationLoad', $currentModule, vtlib_purify($_REQUEST['params']));
+				$structure = json_decode($_REQUEST['params'], true);
+				$structure = vtlib_purify(Validations::flattenMultipicklistArrays($structure));
+				$structure = Validations::addFilesFields($structure);
+				$validation = executefunctionsvalidate('ValidationLoad', $currentModule, json_encode($structure));
 				if ($validation == '%%%OK%%%') {
 					$msg = $app_strings['record'].' '.$recname.' '.$app_strings['saved'];
 					$focus->save($currentModule);
+					//get files from cache
+					$deletefiles = getImages($focus->id);
+					$focus->insertIntoAttachment($focus->id, $currentModule, true);
 				} else {
 					$msg = $app_strings['record'].' '.$recname.' '.$validation;
 				}
@@ -104,7 +110,32 @@ if (!empty($idlist)) {
 		$progress = round($recordprocessed / $recordcount * 100, 0);
 		send_message($id++, $msg, $progress, $recordprocessed, $recordcount);
 	}
-	send_message('CLOSE', $app_strings['processcomplete'], 100, $recordcount, $recordcount);
+	if (isset($deletefiles)) {
+		foreach ($deletefiles as $file) {
+			unlink($file);
+		}
+	}
+	send_message('CLOSE', $app_strings['processcomplete'], 100, $recordcount, $recordcount, true);
 	coreBOS_Settings::delSetting('masseditids'.$params['corebos_browsertabID']);
+}
+
+function getImages($crmid) {
+	global $current_user, $root_directory;
+	$dirname = $root_directory.'cache/massedit/';
+	$files = glob($dirname.'*');
+	$allfiles = array();
+	foreach ($files as $file) {
+		if (is_file($file) && strpos($file, '_filedata') !== false) {
+			$info = pathinfo($file);
+			$field = explode('_filedata', $info['filename']);
+			$_FILES[$field[0]]['name'] = $info['basename'];
+			$_FILES[$field[0]]['tmp_name'] = $file;
+			$_FILES[$field[0]]['size'] = filesize($file);
+			$_FILES[$field[0]]['type'] = mime_content_type($file);
+			$_FILES[$field[0]]['error'] = 0;
+			$allfiles[] = $file;
+		}
+	}
+	return $allfiles;
 }
 ?>

@@ -14,26 +14,26 @@
  * datasource Format:
  *
  * datasource = {
- * 		"sourcefieldname1" : {
+ *		"sourcefieldname1" : {
  *
- * 			"sourcevalue1" : {
- * 				"targetfieldname" : ["targetvalue1", "targetvalue2"]
- *	 		},
- * 			"sourcevalue2" : {
- * 				"targetfieldname" : ["targetvalue3", "targetvalue4"]
- * 			},
+ *			"sourcevalue1" : {
+ *				"targetfieldname" : ["targetvalue1", "targetvalue2"]
+ *			},
+ *			"sourcevalue2" : {
+ *				"targetfieldname" : ["targetvalue3", "targetvalue4"]
+ *			},
  *
- * 			"sourcevalue3" : {
- * 				"targetfieldname" : false // This will enable all the values in the target fieldname
- * 			},
+ *			"sourcevalue3" : {
+ *				"targetfieldname" : false // This will enable all the values in the target fieldname
+ *			},
  *
- * 			// NOTE: All source values (option) needs to be mapped in the datasource
+ *			// NOTE: All source values (option) needs to be mapped in the datasource
  *
- * 		},
+ *		},
  *
- * 		"sourcefieldname2" : {
- * 			// ...
- * 		}
+ *		"sourcefieldname2" : {
+ *			// ...
+ *		}
  * }
  *
  * NOTE: Event.fire(targetfieldnode, 'dependent:change'); is triggered on the field value changes.
@@ -75,7 +75,7 @@ FieldDependencies.prototype.setup = function (sourceform, datasource) {
 		thisContext.actOnDetailViewLoad();
 	}
 
-	this.initDS(datasource);
+	this.initDS(datasource==undefined ? this.DS : datasource);
 
 	if (!this.baseform) {
 		return;
@@ -83,13 +83,16 @@ FieldDependencies.prototype.setup = function (sourceform, datasource) {
 
 	var nodelist = document.querySelectorAll('input,select');
 	for (var i = 0; i < nodelist.length; i++) {
+		if (nodelist[i].id=='') {
+			continue;
+		}
 		// we should use addEventListener here but it doesn't work on the jscalendar element nor on the initial loading of the page
 		if (nodelist[i].id.substring(0, 12)=='jscal_field_') {
 			nodelist[i].onchange = function (ev) {
 				thisContext.actOnSelectChange(ev);
 			};
 		} else {
-			jQuery('#'+nodelist[i].id).bind('change', function (ev) {
+			jQuery('#'+nodelist[i].id, this.baseform).bind('change', function (ev) {
 				thisContext.actOnSelectChange(ev);
 			});
 		}
@@ -111,8 +114,9 @@ FieldDependencies.prototype.init = function (sourceform, datasource) {
  * On Loading of Page handler of detail view.
  */
 FieldDependencies.prototype.actOnDetailViewLoad = function () {
-	var sourcename = Object.keys(this.DS)[0];
-	this.controlActions(sourcename);
+	Object.keys(this.DS).forEach((sourcename) => {
+		this.controlActions(sourcename);
+	});
 };
 
 /**
@@ -127,64 +131,17 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
 /**
  * Control all actions performed on both edit and detail views.
  */
+var newEvents = new Array();
 FieldDependencies.prototype.controlActions = function (sourcename) {
-	var sourcevalue ='';
-	var field, comparator, value, columncondition, fieldName, groupid, conditionCurr, newGroup;
-	var i=0;
 	var conditions=new Array();
 	if (this.DS[sourcename]!==undefined) {
-		for (i=0; i<this.DS[sourcename].length; i++) {
+		if (this.DS[sourcename].length>1) {
+			this.DS[sourcename] = this.sortActionsByCondtions(sourcename);
+		}
+		for (var i=0; i<this.DS[sourcename].length; i++) {
 			var responsibleConfig=this.DS[sourcename][i];
-			conditions=responsibleConfig['conditions']!=='' ?  JSON.parse(responsibleConfig['conditions']) : conditions;
-			var conditionResp='';
-			var condArray=new Array();
-			var condOperatorArray=new Array();
-			for (var j=0; j<conditions.length; j++) {
-				newGroup=false;
-				field=conditions[j]['columnname'];
-				comparator=conditions[j]['comparator'];
-				value=conditions[j]['value'];
-				columncondition=conditions[j]['columncondition'];
-				groupid=conditions[j]['groupid'];
-				fieldName=field.split(':');
-				field=fieldName[1];
-				sourcevalue=this.getFieldValue(field);
-				switch (comparator) {
-				case 'e': conditionResp+= sourcevalue===value; break;
-				case 'n': conditionResp+= sourcevalue!==value; break;
-				case 's': conditionResp+= sourcevalue.startsWith(value); break;
-				case 'Ns': conditionResp+= !sourcevalue.startsWith(value); break;
-				case 'ew': conditionResp+= sourcevalue.endsWith(value); break;
-				case 'New': conditionResp+= !sourcevalue.endsWith(value); break;
-				case 'c': conditionResp+= sourcevalue.indexOf(value)!==-1; break;
-				case 'k': conditionResp+= sourcevalue.indexOf(value)===-1; break;
-				case 'l': conditionResp+= parseInt(sourcevalue) < parseInt(value); break;
-				case 'g': conditionResp+= parseInt(sourcevalue) > parseInt(value); break;
-				case 'm': conditionResp+= parseInt(sourcevalue) <= parseInt(value); break;
-				case 'h': conditionResp+= parseInt(sourcevalue) >= parseInt(value); break;
-				default:
-					conditionResp+=false; break;
-				}
-				if (j<conditions.length - 1 && groupid!=conditions[j+1]['groupid']) {
-					condArray.push(conditionResp);
-					conditionCurr=conditions[j]['columncondition'].toLowerCase()==='or' ? ' || ' : ' && ';
-					condOperatorArray.push(conditionCurr);
-					conditionResp='';
-					newGroup=true;
-				}
-				if (columncondition!=='' && !newGroup) {
-					columncondition=conditions[j]['columncondition'].toLowerCase()==='or' ? ' || ' : ' && ';
-					conditionResp +=' '+columncondition+' ';
-				} else if (columncondition=='') {
-					condArray.push(conditionResp);
-					condOperatorArray.push('');
-				}
-
-			}
-			conditionResp='';
-			for (j=0; j<condArray.length; j++) {
-				conditionResp +='('+condArray[j]+')'+condOperatorArray[j];
-			}
+			conditions=responsibleConfig['conditions']!=='' ? JSON.parse(responsibleConfig['conditions']) : conditions;
+			var conditionResp = this.evaluateConditions(conditions);
 			if (eval(conditionResp) || conditions.length===0) {
 				if (responsibleConfig['actions']['change']!== undefined && responsibleConfig['actions']['change'].length > 0) {
 					this.fieldValueChange(responsibleConfig['actions']['change']);
@@ -217,7 +174,18 @@ FieldDependencies.prototype.controlActions = function (sourcename) {
 					this.addCSS(responsibleConfig['actions']['setclass']);
 				}
 				if (responsibleConfig['actions']['function'] !== undefined && responsibleConfig['actions']['function'].length > 0) {
-					this.callFunc(sourcename, responsibleConfig['actions']['function']);
+					var thisContexts = this;
+					this.callFunc(sourcename, responsibleConfig['actions']['function']).then(function () {
+						for (let dependencyactive in thisContexts.DS) {
+							let fVal = document.getElementById(dependencyactive);
+							if (fVal != null) {
+								if (fVal.value != '' && newEvents[dependencyactive] != fVal.value) {
+									thisContexts.controlActions(dependencyactive);
+								}
+								newEvents[dependencyactive] = fVal.value;
+							}
+						}
+					});
 				}
 			} else {
 				if ((responsibleConfig['actions']['setoptions']) !== undefined && responsibleConfig['actions']['setoptions'].length > 0) {
@@ -241,6 +209,78 @@ FieldDependencies.prototype.controlActions = function (sourcename) {
 			}
 		}
 	}
+};
+
+FieldDependencies.prototype.evaluateConditions = function (conditions) {
+	var conditionResp = '';
+	var sourcevalue = '';
+	var condArray=new Array();
+	var condOperatorArray=new Array();
+	var field, comparator, value, columncondition, fieldName, groupid, conditionCurr, newGroup;
+	for (var j=0; j<conditions.length; j++) {
+		newGroup=false;
+		field=conditions[j]['columnname'];
+		comparator=conditions[j]['comparator'];
+		value=conditions[j]['value'];
+		columncondition=conditions[j]['columncondition'];
+		groupid=conditions[j]['groupid'];
+		fieldName=field.split(':');
+		field=fieldName[1];
+		sourcevalue=this.getFieldValue(field);
+		switch (comparator) {
+		case 'e': conditionResp+= sourcevalue===value; break;
+		case 'n': conditionResp+= sourcevalue!==value; break;
+		case 's': conditionResp+= sourcevalue.startsWith(value); break;
+		case 'Ns': conditionResp+= !sourcevalue.startsWith(value); break;
+		case 'ew': conditionResp+= sourcevalue.endsWith(value); break;
+		case 'New': conditionResp+= !sourcevalue.endsWith(value); break;
+		case 'c': conditionResp+= sourcevalue.indexOf(value)!==-1; break;
+		case 'k': conditionResp+= sourcevalue.indexOf(value)===-1; break;
+		case 'l': conditionResp+= parseInt(sourcevalue) < parseInt(value); break;
+		case 'g': conditionResp+= parseInt(sourcevalue) > parseInt(value); break;
+		case 'm': conditionResp+= parseInt(sourcevalue) <= parseInt(value); break;
+		case 'h': conditionResp+= parseInt(sourcevalue) >= parseInt(value); break;
+		default:
+			conditionResp+=false; break;
+		}
+		if (j<conditions.length - 1 && groupid!=conditions[j+1]['groupid']) {
+			condArray.push(conditionResp);
+			conditionCurr=conditions[j]['columncondition'].toLowerCase()==='or' ? ' || ' : ' && ';
+			condOperatorArray.push(conditionCurr);
+			conditionResp='';
+			newGroup=true;
+		}
+		if (columncondition!=='' && !newGroup) {
+			columncondition=conditions[j]['columncondition'].toLowerCase()==='or' ? ' || ' : ' && ';
+			conditionResp +=' '+columncondition+' ';
+		} else if (columncondition=='') {
+			condArray.push(conditionResp);
+			condOperatorArray.push('');
+		}
+	}
+	conditionResp='';
+	for (j=0; j<condArray.length; j++) {
+		conditionResp +='('+condArray[j]+')'+condOperatorArray[j];
+	}
+	return conditionResp;
+};
+
+FieldDependencies.prototype.sortActionsByCondtions = function (sourcename) {
+	var evaltrue = new Array();
+	var evalfalse = new Array();
+	for (var i=0; i<this.DS[sourcename].length; i++) {
+		if (this.DS[sourcename][i]['conditions']!=='') {
+			var conditionResp = this.evaluateConditions(JSON.parse(this.DS[sourcename][i]['conditions']));
+			if (eval(conditionResp)) {
+				evaltrue.push(this.DS[sourcename][i]);
+			} else {
+				evalfalse.push(this.DS[sourcename][i]);
+			}
+		} else {
+			evaltrue.push(this.DS[sourcename][i]);
+		}
+	}
+	return evalfalse.concat(evaltrue);
 };
 
 /**
@@ -402,10 +442,40 @@ FieldDependencies.prototype.fieldValueChange = function (targetFields) {
 	}
 };
 
-FieldDependencies.prototype.getFieldValue = function (field) {
+FieldDependencies.prototype.getFieldElement = function (field) {
 	var fld = document.getElementById(field);
-	if (fld==undefined) {
-		fld = document.getElementsByName(field).item(0);
+	if (fld==undefined || fld.type==undefined) {
+		fld = document.getElementById('txtbox_'+field);
+		if (fld==undefined || fld.type==undefined) {
+			if (document.forms['EditView'] == undefined) {
+				fld = document.forms['DetailView'].querySelector('[name="'+field+'"]');
+				if (fld==undefined || fld.type==undefined) {
+					fld = document.getElementById('dtlview_'+field);
+					if (fld) {
+						return fld;
+					}
+				}
+			} else {
+				fld = document.forms['EditView'].querySelector('[name="'+field+'"]');
+			}
+			if (fld==undefined || fld.type==undefined) {
+				fld = document.getElementsByName(field).item(0);
+			}
+			if (fld==undefined || fld.type==undefined) {
+				return undefined;
+			}
+		}
+	}
+	return fld;
+};
+
+FieldDependencies.prototype.getFieldValue = function (field) {
+	var fld = this.getFieldElement(field);
+	if (fld!=undefined && fld.nodeName=='SPAN') {
+		return fld.innerText;
+	}
+	if (fld==undefined || fld.type==undefined) {
+		return '';
 	}
 	if (fld.type == 'checkbox') {
 		return (fld.checked ? '1' : '0');
@@ -426,8 +496,16 @@ FieldDependencies.prototype.fieldHideEditView = function (hideFields) {
 	var field='';
 	for (var i=0; i<hideFields.length; i++) {
 		field=hideFields[i]['field'];
-		document.getElementById('td_'+field).style.visibility='hidden';
-		document.getElementById('td_val_'+field).style.visibility='hidden';
+		if (document.getElementById('td_'+field) != null) {
+			document.getElementById('td_'+field).style.visibility='hidden';
+			document.getElementById('td_val_'+field).style.visibility='hidden';
+			let parentRow = document.getElementById('td_'+field).parentElement;
+			let allGone = [...parentRow.getElementsByTagName('TD')].filter(cell => cell.style.visibility === 'hidden');
+			if (allGone.length == 4) {
+				parentRow.style.visibility = 'collapse';
+				parentRow.style.height = '0px';
+			}
+		}
 	}
 };
 
@@ -435,8 +513,17 @@ FieldDependencies.prototype.fieldHideDetailView = function (hideFields) {
 	var field='';
 	for (var i=0; i<hideFields.length; i++) {
 		field=hideFields[i]['field'];
-		document.getElementById('mouseArea_'+field).style.visibility='hidden';
-		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.style.visibility='hidden';
+		let hfld = document.getElementById('mouseArea_'+field);
+		if (hfld) {
+			hfld.style.visibility='hidden';
+			hfld.previousSibling.previousSibling.style.visibility='hidden';
+			let parentRow = hfld.parentElement;
+			let allGone = [...parentRow.getElementsByTagName('TD')].filter(cell => cell.style.visibility === 'hidden');
+			if (allGone.length == 4) {
+				parentRow.style.visibility = 'collapse';
+				parentRow.style.height = '0px';
+			}
+		}
 	}
 };
 
@@ -454,6 +541,9 @@ FieldDependencies.prototype.fieldShowEditView = function (hideFields) {
 		field=hideFields[i]['field'];
 		document.getElementById('td_'+field).style.visibility='visible';
 		document.getElementById('td_val_'+field).style.visibility='visible';
+		let parentRow = document.getElementById('td_'+field).parentElement;
+		parentRow.style.visibility = 'visible';
+		parentRow.style.height = '25px';
 	}
 };
 
@@ -463,6 +553,9 @@ FieldDependencies.prototype.fieldShowDetailView = function (hideFields) {
 		field=hideFields[i]['field'];
 		document.getElementById('mouseArea_'+field).style.visibility='visible';
 		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.style.visibility='visible';
+		let parentRow = document.getElementById('mouseArea_'+field).parentElement
+		parentRow.style.visibility = 'visible';
+		parentRow.style.height = '25px';
 	}
 };
 
@@ -538,9 +631,31 @@ FieldDependencies.prototype.fieldReadonlyEditView = function (readonlyFields) {
 	var field='';
 	for (var i=0; i<readonlyFields.length; i++) {
 		field=readonlyFields[i]['field'];
-		document.getElementById(field+'_hidden').innerHTML=document.getElementsByName(field).item(0).value;
-		document.getElementById(field+'_hidden').style.display='inline';
-		document.getElementsByName(field).item(0).style.display='none';
+		let isuytype10 = false;
+		let fh = document.getElementById(field+'_hidden');
+		if (fh) {
+			let fval = document.getElementsByName(field).item(0);
+			if (fval.type=='hidden') { // uitype 10
+				fval = document.getElementById(field+'_display');
+				isuytype10 = true;
+			}
+			fh.innerHTML=fval.value;
+			fh.style.display='inline';
+		}
+		let fn = null;
+		if (isuytype10) {
+			fn = document.getElementById(field+'_display');
+			let btn = document.querySelectorAll('#'+field+'_display ~ button');
+			if (btn) {
+				btn[0].style.display='none';
+				btn[1].style.display='none';
+			}
+		} else {
+			fn = document.getElementById(field);
+		}
+		if (fn) {
+			fn.style.display='none';
+		}
 	}
 };
 
@@ -548,35 +663,36 @@ FieldDependencies.prototype.fieldReadonlyDetailView = function (readonlyFields) 
 	var field='';
 	for (var i=0; i<readonlyFields.length; i++) {
 		field=readonlyFields[i]['field'];
-		document.getElementById('dtlview_'+field).innerHTML=document.getElementsByName(field).item(0).value;
-		document.getElementById('dtlview_'+field).style.display='inline';
-		document.getElementsByName(field).item(0).style.display='none';
+		let f = document.getElementById('mouseArea_'+field);
+		if (f) {
+			f.removeAttribute('onclick');
+		}
 	}
 };
 
-FieldDependencies.prototype.fieldEditable = function (readonlyFields) {
+FieldDependencies.prototype.fieldEditable = function (editFields) {
 	if (document.forms['EditView'] != undefined && document.forms['DetailView'] == undefined) {
-		this.fieldEditableEditView(readonlyFields);
+		this.fieldEditableEditView(editFields);
 	} else {
-		this.fieldEditableDetailView(readonlyFields);
+		this.fieldEditableDetailView(editFields);
 	}
 };
 
-FieldDependencies.prototype.fieldEditableEditView = function (readonlyFields) {
+FieldDependencies.prototype.fieldEditableEditView = function (editFields) {
 	var field='';
-	for (var i=0; i<readonlyFields.length; i++) {
-		field=readonlyFields[i]['field'];
+	for (var i=0; i<editFields.length; i++) {
+		field=editFields[i]['field'];
 		document.getElementsByName(field).item(0).style.display='inline';
 		document.getElementById(field+'_hidden').style.display='none';
 	}
 };
 
-FieldDependencies.prototype.fieldEditableDetailView = function (readonlyFields) {
+FieldDependencies.prototype.fieldEditableDetailView = function (editFields) {
 	var field='';
-	for (var i=0; i<readonlyFields.length; i++) {
-		field=readonlyFields[i]['field'];
+	for (var i=0; i<editFields.length; i++) {
+		field=editFields[i]['field'];
 		document.getElementsByName(field).item(0).style.display='inline';
-		document.getElementById('dtlview_'+field).style.display='none';
+		document.getElementById('dtlview_'+field).style.display='inline';
 	}
 };
 
@@ -682,7 +798,7 @@ FieldDependencies.prototype.blockAppearEditView = function (appBlock) {
 		for (var j=0; j<elements.length; j++) {
 			elements[j].style.display='';
 		}
-		document.getElementById('tbl'+block).style.display='';
+		document.getElementById('tbl'+block+'Head').style.display='block';
 	}
 };
 
@@ -691,25 +807,27 @@ FieldDependencies.prototype.blockAppearDetailView = function (appBlock) {
 	for (var i=0; i<appBlock.length; i++) {
 		block=appBlock[i]['block'];
 		elements=document.getElementById('tbl'+block);
-		document.getElementById('tbl'+block).style.display='';
-		elements.previousSibling.previousSibling.style.display='';
+		elements.style.display='block';
+		elements.previousSibling.previousSibling.style.display='block';
 	}
 };
 
-FieldDependencies.prototype.callFunc = function (sourcename, allParam) {
+FieldDependencies.prototype.callFunc = async function (sourcename, allParam) {
 	for (var i=0; i<allParam.length; i++) {
 		var funcName=allParam[i]['value'];
 		var action_field=allParam[i]['field'];
 		var parameters=allParam[i]['params'];
-		var fldValue=document.getElementsByName(sourcename).item(0).value;
-		var fld = jQuery('[name="'+sourcename+'"]', this.baseform);
-		//check if the function is already declared
-		//make sure it is not going to be called the first time the page is loaded
-		if (window[funcName]!==undefined && typeof(fld.data('initialVal')) !== 'undefined') {
-			window[funcName](sourcename, action_field, fldValue, fld.data('initialVal'), parameters);
-		}
-		if (typeof(fld.data('initialVal')) == 'undefined') {
-			fld.data('initialVal', fldValue);
+		var fldValues=document.getElementsByName(sourcename);
+		if (fldValues.length) {
+			var fldValue = fldValues.item(0).value;
+			var fld = jQuery('[name="'+sourcename+'"]', this.baseform);
+			if (typeof(fld.data('initialVal')) == 'undefined') {
+				fld.data('initialVal', fldValue);
+			}
+			//check if the function is already declared
+			if (window[funcName]!==undefined) {
+				await window[funcName](sourcename, action_field, fldValue, fld.data('initialVal'), parameters);
+			}
 		}
 	}
 };

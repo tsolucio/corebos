@@ -103,26 +103,25 @@ function mandatoryCheck() {
 			<td colspan=4 width="100%" style="padding:0px">
 			<table cellpadding=4 cellspacing=0 width=100% border=0>
 				<tr>
-					<td class="dvtCellInfo cblds-p_medium" width="10%" align="right"><span class="style1">*</span>{$MOD.LBL_VIEW_NAME}
+					<td class="dvtCellInfo cblds-p_medium" width="10%" align="right"><span class="style1">*</span>{$MOD.LBL_VIEW_NAME}</td>
+					<td class="dvtCellInfo slds-p-around_small" width="30%">
+						<input class="detailedViewTextBox slds-input" type="text" name='viewName' value="{if isset($VIEWNAME)}{$VIEWNAME}{/if}" size="40" {if $PERMITALL eq 'true'}disabled{/if}/>
 					</td>
-					<td class="dvtCellInfo" width="30%">
-						<input class="detailedViewTextBox" type="text" name='viewName' value="{if isset($VIEWNAME)}{$VIEWNAME}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" size="40" {if $PERMITALL eq 'true'}disabled{/if}/>
-					</td>
-					<td class="dvtCellInfo" width="20%">
+					<td class="dvtCellInfo" width="15%">
 					{if $CHECKED eq 'checked'}
-						<input type="checkbox" name="setDefault" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_SETDEFAULT}
+						<input type="checkbox" name="setDefault" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} /> {$MOD.LBL_SETDEFAULT}
 					{else}
-						<input type="checkbox" name="setDefault" value="0" {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_SETDEFAULT}
+						<input type="checkbox" name="setDefault" value="0" {if $PERMITALL eq 'true'}disabled{/if} /> {$MOD.LBL_SETDEFAULT}
 					{/if}
 					</td>
-					<td class="dvtCellInfo" width="20%">
+					<td class="dvtCellInfo" width="15%">
 					{if $MCHECKED eq 'checked'}
-						<input type="checkbox" name="setMetrics" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_LIST_IN_METRICS}
+						<input type="checkbox" name="setMetrics" value="1" checked {if $PERMITALL eq 'true'}disabled{/if} /> {$MOD.LBL_LIST_IN_METRICS}
 					{else}
-						<input type="checkbox" name="setMetrics" value="0" {if $PERMITALL eq 'true'}disabled{/if} />{$MOD.LBL_LIST_IN_METRICS}
+						<input type="checkbox" name="setMetrics" value="0" {if $PERMITALL eq 'true'}disabled{/if} /> {$MOD.LBL_LIST_IN_METRICS}
 					{/if}
 					</td>
-					<td class="dvtCellInfo" width="20%">
+					<td class="dvtCellInfo" width="15%">
 					{if $PERMITALL eq 'true'}
 						<input type="checkbox" name="setStatus" value="0" checked {if $PERMITALL eq 'true'}disabled{/if} />
 					{else}
@@ -135,6 +134,26 @@ function mandatoryCheck() {
 						{/if}
 					{/if}
 						{$MOD.LBL_SET_AS_PUBLIC}
+					</td>
+					<td class="dvtCellInfo" width="15%">
+						{if isset($setPrivate)}
+							<input type="checkbox" name="setPrivate" value="1" {$setPrivate} />
+						{else}
+							<input type="checkbox" name="setPrivate" value="1" />
+						{/if}
+						{$MOD.LBL_SET_AS_PRIVATE}
+					</td>
+				</tr>
+			</table>
+			<table>
+				<tr>
+					<td class="dvtCellInfo cblds-p_medium" width="10%" align="right">{$MOD.LBL_SORT_BY_FIELD}
+					</td>
+					<td class="dvtCellInfo slds-p-around_small" width="45%">
+						<input placeholder="{$MOD.LBL_FIRST_COLUMN}" class="detailedViewTextBox slds-input" type="text" name='sortfieldbyfirst' value="{if isset($sortfieldbyfirst)}{$sortfieldbyfirst}{/if}" size="40" {if $PERMITALL eq 'true'}disabled{/if}/>
+					</td>
+					<td class="dvtCellInfo slds-p-around_small" width="45%">
+						<input placeholder="{$MOD.LBL_SECOND_COLUMN}" class="detailedViewTextBox slds-input" type="text" name='sortfieldbysecond' value="{if isset($sortfieldbysecond)}{$sortfieldbysecond}{/if}" size="40" {if $PERMITALL eq 'true'}disabled{/if}/>
 					</td>
 				</tr>
 			</table>
@@ -153,7 +172,7 @@ function mandatoryCheck() {
 		{math equation="x-1" x=$cvcolumn assign="cvselected"}
 		{if $cvcolumn <= $ListView_MaxColumns}
 		<td class="cblds-p_medium">
-			<select id="column{$cvcolumn}" name ="column{$cvcolumn}" onChange="checkDuplicate();" class="small">
+			<select id="column{$cvcolumn}" name ="column{$cvcolumn}" onChange="checkDuplicate();" class="small slds-select">
 				<option value="">{$MOD.LBL_NONE}</option>
 				{foreach item=filteroption key=label from=$CHOOSECOLUMN}
 					<optgroup label="{$label}" class="select" style="border:none">
@@ -214,8 +233,8 @@ function mandatoryCheck() {
 			  <tr><td colspan="2" class="detailedViewHeader"><b>{$MOD.Simple_Time_Filter}</b></td></tr>
 			  <tr>
 			     <td width="75%" align="right" class="dvtCellLabel">{$MOD.LBL_Select_a_Column} :</td>
-			     <td width="25%" class="dvtCellInfo">
-				<select name="stdDateFilterField" class="select small" onchange="standardFilterDisplay();">
+			     <td width="25%" class="dvtCellInfo slds-p-around_small">
+				<select name="stdDateFilterField" class="select small slds-select" onchange="standardFilterDisplay();">
 				{foreach item=stdfilter from=$STDFILTERCOLUMNS}
 					<option {$stdfilter.selected} value={$stdfilter.value}>{$stdfilter.text}</option>
 				{/foreach}
@@ -223,8 +242,8 @@ function mandatoryCheck() {
 			  </tr>
 			  <tr>
 			     <td align="right" class="dvtCellLabel">{$MOD.Select_Duration} :</td>
-			     <td class="dvtCellInfo">
-			        <select name="stdDateFilter" id="stdDateFilter" class="select small" onchange='showDateRange(this.options[this.selectedIndex].value)'>
+			     <td class="dvtCellInfo slds-p-around_small">
+			        <select name="stdDateFilter" id="stdDateFilter" class="select small slds-select" onchange='showDateRange(this.options[this.selectedIndex].value)'>
 				{foreach item=duration from=$STDFILTERCRITERIA}
 					<option {$duration.selected} value={$duration.value}>{$duration.text}</option>
 				{/foreach}
@@ -233,7 +252,7 @@ function mandatoryCheck() {
 			  </tr>
 			  <tr>
 			     <td align="right" class="dvtCellLabel">{$MOD.Start_Date} :</td>
-			     <td width="25%" align=left class="dvtCellInfo">
+			     <td width="25%" align=left class="dvtCellInfo slds-p-around_small">
 			     {if $STDFILTERCRITERIA.0.selected eq "selected" || $CUSTOMVIEWID eq ""}
 				{assign var=img_style value="visibility:visible"}
 				{assign var=msg_style value=""}
@@ -241,7 +260,7 @@ function mandatoryCheck() {
 				{assign var=img_style value="visibility:hidden"}
 				{assign var=msg_style value="readonly"}
 			     {/if}
-			     <input name="startdate" id="jscal_field_date_start" type="text" size="10" class="textField small" value="{if isset($STARTDATE)}{$STARTDATE}{/if}" {$msg_style}>
+			     <input name="startdate" id="jscal_field_date_start" type="text" size="10" class="textField small slds-input" style="width: initial;" value="{if isset($STARTDATE)}{$STARTDATE}{/if}" {$msg_style}>
 			     <img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_start" style="vertical-align:middle;{$img_style}">
 			     <font size=1><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
 			     <script type="text/javascript">
@@ -252,8 +271,8 @@ function mandatoryCheck() {
 	            	  </tr>
 			  <tr>
 				<td align="right" class="dvtCellLabel">{$MOD.End_Date} :</td>
-				<td width="25%" align=left class="dvtCellInfo">
-				<input name="enddate" {$msg_style} id="jscal_field_date_end" type="text" size="10" class="textField small" value="{if isset($ENDDATE)}{$ENDDATE}{/if}">
+				<td width="25%" align=left class="dvtCellInfo slds-p-around_small">
+				<input name="enddate" {$msg_style} id="jscal_field_date_end" type="text" size="10" class="textField small slds-input" style="width: initial;" value="{if isset($ENDDATE)}{$ENDDATE}{/if}">
 				<img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_end" style="vertical-align:middle;{$img_style}">
 				<font size=1><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
 				<script type="text/javascript">
@@ -297,13 +316,52 @@ function mandatoryCheck() {
 	{/if}
   <tr><td colspan="4">&nbsp;</td></tr>
   <tr><td colspan="4" style="padding: 5px;">
-	<div align="center">
-	  <input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save"  name="button2" value="{$APP.LBL_SAVE_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
-	  {if $PERMITALL neq 'true'}
-	  	<input title="{$APP.LBL_NEW_BUTTON_TITLE}" accesskey="{$APP.LBL_NEW_BUTTON_KEY}" class="crmbutton small create" name="newsave" value="{$APP.LBL_NEW_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
-	  {/if}
-	  <input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" name="button2" onclick='window.history.back()' value="{$APP.LBL_CANCEL_BUTTON_LABEL}" type="button" />
-	</div>
+	<ul class="slds-button-group-list slds-align_absolute-center" name="cbCVButtonGroup">
+		<li>
+		<button
+			class="slds-button slds-button_neutral"
+			title="{'LBL_SAVE_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
+			accessKey="{'LBL_SAVE_BUTTON_KEY'|@getTranslatedString:$MODULE}"
+			onclick="return validateCV();"
+			type="submit"
+			name="button2">
+			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+			</svg>
+			{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}
+		</button>
+		</li>
+		{if $PERMITALL neq 'true'}
+			<li>
+			<button
+				class="slds-button slds-button_outline-brand"
+				title="{'LBL_NEW_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
+				accessKey="{'LBL_NEW_BUTTON_KEY'|@getTranslatedString:$MODULE}"
+				onclick="return validateCV();"
+				type="submit"
+				name="newsave">
+				<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+				</svg>
+				{'LBL_NEW_BUTTON_LABEL'|@getTranslatedString:$MODULE}
+			</button>
+			</li>
+		{/if}
+		<li>
+		<button
+			class="slds-button slds-button_text-destructive"
+			title="{'LBL_CANCEL_BUTTON_TITLE'|@getTranslatedString:$MODULE}"
+			accessKey="{'LBL_CANCEL_BUTTON_KEY'|@getTranslatedString:$MODULE}"
+			onclick="window.history.back();"
+			type="button"
+			name="button2">
+			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
+			</svg>
+			{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE}
+		</button>
+		</li>
+	</ul>
   </td></tr>
   <tr><td colspan="4">&nbsp;</td></tr>
 </table>

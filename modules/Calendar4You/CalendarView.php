@@ -176,7 +176,7 @@ foreach ($ActTypes as $act_id => $act_name) {
 		'textColor'=>$Colors['text'],
 		'checked'=>$event_checked
 	);
-	//  add modules
+	// add modules
 	foreach ($tasklabel as $tbid => $mname) {
 		$Modules_Colors = getEColors('type', $mname);
 		$Module_Types[$mname] = array(
@@ -344,5 +344,6 @@ $smarty->assign('Calendar_Status_Panel_Visible', GlobalVariable::getVariable('Ca
 $smarty->assign('Calendar_Other_Default_Duration', GlobalVariable::getVariable('Calendar_other_default_duration', 1));
 $smarty->assign('Calendar_Show_WeekNumber', GlobalVariable::getVariable('Calendar_Show_WeekNumber', 0) ? 'true' : 'false');
 $smarty->assign('goDirectToDetailView', GlobalVariable::getVariable('Calendar_goDirectToDetailView', 0) ? true : false);
+$smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
 
 $smarty->display('modules/Calendar4You/CalendarView.tpl');

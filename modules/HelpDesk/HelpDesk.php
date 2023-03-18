@@ -139,7 +139,7 @@ class HelpDesk extends CRMEntity {
 		$for_crmid = isset($_REQUEST['return_id']) ? $_REQUEST['return_id'] : false;
 		if ($return_action && $for_module && $for_crmid && $for_module == 'ServiceContracts') {
 			$on_focus = CRMEntity::getInstance($for_module);
-			$on_focus->save_related_module($for_module, $for_crmid, $module, $this->id);
+			relateEntities($on_focus, $for_module, $for_crmid, $module, $this->id);
 		}
 	}
 
@@ -187,12 +187,12 @@ class HelpDesk extends CRMEntity {
 	}
 
 	/** Function to get the Ticket History information as in array format
-	 *	@param int $ticketid - ticket id
-	 *	@return array - return an array with title and the ticket history informations in the following format
-				array(
-					header=>array('0'=>'title'),
-					entries=>array('0'=>'info1','1'=>'info2',etc.,)
-				)
+	 * @param int ticket id
+	 * @return array with title and the ticket history informations in the following format
+	 *		array(
+	 *			header=>array('0'=>'title'),
+	 *			entries=>array('0'=>'info1','1'=>'info2',etc.,)
+	 *		)
 	 */
 	public function get_ticket_history($ticketid) {
 		global $log, $adb;
@@ -211,14 +211,14 @@ class HelpDesk extends CRMEntity {
 		return $return_value;
 	}
 
-	/**	Function to get the ticket comments as a array
-	 *	@param  int   $ticketid - ticketid
-	 *	@return array $output - array(
-						[$i][comments]    => comments
-						[$i][owner]       => name of the user or customer who made the comment
-						[$i][createdtime] => the comment created time
-					)
-				where $i = 0,1,..n which are all made for the ticket
+	/** Function to get the ticket comments as a array
+	 * @param int ticketid
+	 * @return array
+	 * 		[$i][comments] => comments
+	 * 		[$i][owner] => name of the user or customer who made the comment
+	 * 		[$i][createdtime] => the comment created time
+	 * 	)
+	 * 	where $i = 0,1,..n which are all made for the ticket
 	**/
 	public function get_ticket_comments_list($ticketid) {
 		global $log, $adb;
@@ -255,8 +255,8 @@ class HelpDesk extends CRMEntity {
 		return $output;
 	}
 
-	/**	Function to get the HelpDesk field labels in caps letters without space
-	 *	@return array $mergeflds - array(	key => val	)    where   key=0,1,2..n & val = ASSIGNEDTO,RELATEDTO, .,etc
+	/** Function to get the HelpDesk field labels in caps letters without space
+	 * @return array (key => val) where key=0,1,2..n & val = ASSIGNEDTO,RELATEDTO, .,etc
 	**/
 	public function getColumnNames_Hd() {
 		global $log, $current_user, $adb;
@@ -293,8 +293,8 @@ class HelpDesk extends CRMEntity {
 	}
 
 	/** Function to get the list of comments for the given ticket id
-	 * @param  int  $ticketid - Ticket id
-	 * @return list $list - return the list of comments and comment informations as an html DIV output
+	 * @param int Ticket id
+	 * @return string list of comments and comment informations as an html DIV output
 	**/
 	public function getCommentInformation($ticketid) {
 		global $log, $adb, $mod_strings, $default_charset;
@@ -355,8 +355,8 @@ class HelpDesk extends CRMEntity {
 	}
 
 	/** Function to get the Customer Name who has made comment to the ticket from the customer portal
-	 * @param  int    $id   - Ticket id
-	 * @return string $customername - The contact name
+	 * @param int Ticket id
+	 * @return string the contact name
 	**/
 	public function getCustomerName($id) {
 		global $log, $adb;
@@ -390,17 +390,17 @@ class HelpDesk extends CRMEntity {
 		$crmEntityTable = $this->denormalized ? 'vtiger_troubletickets as vtiger_crmentity' : 'vtiger_crmentity';
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then vtiger_users.ename else vtiger_groups.groupname end as user_name
 			FROM ".$crmEntityTable.
-			" INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid =vtiger_crmentity.crmid
+			' INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid=vtiger_crmentity.crmid
 			LEFT JOIN vtiger_crmentity vtiger_crmentityRelatedTo ON vtiger_crmentityRelatedTo.crmid = vtiger_troubletickets.parent_id
 			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_troubletickets.parent_id
 			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_troubletickets.parent_id
 			LEFT JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid=vtiger_troubletickets.ticketid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid and vtiger_users.status='Active'
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
+			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
+			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid=vtigerCreatedBy.id
 			LEFT JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid =vtiger_troubletickets.ticketid
 			LEFT JOIN vtiger_attachments ON vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
-			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_troubletickets.product_id";
+			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_troubletickets.product_id';
 		$query .= getNonAdminAccessControlQuery('HelpDesk', $current_user);
 		$where_auto=' vtiger_crmentity.deleted=0 ';
 

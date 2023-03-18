@@ -99,7 +99,7 @@
 		*
 		*/
 		init: function () {
-			if (this.hasPreExisting()) {
+			if (this.getPreExisting().length) {
 				this.getPreExisting().forEach((group) => {
 					Group.add(this, group);
 				});
@@ -128,10 +128,26 @@
 		* (only applicable when used in filter or report context)
 		*/
 		getPreExisting: function () {
-			const input = document.getElementById('cbds-advfilt_existing-conditions'),
-				existing = JSON.parse(input.value),
-				groups = [];
-
+			let input = document.getElementById('cbds-advfilt_existing-conditions');
+			let existing = null;
+			if (input) {
+				try {
+					let jparse = JSON.parse(input.value);
+					if (jparse) {
+						existing = jparse;
+					}
+				} catch (e) {
+				}
+			}
+			const groups = [];
+			if (existing != null) {
+				existing = JSON.parse(input.value);
+			} else if (advancedSearchData !== 'MAP_NOT_FOUND') {
+				existing = this.putObjectsInsideArrayByKey(advancedSearchData, ['group', 'condition']);
+				existing = this.convertAdvancedSearchObjectFormat(advancedSearchData);
+			} else {
+				return [];
+			}
 			for (var group in existing) {
 				groups.push({
 					'groupNo': group,
@@ -140,6 +156,54 @@
 				});
 			}
 			return groups;
+		},
+
+		/*
+		* Method: 'convertAdvancedSearchObjectFormat'
+		* converts the data we get from the server into a data that the frontEnd understands
+		*/
+		convertAdvancedSearchObjectFormat: function (obj) {
+			let result = {};
+			for (let i = 0; i < obj['group'].length; i++) {
+				const el = obj['group'][i];
+				result[(i+1).toString()] = {};
+				result[(i+1).toString()]['columns'] = [];
+				result[(i+1).toString()]['condition'] = i == 0 ? '' : el['groupjoin'];
+				for (let e = 0; e < el['conditions']['condition'].length; e++) {
+					const condition = el['conditions']['condition'][e];
+					result[(i+1).toString()]['columns'].push({
+						columnname: condition['fieldname'],
+						comparator: condition['operator'],
+						value: '',
+						column_condition: condition['join'],
+					});
+				}
+			}
+			return result;
+		},
+
+		/*
+		* Method: 'addObjectsInsideArrayByKey'
+		* puts selected nested objects (by key) inside array
+		* example: putObjectsInsideArrayByKey(obj, ["columnname", "group"])
+		*/
+		putObjectsInsideArrayByKey: function (obj, keys) {
+			const objectKeys = Object.keys(obj);
+			for (let index = 0; index < objectKeys.length; index++) {
+				const objectKey = objectKeys[index];
+				if (typeof obj[objectKey] === 'object' && !Array.isArray(obj[objectKey]) && obj[objectKey] !== null) {
+					this.putObjectsInsideArrayByKey(obj[objectKey], keys);
+				} else if (Array.isArray(obj[objectKey])) {
+					for (let index = 0; index < obj[objectKey].length; index++) {
+						const object = obj[objectKey][index];
+						this.putObjectsInsideArrayByKey(object, keys);
+					}
+				}
+				if (keys.includes(objectKey)) {
+					obj[objectKey] = Array.isArray(obj[objectKey]) ? obj[objectKey] : [obj[objectKey]];
+				}
+			}
+			return obj;
 		},
 
 		/*
@@ -242,8 +306,10 @@
 		updateHiddenFields: function () {
 			var criteria = this.getCriteria(),
 				groups = this.getGroups();
-			this.searchForm.advft_criteria.value = JSON.stringify(criteria);
-			this.searchForm.advft_criteria_groups.value = JSON.stringify(groups);
+			if (criteria) {
+				this.searchForm.advft_criteria.value = JSON.stringify(criteria);
+				this.searchForm.advft_criteria_groups.value = JSON.stringify(groups);
+			}
 			return true;
 		},
 
@@ -350,10 +416,33 @@
 				(function (_i) {
 					if (me[type][_i].el.isSameNode(upNode)) {
 						obj = me[type][_i];
+						AdvancedFilter.enableFilterDeletion(me[type][_i]);
 					}
 				})(i);
 			}
 			return obj;
+		},
+
+		enableFilterDeletion: function (obj) {
+			let no = obj.no;
+			let condCount = obj.condCount;
+			if (obj.group !== undefined) {
+				no = obj.group.no;
+				condCount = obj.group.condCount;
+			}
+			const group = this.el.querySelector(`li[data-group-no="${no}"]`);
+			if (obj.group !== undefined) {
+				if (condCount - 1 == 1) {
+					let btn = group.querySelectorAll('button[data-onclick="delete-cond"]');
+					for (let i = 0; i < btn.length; i++) {
+						group.querySelectorAll('button[data-onclick="delete-cond"]')[i].setAttribute('disabled', 'disabled');
+					}
+				}
+			} else {
+				if (condCount >= 1) {
+					group.querySelectorAll('button[data-onclick="delete-cond"]')[0].removeAttribute('disabled');
+				}
+			}
 		},
 
 		/*
@@ -373,7 +462,9 @@
 						li[i].style.display = 'none';
 					}
 				} else {
-					li[i].style.display = 'none';
+					if (li[i].hasAttribute('data-value')) {
+						li[i].style.display = 'none';
+					}
 					if (el.value == '') {
 						li[i].style.display = '';
 					}
@@ -473,14 +564,13 @@
 						</div>
 					</li>`;
 			});
-			content += `
-						</ul>
+			content += `</ul>
 					</div>
 				</div>
 			</div>
 			<div style="height: 13rem;"></div>`;
 
-			ldsModal.show('Select field', content, 'medium', 'AdvancedFilter.onComparisonModalClose()');
+			ldsModal.show(alert_arr.SelectField, content, 'medium', 'AdvancedFilter.onComparisonModalClose()');
 			this.comparisonModalCombo = new ldsCombobox(document.getElementById('cbds-advfilt__fieldcomp-combo'), {'isMulti': true});
 
 			this.currentComparisonInput = function () {
@@ -911,7 +1001,7 @@
 		setVals: function () {
 			var curVal  = this.fieldCombo.getVal(),
 				curType = Field.getType(curVal),
-				curOp   = this.op.combo.getVal();
+				curOp = this.op.combo.getVal();
 
 			for (var i = 0; i < this.parent.vals.length; i++) {
 				if (this.parent.vals[i].cond === this) {
@@ -1424,11 +1514,8 @@
 		* @return: (bool)
 		*/
 		allowedChars: function (char) {
-			const chars = ['$'];
-			if (chars.includes(char)) {
-				return true;
-			}
-			return false;
+			const chars = ['$', '+'];
+			return Array.from(char).some(c => chars.includes(c));
 		},
 
 		/*

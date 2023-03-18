@@ -12,15 +12,19 @@ require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
 class VTEntityMethodTask extends VTTask {
 	public $executeImmediately = true;
 	public $queable = true;
+	public $methodName;
 
 	public function getFieldNames() {
 		return array('methodName');
 	}
 
 	public function doTask(&$entityData) {
-		global $adb;
+		global $adb, $logbg;
+		$this->logmessages[] = 'Executing '.$this->methodName;
+		$logbg->debug('> VTEntityMethodTask '.$this->methodName);
 		$emm = new VTEntityMethodManager($adb);
 		$emm->executeMethod($entityData, $this->methodName);
+		$logbg->debug('< VTEntityMethodTask');
 	}
 }
 ?>

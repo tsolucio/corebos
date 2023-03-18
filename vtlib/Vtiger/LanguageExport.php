@@ -46,14 +46,6 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 				name VARCHAR(50), prefix VARCHAR(10), label VARCHAR(30), lastupdated DATETIME, sequence INT, isdefault INT(1), active INT(1))',
 				true
 			);
-			global $languages, $adb;
-			foreach ($languages as $langkey => $langlabel) {
-				$uniqueid = self::__getUniqueId();
-				$adb->pquery(
-					'INSERT INTO '.self::TABLENAME.'(id,name,prefix,label,lastupdated,active) VALUES(?,?,?,?,?,?)',
-					array($uniqueid, $langlabel,$langkey,$langlabel,date('Y-m-d H:i:s', time()), 1)
-				);
-			}
 		}
 	}
 
@@ -130,11 +122,6 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 				$resultrow = $adb->fetch_array($result);
 				$prefix = $resultrow['prefix'];
 				$label  = $resultrow['label'];
-				$languageinfo[$prefix] = $label;
-			}
-		} else {
-			global $languages;
-			foreach ($languages as $prefix => $label) {
 				$languageinfo[$prefix] = $label;
 			}
 		}

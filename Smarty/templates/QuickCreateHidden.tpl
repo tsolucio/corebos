@@ -15,7 +15,7 @@
 	<input type="hidden" name="from" value="{$FROM}">
 	<input type="hidden" name="return_action" value="Popup">
 	<input type="hidden" name="return_module" value="{$MODULE}">
-	<input type="hidden" name="search_url" value="{$URLPOPUP}">
+	<input type="hidden" name="search_url" value="{$URLPOPUP|replace:'"':'%22'}">
 {/if}
 	<input type="hidden" name="module" value="{$MODULE}">
 	<input type="hidden" name="record" value="">

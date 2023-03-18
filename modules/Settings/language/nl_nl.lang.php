@@ -350,6 +350,7 @@ $mod_strings = array(
 'LBL_OWNER'=>'Eigenaar',
 'LBL_MIGRATION'=>'Migreer van een vorige versie',
 'LBL_MIGRATION_INFO'=>' - Migreer van een vorige vTiger versie',
+'LBL_IMPORT_SUPPORTED_FILE_TYPE'=>'Supported File Type .XML only',
 'LBL_USER_DESCRIPTION'=>'Definieer de gebruikers die CRM gebruiken',
 'LBL_ROLE_DESCRIPTION'=>'Definieer de hierarchie van de rollen en voeg gebruikers toe',
 'LBL_PROFILE_DESCRIPTION'=>'Definieer profielen om toegangsrechten te geven per rol',
@@ -1029,6 +1030,8 @@ $mod_strings = array(
 'LBL_MB_NEWBLOCK' => 'New Block',
 'LBL_MB_ADDFIELD' => 'ADD FIELD',
 'LBL_MB_ALLMODULES' => 'All modules',
+'LBL_MB_STARTMODULE' => 'Start new module',
+'LBL_NEWFIELDHELP' => 'Default fields for module <i>assigned_user_id</i>, <i>created_user_id</i>, <i>createdtime</i>, <i>modifiedtime</i> and <i>description</i> are created automatically!',
 'LBL_MB_PROGRESS' => 'Progress',
 'LBL_MB_STATUS' => 'Status',
 'LBL_MODULE_BUILDER' => 'Module Builder',
@@ -1044,5 +1047,11 @@ $mod_strings = array(
 'LBL_EXPORT' => 'Export',
 'LBL_RELATED_MODULE' => 'Related Module',
 'LBL_RL_LABEL' => 'Label',
+//email language translate
+'LBL_EMAIL_TRANSLATE' => 'Dit is een testmail die wordt verzonden om te bevestigen of er daadwerkelijk een mail is verzonden via de smtp-server die u hebt geconfigureerd.',
+'LBL_EMAIL_END' => 'Verwijder deze mail gerust.',
+'LBL_EMAIL_SUBJECT' => 'Test mail over de configuratie van de mailserver.',
+'LBL_DEAR' => 'Beste ',
+'LBL_THANKS' => 'Bedankt en groeten,',
 );
 ?>

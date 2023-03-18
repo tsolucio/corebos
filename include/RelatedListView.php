@@ -191,10 +191,10 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	$smarty->assign('LISTHEADER', $listview_header);
 
 	if ($relatedmodule == 'SalesOrder') {
-		$listview_entries = getListViewEntries($focus, $relatedmodule, $list_result, $navigation_array, 'relatedlist', $returnset, 'SalesOrderEditView', 'DeleteSalesOrder', '', '', '', '', $skipActions);
-	} else {
-		$listview_entries = getListViewEntries($focus, $relatedmodule, $list_result, $navigation_array, 'relatedlist', $returnset, $edit_val, $del_val, '', '', '', '', $skipActions);
+		$edit_val = 'SalesOrderEditView';
+		$del_val = 'DeleteSalesOrder';
 	}
+	$lventries = getListViewEntries($focus, $relatedmodule, $list_result, $navigation_array, 'relatedlist', $returnset, $edit_val, $del_val, '', '', '', '', $skipActions);
 
 	$navigationOutput = array();
 	$navigationOutput[] = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
@@ -206,7 +206,7 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	} else {
 		$navigationOutput[] = getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $relatedmodule, $id);
 	}
-	$related_entries = array('header'=>$listview_header,'entries'=>$listview_entries,'navigation'=>$navigationOutput);
+	$related_entries = array('header'=>$listview_header, 'entries'=>$lventries, 'navigation'=>$navigationOutput);
 
 	$log->debug('< GetRelatedList');
 	return $related_entries;

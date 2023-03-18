@@ -298,6 +298,9 @@ class Emails extends CRMEntity {
 			$mail->AddReplyTo($HELPDESK_SUPPORT_EMAIL_REPLY_ID);
 		}
 		$mail_status = MailSend($mail);
+
+		cbEventHandler::do_action('corebos.email.aftersend', array($mail, $mail_status));
+
 		if ($mail_status != 1) {
 			$mail_error = getMailError($mail, $mail_status);
 		} else {
@@ -306,11 +309,11 @@ class Emails extends CRMEntity {
 		return $mail_error;
 	}
 
-	/*
+	/**
 	* Function to get the secondary query part of a report
-	* @param - $module primary module name
-	* @param - $secmodule secondary module name
-	* returns the query string formed on fetching the related data for report for secondary module
+	* @param string primary module name
+	* @param string secondary module name
+	* @return string query formed on fetching the related data for report for secondary module
 	*/
 	public function generateReportsSecQuery($module, $secmodule, $queryPlanner, $type = '', $where_condition = '') {
 		$matrix = $queryPlanner->newDependencyMatrix();
@@ -348,10 +351,10 @@ class Emails extends CRMEntity {
 		return $query;
 	}
 
-	/*
+	/**
 	* Function to get the relation tables for related modules
-	* @param - $secmodule secondary module name
-	* returns the array with table names and fieldnames storing relations between module and this module
+	* @param string secondary module name
+	* @return array with table names and fieldnames storing relations between module and this module
 	*/
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
@@ -389,8 +392,8 @@ class Emails extends CRMEntity {
 			}
 			if (in_array('BULKMAIL', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$button .= "<input title='" . getTranslatedString('LBL_BULK_MAILS') . "' class='crmbutton small create'" .
-						" onclick='this.form.action.value=\"sendmail\";this.form.module.value=\"$this_module\"' type='submit' name='button'" .
-						" value='" . getTranslatedString('LBL_BULK_MAILS') . "'>";
+					" onclick='this.form.action.value=\"sendmail\";this.form.module.value=\"$this_module\"' type='submit' name='button'" .
+					" value='" . getTranslatedString('LBL_BULK_MAILS') . "'>";
 			}
 		}
 
@@ -430,9 +433,9 @@ class Emails extends CRMEntity {
 
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Emails');
 		$query = "SELECT $fields_list FROM vtiger_activity
-			INNER JOIN ".$crmEntityTable." ON vtiger_crmentity.crmid=vtiger_activity.activityid
+			INNER JOIN ".$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_activity.activityid
 			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
+			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid=vtigerCreatedBy.id
 			LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
 			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_seactivityrel.crmid
 			LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
@@ -441,7 +444,7 @@ class Emails extends CRMEntity {
 			LEFT JOIN vtiger_salesmanactivityrel ON vtiger_salesmanactivityrel.activityid = vtiger_activity.activityid
 			LEFT JOIN vtiger_emaildetails ON vtiger_emaildetails.emailid = vtiger_activity.activityid
 			LEFT JOIN vtiger_seattachmentsrel ON vtiger_activity.activityid=vtiger_seattachmentsrel.crmid
-			LEFT JOIN vtiger_attachments ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid";
+			LEFT JOIN vtiger_attachments ON vtiger_seattachmentsrel.attachmentsid=vtiger_attachments.attachmentsid';
 		$query .= getNonAdminAccessControlQuery('Emails', $current_user);
 		$query .= "WHERE vtiger_activity.activitytype='Emails' AND vtiger_crmentity.deleted=0 ";
 
@@ -487,9 +490,7 @@ class Emails extends CRMEntity {
 		global $adb;
 		$sql = 'DELETE FROM vtiger_seactivityrel WHERE activityid=? AND crmid = ?';
 		$adb->pquery($sql, array($id, $return_id));
-		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
-		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-		$adb->pquery($sql, $params);
+		deleteFromCrmEntityRel($id, $return_id);
 		$mtime = date('y-m-d H:i:d');
 		$adb->pquery('UPDATE '.$this->crmentityTable.' SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
 		$adb->pquery('UPDATE vtiger_crmobject SET modifiedtime=? WHERE crmid=?', array($mtime, $id));
@@ -556,7 +557,10 @@ function get_to_emailids($module) {
 				break;
 		}
 	}
-	$fieldids = explode(':', vtlib_purify($_REQUEST['field_lists']));
+	$fieldids = array();
+	if (isset($_REQUEST['field_lists'])) {
+		$fieldids = explode(':', vtlib_purify($_REQUEST['field_lists']));
+	}
 	if ($_REQUEST['idlist'] == 'all' || $_REQUEST['idlist'] == 'relatedListSelectAll') {
 		$idlist = getSelectedRecords($_REQUEST, vtlib_purify($_REQUEST['pmodule']), vtlib_purify($_REQUEST['idlist']), vtlib_purify($_REQUEST['excludedRecords']));
 	} else {
@@ -573,7 +577,7 @@ function get_to_emailids($module) {
 
 	foreach ($emailFields as $key => $fieldname) {
 		$fieldid = $vtwsCRMObjectMeta->getFieldIdFromFieldName($fieldname);
-		if (!in_array($fieldid, $fieldids)) {
+		if (!empty($fieldids) && !in_array($fieldid, $fieldids)) {
 			unset($emailFields[$key]);
 		}
 	}
