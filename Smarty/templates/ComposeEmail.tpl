@@ -76,7 +76,7 @@
 	<tbody>
 		<tr>
 			<td align="right">
-				<font color="red">*</font><b> {$MOD.LBL_FROM}</b>
+				<span style="color:red;">*</span><b> {$MOD.LBL_FROM}</b>
 			</td>
 			<td class="padding-5p">
 				<input
@@ -101,7 +101,7 @@
 		{if isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'parent_id'}
 		<tr>
 			<td align="right">
-				<font color="red">*</font><b> {$MOD.LBL_TO}</b>
+				<span style="color:red;">*</span><b> {$MOD.LBL_TO}</b>
 			</td>
 			<td class="padding-5p">
 				<input
@@ -272,7 +272,7 @@
 		{elseif isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'subject'}
 		<tr>
 			<td class="padding-5p" align="right" nowrap>
-				<font color="red">*</font>{$elements.1.0}:
+				<span style="color:red;">*</span>{$elements.1.0}:
 			</td>
 			{if (isset($WEBMAIL) && $WEBMAIL eq 'true') or (isset($RET_ERROR) && $RET_ERROR eq 1)}
 			<td class="padding-5p">
