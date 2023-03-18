@@ -390,30 +390,6 @@
 							{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL}
 						</button>
 						<button
-							title="{$APP.LBL_SAVE_BUTTON_TITLE}"
-							accessKey="{$APP.LBL_SAVE_BUTTON_KEY}"
-							class="slds-button slds-button_neutral"
-							onclick="email_validate(this.form, 'save');"
-							type="button"
-							name="button"
-						>
-							<svg class="slds-button__icon slds-p-right_xxx-small" aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
-							</svg>
-							{$APP.LBL_SAVE_BUTTON_LABEL}
-						</button>
-						<button
-							name="{$MOD.LBL_SEND}"
-							class="slds-button slds-button_neutral"
-							type="button"
-							onclick="email_validate(this.form, 'send');"
-						>
-							<svg class="slds-button__icon slds-p-right_xxx-small" aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#send"></use>
-							</svg>
-							{$APP.LBL_SEND}
-						</button>
-						<button
 							class="slds-button slds-button_neutral"
 							type="button"
 							onclick="searchDocuments()"
@@ -447,6 +423,30 @@
 							{$APP.LBL_CANCEL_BUTTON_LABEL}
 						</button>
 						{/if}
+						<button
+							title="{$APP.LBL_SAVE_BUTTON_TITLE}"
+							accessKey="{$APP.LBL_SAVE_BUTTON_KEY}"
+							class="slds-button slds-button_neutral"
+							onclick="email_validate(this.form, 'save');"
+							type="button"
+							name="button"
+						>
+							<svg class="slds-button__icon slds-p-right_xxx-small" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use>
+							</svg>
+							{$APP.LBL_SAVE_BUTTON_LABEL}
+						</button>
+						<button
+							name="{$MOD.LBL_SEND}"
+							class="slds-button slds-button_neutral"
+							type="button"
+							onclick="email_validate(this.form, 'send');"
+						>
+							<svg class="slds-button__icon slds-p-right_xxx-small" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#send"></use>
+							</svg>
+							{$APP.LBL_SEND}
+						</button>
 					</div>
 				</div>
 			</td>
