@@ -16,7 +16,7 @@
 		<title>{$MOD.TITLE_COMPOSE_MAIL}</title>
 		<link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
 		<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
-		{/if}
+{/if}
 		<script type="text/javascript" src="include/jquery/jquery.js"></script>
 		{include file='BrowserVariables.tpl'}
 		<script type="text/javascript" src="include/js/general.js"></script>
@@ -274,7 +274,7 @@
 			<td class="padding-5p" align="right" nowrap>
 				<span style="color:red;">*</span>{$elements.1.0}:
 			</td>
-			{if (isset($WEBMAIL) && $WEBMAIL eq 'true') or (isset($RET_ERROR) && $RET_ERROR eq 1)}
+			{if (isset($WEBMAIL) && $WEBMAIL eq 'true') || (isset($RET_ERROR) && $RET_ERROR eq 1)}
 			<td class="padding-5p">
 				<input
 					type="text"
