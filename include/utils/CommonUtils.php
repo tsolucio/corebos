@@ -2619,7 +2619,7 @@ function getMergedDescription($description, $id, $parent_type, $context = []) {
 	}
 	if ($parent_type != 'Users') {
 		$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
-		if (isset($context['Email_AutomaticMerge']) && $context['Email_AutomaticMerge'] == 1) {
+		if (!isset($context['Email_AutomaticMerge']) || $context['Email_AutomaticMerge'] == 1) {
 			$description = $emailTemplate->getProcessedDescription();
 		}
 	}
