@@ -137,9 +137,5 @@ $smarty->assign('CUSTOM_LINKS', '');
 include 'include/integrations/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('MOD_SEQ_ID', '');
-if ($_REQUEST['action']=='EmailsAjax') {
-	$smarty->display('EmailDetailView.tpl');
-} else {
-	$smarty->display('EmailDetailViewInside.tpl');
-}
+$smarty->display('EmailDetailViewInside.tpl');
 ?>
