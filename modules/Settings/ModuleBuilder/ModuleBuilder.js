@@ -912,83 +912,83 @@ const mb = {
 		};
 		let fieldTemplate = '<div class="slds-grid slds-gutters">';
 		for (var key in textfields) {
-			switch(textfields[key].value) {
-				case 'relatedmodules':
-					inStyle.style = 'margin: 5px; display: none';
-					inStyle.id = `show-field-${textfields[key].value}-${FIELD_COUNT}`;
-					inStyle.placeholder = 'Value 1,Value 2,...';
-					fieldTemplate += `
-					<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
-						<div class="slds-form-element">
-						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-							<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
-						</label>
-						<div class="slds-form-element__control">
-							<input type="hidden" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
-							<div class="slds-pill_container" onclick="mb.loadModules('load-mods')">
-								<ul class="slds-listbox slds-listbox_horizontal" role="listbox" id="show-pills">
-								</ul>
-							</div>
-							<span id="load-mods" class="closeList"></span>
+			switch (textfields[key].value) {
+			case 'relatedmodules':
+				inStyle.style = 'margin: 5px; display: none';
+				inStyle.id = `show-field-${textfields[key].value}-${FIELD_COUNT}`;
+				inStyle.placeholder = 'Value 1,Value 2,...';
+				fieldTemplate += `
+				<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
+					<div class="slds-form-element">
+					<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+						<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
+					</label>
+					<div class="slds-form-element__control">
+						<input type="hidden" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+						<div class="slds-pill_container" onclick="mb.loadModules('load-mods')">
+							<ul class="slds-listbox slds-listbox_horizontal" role="listbox" id="show-pills">
+							</ul>
 						</div>
-						</div>
-					</div>`;
-					break;
-				case 'picklistvalues':
-					inStyle.style = 'margin: 5px; display: none';
-					inStyle.id = `show-field-${textfields[key].value}-${FIELD_COUNT}`;
-					inStyle.placeholder = 'Value 1,Value 2,...';
-					fieldTemplate += `
-					<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
-						<div class="slds-form-element">
-						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-							<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
-						</label>
-						<div class="slds-form-element__control">
-							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
-						</div>
-						</div>
-					</div>`;
-					break;
-				case 'fieldlength':
-					fieldTemplate += `
-					<div class="slds-col" style="${inStyle.style}" id="show-fieldlength-${FIELD_COUNT}">
-						<div class="slds-form-element">
-						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-							<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
-						</label>
-						<div class="slds-form-element__control">
-							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
-						</div>
-						</div>
-					</div>`;
-					break;
-				case 'generatedtype':
-					inStyle.style = 'display: none';
-					fieldTemplate += `
-					<div class="slds-col" style="${inStyle.style}" id="show-generatedtype-${FIELD_COUNT}">
-						<div class="slds-form-element">
-						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-							${textfields[key].type}
-						</label>
-						<div class="slds-form-element__control">
-							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
-						</div>
-						</div>
-					</div>`;
-					break;
-				default:
-					fieldTemplate += `
-					<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
-						<div class="slds-form-element">
-						<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
-							<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
-						</label>
-						<div class="slds-form-element__control">
-							<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
-						</div>
-						</div>
-					</div>`;
+						<span id="load-mods" class="closeList"></span>
+					</div>
+					</div>
+				</div>`;
+				break;
+			case 'picklistvalues':
+				inStyle.style = 'margin: 5px; display: none';
+				inStyle.id = `show-field-${textfields[key].value}-${FIELD_COUNT}`;
+				inStyle.placeholder = 'Value 1,Value 2,...';
+				fieldTemplate += `
+				<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
+					<div class="slds-form-element">
+					<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+						<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
+					</label>
+					<div class="slds-form-element__control">
+						<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+					</div>
+					</div>
+				</div>`;
+				break;
+			case 'fieldlength':
+				fieldTemplate += `
+				<div class="slds-col" style="${inStyle.style}" id="show-fieldlength-${FIELD_COUNT}">
+					<div class="slds-form-element">
+					<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+						<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
+					</label>
+					<div class="slds-form-element__control">
+						<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+					</div>
+					</div>
+				</div>`;
+				break;
+			case 'generatedtype':
+				inStyle.style = 'display: none';
+				fieldTemplate += `
+				<div class="slds-col" style="${inStyle.style}" id="show-generatedtype-${FIELD_COUNT}">
+					<div class="slds-form-element">
+					<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+						${textfields[key].type}
+					</label>
+					<div class="slds-form-element__control">
+						<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+					</div>
+					</div>
+				</div>`;
+				break;
+			default:
+				fieldTemplate += `
+				<div class="slds-col" style="${inStyle.style}" id="${inStyle.id}">
+					<div class="slds-form-element">
+					<label class="slds-form-element__label" for="${textfields[key].value}_${FIELD_COUNT}">
+						<abbr class="slds-required" title="${alert_arr.REQUIRED}">* </abbr> ${textfields[key].type}
+					</label>
+					<div class="slds-form-element__control">
+						<input type="text" name="${textfields[key].value}_${FIELD_COUNT}" placeholder="${inStyle.placeholder}" id="${textfields[key].value}_${FIELD_COUNT}" class="slds-input" />
+					</div>
+					</div>
+				</div>`;
 			}
 		}
 		fieldTemplate += '</div><div class="slds-grid slds-gutters">';
@@ -1007,20 +1007,19 @@ const mb = {
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
 							<select class="slds-select" id="${type}_${FIELD_COUNT}" onchange="${inStyle.onchange}">`;
-								for (let j in values) {
-									let selected = '';
-									if (type == 'Masseditable' && j == 1) {
-										selected = 'selected';
-									}
-									fieldTemplate += `<option value="${j}" ${selected}>${values[j]}</option>`;
-								}
-								fieldTemplate += `
+			for (let j in values) {
+				let selected = '';
+				if (type == 'Masseditable' && j == 1) {
+					selected = 'selected';
+				}
+				fieldTemplate += `<option value="${j}" ${selected}>${values[j]}</option>`;
+			}
+			fieldTemplate += `
 							</select>
 						</div>
 					</div>
 				</div>
-			</div>
-			`;
+			</div>`;
 		}
 
 		fieldTemplate += '</div><div class="slds-grid slds-gutters">';
@@ -1038,20 +1037,19 @@ const mb = {
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
 							<select class="slds-select" id="${type}_${FIELD_COUNT}" onchange="${inStyle.onchange}">`;
-								for (let j in values) {
-									if (values[j] == '') {
-										fieldTemplate += `<option value="" selected disabled></option>`;
-									} else {
-										fieldTemplate += `<option value="${j}">${values[j]}</option>`;
-									}
-								}
-								fieldTemplate += `
+			for (let j in values) {
+				if (values[j] == '') {
+					fieldTemplate += `<option value="" selected disabled></option>`;
+				} else {
+					fieldTemplate += `<option value="${j}">${values[j]}</option>`;
+				}
+			}
+			fieldTemplate += `
 							</select>
 						</div>
 					</div>
 				</div>
-			</div>
-			`;
+			</div>`;
 		}
 		fieldTemplate += '</div><div class="slds-grid slds-gutters">';
 
@@ -1128,49 +1126,49 @@ const mb = {
 	},
 
 	showNewOptions: (state, id) => {
-		switch(state.value) {
-			case '10':
-				document.getElementById(`fieldlength_${id.value}`).value = '';
-				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = '';
-				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
-				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
-				document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
-				break;
-			case '15':
-			case '16':
-			case '33':
-				document.getElementById(`fieldlength_${id.value}`).value = '';
-				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = '';
-				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
-				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
-				document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
-				break;
-			case '1':
-			case '19':
-			case '21':
-			case '13':
-			case '11':
-			case '7':
-				document.getElementById(`show-fieldlength-${id.value}`).style.display = '';
-				document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
-				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
-				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
-				break;
-			case '5':
-			case '50':
-			case '14':
-				document.getElementById(`show-generatedtype-${id.value}`).style.display = '';
-				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
-				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
-				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
-				break;
-			default:
-				document.getElementById(`fieldlength_${id.value}`).value = '';
-				document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
-				document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
-				document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
-				document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
-			//
+		switch (state.value) {
+		case '10':
+			document.getElementById(`fieldlength_${id.value}`).value = '';
+			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = '';
+			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
+			document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
+			document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
+			break;
+		case '15':
+		case '16':
+		case '33':
+			document.getElementById(`fieldlength_${id.value}`).value = '';
+			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = '';
+			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
+			document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
+			document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
+			break;
+		case '1':
+		case '19':
+		case '21':
+		case '13':
+		case '11':
+		case '7':
+			document.getElementById(`show-fieldlength-${id.value}`).style.display = '';
+			document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
+			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
+			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
+			break;
+		case '5':
+		case '50':
+		case '14':
+			document.getElementById(`show-generatedtype-${id.value}`).style.display = '';
+			document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
+			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
+			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
+			break;
+		default:
+			document.getElementById(`fieldlength_${id.value}`).value = '';
+			document.getElementById(`show-generatedtype-${id.value}`).style.display = 'none';
+			document.getElementById(`show-fieldlength-${id.value}`).style.display = 'none';
+			document.getElementById(`show-field-relatedmodules-${id.value}`).style.display = 'none';
+			document.getElementById(`show-field-picklistvalues-${id.value}`).style.display = 'none';
+		//
 		}
 	},
 
@@ -1355,10 +1353,10 @@ const mb = {
 					<div class="slds-form-element__control">
 						<div class="slds-select_container">
 							<select class="slds-select" name="setdefault-${FILTER_COUNT}" id="setdefault-${FILTER_COUNT}">`;
-							for (let val in setdefaultOption[0]) {
-								viewTemplate += `<option value="${val}">${setdefaultOption[0][val]}</option>`;
-							}
-							viewTemplate += `
+		for (let val in setdefaultOption[0]) {
+			viewTemplate += `<option value="${val}">${setdefaultOption[0][val]}</option>`;
+		}
+		viewTemplate += `
 							</select>
 						</div>
 					</div>
@@ -1378,9 +1376,8 @@ const mb = {
 		<div class="slds-col slds-size_1-of-2">
 			<input type="hidden" name="viewfields-${FILTER_COUNT}" id="viewfields-${FILTER_COUNT}">
 			<div class="slds-pill_container" onclick="mb.loadFields('load-fields', ${FILTER_COUNT})">
-			  <ul class="slds-listbox slds-listbox_horizontal" role="listbox" id="show-fields">
-			  </ul>
-			  <span id="load-fields" class="closeList"></span>
+				<ul class="slds-listbox slds-listbox_horizontal" role="listbox" id="show-fields"></ul>
+				<span id="load-fields" class="closeList"></span>
 			</div>
 		</div>`;
 		mb.loadElement(`customview_inputs${FILTER_COUNT}`, true).innerHTML = viewTemplate;
@@ -1444,7 +1441,7 @@ const mb = {
 							<span class="slds-truncate">${res[r].fieldname}</span>
 						</a>
 					</li>`;
-				show = true;
+					show = true;
 				}
 			}
 			listFields += '</ul>';
@@ -1551,8 +1548,7 @@ const mb = {
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 						</svg>
 					</button>
-				</div>
-				`;
+				</div>`;
 			} else {
 				let step = 0;
 				if (completed == '20%') {
@@ -1576,8 +1572,7 @@ const mb = {
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 						</svg>
 					</button>
-				</div>
-				`;
+				</div>`;
 			}
 			dataGridInstance.setValue(i, 'export', btn, false);
 		}
@@ -2042,8 +2037,8 @@ const mb = {
 				};
 			}
 			const data = {
-				"map": modObj
-			}
+				'map': modObj
+			};
 			jQuery.ajax({
 				method: 'POST',
 				url: url+'&methodName=generateManifest',
@@ -2141,14 +2136,14 @@ const mb = {
 
 			let blockTemplate = `
 			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
-			  <thead>
+				<thead>
 				<tr class="slds-line-height_reset">
 					<thscope="col">
 						<div class="slds-truncate">${mod_alert_arr.blockslist}</div>
 					</th>
 				</tr>
-			  </thead>
-			  <tbody>`;
+				</thead>
+				<tbody>`;
 			for (let i in res.blocks) {
 				blockTemplate += `
 				<tr class="slds-hint-parent">
@@ -2158,14 +2153,14 @@ const mb = {
 				</tr>`;
 			}
 			blockTemplate += `
-			  </tbody>
+				</tbody>
 			</table>`;
 			document.getElementById('blocks').innerHTML = blockTemplate;
 
 			//load fields
 			let tableTemplate = `
 			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
-			  <thead>
+				<thead>
 				<tr class="slds-line-height_reset">
 					<th class="" scope="col">
 						<div class="slds-truncate">${mod_alert_arr.fieldname}</div>
@@ -2183,8 +2178,8 @@ const mb = {
 						<div class="slds-truncate">${mod_alert_arr.massedit}</div>
 					</th>
 				</tr>
-			  </thead>
-			  <tbody>`;
+				</thead>
+				<tbody>`;
 			for (let i = 0; i < res.fields['data'].contents.length; i++) {
 				const masseditable = res.fields['data'].contents[i].masseditable == 0 ? 'On' : 'Off';
 				tableTemplate += `
@@ -2213,7 +2208,7 @@ const mb = {
 			//load views
 			let viewTemplate = `
 			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
-			  <thead>
+				<thead>
 				<tr class="slds-line-height_reset">
 					<th class="" scope="col">
 						<div class="slds-truncate">${mod_alert_arr.filter}</div>
@@ -2222,8 +2217,8 @@ const mb = {
 						<div class="slds-truncate">${mod_alert_arr.fields}</div>
 					</th>
 				</tr>
-			  </thead>
-			  <tbody>`;
+				</thead>
+				<tbody>`;
 			for (let i = 0; i < res.views['data'].contents.length; i++) {
 				viewTemplate += `
 				<tr class="slds-hint-parent">
@@ -2243,7 +2238,7 @@ const mb = {
 			//load views
 			let listTemplate = `
 			<table class="slds-table slds-table_cell-buffer slds-table_bordered">
-			  <thead>
+				<thead>
 				<tr class="slds-line-height_reset">
 					<th class="" scope="col">
 						<div class="slds-truncate">${mod_alert_arr.functionname}</div>
@@ -2258,8 +2253,8 @@ const mb = {
 						<div class="slds-truncate">${mod_alert_arr.relatedmodules}</div>
 					</th>
 				</tr>
-			  </thead>
-			  <tbody>`;
+				</thead>
+				<tbody>`;
 			for (let i = 0; i < res.lists['data'].contents.length; i++) {
 				listTemplate += `
 				<tr class="slds-hint-parent">
@@ -2376,7 +2371,7 @@ const mb = {
 		if (confirm(alert_arr.ARE_YOU_SURE)) {
 			const data = {
 				'moduleid': moduleid
-			}
+			};
 			jQuery.ajax({
 				method: 'POST',
 				url: url+'&methodName=deleteModule',

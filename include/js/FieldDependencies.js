@@ -553,7 +553,7 @@ FieldDependencies.prototype.fieldShowDetailView = function (hideFields) {
 		field=hideFields[i]['field'];
 		document.getElementById('mouseArea_'+field).style.visibility='visible';
 		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.style.visibility='visible';
-		let parentRow = document.getElementById('mouseArea_'+field).parentElement
+		let parentRow = document.getElementById('mouseArea_'+field).parentElement;
 		parentRow.style.visibility = 'visible';
 		parentRow.style.height = '25px';
 	}

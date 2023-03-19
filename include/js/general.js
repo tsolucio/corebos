@@ -7661,14 +7661,13 @@ async function handleDrawClick(checkmodule, checkaction, recordid, doc2edit = ''
 
 	if (!response) {
 		try {
-		  ldsModal.close(true);
+			ldsModal.close(true);
 		} catch (error) {
-			
 		}
 		ldsModal.show(alert_arr.JSLBL_DRAW_MODAL_TITLE, alert_arr.JSLBL_DRAW_MODAL_MESSAGE);
 		return;
-	  }
-  
+	}
+
 	const urlParams = new URLSearchParams();
 	urlParams.set('module', 'Utilities');
 	urlParams.set('action', 'UtilitiesAjax');
@@ -7677,13 +7676,11 @@ async function handleDrawClick(checkmodule, checkaction, recordid, doc2edit = ''
 	urlParams.set('forrecord', recordid);
 	urlParams.set('inwindow', '1');
 	if (doc2edit) {
-	  urlParams.set('doc2edit', doc2edit);
+		urlParams.set('doc2edit', doc2edit);
 	}
-  
 	const url = `index.php?${urlParams.toString()}`;
 	window.open(url, 'photo2doc', 'width=1416,height=830');
-  
-  }
+}
 
 function cbdzdropHandler(event) {
 	console.log('File(s) dropped');

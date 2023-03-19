@@ -6,7 +6,7 @@ function convertCanvasToImage(canvas) {
 
 function createdoc() {
 	let cbconn = new Vtiger_WSClient('');
-	cbconn.extendSession(function (result){
+	cbconn.extendSession(function (result) {
 		var fname = document.getElementById('filename').value;
 		if (fname.substr(fname.length - 4) != '.png') {
 			fname = fname + '.png';

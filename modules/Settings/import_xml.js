@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	$('#import').click(function(e) {
+	$('#import').click(function (e) {
 		e.preventDefault();
 		var filename = $('#import_file')[0].files;
 		var category = document.getElementById('category').value;
@@ -22,14 +22,14 @@ $(document).ready(function () {
 					data: form_data,
 					contentType: false,
 					processData: false,
-					success:function(response){
+					success:function (response) {
 						if (response.includes('imported!')) {
 							$('#message-sucess').empty();
 							document.getElementById('message-sucess').style.display='block';
 							$('#message-sucess').append('<td>'+response+'</td>');
 							setInterval(hide_success, 8000);
 							clearInterval(setInterval(hide_success, 8000));
-							function hide_success () {
+							function hide_success() {
 								document.getElementById('message-sucess').style.display='none';
 							}
 						}
@@ -39,7 +39,7 @@ $(document).ready(function () {
 							$('#message-warning').append('<td>'+response+'</td>');
 							setInterval(hide_warning, 8000);
 							clearInterval(setInterval(hide_warning, 8000));
-							function hide_warning () {
+							function hide_warning() {
 								document.getElementById('message-warning').style.display='none';
 							}
 						}
@@ -49,5 +49,5 @@ $(document).ready(function () {
 				window.alert('Supported File Type .XML only');
 			}
 		}
-	})
+	});
 });

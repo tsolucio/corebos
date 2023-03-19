@@ -458,7 +458,7 @@ class RLActionRender {
 		let wizard = JSON.parse(relatedlistgrid.Wizard[`${props.grid.el.id}`]);
 		if (wizard[parent_module] !== undefined && wizard[parent_module] != '') {
 			if (wizard[parent_module].length === undefined && wizard[parent_module].id !== undefined) {
-					actions += `
+				actions += `
 					<li class="slds-dropdown__item">
 						<a onclick="relatedlistgrid.openWizard('${props.grid.el.id}', ${recordid}, ${wizard[parent_module].id}, '${parent_module}');" role="menuitem" tabindex="0">
 							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
@@ -490,8 +490,7 @@ class RLActionRender {
 					</svg>
 					<span class="slds-truncate">${alert_arr['JSLBL_Edit']}</span>
 				</a>
-			</li>
-			`;
+			</li>`;
 		}
 		if (permissions.child_edit == 'yes') {
 			actions += `
@@ -515,8 +514,7 @@ class RLActionRender {
 					</svg>
 					<span class="slds-truncate cbds-color-compl-red--sober">${alert_arr['JSLBL_Delete']}</span>
 				</a>
-			</li>
-			`;
+			</li>`;
 		}
 		if (child_delete == 'O' && permissions.child_edit == 'yes') {
 			actions += `
@@ -527,8 +525,7 @@ class RLActionRender {
 					</svg>
 					<span class="slds-truncate cbds-color-compl-red--sober">${alert_arr['JSLBL_Delete']}</span>
 				</a>
-			</li>
-			`;
+			</li>`;
 		}
 		if (parent_module == '' && popupactions[related_child] !== undefined) {
 			if (popupactions[related_child].conditions.fieldname != '') {
@@ -561,7 +558,7 @@ class RLActionRender {
 				}
 			}
 		}
-		actions += `</ul></div></div></div>`;
+		actions += '</ul></div></div></div>';
 		el.innerHTML = actions;
 		this.el = el;
 		this.render(props);
