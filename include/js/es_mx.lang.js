@@ -498,4 +498,5 @@ var alert_arr = {
 	'JSLBL_BACK': 'Atrás',
 	'GENDOC_CONFIRM_ACTION': '¿Estás seguro que quieres ejecutar esta operación?',
 	'LBL_COPY_ROWS': 'Copiar Registros',
+	'LBL_REMOVE': 'Eliminar',
 };

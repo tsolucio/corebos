@@ -496,4 +496,6 @@ var alert_arr = {
 	'MoveFile': 'Move file',
 	'JSLBL_BACK': 'Back',
 	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
+	'LBL_COPY_ROWS': 'Copiar Registros',
+	'LBL_REMOVE': 'Remove',
 };

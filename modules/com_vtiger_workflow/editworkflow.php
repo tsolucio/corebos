@@ -67,6 +67,9 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	} else {
 		$smarty->assign('schdtime_12h', date('h:ia', strtotime(substr($workflow->schtime, 0, strrpos($workflow->schtime, ':')))));
 	}
+
+	$smarty->assign('multipleschtime_12h', explode(',', $workflow->multipleschtime));
+	$smarty->assign('multipleschtime', $workflow->multipleschtime);
 	if (!empty($workflow->schannualdates)) {
 		$schannualdates = json_decode($workflow->schannualdates);
 		$schannualdates = DateTimeField::convertToUserFormat($schannualdates[0]);
@@ -184,6 +187,29 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		$smarty->assign('ERROR_MESSAGE', $msg);
 		coreBOS_Session::delete('malaunch_records');
 	}
+
+	$schedulerTimeOptions = array();
+	$counter = 1;
+	for ($t=0; $t < 24; $t++) {
+		$time = $t < 13 ? $t : $counter++;
+		for ($m = 0; $m < 60; $m+=15) {
+			$m = $m === 0 ? '00' : $m;
+			if ($t === 0) {
+				$schedulerTimeOptions[] = '12:'. $m .' am';
+				continue;
+			}
+			if ($t < 13) {
+				if ($t === 12) {
+					$schedulerTimeOptions[] = $time.':'.$m .' pm';
+					continue;
+				}
+				$schedulerTimeOptions[] = $time.':'.$m .' am';
+			} else {
+				$schedulerTimeOptions[] = $time.':'.$m .' pm';
+			}
+		}
+	}
+	$smarty->assign('schedulerTimeOptions', $schedulerTimeOptions);
 
 	$smarty->display("{$module->name}/EditWorkflow.tpl");
 }
