@@ -11456,7 +11456,7 @@ precacheAndRoute([{
   "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "2c5e4a6f9542f7662e1b9f262e22e9a3"
+  "revision": "334da10610b90c4d746dc8e989927da1"
 }, {
   "url": "include/js/dedup.js",
   "revision": "f09b1b73041383bfe8a85ccce9641617"
@@ -11465,16 +11465,16 @@ precacheAndRoute([{
   "revision": "130f9210a4bec854a576da0d74ddce9b"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "e259a771bd28e9c153276ff484c9a48d"
+  "revision": "c82dd9ad07a4e13b3037147a21b93ff0"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "1ab376be97bd70e6e3ec138561d6d041"
+  "revision": "93cc42a026e78fa88a2874c8889ccc91"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "e27f744507dc6a4a81c5f818a94db9ec"
+  "revision": "1da1893b3d0b21fe017fd57fd81969fb"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "13e418dd5ddb38ad8357569ad24f9dd0"
+  "revision": "0411aff6b0c03b9f0e799e51ff457185"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "1f4afb63ab98fa9fc92c00db09513e67"
@@ -11483,19 +11483,19 @@ precacheAndRoute([{
   "revision": "fdbce1da1a215e8de2a1cf289341397d"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "fb88141167d9646aca4a394e689d4d8c"
+  "revision": "21b8dd9a7d427babfbc96269aaf80fbc"
 }, {
   "url": "include/js/general.js",
   "revision": "758242421b2b9ac34804dbb23d10df72"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "f346848d802497b21c287f1c1f66e97e"
+  "revision": "8a1de06bb0cb91ce5b42cb867e77d52d"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "733037aedbea5f5a6a76f9afd5ebc54d"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "710b9c156403dde47b20f82380232e38"
+  "revision": "d967ad0e070aa57946f2b8113178bce3"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
@@ -11513,7 +11513,7 @@ precacheAndRoute([{
   "revision": "d5317a375aa85d10e53f5989b1be0524"
 }, {
   "url": "include/js/Mail.js",
-  "revision": "38f36445f41a532a04011c39feb50e58"
+  "revision": "f7e25dda6d98562660d0b7512ce38839"
 }, {
   "url": "include/js/massive.js",
   "revision": "5a09d9ad89882ba8ad3e993e11a08055"
@@ -11528,7 +11528,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "2f06fb34e3f557c8372730b8acfa928e"
+  "revision": "e830455c2fc12bdd60804e96e42c03af"
 }, {
   "url": "include/js/notebook.js",
   "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
@@ -11546,7 +11546,7 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "c6a53c730a36e338435524a403f35da3"
+  "revision": "e6ea805d72d7dcc9fb5b92c8f67fd290"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "89ad8ae2e8972f6085b6728624061ac2"
@@ -11561,7 +11561,7 @@ precacheAndRoute([{
   "revision": "5939e45063d7400f478b0b4a37a91e81"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "0cfcf9ab007e98b7b1821a9620a5f4bd"
+  "revision": "6666e3058c0128e8b0e3cb0ae65ce4eb"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -11589,6 +11589,9 @@ precacheAndRoute([{
 }, {
   "url": "include/components/FullCalendar/index.fullcalendar.js",
   "revision": "0b4d554e461b5508b19701a82ce48a35"
+}, {
+  "url": "include/components/ldsmail.js",
+  "revision": "ad322750daf13d50b91148aad00e0938"
 }, {
   "url": "include/components/ldsmodal.js",
   "revision": "daf823e352f61689ab6d714fbf7fb118"
@@ -12107,7 +12110,7 @@ precacheAndRoute([{
   "revision": "721bd3d5367129defea7f6bd1bb8eee3"
 }, {
   "url": "modules/Products/multifile.js",
-  "revision": "d9dc85cdf658755d29cdb4704fea4882"
+  "revision": "d6d1edf9fee10452eb678c2c9ba5e1e9"
 }, {
   "url": "modules/Products/Products.js",
   "revision": "df2676fb062d6670d5f0c696bbe74c17"
@@ -12131,7 +12134,7 @@ precacheAndRoute([{
   "revision": "69636c3bb0f5569277b10c98016af69a"
 }, {
   "url": "modules/Emails/Emails.js",
-  "revision": "c5f394c40d03b359242e795da97a9d45"
+  "revision": "75e3b6db10996de8dfbc2b359663d9f5"
 }, {
   "url": "modules/Rss/Rss.js",
   "revision": "72cbe52c78db93657e84d24dfadce955"
