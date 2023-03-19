@@ -863,3 +863,55 @@ function onschedule_selectschedule(selbox) {
 		break;
 	}
 }
+
+function addScheduleTime() {
+	document.getElementById('sheduletimelist').style.display = 'none';
+	document.getElementById('addschedulebtn').style.display ='none';
+	document.getElementById('addscheduleform').style.display = 'block';
+}
+
+function selectschTime(schtime) {
+	const inputField = document.getElementById('multipleschtime');
+	const schtimeid = schtime.replace(/[:' '-]/g, '-');
+	const schtimeList = document.getElementById('sheduletimelist');
+	schtimeList.style.display = 'block';
+	document.getElementById('addschedulebtn').style.display ='block';
+	document.getElementById('addscheduleform').style.display = 'none';
+
+	if (inputField.value.includes(schtime)) {
+		return true;
+	}
+
+	const newTime = `<span class="slds-pill slds-pill_link" id="${schtimeid}">
+		<a href="#" class="slds-pill__action" title=""><span class="slds-pill__label">${schtime}</span></a>
+		<a class="slds-button slds-button_icon slds-button_icon slds-pill__remove" title="${alert_arr.LBL_REMOVE}" onclick="removeSchTime('${schtime}')">
+			<svg class="slds-button__icon" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+			</svg>
+			<span class="slds-assistive-text">${alert_arr.LBL_REMOVE}</span>
+		</a>
+		</span>`;
+	schtimeList.innerHTML+=newTime;
+	inputField.value+= inputField.value === '' ? schtime: ','+schtime;
+}
+
+function triggerTimeInput() {
+	const element = document.getElementById('chtimemultipletimers');
+	if (element.classList.contains('slds-is-open')) {
+		element.classList.remove('slds-is-open');
+	} else {
+		element.classList.add('slds-is-open');
+	}
+}
+
+function removeSchTime(schtime) {
+	const schtimeid = schtime.replace(/[:' '-]/g, '-');
+	document.getElementById(schtimeid).remove();
+
+	const inputField = document.getElementById('multipleschtime');
+	if (inputField.value.includes(schtime + ',')) {
+		inputField.value = inputField.value.replace(schtime + ',', '');
+	} else {
+		inputField.value = inputField.value.includes(','+schtime) ? inputField.value.replace(','+schtime, '') : inputField.value.replace(schtime, '');
+	}
+}

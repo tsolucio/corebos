@@ -309,6 +309,9 @@ function checkevvtMenuInstalled() {
 	if (!in_array('onerecord', $cnmsg)) {
 		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `onerecord` int(11) default NULL;');
 	}
+	if (!in_array('multipleschtime', $cnmsg)) {
+		$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `multipleschtime` varchar(500)');
+	}
 	$cnmsg = $adb->getColumnNames('vtiger_profile2field');
 	if (!in_array('summary', $cnmsg)) {
 		$adb->query("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");

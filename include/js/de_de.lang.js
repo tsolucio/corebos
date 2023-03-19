@@ -497,4 +497,5 @@ var alert_arr = {
 	'JSLBL_BACK': 'Back',
 	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 	'LBL_COPY_ROWS': 'Copy Rows',
+	'LBL_REMOVE': 'Remove',
 };

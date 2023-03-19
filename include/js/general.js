@@ -7066,7 +7066,7 @@ function findUp(element, searchterm) {
 
 function initSelect2() {
 	if (Application_AssignUser_Search == 1) {
-		const dataType = document.querySelectorAll(`[data-uitype="53"]`);
+		const dataType = document.querySelectorAll('[data-uitype="53"]');
 		for (let i = 0; i < dataType.length; i++) {
 			const el = document.getElementById(dataType[i].id);
 			if (el !== undefined && el !== null) {
