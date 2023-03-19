@@ -27,6 +27,9 @@ class Emails extends CRMEntity {
 
 	// added to check email save from plugin or not
 	public $plugin_save = false;
+	public $filename = '';
+	public $parent_id = 0;
+	public $parent_type = '';
 	public $rel_users_table = 'vtiger_salesmanactivityrel';
 	public $rel_contacts_table = 'vtiger_cntactivityrel';
 	public $rel_serel_table = 'vtiger_seactivityrel';

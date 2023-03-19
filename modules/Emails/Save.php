@@ -141,7 +141,7 @@ if ($current_user->column_fields['send_email_to_sender']=='1' && isset($_REQUEST
 	if ($user_mail_status != 1) {
 		$adb->pquery('delete from '.$crmEntityTable1.' where crmid=?', array($focus->id));
 		$adb->pquery('delete from vtiger_emaildetails where emailid=?', array($focus->id));
-		$error_msg = '<font color=red><strong>'.$mod_strings['LBL_CHECK_USER_MAILID'].'</strong></font>';
+		$error_msg = '<span style="color:red;"><strong>'.$mod_strings['LBL_CHECK_USER_MAILID'].'</strong></span>';
 		$ret_error = 1;
 		$ret_parentid = vtlib_purify($_REQUEST['parent_id']);
 		$ret_toadd = vtlib_purify($_REQUEST['parent_name']);
@@ -194,9 +194,13 @@ if (isset($_REQUEST['return_action']) && $_REQUEST['return_action'] == 'mailbox'
 	echo '<script>if (window.opener) {
 		window.opener.location.href=window.opener.location.href;
 		window.self.close();
+	} else {';
+	if (isset($_REQUEST['ajax'])) {
+		echo 'ldsMail.close();';
 	} else {
-		window.location.href="'.$url.'";
-	}</script>';
+		echo 'window.location.href="'.$url.'";';
+	}
+	echo '}</script>';
 	die(); // to avoid unnecessay output to closing screen
 }
 ?>

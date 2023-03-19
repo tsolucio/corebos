@@ -2544,7 +2544,7 @@ function validateImageContents($filename) {
  * @param integer Template Id for an Email Template
  * @return array Returns Subject, Body of Template of the the particular email template.
  */
-function getTemplateDetails($templateid, $crmid = null) {
+function getTemplateDetails($templateid, $crmid = null, $mergetemplate = 1) {
 	global $adb, $log, $current_user;
 	$log->debug("> into getTemplateDetails $templateid");
 	$returndata = array();
@@ -2571,20 +2571,23 @@ function getTemplateDetails($templateid, $crmid = null) {
 		if (strpos($crmid, 'x')>0) {
 			list($wsid, $crmid) = explode('x', $crmid);
 		}
+		$context = array(
+			'Email_AutomaticMerge' => $mergetemplate
+		);
 		require_once 'include/Webservices/DescribeObject.php';
 		$type = getSalesEntityType($crmid);
 		$obj = vtws_describe($type, $current_user);
 		$focus = CRMEntity::getInstance($type);
 		$focus->retrieve_entity_info($crmid, $type);
-		$returndata[1] = getMergedDescription($returndata[1], $crmid, $type);
-		$returndata[2] = getMergedDescription($returndata[2], $crmid, $type);
+		$returndata[1] = getMergedDescription($returndata[1], $crmid, $type, $context);
+		$returndata[2] = getMergedDescription($returndata[2], $crmid, $type, $context);
 		foreach ($obj['fields'] as $field) {
 			if (isset($field['uitype']) && $field['uitype'] == '10') {
 				$relid = $focus->column_fields[$field['name']];
 				if (!empty($relid)) {
 					$reltype = getSalesEntityType($relid);
-					$returndata[1] = getMergedDescription($returndata[1], $relid, $reltype);
-					$returndata[2] = getMergedDescription($returndata[2], $relid, $reltype);
+					$returndata[1] = getMergedDescription($returndata[1], $relid, $reltype, $context);
+					$returndata[2] = getMergedDescription($returndata[2], $relid, $reltype, $context);
 				}
 			}
 		}
@@ -2616,7 +2619,9 @@ function getMergedDescription($description, $id, $parent_type, $context = []) {
 	}
 	if ($parent_type != 'Users') {
 		$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
-		$description = $emailTemplate->getProcessedDescription();
+		if (isset($context['Email_AutomaticMerge']) && $context['Email_AutomaticMerge'] == 1) {
+			$description = $emailTemplate->getProcessedDescription();
+		}
 	}
 	$pmods = array('users', 'custom');
 	$token_data_pair = explode('$', $description);
