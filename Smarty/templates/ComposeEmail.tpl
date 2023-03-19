@@ -48,6 +48,7 @@
 	<input type="hidden" name="action">
 	<input type="hidden" name="return_action" value="{if isset($RETURN_ACTION)}{$RETURN_ACTION}{/if}">
 	<input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
+	<input type="hidden" name="return_id" value="{if isset($RETURN_ID)}{$RETURN_ID}{/if}">
 	<input type="hidden" name="popupaction" value="create">
 	<input type="hidden" name="hidden_toid" id="hidden_toid">
 	<input type="hidden" name="templateid" id="templateid">

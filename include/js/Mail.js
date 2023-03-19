@@ -127,7 +127,7 @@ function validate_sendmail(idlist, module) {
 	}
 	if (email_type != '') {
 		var field_lists = email_type.join(':');
-		var url= `index.php?module=Emails&action=EmailsAjax&pmodule=${module}&file=EditView&sendmail=true&modalmode=true&idlist=${idlist}&field_lists=${field_lists}${url1}`;
+		var url= `index.php?module=Emails&action=EmailsAjax&pmodule=${module}&paction=${gVTviewType}&file=EditView&sendmail=true&modalmode=true&idlist=${idlist}&field_lists=${field_lists}${url1}`;
 		ldsMail.show(alert_arr.LBL_SEND_MAIL, '');
 		$('#global-mail-content').load(url, function () {
 			mailfooter();
