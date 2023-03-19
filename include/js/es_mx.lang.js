@@ -261,6 +261,8 @@ var alert_arr = {
 	'LBL_FORWARD_EMAIL' : 'Reenviar',
 	'LBL_REPLY_TO_SENDER' : 'Responder',
 	'LBL_REPLY_TO_ALL' : 'Responder a todos',
+	'ERR_EMAIL_SEND': 'Error enviando correo',
+	'LBL_EMAIL_SEND': 'Email enviado correctamente',
 
 	'LBL_WIDGET_HIDDEN' : 'Elemento escondido',
 	'LBL_RESTORE_FROM_PREFERENCES' : 'Se puede habilitar en tus preferencias',

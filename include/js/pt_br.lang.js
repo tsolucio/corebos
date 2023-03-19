@@ -269,6 +269,8 @@ var alert_arr = {
 	'LBL_FORWARD_EMAIL': 'Encaminhar',
 	'LBL_REPLY_TO_SENDER': 'Responder remetente',
 	'LBL_REPLY_TO_ALL': 'Responder todos',
+	'ERR_EMAIL_SEND': 'Error sending email',
+	'LBL_EMAIL_SEND': 'Email sent correctly',
 
 	'LBL_WIDGET_HIDDEN': 'Widget ocultado',
 	'LBL_RESTORE_FROM_PREFERENCES': ' Você poderá restaura-lo em minhas preferências',

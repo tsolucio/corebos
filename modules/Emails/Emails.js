@@ -130,26 +130,40 @@ function findAngleBracket(mailadd) {
 }
 
 function server_check() {
-	var oform = window.document.EditView;
 	jQuery.ajax({
 		method:'POST',
 		url:'index.php?module=Emails&action=EmailsAjax&file=Save&ajax=true&server_check=true',
 	}).done(function (response) {
 		if (response.indexOf('SUCCESS') > -1) {
-			oform.send_mail.value='true';
-			oform.action.value='Save';
-			oform.submit();
+			sendEmail();
 		} else {
 			if (response.indexOf('FAILURESTORAGE') > -1) {
 				if (confirm(conf_srvr_storage_err_msg)) {
-					oform.send_mail.value='true';
-					oform.action.value='Save';
-					oform.submit();
+					sendEmail();
 				}
 			} else {
 				alert(conf_mail_srvr_err_msg);
 			}
 			return false;
+		}
+	});
+}
+
+function sendEmail() {
+	var eform = window.document.EditView;
+	eform.send_mail.value='true';
+	eform.action.value='Save';
+	var eformfields = getFormFields('EditView');
+	jQuery.ajax({
+		method:'POST',
+		data: eformfields,
+		url:'index.php?module=Emails&action=EmailsAjax&file=Save&ajax=true',
+	}).done(function (response) {
+		if (response.substr(0, 8) == '<script>') {
+			eval(response.substr(8).substr(0, response.length - 17));
+			ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_EMAIL_SEND, 'success');
+		} else {
+			ldsNotification.show(alert_arr.ERROR, alert_arr.ERR_EMAIL_SEND, 'error');
 		}
 	});
 }

@@ -244,6 +244,8 @@ var alert_arr = {
 	'LBL_FORWARD_EMAIL':'Forward',
 	'LBL_REPLY_TO_SENDER':'Reply To Sender',
 	'LBL_REPLY_TO_ALL':'Reply To All',
+	'ERR_EMAIL_SEND': 'Error sending email',
+	'LBL_EMAIL_SEND': 'Email sent correctly',
 	'LBL_WIDGET_HIDDEN':'Widget Hidden',
 	'LBL_RESTORE_FROM_PREFERENCES':'You can restore it from Create Button of Home Page or your preferences',
 	'ERR_HIDING':'Error while hiding',

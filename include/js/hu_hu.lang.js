@@ -248,6 +248,8 @@ var alert_arr = {
 	'LBL_FORWARD_EMAIL' : 'Továbbít',
 	'LBL_REPLY_TO_SENDER' : 'Válasz a Feladónak',
 	'LBL_REPLY_TO_ALL' : 'Válasz Mindenkinek',
+	'ERR_EMAIL_SEND': 'Error sending email',
+	'LBL_EMAIL_SEND': 'Email sent correctly',
 	'LBL_WIDGET_HIDDEN' : 'Rejtett eszköz',
 	'LBL_RESTORE_FROM_PREFERENCES' : 'A Kezdőlap Létrehozás gombjával vagy a beállításaidból vissza tudod állítani',
 	'ERR_HIDING' : 'Hiba az elrejtés közben',

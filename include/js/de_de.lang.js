@@ -264,6 +264,8 @@ var alert_arr = {
 	'LBL_FORWARD_EMAIL': 'weiterleiten',
 	'LBL_REPLY_TO_SENDER': 'antworten',
 	'LBL_REPLY_TO_ALL': 'An alle antworten',
+	'ERR_EMAIL_SEND': 'Error sending email',
+	'LBL_EMAIL_SEND': 'Email sent correctly',
 
 	'LBL_WIDGET_HIDDEN' : 'Widget entfernt',
 	'LBL_RESTORE_FROM_PREFERENCES' : 'Sie können es unter Meine Einstellungen wieder herstellen',

@@ -268,6 +268,8 @@ var alert_arr = {
 	'LBL_FORWARD_EMAIL': 'Stuur door',
 	'LBL_REPLY_TO_SENDER': 'Beantwoord afzender',
 	'LBL_REPLY_TO_ALL': 'Beantwoord allen',
+	'ERR_EMAIL_SEND': 'Error sending email',
+	'LBL_EMAIL_SEND': 'Email sent correctly',
 
 	'LBL_WIDGET_HIDDEN': 'Widget verborgen',
 	'LBL_RESTORE_FROM_PREFERENCES': 'U kunt het terugbrengen door de toevoeg knop in de home pagina of binnen uw voorkeuren',

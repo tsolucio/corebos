@@ -194,9 +194,13 @@ if (isset($_REQUEST['return_action']) && $_REQUEST['return_action'] == 'mailbox'
 	echo '<script>if (window.opener) {
 		window.opener.location.href=window.opener.location.href;
 		window.self.close();
+	} else {';
+	if (isset($_REQUEST['ajax'])) {
+		echo 'ldsMail.close();';
 	} else {
-		window.location.href="'.$url.'";
-	}</script>';
+		echo 'window.location.href="'.$url.'";';
+	}
+	echo '}</script>';
 	die(); // to avoid unnecessay output to closing screen
 }
 ?>

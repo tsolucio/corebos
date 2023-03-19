@@ -256,6 +256,8 @@ var alert_arr = {
 	'LBL_FORWARD_EMAIL':'Inoltra',
 	'LBL_REPLY_TO_SENDER' :'Rispondi al mittente',
 	'LBL_REPLY_TO_ALL':'Rispondi a tutti',
+	'ERR_EMAIL_SEND': 'Error sending email',
+	'LBL_EMAIL_SEND': 'Email sent correctly',
 
 	'LBL_WIDGET_HIDDEN':'Widget Nascosto',
 	'LBL_RESTORE_FROM_PREFERENCES' :'Puoi Ripristinarlo dalle tue preferenze',
