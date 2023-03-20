@@ -76,7 +76,6 @@ class GridListView {
 			$searchCriteria['search'] = 'true';
 			$search_mode = true;
 		} elseif (($this->searchtype == 'Advanced' || $this->searchtype == 'advance') && $this->searchUrl != '') {
-			$this->searchUrl = urldecode($this->searchUrl);
 			$search = explode('&', $this->searchUrl);
 			if ($this->searchtype == 'advance') {
 				$searchCriteria['advft_criteria'] = $this->searchUrl;
@@ -86,7 +85,7 @@ class GridListView {
 				foreach ($search as $value) {
 					if (!empty($value)) {
 						$param = explode('=', $value);
-						$searchCriteria[$param[0]] = $param[1];
+						$searchCriteria[$param[0]] = urldecode($param[1]);
 					}
 				}
 			}
