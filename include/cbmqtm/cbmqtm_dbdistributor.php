@@ -20,7 +20,7 @@ include_once 'include/cbmqtm/cbmqtm_manager.php';
 
 class cbmqtm_dbdistributor extends cbmqtm_manager {
 	protected static $db = null;
-	protected $version = '1.0';
+	protected $version = '2.0';
 
 	public static function getInstance() {
 		self::setDB();
@@ -32,30 +32,38 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		static::$db = new PearDatabase();
 	}
 
-	public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information) {
+	public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange = array()) {
 		if ($share != '1:M' && $share != 'P:S') {
 			$share = '1:M';
 		}
 		if ($share == '1:M' || !$this->subscriptionExist($channel, $producer, $consumer)) {
-			$this->insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information);
+			$this->insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange);
 		} else {
 			self::setDB();
 			$subrs = static::$db->pquery('select * from cb_mqsubscriptions where channel=?', array($channel));
 			while ($subscriber = static::$db->fetch_array($subrs)) {
-				$this->insertMsg($channel, $producer, $subscriber['consumer'], $type, $share, $sequence, $expires, $deliverafter, $userid, $information);
+				$this->insertMsg($channel, $producer, $subscriber['consumer'], $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange);
 			}
 		}
 	}
 
-	private function insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information) {
+	private function insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information, $deliverRange) {
 		$rightnow = time();
 		if (empty($deliverafter)) {
 			$deliverafter = 0;
 		}
+		if (empty($deliverRange)) {
+			$deliverRange = array('deliverStartTime'=>'00:00:00', 'deliverEndTime'=>'23:59:59', 'canSendOnSaturday'=>1, 'canSendOnSunday'=>1);
+		}
+		$deliverStartTime = (isset($deliverRange['deliverStartTime'])) ? $deliverRange['deliverStartTime'] : '00:00:00';
+		$deliverEndTime = (isset($deliverRange['deliverEndTime'])) ? $deliverRange['deliverEndTime'] : '23:59:59';
+		$canSendOnSaturday = (isset($deliverRange['canSendOnSaturday'])) ? $deliverRange['canSendOnSaturday'] : 1;
+		$canSendOnSunday = (isset($deliverRange['canSendOnSunday'])) ? $deliverRange['canSendOnSunday'] : 1;
 		self::setDB();
-		static::$db->pquery('insert into cb_messagequeue
-			(channel, producer, consumer, type, share, sequence, senton, deliverafter, expires, version, invalid, invalidreason, userid, information)
-			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
+		static::$db->pquery(
+			'insert into cb_messagequeue (channel, producer, consumer, type, share, sequence, senton, deliverafter, expires, version, invalid, invalidreason, userid,
+				information, deliverstarttime, deliverendtime, cansendonsaturday, cansendonsunday) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+			array(
 				'channel' => $channel,
 				'producer' => $producer,
 				'consumer' => $consumer,
@@ -69,14 +77,20 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 				'invalid' => 0,
 				'invalidreason' => '',
 				'userid' => $userid,
-				'information' => $information
-		));
+				'information' => $information,
+				'deliverstarttime' => $deliverStartTime,
+				'deliverendtime' => $deliverEndTime,
+				'cansendonsaturday' => $canSendOnSaturday,
+				'cansendonsunday' => $canSendOnSunday,
+			)
+		);
 	}
 
-	public function getMessage($channel, $consumer, $producer = '*', $userid = '*') {
-		self::setDB();
-		$sql = 'select * from cb_messagequeue where deliverafter<=? and channel=? and consumer=?';
-		$params = array(date('Y-m-d H:i:s', time()), $channel, $consumer);
+	private function getQuery($fields, $channel, $consumer, $producer = '*', $userid = '*') {
+		$nowtime = date('H:i:s', time());
+		$params = array(date('Y-m-d H:i:s', time()), $channel, $consumer, $nowtime, $nowtime);
+		$sql = 'select '.$fields.' from cb_messagequeue where deliverafter<=? and channel=? and consumer=?
+			and ((deliverstarttime<? or deliverstarttime is null) and (deliverendtime>? or deliverendtime is null))';
 		if ($producer != '*') {
 			$sql .= ' and producer=?';
 			$params[] = $producer;
@@ -85,6 +99,18 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 			$sql .= ' and userid=?';
 			$params[] = $userid;
 		}
+		$check_day = date('l');
+		if ($check_day == 'Saturday') {
+			$sql .= ' and (cansendonsaturday=1 or cansendonsaturday is null)';
+		} elseif ($check_day == 'Sunday') {
+			$sql .= ' and (cansendonsunday=1 or cansendonsunday is null)';
+		}
+		return [$sql, $params];
+	}
+
+	public function getMessage($channel, $consumer, $producer = '*', $userid = '*') {
+		self::setDB();
+		list($sql, $params) = $this->getQuery('*', $channel, $consumer, $producer, $userid);
 		$sql .= ' order by deliverafter,sequence asc limit 1';
 		$msgrs = static::$db->pquery($sql, $params);
 		if ($msgrs && static::$db->num_rows($msgrs)==1) {
@@ -114,16 +140,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 
 	public function isMessageWaiting($channel, $consumer, $producer = '*', $userid = '*') {
 		self::setDB();
-		$sql = 'select count(*) from cb_messagequeue where deliverafter<=? and channel=? and consumer=?';
-		$params = array(date('Y-m-d H:i:s', time()), $channel, $consumer);
-		if ($producer != '*') {
-			$sql .= ' and producer=?';
-			$params[] = $producer;
-		}
-		if ($userid != '*') {
-			$sql .= ' and userid=?';
-			$params[] = $userid;
-		}
+		list($sql, $params) = $this->getQuery('count(*)', $channel, $consumer, $producer, $userid);
 		$msgrs = static::$db->pquery($sql, $params);
 		return ($msgrs && static::$db->query_result($msgrs, 0, 0) > 0);
 	}
