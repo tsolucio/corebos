@@ -181,5 +181,21 @@ $mod_strings = array(
 	'facebook_destination_module' => 'Destination Module',
 	'Unable2Connect' => 'Unable to connect',
 	'Able2Connect' => 'Able to connect',
+	//Electronic Invoice Settings
+	'Electronic Invoice' => "Setări facturi electronice",
+	'Electronic Invoice_Desc' => "Factura electronica",
+	'EI_username' => 'Nume de utilizator',
+	'EI_password' => 'Password',
+	'EI_baseurl' => 'Base URL',
+	'Passphrase' => 'Fraza de acces',
+	'PublicKey' => 'Cheie publică',
+	'PrivateKey' => 'Cheie privată',
+	'PFKKey' => 'Cheia PFK',
+	'Default Administrative Center' => 'Centru administrativ implicit',
+	'Account Map' => 'Harta contului',
+	'Contact Map' => 'Harta de contact',
+	'Invoice Map' => 'Harta facturii',
+	'DefaultSignType' =>'Tip de semn implicit',
+	'Time Stamp' => 'Timestamp-ul',
 );
 ?>

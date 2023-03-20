@@ -181,5 +181,21 @@ $mod_strings = array(
 	'facebook_destination_module' => 'Destination Module',
 	'Unable2Connect' => 'Unable to connect',
 	'Able2Connect' => 'Able to connect',
+	//Electronic Invoice Settings
+	'Electronic Invoice' => "Elektronikus számla beállításai",
+	'Electronic Invoice_Desc' => "Elektronikus számla",
+	'EI_username' => 'Felhasználónév',
+	'EI_password' => 'Password',
+	'EI_baseurl' => 'Base URL',
+	'Passphrase' => 'Jelszó',
+	'PublicKey' => 'Nyilvános kulcs',
+	'PrivateKey' => 'Privát kulcs',
+	'PFKKey' => 'PFK kulcs',
+	'Default Administrative Center' => 'Alapértelmezett adminisztrációs központ',
+	'Account Map' => 'Számlatérkép',
+	'Contact Map' => 'Kapcsolati térkép',
+	'Invoice Map' => 'Számla térkép',
+	'DefaultSignType' =>'Alapértelmezett jeltípus',
+	'Time Stamp' => 'Időbélyeg',
 );
 ?>
