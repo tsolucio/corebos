@@ -39,6 +39,7 @@
 																<span class="{$REL_MOD_ICONS[$_RELATION_ID]['containerClass']}">
 																	<svg class="slds-icon slds-icon_small" aria-hidden="true">
 																		<use xlink:href="include/LD/assets/icons/{$REL_MOD_ICONS[$_RELATION_ID]['library']}-sprite/svg/symbols.svg#{$REL_MOD_ICONS[$_RELATION_ID]['icon']}"></use>
+																		<use xlink:href="include/LD/assets/icons/{$REL_MOD_ICONS[$_RELATION_ID]['library']}-sprite/svg/symbols.svg#{$REL_MOD_ICONS[$_RELATION_ID]['icon']}"></use>
 																	</svg>
 																</span>
 															</span>

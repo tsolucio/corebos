@@ -80,12 +80,18 @@ if (!empty($IS_REL_LIST)) {
 			continue;
 		}
 		$modInstance = CRMEntity::getInstance($name);
+		if (strpos($modInstance->moduleIcon['icon'], '-') !== false) {
+			$modInstance->moduleIcon['icon'] = end(explode('-', $modInstance->moduleIcon['icon']));
+		}
 		$icon = $modInstance->moduleIcon;
 		$RLdata[$id] = $icon;
 	}
 }
 $smarty->assign('IS_REL_LIST', $IS_REL_LIST);
 $smarty->assign('REL_MOD_ICONS', $RLdata);
+if (strpos($focus->moduleIcon['icon'], '-') !== false) {
+	$focus->moduleIcon['icon'] = end(explode('-', $focus->moduleIcon['icon']));
+}
 $smarty->assign('currentModuleIcon', $focus->moduleIcon);
 $isPresentRelatedListBlock = isPresentRelatedListBlock($currentModule);
 $smarty->assign('IS_RELBLOCK_LIST', $isPresentRelatedListBlock);
