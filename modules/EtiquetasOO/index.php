@@ -68,8 +68,7 @@ function outputOONoIconHeader($i18n) {
 
 $smarty = new vtigerCRM_Smarty();
 
-echo '
-<script src="modules/EtiquetasOO/clipboard.min.js"></script>
+echo '<script src="include/js/clipboard.min.js"></script>
 <script>
 function go_tab(obj){
 	location.href = "#"+obj.options[obj.selectedIndex].value;
@@ -326,6 +325,6 @@ echo '</div>';
 echo '</div>'; // container
 ?>
 <script>
-new Clipboard('.btn');
-new Clipboard('.slds-hint-parent');
+new ClipboardJS('.btn');
+new ClipboardJS('.slds-hint-parent');
 </script>
