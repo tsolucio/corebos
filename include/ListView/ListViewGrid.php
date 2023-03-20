@@ -64,12 +64,11 @@ class GridListView {
 		}
 		$search_mode = false;
 		if ($this->searchtype == 'Basic' && $this->searchUrl != '') {
-			$this->searchUrl = urldecode($this->searchUrl);
 			$search = explode('&', $this->searchUrl);
 			foreach ($search as $value) {
 				if (!empty($value)) {
 					$param = explode('=', $value);
-					$searchCriteria[$param[0]] = $param[1];
+					$searchCriteria[$param[0]] = urldecode($param[1]);
 				}
 			}
 			$searchCriteria['action'] = $this->module.'Ajax';
