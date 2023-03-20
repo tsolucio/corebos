@@ -15,7 +15,7 @@
  *************************************************************************************************/
 -->*}
 
-{foreach key=RLTAB item=RLARR from=$RLTabs}
+{foreach key=RLTAB item=RLARR from=$RLTabs name=rltab}
 {if $RETURN_RELATEDPANE eq $RLTAB}
 	<li class="slds-tabs_default__item slds-is-active" role="presentation">
 		<a class="slds-tabs_default__link"role="tab" tabindex="0" aria-selected="true">
@@ -27,6 +27,18 @@
 <div class="slds-tabs_default slds-tabs_medium">
 	<ul class="slds-tabs_default__nav" role="tablist">
 	{/if}
+		{if $smarty.foreach.rltab.index eq 0 && $rlmode neq 'RelatedPane'}
+		<li class="slds-tabs_default__item slds-is-active" role="presentation">
+			<a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 14px">
+				<span class="{$currentModuleIcon['containerClass']}">
+					<svg class="slds-icon slds-icon_small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/{$currentModuleIcon['library']}-sprite/svg/symbols.svg#{$currentModuleIcon['icon']}"></use>
+					</svg>
+				</span>
+				{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}
+			</a>
+		</li>
+		{/if}
 		<li class="slds-tabs_default__item" role="presentation">
 			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
 				<a class="slds-tabs_default__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}" style="font-size: 14px">
