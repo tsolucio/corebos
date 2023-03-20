@@ -644,6 +644,9 @@ class Validations extends processcbMap {
 			},
 			$_FILES
 		);
+		if (!is_array($filefields)) {
+			$filefields = array();
+		}
 		return array_merge($structure, $filefields);
 	}
 }
