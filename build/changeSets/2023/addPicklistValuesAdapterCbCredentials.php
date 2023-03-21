@@ -26,13 +26,12 @@ class addPicklistValuesAdapterCbCredentials extends cbupdaterWorker {
 			$module = Vtiger_Module::getInstance('cbCredentials');
 			$field = Vtiger_Field::getInstance('adapter', $module);
 			if ($field) {
-			$field->setPicklistValues(array('credentialsFile', 'emailSettings'));
-		}
+				$field->setPicklistValues(array('credentialsFile', 'emailSettings'));
+			}
 			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
 			$this->markApplied(false);
 		}
 
 		$this->finishExecution();
 	}
-
 }
