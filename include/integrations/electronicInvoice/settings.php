@@ -41,7 +41,6 @@ if ($isadmin) {
 
 }
 
-
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Electronic Invoice', $currentModule));
 $eInvoiceSettings = $electronicInvoice->getSettings();
 $smarty->assign('isActive', $electronicInvoice->isActive());
@@ -55,5 +54,4 @@ include 'include/integrations/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('ISADMIN', $isadmin);
 $smarty->display('modules/Utilities/electronicInvoice.tpl');
-
  ?>

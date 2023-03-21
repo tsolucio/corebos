@@ -21,12 +21,10 @@ require_once 'include/Webservices/Revise.php';
 require_once 'include/Webservices/Create.php';
 include_once 'include/Webservices/Update.php';
 require_once 'modules/cbupdater/cbupdaterWorker.php';
-require_once('include/database/PearDatabase.php');
-require_once('include/utils/utils.php');
-require_once('include/utils/VtlibUtils.php');
-
-require "vendor/autoload.php";
-
+require_once 'include/database/PearDatabase.php';
+require_once 'include/utils/utils.php';
+require_once 'include/utils/VtlibUtils.php';
+require 'vendor/autoload.php';
 
 class electonicInvoiceUpdater extends cbupdaterWorker {
 	// stub to access the updater worker methods
@@ -34,7 +32,6 @@ class electonicInvoiceUpdater extends cbupdaterWorker {
 		parent::__construct(0, false);
 	}
 }
-
 
 class corebos_electronicInvoice {
 	private $publickey = '';
@@ -50,7 +47,6 @@ class corebos_electronicInvoice {
 	private $EIUsername = '';
 	private $EIpassword = '';
 
-
 	// Configuration Keys
 	const KEY_ISACTIVE = 'electronicInvoice_isactive';
 	const KEY_PUBLICKEY = 'ispublickey_display';
@@ -65,7 +61,6 @@ class corebos_electronicInvoice {
 	const KEY_BASEURL = 'isEI_baseurl';
 	const KEY_EINVOICEUSERNAME = 'isEI_username';
 	const KEY_EINVOICEPASSWORD = 'isEI_password';
-
 
 	public function __construct() {
 		$this->initGlobalScope();
@@ -131,12 +126,11 @@ class corebos_electronicInvoice {
 	}
 
 	public function activateFieldsModules() {
-
 		$fieldLayout = array(
 			'Contacts' => array(
 				'LBL_EINVOICE' => array(
 					'islegalentity' => array(
-						'columntype'=>'varchar(100)',
+						'columntype'=>'varchar(3)',
 						'typeofdata'=>'C~O',
 						'uitype'=>56,
 						'displaytype'=>'1',
@@ -159,7 +153,7 @@ class corebos_electronicInvoice {
 					'website' => array(
 						'columntype'=>'varchar(150)',
 						'typeofdata'=>'V~O',
-						'uitype'=>'1',
+						'uitype'=>'17',
 						'displaytype'=>'1',
 						'label'=>'website',
 					),
@@ -405,20 +399,12 @@ class corebos_electronicInvoice {
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 		);
 	}
-
 	public function deactivateFieldsModules() {
-
 		$module = Vtiger_Module::getInstance('Invoice');
 		$field = Vtiger_Field::getInstance('invoicestatus', $module);
 		if ($field) {
 			$field->delPicklistValues(array('signede', 'sende'));
 		}
-
-		/*if ($field) {
-			$picklistValues = $field->getPicklistValues();
-			$updatedValues = array_diff($picklistValues, array('signede', 'sende'));
-			$field->setPicklistValues($updatedValues);
-		}*/
 
 		$fieldLayout = array(
 			'Contacts' => array(
@@ -443,7 +429,6 @@ class corebos_electronicInvoice {
 		);
 		$eIcbwrk = new electonicInvoiceUpdater();
 		$eIcbwrk->massHideFields($fieldLayout);
-
 	}
 }
  ?>

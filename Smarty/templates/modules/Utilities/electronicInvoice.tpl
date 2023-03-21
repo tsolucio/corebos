@@ -1,8 +1,8 @@
 {include file='Buttons_List.tpl'}
-<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43" aria-modal="true">
+<section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="eInvoice" aria-modal="true">
 <div class="slds-modal__container slds-p-around_none">
 	<header class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-		<h2 id="header43" class="slds-text-heading_medium">
+		<h2 id="eInvoice" class="slds-text-heading_medium">
 		<div class="slds-media__figure">
 			<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-m-right_small">
 				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#sync"></use>
@@ -185,23 +185,22 @@
 		</div>
 	</div>
 		<div class="slds-form-element slds-m-top_small">
-			<label class="slds-form-element__label"  for="DefaultSignType">{'DefaultSignType'|@getTranslatedString:$MODULE}</label>
+			<label class="slds-form-element__label" for="DefaultSignType">{'DefaultSignType'|@getTranslatedString:$MODULE}</label>
 		</div>
-		<span class="slds-radio">
-			<input name="assigntype" id="assigntypeFACe" checked="checked" value="FACe" type="radio">
-				<label class="slds-radio__label" for="assigntypeFACe">
-					<span class="slds-radio_faux"></span>
-						<span class="slds-form-element__label">FACe</span>
-				</label>
-			<input name="assigntype" id="assigntypeFACB2B" value="FACB2B" type="radio">
-				<label class="slds-radio__label" for="assigntypeFACB2B">
-					<span class="slds-radio_faux"></span>
-						<span class="slds-form-element__label">FACB2B</span>
-				</label>
-		</span>
-
+	<span class="slds-radio">
+	  <input name="assigntype" id="assigntypeFACe" checked="checked" value="FACe" type="radio">
+		<label class="slds-radio__label" for="assigntypeFACe">
+		  <span class="slds-radio_faux"></span>
+		  <span class="slds-form-element__label">FACe</span>
+		</label>
+	  <input name="assigntype" id="assigntypeFACB2B" value="FACB2B" type="radio">
+		<label class="slds-radio__label" for="assigntypeFACB2B">
+		  <span class="slds-radio_faux"></span>
+		  <span class="slds-form-element__label">FACB2B</span>
+		</label>
+	</span>
 		<div class="slds-form-element slds-m-top_small">
-			<label class="slds-form-element__label" for="Time Stamp" style="font-size: 20px;"><b>{'Time Stamp'|@getTranslatedString:$MODULE}</b></label>
+			<label class="slds-form-element__label" for="TimeStamp" style="font-size: 20px;"><b>{'Time Stamp'|@getTranslatedString:$MODULE}</b></label>
 		</div>
 		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="EI_baseurl">{'EI_baseurl'|@getTranslatedString:$MODULE}</label>
