@@ -81,7 +81,8 @@ if (!empty($IS_REL_LIST)) {
 		}
 		$modInstance = CRMEntity::getInstance($name);
 		if (strpos($modInstance->moduleIcon['icon'], '-') !== false) {
-			$modInstance->moduleIcon['icon'] = end(explode('-', $modInstance->moduleIcon['icon']));
+			$iconArray = explode('-', $modInstance->moduleIcon['icon']);
+			$modInstance->moduleIcon['icon'] = end($iconArray);
 		}
 		$icon = $modInstance->moduleIcon;
 		$RLdata[$id] = $icon;
@@ -90,7 +91,8 @@ if (!empty($IS_REL_LIST)) {
 $smarty->assign('IS_REL_LIST', $IS_REL_LIST);
 $smarty->assign('REL_MOD_ICONS', $RLdata);
 if (strpos($focus->moduleIcon['icon'], '-') !== false) {
-	$focus->moduleIcon['icon'] = end(explode('-', $focus->moduleIcon['icon']));
+	$iconArray = explode('-', $focus->moduleIcon['icon']);
+	$focus->moduleIcon['icon'] = end($iconArray);
 }
 $smarty->assign('currentModuleIcon', $focus->moduleIcon);
 $isPresentRelatedListBlock = isPresentRelatedListBlock($currentModule);

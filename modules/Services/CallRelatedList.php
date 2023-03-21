@@ -33,7 +33,8 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	$smarty = new vtigerCRM_Smarty;
 	if (strpos($focus->moduleIcon['icon'], '-') !== false) {
-		$focus->moduleIcon['icon'] = end(explode('-', $focus->moduleIcon['icon']));
+		$iconArray = explode('-', $focus->moduleIcon['icon']);
+		$focus->moduleIcon['icon'] = end($iconArray);
 	}
 	$smarty->assign('currentModuleIcon', $focus->moduleIcon);
 
