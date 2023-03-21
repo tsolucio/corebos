@@ -290,5 +290,21 @@ $mod_strings = array(
 	'Template Language' => 'Template Language',
 	'ship_countrycode' => 'A Landcode',
 	'bill_countrycode' => 'P landcode',
+	//ELECTRONIC INVOICE BLOCKS
+	'LBL_EINVOICE' => 'Elektronische factuur',
+	'islegalentity' => 'Is rechtspersoon',
+	'siccode' => 'SIC Code',
+	'secondlastname' => 'Tweede achternaam',
+	'website' => 'Website',
+	'cnae' => 'Classificatie van economische activiteiten',
+	'inecode' => 'Statistische gemeentecode',
+	'brbook' => 'Boek',
+	'brmregister' => 'Register',
+	'brsheet' => 'Laken',
+	'brfolio' => 'Folio',
+	'brsection' => 'Sectie',
+	'brvolume' => 'Volume',
+	'signede' => 'Ondertekend E',
+	'sende' => 'Versturen E',
 );
 ?>
