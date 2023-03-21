@@ -30,6 +30,10 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	}
 
 	$smarty = new vtigerCRM_Smarty;
+	if (strpos($focus->moduleIcon['icon'], '-') !== false) {
+		$focus->moduleIcon['icon'] = end(explode('-', $focus->moduleIcon['icon']));
+	}
+	$smarty->assign('currentModuleIcon', $focus->moduleIcon);
 	$sql = $adb->pquery('select accountid from vtiger_contactdetails where contactid=?', array($focus->id));
 	$accountid = $adb->query_result($sql, 0, 'accountid');
 	if ($accountid == 0) {

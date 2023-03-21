@@ -25,6 +25,10 @@ if ($record != '') {
 }
 
 $smarty = new vtigerCRM_Smarty;
+if (strpos($focus->moduleIcon['icon'], '-') !== false) {
+	$focus->moduleIcon['icon'] = end(explode('-', $focus->moduleIcon['icon']));
+}
+$smarty->assign('currentModuleIcon', $focus->moduleIcon);
 
 if (isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') {
 	$smarty->assign('OP_MODE', vtlib_purify($_REQUEST['mode']));
