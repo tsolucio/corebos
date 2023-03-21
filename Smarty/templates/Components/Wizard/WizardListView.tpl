@@ -19,6 +19,7 @@ wizard.WizardConfirmStep[{$WizardStep}] = '{$WizardConfirmStep|json_encode}';
 wizard.Suboperation[{$WizardStep}] = '{$WizardSuboperation}';
 wizard.Module[{$WizardStep}] = '{$WizardModule}';
 wizard.WizardInfoFields[{$WizardStep}] = '{$WizardInfoFields[{$WizardStep}]|json_encode}';
+wizard.Wizard_ListView_Pagination[{$WizardStep}] = {$Wizard_ListView_Pagination};
 function WizardGrid{$formodule}{$WizardStep}() {
 	if (wizard.WizardInstance['wzgrid{$WizardStep}'] !== undefined)  {
 		wizard.WizardInstance['wzgrid{$WizardStep}'].destroy();
@@ -59,7 +60,7 @@ function WizardGrid{$formodule}{$WizardStep}() {
 		},
 		useClientSort: false,
 		pageOptions: {
-			perPage: 20
+			perPage: parseInt({$Wizard_ListView_Pagination})
 		},
 		rowHeight: 'auto',
 		bodyHeight: 'auto',

@@ -47,6 +47,7 @@ class WizardComponent {
 		this.WizardConfirmStep = [];
 		this.WizardInfoFields = [];
 		this.Module = [];
+		this.Wizard_ListView_Pagination = [];
 		this.Context = {};
 		this.Operation = '';
 		this.ProceedToNextStep = false;
@@ -505,7 +506,7 @@ class WizardComponent {
 				filterFromContext: filterFromContext,
 				showdata: true,
 			});
-			this.WizardInstance[`wzgrid${currentIdx}`].setPerPage(parseInt(20));
+			this.WizardInstance[`wzgrid${currentIdx}`].setPerPage(parseInt(this.Wizard_ListView_Pagination[this.ActiveStep]));
 		}
 		return true;
 	}
@@ -528,7 +529,7 @@ class WizardComponent {
 				forids: JSON.stringify(ids)
 			});
 			setTimeout(function () {
-				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
+				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(wizard.Wizard_ListView_Pagination[wizard.ActiveStep]));
 			}, 100);
 		}
 	}
@@ -557,7 +558,7 @@ class WizardComponent {
 			value: ev.filterState[0].state[0].value,
 			operator: operatorData[ev.filterState[0].state[0].code],
 		});
-		ev.instance.setPerPage(parseInt(20));
+		ev.instance.setPerPage(parseInt(wizard.Wizard_ListView_Pagination[wizard.ActiveStep]));
 	}
 
 	/**
@@ -571,7 +572,7 @@ class WizardComponent {
 			step: step,
 			showdata: true
 		});
-		this.WizardInstance[`wzgrid${step}`].setPerPage(parseInt(20));
+		this.WizardInstance[`wzgrid${step}`].setPerPage(parseInt(this.Wizard_ListView_Pagination[this.ActiveStep]));
 		this.CheckedRows[step] = [];
 	}
 
@@ -939,7 +940,7 @@ class WizardComponent {
 		}
 		let page = this.WizardInstance[`wzgrid${step}`].getPagination();
 		const totalCount = this.WizardInstance[`wzgrid${step}`].getPaginationTotalCount();
-		const totalPage = Math.ceil(totalCount/20);
+		const totalPage = Math.ceil(totalCount/parseInt(this.Wizard_ListView_Pagination[this.ActiveStep]));
 		if (action == 'duplicate') {
 			page._currentPage = totalPage;
 		}
@@ -956,7 +957,7 @@ class WizardComponent {
 					reqParams.required_action = 'duplicate';
 				}
 				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setRequestParams(reqParams);
-				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(20));
+				wizard.WizardInstance[`wzgrid${wizard.ActiveStep}`].setPerPage(parseInt(wizard.Wizard_ListView_Pagination[wizard.ActiveStep]));
 			} else {
 				if (page === null) {
 					wizard.WizardInstance[`wzgrid${step}`].readData(1, {
@@ -1210,7 +1211,7 @@ class WizardComponent {
 				showdata: true,
 				conditionquery: this.WizardConditionQuery[`${this.ActiveStep+1}`]
 			});
-			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(20));
+			this.WizardInstance[`wzgrid${this.ActiveStep+1}`].setPerPage(parseInt(this.Wizard_ListView_Pagination[this.ActiveStep]));
 		}
 		if (operation == 'MASSCREATE' && this.WizardMode[this.ActiveStep+1] == 'Mapping') {
 			this.Mapping(0, 1);

@@ -100,8 +100,10 @@ class WizardView {
 	public function Init() {
 		require_once 'modules/'.$this->module.'/'.$this->module.'.php';
 		global $smarty;
+		$Wizard_ListView_Pagination = GlobalVariable::getVariable('Wizard_ListView_Pagination', 10, $this->module);
 		$smarty->assign('formodule', $this->module);
 		$smarty->assign('GroupBy', $this->groupby);
+		$smarty->assign('Wizard_ListView_Pagination', intval($Wizard_ListView_Pagination));
 		$WizardSuboperation = $smarty->getTemplateVars('WizardSuboperation');
 		//suboperation support into steps
 		if (!empty($WizardSuboperation)) {
