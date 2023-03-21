@@ -29,6 +29,13 @@ function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname, 
 		domnode_display.innerHTML = value;
 		return true;
 	}
+	if (formname == 'MasterGrid') {
+		var domnode_id = window.opener.document.getElementById(`${target_fieldname}_mastergrid_${params.index}_${params.instance}`);
+		var domnode_display = window.opener.document.getElementById(`${target_fieldname}_display_${params.index}_${params.instance}`);
+		domnode_id.value = recordid;
+		domnode_display.value = value;
+		return true;
+	}
 	if (window.opener.document.forms[formname]) {
 		wodform = window.opener.document.forms[formname];
 		ret = true;

@@ -4489,16 +4489,53 @@ function submitFormForActionWithConfirmation(formName, action, confirmationMsg) 
 	return false;
 }
 
-function submitFormForAction(formName, action) {
+async function submitFormForAction(formName, action) {
 	var form = document.forms[formName];
 	if (!form) {
 		return false;
 	}
 	form.action.value = action;
+	let isValid = true;
 	if (corebosjshook_submitFormForAction(formName, action)) {
-		form.submit();
+		//check for MasterGridWidget if is available
+		if (typeof MasterGridInsances !== 'undefined' && gVTviewType != 'DetailView') {
+			let data = await submitMasterGrid();
+			for (let i in data[2]) {
+				if (!data[2][i]) {
+					VtigerJS_DialogBox.unblock();
+					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_REQUIRED_FIELDS);
+					isValid = false;
+					break;
+				}
+			}
+			form.MasterGridValues.value = JSON.stringify(Object.entries(MasterGridData));
+			form.MasterGridModule.value = JSON.stringify(Object.entries(data[0]));
+			form.MasterGridRelatedField.value = JSON.stringify(Object.entries(data[1]));
+		}
+		if (isValid) {
+			form.submit();
+		}
 	}
 	return true;
+}
+
+async function submitMasterGrid(forInstance = 0) {
+	let modules = [];
+	let relatedfields = [];
+	let isValid = [];
+	for (let i in MasterGridInsances) {
+		if (forInstance != 0 && MasterGridInsances[i] != forInstance) {
+			continue;
+		}
+		isValid[MasterGridInsances[i]] = await mg[MasterGridInsances[i]].TableData(MasterGridInsances[i]);
+		modules[MasterGridInsances[i]] = {
+			module: mg[MasterGridInsances[i]].module,
+		};
+		relatedfields[MasterGridInsances[i]] = {
+			relatedfield: mg[MasterGridInsances[i]].relatedfield
+		};
+	}
+	return [modules, relatedfields, isValid];
 }
 
 /** Javascript dialog box utility functions **/
