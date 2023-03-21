@@ -10,7 +10,7 @@
 					<div class="slds-tabs_default slds-tabs_medium">
 						<ul class="slds-tabs_default__nav" role="tablist">
 							<li class="slds-tabs_default__item slds-is-active" role="presentation">
-								<a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 15px">
+								<a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
 									<span class="{$currentModuleIcon['containerClass']}">
 										<svg class="slds-icon slds-icon_small" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/{$currentModuleIcon['library']}-sprite/svg/symbols.svg#{$currentModuleIcon['icon']}"></use>
@@ -21,7 +21,7 @@
 							</li>
 							<li class="slds-tabs_default__item slds-tabs_default__overflow-button" role="presentation">
 								<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-									<a class="slds-button" aria-haspopup="true" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}" style="font-size: 15px">
+									<a class="slds-button" aria-haspopup="true" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}" style="font-size: 13px">
 										{$APP.LBL_MORE} {$APP.LBL_INFORMATION}
 										<svg class="slds-button__icon slds-button__icon_x-small slds-button__icon_right" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
@@ -43,7 +43,7 @@
 																</span>
 															</span>
 															{/if}
-															<span class="slds-media__body" style="font-size: 15px">
+															<span class="slds-media__body" style="font-size: 13px">
 																{$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}
 															</span>
 														</span>

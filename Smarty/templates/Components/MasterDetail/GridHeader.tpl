@@ -54,11 +54,4 @@
 </div>
 </div>
 </div>
-<script>
-window.addEventListener('load', (event) => {
-	if (document.getElementById('module') != null && document.getElementById('record').value != null) {
-		dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
-	}
-});
-</script>
 </div>

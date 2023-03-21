@@ -18,7 +18,7 @@
 {foreach key=RLTAB item=RLARR from=$RLTabs name=rltab}
 {if $RETURN_RELATEDPANE eq $RLTAB}
 	<li class="slds-tabs_default__item slds-is-active" role="presentation">
-		<a class="slds-tabs_default__link"role="tab" tabindex="0" aria-selected="true">
+		<a class="slds-tabs_default__link"role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
 			{$RLARR.label}
 		</a>
 	</li>
@@ -29,7 +29,7 @@
 	{/if}
 		{if $smarty.foreach.rltab.index eq 0 && $rlmode neq 'RelatedPane'}
 		<li class="slds-tabs_default__item slds-is-active" role="presentation">
-			<a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 14px">
+			<a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
 				<span class="{$currentModuleIcon['containerClass']}">
 					<svg class="slds-icon slds-icon_small" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/{$currentModuleIcon['library']}-sprite/svg/symbols.svg#{$currentModuleIcon['icon']}"></use>
@@ -41,7 +41,7 @@
 		{/if}
 		<li class="slds-tabs_default__item" role="presentation">
 			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-				<a class="slds-tabs_default__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}" style="font-size: 14px">
+				<a class="slds-tabs_default__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}" style="font-size: 12px">
 					{$RLARR.label}
 				</a>
 				{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}
@@ -52,7 +52,7 @@
 							<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}&selected_header={$_RELATED_BLOCK.loadfrom}&relation_id={if isset($_RELATED_BLOCK.relatedid)}{$_RELATED_BLOCK.relatedid}{/if}#tbl_{$MODULE}_{$_RELATED_BLOCK.loadfrom}" role="menuitem" tabindex="-1">
 								<span class="slds-truncate">
 									<span class="slds-media slds-media_center">
-										<span class="slds-media__body" style="font-size: 14px">
+										<span class="slds-media__body" style="font-size: 12px">
 											{$_RELATED_BLOCK.label|@getTranslatedString:$_RELATED_BLOCK.label}
 										</span>
 									</span>
