@@ -13,7 +13,7 @@
 {else}
 	<link rel="stylesheet" type="text/css" href="Smarty/templates/Components/Wizard/wizard.css">
 	{if !$isModal}
-	<script src="include/js/wizard.js"></script>
+	<script src="include/js/wizard.js?ver=1.0.1"></script>
 	{/if}
 	<script type="text/javascript">
 		wizard.Context = {};

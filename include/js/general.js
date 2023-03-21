@@ -7636,7 +7636,7 @@ function openWizard(mapid) {
 	}
 	let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+mapid;
 	ldsModal.show('Wizard', '<div id="cbds-loader" style="height: 200px"></div>', 'large');
-	loadJS('include/js/wizard.js');
+	loadJS('include/js/wizard.js?ver=1.0.1');
 	setTimeout(function () {
 		Request(url, 'post', {
 			grid: mapid,

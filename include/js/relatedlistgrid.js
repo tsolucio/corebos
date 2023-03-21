@@ -186,7 +186,7 @@ var relatedlistgrid = {
 		}
 		let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+mapid;
 		ldsModal.show('Wizard', '<div id="cbds-loader" style="height: 200px"></div>', 'large');
-		loadJS('include/js/wizard.js');
+		loadJS('include/js/wizard.js?ver=1.0.1');
 		relatedlistgrid.loader('show');
 		setTimeout(function () {
 			relatedlistgrid.Request(url, 'post', {
