@@ -304,6 +304,22 @@ $mod_strings = array(
 	'cbControlIngresoGasto' => 'cbControlGasto',
 	'BankAccounts' => 'Conturi Bancare',
 	'ship_countrycode' => 'Shipping Country Code',
-	'bill_countrycode' => 'Billing Country Code'
+	'bill_countrycode' => 'Billing Country Code',
+	//ELECTRONIC INVOICE BLOCKS
+	'LBL_EINVOICE' => 'Factura electronica',
+	'islegalentity' => 'Este persoană juridică',
+	'siccode' => 'SIC Code',
+	'secondlastname' => 'Al doilea nume de familie',
+	'website' => 'Site-ul web',
+	'cnae' => 'Clasificarea activității economice',
+	'inecode' => 'Codul statistic al municipiului',
+	'brbook' => 'Carte',
+	'brmregister' => 'Inregistreaza-te',
+	'brsheet' => 'Foaie',
+	'brfolio' => 'Folio',
+	'brsection' => 'Secțiune',
+	'brvolume' => 'Volum',
+	'signede' => 'Semnat E',
+	'sende' => 'Trimite E',
 	);
 ?>

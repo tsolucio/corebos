@@ -273,6 +273,22 @@ $mod_strings = array(
 	'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
 	'Template Language' => 'Template Language',
 	'ship_countrycode' => 'Shipping Country Code',
-	'bill_countrycode' => 'Billing Country Code'
+	'bill_countrycode' => 'Billing Country Code',
+	//ELECTRONIC INVOICE BLOCKS
+	'LBL_EINVOICE' => 'Elektronikus számla',
+	'islegalentity' => 'Jogi személy',
+	'siccode' => 'SIC Code',
+	'secondlastname' => 'Második vezetéknév',
+	'website' => 'Weboldal',
+	'cnae' => 'Gazdasági tevékenység osztályozása',
+	'inecode' => 'Statisztikai Önkormányzati kódex',
+	'brbook' => 'Könyv',
+	'brmregister' => 'Regisztráció',
+	'brsheet' => 'Lap',
+	'brfolio' => 'Folio',
+	'brsection' => 'Szakasz',
+	'brvolume' => 'Hangerő',
+	'signede' => 'Aláírt E',
+	'sende' => 'Küldd el E',
 	);
 ?>

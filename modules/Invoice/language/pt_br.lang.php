@@ -175,5 +175,7 @@ $mod_strings = array(
 'Amount Due'=>'Total a Pagar',
 'Amount Paid'=>'Total Pago',
 'Total Amount'=>'Total',
+'signede' => 'Assinado E',
+'sende' => 'Enviar E',
 );
 ?>

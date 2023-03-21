@@ -186,6 +186,7 @@ $mod_strings = array (
 	'Grand Total' => 'Grande totale',
 	'Total Tax' => 'Imposta Totale',
 	'Total Tax Retention' => 'Ritenzione Imposta Totale',
-
+	'signede' => 'Firmato E',
+	'sende' => 'Manda E',
 );
 ?>

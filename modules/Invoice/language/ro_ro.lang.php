@@ -194,5 +194,7 @@ $mod_strings = array(
 	'Timecontrol' => 'ControlTimp',
 	'cbCommission' => 'cbCommission',
 	'cbControlIngresoGasto' => 'cbControlIngresoGasto',
+	'signede' => 'Semnat E',
+	'sende' => 'Trimite E',
 );
 ?>

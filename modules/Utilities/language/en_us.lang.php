@@ -184,5 +184,21 @@ $mod_strings = array(
 	'facebook_destination_module' => 'Destination Module',
 	'Unable2Connect' => 'Unable to connect',
 	'Able2Connect' => 'Able to connect',
+	//Electronic Invoice Settings
+	'Electronic Invoice' => "Electronic Invoice Settings",
+	'Electronic Invoice_Desc' => "Electronic Invoice",
+	'EI_username' => 'Username',
+	'EI_password' => 'Password',
+	'EI_baseurl' => 'Base URL',
+	'Passphrase' => 'Passphrase',
+	'PublicKey' => 'Public Key',
+	'PrivateKey' => 'Private Key',
+	'PFKKey' => 'PFK Key',
+	'Default Administrative Center' => 'Default Administrative Center',
+	'Account Map' => 'Account Map',
+	'Contact Map' => 'Contact Map',
+	'Invoice Map' => 'Invoice Map',
+	'DefaultSignType' =>'Default Sign Type',
+	'Time Stamp' => 'Time stamp',
 );
 ?>

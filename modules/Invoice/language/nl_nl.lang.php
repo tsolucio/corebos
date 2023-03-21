@@ -188,5 +188,7 @@ $mod_strings = array(
 	'Amount Due' => 'Openstaand bedrag',
 	'Amount Paid' => 'Bedrag betaald',
 	'Total Amount' => 'Totaalbedrag',
+	'signede' => 'Ondertekend E',
+	'sende' => 'Versturen E',
 );
 ?>
