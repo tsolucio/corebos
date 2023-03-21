@@ -67,7 +67,7 @@ class MasterGrid {
 						rowdata[fields[i].name] = val;
 					}
 				}
-				rowdata['id'] = cRow.querySelector(`[name=mastergrid-rowid]`).value;
+				rowdata['id'] = cRow.querySelector('[name=mastergrid-rowid]').value;
 				rowdata['__mastergridid'] = this.id;
 				data.push(rowdata);
 			}
@@ -94,99 +94,83 @@ class MasterGrid {
 				fieldvalueDisplay = this.currentRow[`${field.name}_displayValue`];
 			}
 		}
-		switch(field.uitype) {
-			case '1':
-			case '2':
-				fld += `
-					<input type="text" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
-				`;
-				break;
-			case '5'://date
-				fld += `
-					<input type="date" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
-				`;
-				break;
-			case '10':
-				let url = `index.php?module=${field.searchin}&action=Popup&html=Popup_picker&form=MasterGrid&forfield=${field.name}&srcmodule=${this.module}&forrecord=${this.currentRow.id}&index=${this.idx}&instance=${this.id}`;
-				fld += `
-				<input ${mandatory} id="${field.name}_mastergrid_${this.idx}_${this.id}" name="${field.name}" type="hidden" value="${fieldvalue}">
-				<span style="display:none;" id="${field.name}_hidden"></span>
-				<div class="slds-grid">
-					<div class="slds-col slds-size_8-of-10" style="width: 90%">
-						<input class="slds-input" value="${fieldvalueDisplay}" id="${field.name}_display_${this.idx}_${this.id}" name="${field.name}_display" readonly="" type="text" style="border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
-					</div>
-					<div class="slds-col slds-size_2-of-10">
-						<div class="slds-grid slds-grid_vertical slds-align_absolute-center">
-							<button class="slds-button slds-button_icon" title="Select" type="button" onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
-								<svg class="slds-button__icon" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
-								</svg>
-								<span class="slds-assistive-text">Select</span>
-							</button>
-							<button class="slds-button slds-button_icon" type="button" onclick="mg[${this.id}].ClearValues('${field.name}', ${this.idx}, ${this.id});">
-								<svg class="slds-button__icon" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
-								</svg>
-								<span class="slds-assistive-text">Clear</span>
-							</button>
-						</div>
+		let checked = 'checked';
+		let url = '';
+		switch (field.uitype) {
+		case '1':
+		case '2':
+			fld += `<input type="text" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>`;
+			break;
+		case '5'://date
+			fld += `<input type="date" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>`;
+			break;
+		case '10':
+			url = `index.php?module=${field.searchin}&action=Popup&html=Popup_picker&form=MasterGrid&forfield=${field.name}&srcmodule=${this.module}&forrecord=${this.currentRow.id}&index=${this.idx}&instance=${this.id}`;
+			fld += `
+			<input ${mandatory} id="${field.name}_mastergrid_${this.idx}_${this.id}" name="${field.name}" type="hidden" value="${fieldvalue}">
+			<span style="display:none;" id="${field.name}_hidden"></span>
+			<div class="slds-grid">
+				<div class="slds-col slds-size_8-of-10" style="width: 90%">
+					<input class="slds-input" value="${fieldvalueDisplay}" id="${field.name}_display_${this.idx}_${this.id}" name="${field.name}_display" readonly="" type="text" style="border:1px solid #c9c9c9"onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
+				</div>
+				<div class="slds-col slds-size_2-of-10">
+					<div class="slds-grid slds-grid_vertical slds-align_absolute-center">
+						<button class="slds-button slds-button_icon" title="Select" type="button" onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
+							<svg class="slds-button__icon" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+							</svg>
+							<span class="slds-assistive-text">Select</span>
+						</button>
+						<button class="slds-button slds-button_icon" type="button" onclick="mg[${this.id}].ClearValues('${field.name}', ${this.idx}, ${this.id});">
+							<svg class="slds-button__icon" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+							</svg>
+							<span class="slds-assistive-text">Clear</span>
+						</button>
 					</div>
 				</div>
-				`;
-				break;
-			case '14'://time
-				fld += `
-					<input type="time" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
-				`;
-				break;
-			case '15':
-			case '16':
-				if (editable != '') {
-					editable = 'disabled';
+			</div>`;
+			break;
+		case '14'://time
+			fld += `<input type="time" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>`;
+			break;
+		case '15':
+		case '16':
+			if (editable != '') {
+				editable = 'disabled';
+			}
+			fld += `<select class="slds slds-select" ${mandatory} name="${field.name}" data-grid-name=${field.name} ${editable}>`;
+			for (let i in field.type.picklistValues) {
+				let selected = '';
+				if (fieldvalue == field.type.picklistValues[i].value) {
+					selected = 'selected';
 				}
-				fld += `
-					<select class="slds slds-select" ${mandatory} name="${field.name}" data-grid-name=${field.name} ${editable}>
-				`;
-				for (let i in field.type.picklistValues) {
-					let selected = '';
-					if (fieldvalue == field.type.picklistValues[i].value) {
-						selected = 'selected';
-					}
-					fld += `<option ${selected} value="${field.type.picklistValues[i].value}">${field.type.picklistValues[i].label}</option>`;
+				fld += `<option ${selected} value="${field.type.picklistValues[i].value}">${field.type.picklistValues[i].label}</option>`;
+			}
+			fld += '</select>';
+			break;
+		case '50'://datetime
+			fld += `<input type="datetime-local" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>`;
+			break;
+		case '53':
+			fld += `<select class="slds slds-select" name="${field.name}" data-grid-name=${field.name} ${editable}>`;
+			for (let i in field.type.assignto.users.options) {
+				let selected = '';
+				if (fieldvalue == field.type.assignto.users.options[i].userid.split('x')[1]) {
+					selected = 'selected';
 				}
-				fld += `</select>`;
-				break;
-			case '50'://datetime
-				fld += `
-					<input type="datetime-local" ${mandatory} value="${fieldvalue}" name="${field.name}" data-grid-name="${field.name}" class="slds slds-input" ${editable}>
-				`;
-				break;
-			case '53':
-				fld += `
-					<select class="slds slds-select" name="${field.name}" data-grid-name=${field.name} ${editable}>
-				`;
-				for (let i in field.type.assignto.users.options) {
-					let selected = '';
-					if (fieldvalue == field.type.assignto.users.options[i].userid.split('x')[1]) {
-						selected = 'selected';
-					}
-					fld += `<option ${selected} value="${field.type.assignto.users.options[i].userid.split('x')[1]}">${field.type.assignto.users.options[i].username}</option>`;
-				}
-				fld += `</select>`;
-				break;
-			case '56':
-				let checked = 'checked';
-				if (fieldvalue == '0') {
-					checked = '';
-				}
-				fld += `
-					<input type="checkbox" value="${fieldvalue}" ${checked} name="${field.name}" data-grid-name="${field.name}" ${editable}>
-				`;
-				break;
-			default:
-				fld += `
-					<input value="${fieldvalue}" ${mandatory} type="text" name="${field.name}" class="slds slds-input" data-grid-name="${field.name}" ${editable}>
-				`;
+				fld += `<option ${selected} value="${field.type.assignto.users.options[i].userid.split('x')[1]}">${field.type.assignto.users.options[i].username}</option>`;
+			}
+			fld += '</select>';
+			break;
+		case '56':
+			if (fieldvalue == '0') {
+				checked = '';
+			}
+			fld += `<input type="checkbox" value="${fieldvalue}" ${checked} name="${field.name}" data-grid-name="${field.name}" ${editable}>`;
+			break;
+		default:
+			fld += `<input value="${fieldvalue}" ${mandatory} type="text" name="${field.name}" class="slds slds-input" data-grid-name="${field.name}" ${editable}>`;
 		}
 		return fld;
 	}
@@ -199,7 +183,7 @@ class MasterGrid {
 	DeleteRow(idx) {
 		const el = document.getElementById(`grid-id-${this.id}-${idx}`);
 		el.remove();
-		const rowid = el.querySelector(`[name=mastergrid-rowid]`).value;
+		const rowid = el.querySelector('[name=mastergrid-rowid]').value;
 		if (rowid > 0) {
 			Request(this.url, 'post', {
 				'rowid': rowid,
@@ -215,7 +199,7 @@ class MasterGrid {
 		let newrow = el.cloneNode(true);
 		newrow.deleteCell(-1);
 		newrow.id = `grid-id-${this.id}-${this.idx}`;
-		newrow.querySelector(`[name=mastergrid-rowid]`).value = 0;
+		newrow.querySelector('[name=mastergrid-rowid]').value = 0;
 		let actions = document.createElement('td');
 		actions.innerHTML = this.GenerateActions();
 		newrow.appendChild(actions);
