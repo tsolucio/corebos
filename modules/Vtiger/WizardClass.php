@@ -751,7 +751,7 @@ class WizardActions extends WizardCustomFunctions {
 		$noOfRows = $adb->num_rows($sql);
 		if ($noOfRows > 0) {
 			$res = array();
-			for ($i=0; $i < $noOfRows; $i++) { 
+			for ($i=0; $i < $noOfRows; $i++) {
 				$res[] = array(
 					'activityid' => $adb->query_result($sql, $i, 'activityid'),
 					'subject' => $adb->query_result($sql, $i, 'subject'),

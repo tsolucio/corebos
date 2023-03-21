@@ -941,10 +941,10 @@ $mod_strings = array(
 	'LBL_RELATED_MODULE' => 'Related Module',
 	'LBL_RL_LABEL' => 'Label',
 	//email language translate
-    'LBL_EMAIL_TRANSLATE' => 'Ez egy tesztlevél, amely megerősíti, hogy a levél valóban az Ön által beállított smtp szerveren keresztül történik-e.',
-    'LBL_EMAIL_END' => 'Nyugodtan törölje ezt a levelet.',
-    'LBL_EMAIL_SUBJECT' => 'Tesztelje a leveleket a levelezőszerver konfigurációjáról.',
-    'LBL_DEAR' => 'Kedves',
-    'LBL_THANKS' => 'Köszönettel és üdvözlettel,',
+	'LBL_EMAIL_TRANSLATE' => 'Ez egy tesztlevél, amely megerősíti, hogy a levél valóban az Ön által beállított smtp szerveren keresztül történik-e.',
+	'LBL_EMAIL_END' => 'Nyugodtan törölje ezt a levelet.',
+	'LBL_EMAIL_SUBJECT' => 'Tesztelje a leveleket a levelezőszerver konfigurációjáról.',
+	'LBL_DEAR' => 'Kedves',
+	'LBL_THANKS' => 'Köszönettel és üdvözlettel,',
 );
 ?>

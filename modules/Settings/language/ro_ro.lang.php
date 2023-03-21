@@ -940,10 +940,10 @@ $mod_strings = array(
 	'LBL_RELATED_MODULE' => 'Related Module',
 	'LBL_RL_LABEL' => 'Label',
 	//email language translate
-    'LBL_EMAIL_TRANSLATE' => 'Acesta este un e-mail de test trimis pentru a confirma dacă un e-mail este de fapt trimis prin serverul smtp pe care l-ați configurat.',
-    'LBL_EMAIL_END' => 'Simțiți-vă liber să ștergeți acest e-mail.',
-    'LBL_EMAIL_SUBJECT' => 'Testați e-mailul despre configurația serverului de e-mail.',
-    'LBL_DEAR' => 'Dragă ',
-    'LBL_THANKS' => 'Multumesc si Salutari,',
+	'LBL_EMAIL_TRANSLATE' => 'Acesta este un e-mail de test trimis pentru a confirma dacă un e-mail este de fapt trimis prin serverul smtp pe care l-ați configurat.',
+	'LBL_EMAIL_END' => 'Simțiți-vă liber să ștergeți acest e-mail.',
+	'LBL_EMAIL_SUBJECT' => 'Testați e-mailul despre configurația serverului de e-mail.',
+	'LBL_DEAR' => 'Dragă ',
+	'LBL_THANKS' => 'Multumesc si Salutari,',
 );
 ?>

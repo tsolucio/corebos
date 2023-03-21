@@ -341,7 +341,7 @@ $mod_strings = array(
 	//For Custom Fields
 	'LBL_LEAD_MAP_CUSTOM_FIELD'=>'Feldzuweisung der benutzerdefinierten Felder in Leads',
 	'leadCustomFieldDescription'=>'Weisen Sie Ihren benutzerdefinierten Feldern aus dem Modul
-    Leads entsprechende benutzerdefinierten Felder aus den Modulen Personen, Organisationen und Verkaufspotentialen zu. Hinweis: Diese Zuordnungen stehen erst nach der Umwandlung eines Leads in ein Verkaufspotential zur Verfügung!',
+	Leads entsprechende benutzerdefinierten Felder aus den Modulen Personen, Organisationen und Verkaufspotentialen zu. Hinweis: Diese Zuordnungen stehen erst nach der Umwandlung eines Leads in ein Verkaufspotential zur Verfügung!',
 	'LBL_MAPPING_INFO'=>'Zuordnungen',
 	'LBL_ACCOUNT_FIELD'=>'Organisationen Feld',
 	'LBL_CONTACT_FIELD'=>'Personen Feld',
@@ -1072,9 +1072,9 @@ $mod_strings = array(
 	'LBL_RL_LABEL' => 'Label',
 	//email language translate
 	'LBL_EMAIL_TRANSLATE' => 'Dies ist eine Test-E-Mail, die gesendet wird, um zu bestätigen, ob eine E-Mail tatsächlich über den von Ihnen konfigurierten SMTP-Server gesendet wird.',
-    'LBL_EMAIL_END' => 'Sie können diese Mail gerne löschen.',
-    'LBL_EMAIL_SUBJECT' => 'Testmail über die Konfiguration des Mailservers.',
-    'LBL_DEAR' => 'Liebling ',
-    'LBL_THANKS' => 'Danke und Grüße,',
+	'LBL_EMAIL_END' => 'Sie können diese Mail gerne löschen.',
+	'LBL_EMAIL_SUBJECT' => 'Testmail über die Konfiguration des Mailservers.',
+	'LBL_DEAR' => 'Liebling ',
+	'LBL_THANKS' => 'Danke und Grüße,',
 );
 ?>

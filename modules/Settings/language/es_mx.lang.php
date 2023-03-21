@@ -1009,8 +1009,8 @@ $mod_strings = array (
 	//email language translate
 	'LBL_EMAIL_TRANSLATE' => 'Este es un correo de prueba enviado para confirmar si realmente se está enviando un correo a través del servidor smtp que ha configurado.',
 	'LBL_EMAIL_END' => 'Siéntete libre de borrar este correo.',
-    'LBL_EMAIL_SUBJECT' => 'Prueba de correo sobre la configuración del servidor de correo.',
-    'LBL_DEAR' => 'Estimado ',
-    'LBL_THANKS' => 'Gracias y saludos,',
+	'LBL_EMAIL_SUBJECT' => 'Prueba de correo sobre la configuración del servidor de correo.',
+	'LBL_DEAR' => 'Estimado ',
+	'LBL_THANKS' => 'Gracias y saludos,',
 );
 ?>

@@ -67,7 +67,7 @@
 						<value></value>
 						...
 					</create>
-				</conditions>			
+				</conditions>
 			</createview>
 			<listview>
 				<fields>
