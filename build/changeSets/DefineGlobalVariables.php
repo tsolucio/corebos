@@ -339,6 +339,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_MassAction_Multipage',
 				'Document_DefaultFolder',
 				'Email_Template_AutomaticMerge',
+
+				'Wizard_ListView_Pagination',
 			);
 			$delete_these = array(
 				'preload_prototype',

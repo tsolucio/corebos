@@ -1900,6 +1900,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si se establece en 1, la plantilla de correo electrónico se fusiona automáticamente. Si se establece en 0, la plantilla de correo electrónico no se fusiona y puede obtener una vista previa del correo electrónico. El valor predeterminado es 1.',
 ),
+'Wizard_ListView_Pagination' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Number of rows to show per page in the wizard list view grid.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {
