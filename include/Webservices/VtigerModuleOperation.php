@@ -286,7 +286,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		return $this->querySQLResults($mysql_query, $q, $meta, $queryRelatedModules);
 	}
 
-	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules, $addimagefields = true) {
+	public function querySQLResults($mysql_query, $q, $meta, $queryRelatedModules, $addimagefields = true, $keycase = ADODB_ASSOC_CASE_LOWER) {
 		global $site_URL, $adb, $default_charset, $currentModule;
 		$holdCM = $currentModule;
 		$currentModule = $meta->getEntityName();
@@ -317,7 +317,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$streaming = (isset($_REQUEST['format']) && (strtolower($_REQUEST['format'])=='stream' || $streamraw));
 		$stream = '';
 		for ($i=0; $i<$noofrows; $i++) {
-			$row = $this->pearDB->fetchByAssoc($result, $i);
+			$row = $this->pearDB->fetchByAssoc($result, $i, true, $keycase);
 			$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $rowcrmid)) {
 				continue;

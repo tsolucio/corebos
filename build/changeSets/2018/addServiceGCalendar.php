@@ -26,7 +26,7 @@ class addServiceGCalendar extends cbupdaterWorker {
 		} else {
 			$columns=$adb->getColumnNames('its4you_googlesync4you_access');
 			if (!in_array('service', $columns)) {
-				$adb->query("ALTER TABLE `its4you_googlesync4you_access` ADD `service` varchar(255) NULL ;");
+				$adb->query("ALTER TABLE `its4you_googlesync4you_access` ADD `service` varchar(255) NULL;");
 			}
 			$sql='Update its4you_googlesync4you_access set service = "GoogleCalendar" where service = "" or service is null';
 			$adb->query($sql);

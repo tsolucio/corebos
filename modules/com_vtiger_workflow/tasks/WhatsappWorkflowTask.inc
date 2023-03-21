@@ -41,7 +41,7 @@ class WhatsappWorkflowTask extends VTTask {
 				$docrs = $adb->pquery($query, array($docid));
 				if ($docrs && $adb->num_rows($docrs)==1) {
 					$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
-					$this->attachmentsinfo[] = $attname;
+					$this->attachmentsinfo[] = decode_html($attname);
 					$this->dzattinfo[] = array(
 						'docid' => $docid,
 						'name' => $adb->query_result($docrs, 0, 'filename'),
@@ -84,6 +84,7 @@ class WhatsappWorkflowTask extends VTTask {
 			$phones = trim($phones, ',');
 			try {
 				if ($sender!='' && $phones!='') {
+					$logmsg = "Sender $sender, Phones: $phones";
 					$pa = explode(',', $phones);
 					foreach ($pa as $phone) {
 						$phone = trim($phone);
@@ -152,14 +153,16 @@ class WhatsappWorkflowTask extends VTTask {
 						}
 					}
 				} else {
-					$logbg->debug('(WhatsappWorkflowTask) not called: sender or phones are empty');
+					$logmsg = '(WhatsappWorkflowTask) not called: sender or phones are empty';
 				}
 			} catch (Exception $e) {
-				$logbg->debug('(WhatsappWorkflowTask) not called: Error on Whatsapp Task: '. $e->getMessage());
+				$logmsg = '(WhatsappWorkflowTask) not called: Error on Whatsapp Task: '. $e->getMessage();
 			}
 		} else {
-			$logbg->debug('(WhatsappWorkflowTask) not called: Whatsapp is not active');
+			$logmsg = '(WhatsappWorkflowTask) not called: Whatsapp is not active';
 		}
+		$this->logmessages[] = $logmsg;
+		$logbg->debug($logmsg);
 		$logbg->debug('< WhatsappWorkflowTask');
 	}
 

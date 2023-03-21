@@ -4778,7 +4778,7 @@ precacheAndRoute([{
   "revision": "c4bdc5a39f1869143a9ad216f81deb2c"
 }, {
   "url": "modules/Mobile/resources/lang/it_it.lang.js",
-  "revision": "554f37b5b45f98705e99e777d6be0b82"
+  "revision": "6bd514073b65ee87019e5059b5b08e62"
 }, {
   "url": "modules/Mobile/resources/lang/nl_nl.lang.js",
   "revision": "0d7fc82e2bbb4397474629c01725ab9d"
@@ -9968,7 +9968,7 @@ precacheAndRoute([{
   "revision": "60718c9174ed712f0c6a240e34adec1d"
 }, {
   "url": "include/LD/assets/styles/override_lds.css",
-  "revision": "b484346016d17f8ca89d21cdc956a179"
+  "revision": "18c5db43cff7fdc2d54b917f33afbc7d"
 }, {
   "url": "include/LD/assets/styles/salesforce-lightning-design-system_touch.css",
   "revision": "a65bfc28217f7bfb5dc501bfcb2fcf90"
@@ -11456,46 +11456,46 @@ precacheAndRoute([{
   "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "d5f00e9682240833747c2019ccb0c1b0"
+  "revision": "2422cde4b57f03841beb5bb64e4d32a0"
 }, {
   "url": "include/js/dedup.js",
   "revision": "f09b1b73041383bfe8a85ccce9641617"
 }, {
   "url": "include/js/dtlviewajax.js",
-  "revision": "d2920a1d7a58ae0d3cd0dcc81e8d56cb"
+  "revision": "130f9210a4bec854a576da0d74ddce9b"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "a8e8c51c70eac21255b90023eb846e98"
+  "revision": "c23e92bbc4d498637e55ebc30ffa6fa1"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "222afdf4132a3288c86ef36551f38736"
+  "revision": "a8eab9439f5278f6e454ebff07adf274"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "21148cc3a6498ab68db985b8f58782ef"
+  "revision": "a98b1445697187b355a97c8a998d3651"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "479e8dc23cd5eab4995781f6cd5b02ba"
+  "revision": "f80c65df65600b2f82a0f55d9021606a"
 }, {
   "url": "include/js/FieldDependencies.js",
-  "revision": "3df53b3004ce042493c885a156c8bf41"
+  "revision": "634902ccc164334746e730d72bb3ba78"
 }, {
   "url": "include/js/FieldDepFunc.js",
-  "revision": "37f602ecd7b2e8da143eedbac3b93c0b"
+  "revision": "fdbce1da1a215e8de2a1cf289341397d"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "99d7cc5dc9a03da6255e50f1a86fb2ee"
+  "revision": "91058dc37dacd0c64dd9ca074712d931"
 }, {
   "url": "include/js/general.js",
-  "revision": "f8b3a436af94f73250a4607499574fc6"
+  "revision": "9f7c20207a6181568b0e62fdc258f905"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "fe62afe35d100644ebdd3892abf12f8f"
+  "revision": "01ff6a5e8e4ee0a3beed2bee4a06df63"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "733037aedbea5f5a6a76f9afd5ebc54d"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "f37c645cc961ebfc62b6ee73244a5b8b"
+  "revision": "df66e7bc66d5447a7d9009cb90133363"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
@@ -11513,13 +11513,13 @@ precacheAndRoute([{
   "revision": "d5317a375aa85d10e53f5989b1be0524"
 }, {
   "url": "include/js/Mail.js",
-  "revision": "38f36445f41a532a04011c39feb50e58"
+  "revision": "f7e25dda6d98562660d0b7512ce38839"
 }, {
   "url": "include/js/massive.js",
   "revision": "5a09d9ad89882ba8ad3e993e11a08055"
 }, {
   "url": "include/js/masterdetailgrid.js",
-  "revision": "7d14e18a736ea5bbf544918bdc989ead"
+  "revision": "c9210a3b53b884275eda0b9410be5402"
 }, {
   "url": "include/js/meld.js",
   "revision": "7c3894eb22d16cb4743a7ea226557ed1"
@@ -11528,7 +11528,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "5fb0a1a55c70c3443d68bbdf45cc8107"
+  "revision": "d578c6f4c1e0d2e7bc1158ef8052ef9f"
 }, {
   "url": "include/js/notebook.js",
   "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
@@ -11546,22 +11546,22 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "353cfd92e72301313be5856e35f46b05"
+  "revision": "b12b0bab020c67918b0116589802f930"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "89ad8ae2e8972f6085b6728624061ac2"
 }, {
   "url": "include/js/relatedlistgrid.js",
-  "revision": "bd82a2299bcf25124d76bc3e4adb7d2c"
+  "revision": "82054e815c92b7bada2a455174233ce8"
 }, {
   "url": "include/js/relatedlists.js",
-  "revision": "a8cdd7881bfe429adf56b26da96cd63b"
+  "revision": "a4b927aa3b2de3e40f85e12f3e9e54db"
 }, {
   "url": "include/js/RelatedLists.js",
   "revision": "5939e45063d7400f478b0b4a37a91e81"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "949b32f478bfacae0ae3d2dd3fe2dde0"
+  "revision": "21acdfdf80b81017ff9df4db75571fca"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -11570,10 +11570,10 @@ precacheAndRoute([{
   "revision": "008f3e9768bd2d226e65ea69999c9f14"
 }, {
   "url": "include/js/vtlib.js",
-  "revision": "86f299e86323ae52ddc00c3aa6ee8fa9"
+  "revision": "f57cc8b2d8beae8bea21a928adb84efe"
 }, {
   "url": "include/js/wizard.js",
-  "revision": "31cfab300dfcd06e2a7f9cd9628bba25"
+  "revision": "c353ae59e596f7758b4dc0377842e33a"
 }, {
   "url": "include/components/Carousel/vanilla-js-carousel.css",
   "revision": "3c84a75d9db4550dc2954a596bbf6f58"
@@ -11586,6 +11586,12 @@ precacheAndRoute([{
 }, {
   "url": "include/components/Colorizer/listview.css",
   "revision": "05becc7a0a84cda65e7fec3e97ff7933"
+}, {
+  "url": "include/components/FullCalendar/index.fullcalendar.js",
+  "revision": "0b4d554e461b5508b19701a82ce48a35"
+}, {
+  "url": "include/components/ldsmail.js",
+  "revision": "ad322750daf13d50b91148aad00e0938"
 }, {
   "url": "include/components/ldsmodal.js",
   "revision": "daf823e352f61689ab6d714fbf7fb118"
@@ -11603,7 +11609,7 @@ precacheAndRoute([{
   "revision": "03a39dd327aca956ea9448782aca04eb"
 }, {
   "url": "include/components/Photo2Document.js",
-  "revision": "8e0c748f31ea1370873766d08fda7faa"
+  "revision": "bf2a8bf19568639fe8b12f54fa3c4d7b"
 }, {
   "url": "include/components/Select2/css/select2.css",
   "revision": "675de2a347f3407251629544a114be97"
@@ -11612,7 +11618,7 @@ precacheAndRoute([{
   "revision": "3e6e33cd306b1235add3d25fcda8541d"
 }, {
   "url": "include/components/slider.js",
-  "revision": "683b787a616eb4f8c56a7ca520d882e6"
+  "revision": "d7e8240919cff39f0573ed3cd54230c3"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.css",
   "revision": "fb40fb9c699a0e8b656b5345d2929b2c"
@@ -11771,7 +11777,7 @@ precacheAndRoute([{
   "revision": "143302dc3175324824d718937e339fff"
 }, {
   "url": "include/MassCreateGridView/MassCreateGridView.js",
-  "revision": "a0ee36da94058a469df96cba89b1910b"
+  "revision": "05d043a466e1fab7035c92bf71cbb263"
 }, {
   "url": "include/style.css",
   "revision": "657f68e72a89403a464fa8e81e194145"
@@ -11804,7 +11810,7 @@ precacheAndRoute([{
   "revision": "a171b462413db156e982aafcaec4c551"
 }, {
   "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
-  "revision": "01d57f115d24a128f40bd772855b561a"
+  "revision": "3547568b93f7fd501fda7b8231200607"
 }, {
   "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
   "revision": "fc683735b7a78c8fc840d73220632b65"
@@ -12104,7 +12110,7 @@ precacheAndRoute([{
   "revision": "721bd3d5367129defea7f6bd1bb8eee3"
 }, {
   "url": "modules/Products/multifile.js",
-  "revision": "d9dc85cdf658755d29cdb4704fea4882"
+  "revision": "d6d1edf9fee10452eb678c2c9ba5e1e9"
 }, {
   "url": "modules/Products/Products.js",
   "revision": "df2676fb062d6670d5f0c696bbe74c17"
@@ -12128,7 +12134,7 @@ precacheAndRoute([{
   "revision": "69636c3bb0f5569277b10c98016af69a"
 }, {
   "url": "modules/Emails/Emails.js",
-  "revision": "c5f394c40d03b359242e795da97a9d45"
+  "revision": "75e3b6db10996de8dfbc2b359663d9f5"
 }, {
   "url": "modules/Rss/Rss.js",
   "revision": "72cbe52c78db93657e84d24dfadce955"
@@ -12263,7 +12269,7 @@ precacheAndRoute([{
   "revision": "a2c24e60f601be44f6d8a25b0a5e8431"
 }, {
   "url": "modules/cbMap/generatemap/MassUpsertGrid.js",
-  "revision": "a5f75e9578cc608a1747d58ab810cb24"
+  "revision": "69c0cfdf76e22eede9181b8e4502580e"
 }, {
   "url": "modules/cbTermConditions/cbTermConditions.js",
   "revision": "c240060c1b952bba5d36d4a506fa0e6e"

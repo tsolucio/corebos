@@ -300,4 +300,18 @@
 	<classname>addMapsForShopify2coreBOSIntegration</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>geofreybundala</author>
+	<description>Add field for support multiple time on wf scheduler</description>
+	<filename>build/changeSets/2022/addFIeldWFscheduleMultipleTimeOption.php</filename>
+	<classname>addFIeldWFscheduleMultipleTimeOption</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Add new columns to table messagequeue for holding time range of sms</description>
+	<filename>build/changeSets/2022/addNewFields2SMSqueueTable.php</filename>
+	<classname>addNewFields2SMSqueueTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

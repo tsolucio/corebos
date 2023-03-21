@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'phpseclib\\' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
+    'josemmo\\Facturae\\' => array($vendorDir . '/josemmo/facturae-php/src'),
     'Vaites\\ApacheTika\\' => array($vendorDir . '/vaites/php-apache-tika/src'),
     'Twilio\\' => array($vendorDir . '/twilio/sdk/src/Twilio'),
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),

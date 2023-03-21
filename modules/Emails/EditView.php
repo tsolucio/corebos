@@ -300,17 +300,24 @@ if ($focus->mode == 'edit') {
 $smarty->assign('CALENDAR_LANG', $app_strings['LBL_JSCALENDAR_LANG']);
 $smarty->assign('CALENDAR_DATEFORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 
-if (isset($_REQUEST['return_module'])) {
+if (isset($_REQUEST['pmodule'])) {
+	$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['pmodule']));
+} elseif (isset($_REQUEST['return_module'])) {
 	$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
 } else {
 	$smarty->assign('RETURN_MODULE', 'Emails');
 }
-if (isset($_REQUEST['return_action'])) {
+if (isset($_REQUEST['paction'])) {
+	$smarty->assign('RETURN_ACTION', vtlib_purify($_REQUEST['paction']));
+} elseif (isset($_REQUEST['return_action'])) {
 	$smarty->assign('RETURN_ACTION', vtlib_purify($_REQUEST['return_action']));
 } else {
 	$smarty->assign('RETURN_ACTION', 'index');
 }
-if (isset($_REQUEST['return_id'])) {
+if (isset($_REQUEST['idlist']) && isset($_REQUEST['pmodule']) && isset($_REQUEST['paction'])) {
+	$ids = explode(';', $_REQUEST['idlist']);
+	$smarty->assign('RETURN_ID', vtlib_purify($ids[0]));
+} elseif (isset($_REQUEST['return_id'])) {
 	$smarty->assign('RETURN_ID', vtlib_purify($_REQUEST['return_id']));
 }
 if (isset($_REQUEST['return_viewname'])) {
@@ -365,5 +372,9 @@ $smarty->assign('EMail_Maximum_Number_Attachments', GlobalVariable::getVariable(
 $smarty->assign('SEND_INDIVIDUAL_EMAILS', GlobalVariable::getVariable('EMail_Send_Individual', 1));
 $smarty->assign('MERGE_TEMPLATE_WITH', (isset($_REQUEST['mergewith']) ? vtlib_purify($_REQUEST['mergewith']) : ''));
 getBrowserVariables($smarty);
+$smarty->assign('LOADLDS', 'yes');
+if (isset($_REQUEST['modalmode']) && $_REQUEST['modalmode']) {
+	$smarty->assign('LOADLDS', 'no');
+}
 $smarty->display('ComposeEmail.tpl');
 ?>

@@ -58,25 +58,25 @@ class AdvancedSearch extends processcbMap {
 
 		// convert fields into the right format
 		$customView = new CustomView();
-		if (isset($parsedxml["group"]["conditions"])) {
-			if (isset($parsedxml["group"]["conditions"]["condition"]["fieldname"])) {
-				$fieldName = $parsedxml["group"]["conditions"]["condition"]["fieldname"];
-				$moduleName = $parsedxml["group"]["conditions"]["condition"]["modulename"];
-				$parsedxml["group"]["conditions"]["condition"]["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($fieldName, $moduleName);
+		if (isset($parsedxml['group']['conditions'])) {
+			if (isset($parsedxml['group']['conditions']['condition']['fieldname'])) {
+				$fieldName = $parsedxml['group']['conditions']['condition']['fieldname'];
+				$moduleName = $parsedxml['group']['conditions']['condition']['modulename'];
+				$parsedxml['group']['conditions']['condition']['fieldname'] = $customView->getFilterFieldDefinitionByNameOrLabel($fieldName, $moduleName);
 			} else {
-				foreach ($parsedxml["group"]["conditions"]["condition"] as &$value) {
-					$value["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($value["fieldname"], $value["modulename"]);
+				foreach ($parsedxml['group']['conditions']['condition'] as &$value) {
+					$value['fieldname'] = $customView->getFilterFieldDefinitionByNameOrLabel($value['fieldname'], $value['modulename']);
 				}
 			}
 		} else {
-			foreach ($parsedxml["group"] as &$value) {
-				if (isset($value["conditions"]["condition"]["fieldname"])) {
-					$fieldName = $value["conditions"]["condition"]["fieldname"];
-					$moduleName = $value["conditions"]["condition"]["modulename"];
-					$value["conditions"]["condition"]["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($fieldName, $moduleName);
+			foreach ($parsedxml['group'] as &$value) {
+				if (isset($value['conditions']['condition']['fieldname'])) {
+					$fieldName = $value['conditions']['condition']['fieldname'];
+					$moduleName = $value['conditions']['condition']['modulename'];
+					$value['conditions']['condition']['fieldname'] = $customView->getFilterFieldDefinitionByNameOrLabel($fieldName, $moduleName);
 				} else {
-					foreach ($value["conditions"]["condition"] as &$value2) {
-						$value2["fieldname"] = $customView->getFilterFieldDefinitionByNameOrLabel($value2["fieldname"], $value2["modulename"]);
+					foreach ($value['conditions']['condition'] as &$value2) {
+						$value2['fieldname'] = $customView->getFilterFieldDefinitionByNameOrLabel($value2['fieldname'], $value2['modulename']);
 					}
 				}
 			}

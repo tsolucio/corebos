@@ -106,6 +106,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'InBucket SMTP Listener',
 	'definition' => 'If set its value will be used as the Out Going Mail Server Host',
 ),
+'Debug_Workflow_Execution'=> array(
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0|1',
+	'definition' => 'If 1, workflow execution logs will generated. The default is 0',
+),
 'Application_Menu_Direction' => array(
 	'valuetype' => 'String',
 	'category' => 'Application',
@@ -1887,6 +1893,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Activates inline edit depending on the View type. The default is 1',
+),
+'Email_Template_AutomaticMerge' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1, the email template is merged automatically. If set to 0, the email template is not merged and you can preview the email. The default value is 1.',
 ),
 );
 

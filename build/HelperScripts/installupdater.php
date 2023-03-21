@@ -246,6 +246,9 @@ if (!in_array('recordset', $cnmsg)) {
 if (!in_array('onerecord', $cnmsg)) {
 	ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `onerecord` int(11) default NULL;');
 }
+if (!in_array('multipleschtime', $cnmsg)) {
+	$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `multipleschtime` varchar(500)');
+}
 $taskTypes = array();
 $defaultModules = array('include' => array(), 'exclude'=>array());
 $createToDoModules = array('include' => array("Leads","Accounts","Potentials","Contacts","HelpDesk","Campaigns","Quotes","PurchaseOrder","SalesOrder","Invoice"), 'exclude'=>array("Calendar", "FAQ", "Events"));

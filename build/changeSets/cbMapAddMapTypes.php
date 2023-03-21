@@ -52,6 +52,7 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 				'AdvancedSearch',
 				'PopupFilter',
 				'MasterGrid',
+				'WizardForms',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');
 			$field = Vtiger_Field::getInstance('maptype', $moduleInstance);

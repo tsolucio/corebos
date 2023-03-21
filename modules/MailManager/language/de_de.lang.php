@@ -171,6 +171,8 @@ $mod_strings = array (
 	'LBL_TO_ACCOUNTS' => 'zu Organisation',
 	'LBL_TO_LEADS' => 'zu Lead',
 	'LBL_TO_USERS' => 'zu Benutzer',
-	'LBL_SENT_MAILS' => 'Sende Emails'
+	'LBL_SENT_MAILS' => 'Sende Emails',
+	'LBL_VERIFY_SERVER' => 'Bitte überprüfen Sie den ausgehenden Server',
+	'LBL_DRAFT_NOT_SAVED' => 'Entwurf wurde nicht gespeichert',
 );
 ?>

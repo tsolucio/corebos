@@ -108,6 +108,7 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 			$height = 3;
 		}
 		if ($barcodeobj) {
+			$this->logmessages[] = json_encode([$fieldValueToEncode, $encoding_type, $width, $height]);
 			$logbg->debug('(GenerateImageCodeTask)', [$fieldValueToEncode, $encoding_type, $width, $height]);
 			$data = $barcodeobj->getBarcodePngData($width, $height, array(0,0,0));
 
@@ -130,7 +131,9 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 			$moduleInstance->insertIntoAttachment($recordId, $moduleName);
 			unlink($filepath);
 		} else {
-			$logbg->debug('(GenerateImageCodeTask) not called: barcode object is empty');
+			$logmsg = '(GenerateImageCodeTask) not called: barcode object is empty';
+			$this->logmessages[] = $logmsg;
+			$logbg->debug($logmsg);
 		}
 		$util->revertUser();
 		$logbg->debug('< GenerateImageCodeTask');

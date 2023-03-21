@@ -455,6 +455,31 @@ switch ($functiontocall) {
 			$ret[$tr] = getTranslatedString($tr, $i18nm);
 		}
 		break;
+	case 'execrule':
+		$ret = '';
+		if (isset($_REQUEST['rulebmap'])) {
+			$bmap = vtlib_purify($_REQUEST['rulebmap']);
+			if (is_numeric($bmap)) {
+				$cbmap = cbMap::getMapByID($bmap);
+			} else {
+				$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
+				$cbmap = cbMap::getMapByID($cbmapid);
+			}
+			$screen_values = json_decode($_REQUEST['structure'], true);
+			if (empty($_REQUEST['record'])) { // isNew
+				if (!empty($cbmap) && ($cbmap->column_fields['maptype'] == 'Condition Expression' || $cbmap->column_fields['maptype'] == 'DecisionTable')) {
+					if ($cbmap->column_fields['maptype'] == 'Condition Expression') {
+						$ret = $cbmap->ConditionExpression($screen_values);
+					} else {
+						$ret = $cbmap->DecisionTable($screen_values);
+					}
+				}
+			} else { // editing
+				$screen_values['record_id'] = vtlib_purify($_REQUEST['record']);
+				$ret = coreBOS_Rule::evaluate($bmap, $screen_values);
+			}
+		}
+		break;
 	case 'execwf':
 		include_once 'include/Webservices/ExecuteWorkflow.php';
 		$wfid = vtlib_purify($_REQUEST['wfid']);

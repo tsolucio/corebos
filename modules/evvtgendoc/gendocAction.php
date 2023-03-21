@@ -134,7 +134,8 @@ if ($mergetemplate=='1') {
 				rename(($format=='doc'?$filename:$pdfname), $sname);
 				break;
 			case 'save':
-				OpenDocument::saveAsDocument($record, $module, $format, basename($mergeTemplateName, '.odt'), ($format=='pdf' ? $fullpdfname : $fullfilename), $name);
+				$docid = OpenDocument::saveAsDocument($record, $module, $format, basename($mergeTemplateName, '.odt'), ($format=='pdf' ? $fullpdfname : $fullfilename), $name);
+				echo '<script>window.parent.postMessage('.$docid.', "*");</script>';
 				break;
 		}
 		$out.= '<a href="' . OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.odt">' . $app_strings['DownloadMergeFile'] . '</a></td></tr></table><br/>';

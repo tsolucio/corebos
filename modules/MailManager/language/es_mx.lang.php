@@ -172,6 +172,8 @@ $mod_strings = array (
 	'LBL_TO_ACCOUNTS' => 'A Cuentas',
 	'LBL_TO_LEADS' => 'A PreContactos',
 	'LBL_TO_USERS' => 'A Usuarios',
-	'LBL_SENT_MAILS' => 'Correos Enviados'
+	'LBL_SENT_MAILS' => 'Correos Enviados',
+	'LBL_VERIFY_SERVER' => 'Verifique el servidor saliente',
+	'LBL_DRAFT_NOT_SAVED' => 'El borrador no se guardó',
 );
 ?>

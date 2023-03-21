@@ -23,7 +23,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	 * @param  MailManager_Model_Message $mailrecord
 	 * @param string $module
 	 * @param CRMEntity $linkfocus
-	 * @return Integer
+	 * @return integer
 	 */
 	public function __CreateNewEmail($mailrecord, $module, $linkfocus) {
 		global $current_user;
@@ -65,7 +65,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	/**
 	 * Save attachments from the email and add it to the module record.
 	 * @global PearDataBase $adb
-	 * @global String $root_directory
+	 * @global string $root_directory
 	 * @param MailManager_Model_Message $mailrecord
 	 * @param string $basemodule
 	 * @param CRMEntity $basefocus
@@ -142,8 +142,8 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	/**
 	 * Creates a Document
 	 * @global Users $current_user
-	 * @param Array $info
-	 * @return Integer
+	 * @param array $info
+	 * @return integer
 	 */
 	public function createDocument($info) {
 		global $current_user;
@@ -168,8 +168,8 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	/**
 	 *
 	 * @param MailManager_Model_Message $mailrecord
-	 * @param Integer $linkto
-	 * @return Array
+	 * @param integer $linkto
+	 * @return array
 	 */
 	public static function associate($mailrecord, $linkto) {
 		$instance = new self(0);
@@ -192,9 +192,9 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	/**
 	 * Returns the information about the Parent
 	 * @param string $module
-	 * @param Integer $record
+	 * @param integer $record
 	 * @param string $label
-	 * @return Array
+	 * @return array
 	 */
 	public static function buildDetailViewLink($module, $record, $label) {
 		$detailViewLink = sprintf("<a target='_blank' href='index.php?module=%s&action=DetailView&record=%s'>%s</a>", $module, $record, textlength_check($label));
@@ -205,7 +205,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	 * Returns the related entity for a Mail
 	 * @global PearDataBase $adb
 	 * @param integer $mailuid - Mail Number
-	 * @return Array
+	 * @return array
 	 */
 	public static function associatedLink($mailuid) {
 		$info = MailManager::lookupMailAssociation($mailuid);
@@ -218,8 +218,8 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	/**
 	 * Returns the information about the Parent
 	 * @global PearDataBase $adb
-	 * @param Integer $crmid
-	 * @return Array
+	 * @param integer $crmid
+	 * @return array
 	 */
 	public static function getSalesEntityInfo($crmid) {
 		global $adb;
@@ -249,8 +249,8 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	/**
 	 * Related an attachment to a Email record
 	 * @global PearDataBase $adb
-	 * @param Integer $crmId
-	 * @param Integer $attachId
+	 * @param integer $crmId
+	 * @param integer $attachId
 	 */
 	public function relateAttachment($crmId, $attachId) {
 		global $adb;
@@ -260,8 +260,8 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	/**
 	 * Related a Document to a record
 	 * @global PearDataBase $adb
-	 * @param Integer $crmId
-	 * @param Integer $docId
+	 * @param integer $crmId
+	 * @param integer $docId
 	 */
 	public function relatedDocument($crmId, $docId) {
 		global $adb;

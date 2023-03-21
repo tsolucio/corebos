@@ -838,13 +838,16 @@ class PearDatabase {
 		return '';
 	}
 
-	public function fetchByAssoc(&$result, $rowNum = -1, $encode = true) {
+	public function fetchByAssoc(&$result, $rowNum = -1, $encode = true, $keycase = ADODB_ASSOC_CASE_LOWER) {
 		if ($result->EOF) {
 			$this->println('DB fetchByAssoc return null');
 			return null;
 		}
 		if (isset($result) && $rowNum < 0) {
-			$row = $this->change_key_case($result->GetRowAssoc(false));
+			$row = $result->GetRowAssoc($keycase);
+			if ($keycase != ADODB_ASSOC_CASE_NATIVE) {
+				$row = $this->change_key_case($row);
+			}
 			$result->MoveNext();
 			if ($encode && is_array($row)) {
 				return array_map('to_html', $row);
@@ -856,7 +859,10 @@ class PearDatabase {
 			$result->Move($rowNum);
 		}
 		$this->lastmysqlrow = $rowNum;
-		$row = $this->change_key_case($result->GetRowAssoc(false));
+		$row = $result->GetRowAssoc($keycase);
+		if ($keycase != ADODB_ASSOC_CASE_NATIVE) {
+			$row = $this->change_key_case($row);
+		}
 		$result->MoveNext();
 		$this->println($row);
 
@@ -1031,8 +1037,18 @@ class PearDatabase {
 		return false;
 	}
 
+	public function getMetaColumns($tablename) {
+		$this->println('DB getMetaColumns '.$tablename);
+		$this->checkConnection();
+		$return = @$this->database->MetaColumns($tablename);
+		foreach ($return as $colname => $colinfo) {
+			$return[$colname] = $colinfo;
+		}
+		return $return;
+	}
+
 	public function getColumnNames($tablename) {
-		$this->println('DB getColumnNames table='.$tablename);
+		$this->println('DB getColumnNames '.$tablename);
 		$this->checkConnection();
 		$adoflds = @$this->database->MetaColumns($tablename);
 		$i=0;

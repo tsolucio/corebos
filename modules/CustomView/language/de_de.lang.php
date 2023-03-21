@@ -260,9 +260,10 @@ $mod_strings = array(
 	'LBL_EDIT'=>'bearbeiten',
 	'LBL_STATUS_PUBLIC_APPROVE'=>'bestätigen',
 	'LBL_STATUS_PUBLIC_DENY'=>'ablehnen',
-	'LBL_FIRST_COLUMN'=>'First Column',
-	'LBL_SECOND_COLUMN'=>'Second Column',
+	'LBL_FIRST_COLUMN'=>'Erste Spalte',
+	'LBL_SECOND_COLUMN'=>'Zweite Spalte',
 
 	'LBL_ADVANCED_FILTER' => 'Regel',
+	'LBL_SORT_BY_FIELD' => 'Nach Feld sortieren',
 );
 ?>

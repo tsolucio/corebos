@@ -20,7 +20,7 @@ class crmtogo_UI_GetRelatedLists extends crmtogo_WS_RelatedRecords {
 			$response = $wsResponse;
 		} else {
 			$wsResponseResult = $wsResponse->getResult();
-			$current_language = $this->sessionGet('language') ;
+			$current_language = $this->sessionGet('language');
 			$relatedlistsmodule = array_keys($wsResponseResult);
 			$relatedresponse = new crmtogo_API_Response();
 			$detailresponse_record = array();

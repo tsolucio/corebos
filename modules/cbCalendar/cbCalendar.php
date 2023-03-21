@@ -1234,5 +1234,13 @@ class cbCalendar extends CRMEntity {
 			return '';
 		}
 	}
+
+	public function getJoinClause($tableName) {
+		if (strripos($tableName, 'rel') === (strlen($tableName) - 3) || $tableName == 'vtiger_activity_reminder') {
+			return 'LEFT JOIN';
+		} else {
+			return 'INNER JOIN';
+		}
+	}
 }
 ?>

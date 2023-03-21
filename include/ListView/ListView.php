@@ -80,7 +80,7 @@ class ListView {
 			$log->debug('< setQuery');
 			return;
 		}
-		$sortBy = $this->getSessionVariable($varName, 'ORDER_BY') ;
+		$sortBy = $this->getSessionVariable($varName, 'ORDER_BY');
 
 		if (empty($sortBy)) {
 			$this->setUserVariable($varName, 'ORDER_BY', $orderBy);

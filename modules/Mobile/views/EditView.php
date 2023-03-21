@@ -67,7 +67,7 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			}
 			$current_user = $this->getActiveUser();
 			//for compatibility to CRM versions 5.2.1 and 5.3.0 ff.
-			$current_language = $this->sessionGet('language') ;
+			$current_language = $this->sessionGet('language');
 			//generate dateformat for Smarty
 			$target_date_format = $current_user->date_format;
 			$target_date_format= str_replace('yyyy', '%Y', $target_date_format);

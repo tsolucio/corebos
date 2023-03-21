@@ -15,6 +15,13 @@ function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname, 
 	var wodform = false;
 	const urlSearchParams = new URLSearchParams(window.location.search);
 	const params = Object.fromEntries(urlSearchParams.entries());
+	if (formname == 'Wizard') {
+		var domnode_id = window.opener.document.getElementById(`${target_fieldname}_formtemplate_${params.index}`);
+		var domnode_display = window.opener.document.getElementById(`${target_fieldname}_display_${params.index}`);
+		domnode_id.value = recordid;
+		domnode_display.value = value;
+		return true;
+	}
 	if (formname == 'ListView') {
 		var domnode_id = window.opener.document.getElementById(`txtbox_${target_fieldname}_${currentID}`);
 		var domnode_display = window.opener.document.getElementById(`txtbox_${target_fieldname}_${currentID}_display`);

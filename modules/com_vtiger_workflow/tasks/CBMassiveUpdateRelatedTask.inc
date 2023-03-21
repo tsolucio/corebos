@@ -129,6 +129,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				$relationInfo = $adb->fetch_array($relationResult);
 				$params = array($recordId, $rectabid, $relatedModuleId);
 				$logbg->debug(['rel func' => $relationInfo['name'], 'params' => $params]);
+				$this->logmessages[] = 'rel func: '.$relationInfo['name'].', params: '.json_encode($params);
 				if (empty($holdCM)) {
 					$holdCM = $currentModule;
 				}
@@ -156,7 +157,10 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 								$focusrel[$fldmod]->column_fields[$key]=$value;
 							}
 							$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
-							$logbg->debug("Saving: $relmodule, trigger WF: ".($this->launchrelwf ? 'T' : 'F'), $focusrel[$fldmod]->column_fields);
+							$logmsg = "Saving: $relmodule, trigger WF: ".($this->launchrelwf ? 'T' : 'F');
+							$logbg->debug($logmsg, $focusrel[$fldmod]->column_fields);
+							$this->logmessages[] = $logmsg;
+							$this->logmessages[] = json_encode($focusrel[$fldmod]->column_fields);
 							if ($this->launchrelwf) {
 								$focusrel[$fldmod]->save($relmodule);
 							} else {
@@ -170,19 +174,27 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 								$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
 							}
 						} else {
-							$logbg->debug('(MassiveUpdateRelatedTask) not called: business map is empty or of a non supported type');
+							$logmsg = '(MassiveUpdateRelatedTask) not called: business map is empty or of a non supported type';
+							$logbg->debug($logmsg);
+							$this->logmessages[] = $logmsg;
 						}
 					}
 				} else {
-					$logbg->debug('(MassiveUpdateRelatedTask) not called: relationData query is empty');
+					$logmsg = '(MassiveUpdateRelatedTask) not called: relationData query is empty';
+					$logbg->debug($logmsg);
+					$this->logmessages[] = $logmsg;
 				}
 			} else {
-				$logbg->debug('(MassiveUpdateRelatedTask) not called: relation field (fldmod) is empty');
+				$logmsg = '(MassiveUpdateRelatedTask) not called: relation field (fldmod) is empty';
+				$logbg->debug($logmsg);
+				$this->logmessages[] = $logmsg;
 			}
 			$util->revertUser();
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 		} else {
-			$logbg->debug('(MassiveUpdateRelatedTask) not called: fieldValueMapping is empty');
+			$logmsg = '(MassiveUpdateRelatedTask) not called: fieldValueMapping is empty';
+			$logbg->debug($logmsg);
+			$this->logmessages[] = $logmsg;
 		}
 		$util->revertUser();
 		$from_wf = false;

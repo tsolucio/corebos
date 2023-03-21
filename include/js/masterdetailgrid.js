@@ -1,5 +1,6 @@
 var MDInstance = Array();
-var RecordsToDuplicate = Array();
+var SelectedRecords = Array();
+var SelectedRecordsIds = Array();
 var ReloadScreenAfterEdit = 0;
 GlobalVariable_getVariable('MasterDetail_ReloadScreenAfterEdit', 0).then(function (response) {
 	let obj = JSON.parse(response);
@@ -221,16 +222,38 @@ var masterdetailwork = {
 	},
 
 	checkUnCheckRows: (ev) => {
-		RecordsToDuplicate = [];
-		let rows = ev.instance.getCheckedRows();
-		rows.forEach(row => {
-			RecordsToDuplicate.push(row.record_id);
+		SelectedRecords = [];
+		SelectedRecordsIds = [];
+		SelectedRecords = ev.instance.getCheckedRows();
+		SelectedRecords.forEach(row => {
+			SelectedRecordsIds.push(row.record_id);
 		});
 	},
 
 	CallToAction: (ev, workflowid) => {
-		if (RecordsToDuplicate.length > 0) {
-			runBAWorkflow(workflowid.split(','), RecordsToDuplicate.join(';'))
+		if (SelectedRecordsIds.length > 0) {
+			runBAWorkflow(workflowid.split(','), SelectedRecordsIds.join(';'));
+			masterdetailwork.MDReload();
+		}
+	},
+
+	MDMassEditRecords: (ev, module, mapname) => {
+		if (SelectedRecordsIds.length > 0) {
+			let viewid = getviewId();
+			let idstring = SelectedRecordsIds.join(';');
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module='+encodeURIComponent(module)+'&action='+encodeURIComponent(module+'Ajax')+'&file=MassEdit&mode=ajax&idstring='+idstring+'&viewname='+viewid+'&excludedRecords='
+			}).done(function (response) {
+				let result = response;
+				let element = document.getElementById(mapname);
+				document.getElementById('massedit_form_div').innerHTML=result;
+				document.getElementById('massedit_form')['massedit_recordids'].value = document.getElementById('massedit_form')['idstring'].value;
+				document.getElementById('massedit_form')['massedit_module'].value = module;
+				vtlib_executeJavascriptInElement(document.getElementById('massedit_form_div'));
+				AutocompleteSetup();
+				fnvshobj(element, 'massedit');
+			});
 		}
 	},
 

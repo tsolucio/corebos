@@ -40,6 +40,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_ActivityReminder_Deactivated',
 				'Debug_Access_Restricted_File',
 				'Debug_Email_Send_To_Inbucket',
+				'Debug_Workflow_Execution',
 
 				'Application_Global_Search_SelectedModules',
 				'Application_Global_Search_Binary',
@@ -337,6 +338,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Apache_Tika_URL',
 				'Application_MassAction_Multipage',
 				'Document_DefaultFolder',
+				'Email_Template_AutomaticMerge',
 			);
 			$delete_these = array(
 				'preload_prototype',

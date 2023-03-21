@@ -8,6 +8,23 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+{if $smarty.request.action eq 'EmailsAjax'}
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
+<title>{$MOD.TITLE_VTIGERCRM_MAIL}</title>
+<link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
+<link rel="stylesheet" type="text/css" media="all" href="themes/{$THEME}/style.css">
+<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
+<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
+{include file='BrowserVariables.tpl'}
+<script type="text/javascript" src="include/js/vtlib.js"></script>
+<script type="text/javascript" src="include/js/general.js"></script>
+</head>
+<body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
+{/if}
 <style>
 #adv_filter_div > table:first-child td,
 #adv_filter_div > div:nth-child(3) > table:first-child tr:first-child td,
@@ -18,7 +35,25 @@
 {assign var=CREATE_PERMISSION value='no'}
 {assign var=DELETE value='no'}
 {assign var=EDIT_PERMISSION value='no'}
-{include file='Buttons_List.tpl' isDetailView=true}
+<div class="slds-page-header">
+<div class="slds-page-header__row">
+	<div class="slds-page-header__col-title">
+		<div class="slds-media">
+			<div class="slds-media__body">
+				<div class="slds-page-header__name">
+					<div class="slds-page-header__name-title">
+						<h1>
+							<span class="slds-page-header__title slds-truncate" title="{$MOD.LBL_EMAILS_TITLE}">
+								{$MOD.LBL_EMAILS_TITLE}
+							</span>
+						</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
 <table class="slds-card" style="width:96%; margin:auto;">
 <tbody>
 	{foreach item=row from=$BLOCKS}
@@ -112,6 +147,19 @@
 		'onclick' => "OpenCompose('{$ID}','edit')"
 	]}
 	{include file='Components/ButtonWithIcon.tpl'}
+	{if $smarty.request.action eq 'EmailsAjax'}
+	{assign var='BUTTONWITHICON' value=[
+		'variation' => 'text-destructive',
+		'title' => $APP.LBL_CANCEL_BUTTON_LABEL,
+		'id' => 'cancel',
+		'size' => 'small',
+		'position' => 'left',
+		'library' => 'utility',
+		'icon' => 'close',
+		'onclick' => 'window.close()'
+	]}
+	{include file='Components/ButtonWithIcon.tpl'}
+	{/if}
 	{assign var='BUTTONWITHICON' value=[
 		'variation' => 'outline-brand',
 		'title' => $MOD.LBL_PRINT_EMAIL,
@@ -146,3 +194,7 @@
 <script>
 document.getElementById('attach_cont').innerHTML = document.getElementById('attach_temp_cont').innerHTML;
 </script>
+{if $smarty.request.action eq 'EmailsAjax'}
+</body>
+</html>
+{/if}

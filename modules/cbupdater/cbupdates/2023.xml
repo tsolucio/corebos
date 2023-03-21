@@ -70,4 +70,25 @@
 	<classname>addYesNoFieldsToCbSurveyQuestion</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>ketlinapuci</author>
+	<description>Add new blocks and certificate field and email settings option in Credentials</description>
+	<filename>build/changeSets/2023/addCertificateFieldandEmailSettingOptionToCbCredentials.php</filename>
+	<classname>addCertificateFieldandEmailSettingOptionToCbCredentials</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add ondemand workflow logs table</description>
+	<filename>build/changeSets/2023/addworkflowlogstable.php</filename>
+	<classname>addworkflowlogstable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add ondemand workflow logs table index</description>
+	<filename>build/changeSets/2023/addworkflowlogstableindex.php</filename>
+	<classname>addworkflowlogstableindex</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

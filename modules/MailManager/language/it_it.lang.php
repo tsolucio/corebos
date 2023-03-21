@@ -180,5 +180,7 @@ $mod_strings = array (
 	'BCC'=>'BCC',
 	'CC'=>'CC',
 	'FROM'=>'DA',
+	'LBL_VERIFY_SERVER' => 'Verifica il server in uscita',
+	'LBL_DRAFT_NOT_SAVED' => 'La bozza non è stata salvata',
 );
 ?>

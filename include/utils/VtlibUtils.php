@@ -480,16 +480,21 @@ function vtlib_purify($input, $ignore = false) {
 				}
 			} else { // Simple type
 				$value = $__htmlpurifier_instance->purify($input);
+				if (strpos($value, '<a') !== false && strpos($value, 'javascript') !== false) {
+					$dom = new DOMDocument;
+					$dom->loadHTML($value, LIBXML_HTML_NODEFDTD | LIBXML_HTML_NOIMPLIED);
+					foreach ($dom->getElementsByTagName('a') as $node) {
+						if ($node->hasAttribute('href') && !filter_var($node->getAttribute('href'), FILTER_VALIDATE_URL) !== false) {
+							$node->removeAttribute('href');
+							$value = trim($dom->saveHTML(), "\n");
+						}
+					}
+				}
 			}
 		}
 	}
 	if (is_array($value)) {
-		$value = array_map(
-			function ($v) {
-				return str_replace('&amp;', '&', $v);
-			},
-			$value
-		);
+		$value = changeHTMLAmpersandsInArray($value);
 	} elseif (is_string($value)) {
 		$value = str_replace('&amp;', '&', $value);
 	}
@@ -497,6 +502,13 @@ function vtlib_purify($input, $ignore = false) {
 		$purified_cache[$md5OfInput] = $value;
 	}
 	return $value;
+}
+
+function changeHTMLAmpersandsInArray($v) {
+	if (is_array($v)) {
+		return array_map('changeHTMLAmpersandsInArray', $v);
+	}
+	return str_replace('&amp;', '&', $v);
 }
 
 /**

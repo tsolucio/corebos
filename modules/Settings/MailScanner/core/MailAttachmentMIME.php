@@ -99,6 +99,7 @@ class mimetype {
 	}
 
 	private function privFindType($ext) {
+		$ext = strtolower($ext);
 		// return mime type for extension
 		if (isset($this::$mimetypes[$ext])) {
 			return $this::$mimetypes[$ext];

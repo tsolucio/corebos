@@ -54,6 +54,7 @@ relatedlistgrid.NextStep['{$functionName}'] = '{$NextStep}';
 relatedlistgrid.Wizard['{$functionName}'] = '{$Wizard}';
 relatedlistgrid.WizardWorkflows['{$functionName}'] = '{$WizardWorkflows}';
 relatedlistgrid.PopupAction['{$functionName}'] = '{$PopupAction}';
+relatedlistgrid.CreateView['{$functionName}'] = '{$CreateView}';
 function loadRLGrid{$functionName}() {
 	RLInstance['{$functionName}'] = new tui.Grid({
 		el: document.getElementById('{$functionName}'),

@@ -1844,7 +1844,7 @@ function setObjectValuesFromRequest($focus) {
 			$focus->column_fields[$fieldname] = $value;
 		} elseif (isset($_REQUEST[$fieldname.'_hidden'])) {
 			if ($editing) {
-				$focus->column_fields[$fieldname] = trim(vt_suppressHTMLTags($_REQUEST[$fieldname.'_hidden'], true));
+				$value = trim(vt_suppressHTMLTags($_REQUEST[$fieldname.'_hidden'], true));
 			} else {
 				$value = trim($_REQUEST[$fieldname.'_hidden']);
 			}
@@ -2372,6 +2372,27 @@ function decideFilePath() {
 }
 
 /**
+ * Function to retrieve the physical path of the file referenced by given attachment ID
+ * @param int attachment ID
+ * @param boolean return relative (true) or absolute path (false). default is absolute
+ * @return string path to attachment
+ */
+function getAttachmentPathFromID($attid, $relative = false) {
+	global $adb, $root_directory;
+	$path = '';
+	if (!empty($attid)) {
+		$res_att = $adb->pquery('SELECT attachmentsid,name,path FROM vtiger_attachments WHERE attachmentsid=?', array($attid));
+		if ($res_att && $adb->num_rows($res_att)>0) {
+			$name = $res_att->fields['name'];
+			$ruta = $res_att->fields['path'];
+			$prefix = $res_att->fields['attachmentsid'].'_';
+			$path = ($relative ? '' : $root_directory).$ruta.$prefix.$name;
+		}
+	}
+	return $path;
+}
+
+/**
  * This function is used to check whether the attached file is a image file or not
  * @param array files array which contains all the uploaded file details
  * @return string if the image can be uploaded then 'true' will be returned otherwise 'false'
@@ -2523,7 +2544,7 @@ function validateImageContents($filename) {
  * @param integer Template Id for an Email Template
  * @return array Returns Subject, Body of Template of the the particular email template.
  */
-function getTemplateDetails($templateid, $crmid = null) {
+function getTemplateDetails($templateid, $crmid = null, $mergetemplate = 1) {
 	global $adb, $log, $current_user;
 	$log->debug("> into getTemplateDetails $templateid");
 	$returndata = array();
@@ -2550,20 +2571,23 @@ function getTemplateDetails($templateid, $crmid = null) {
 		if (strpos($crmid, 'x')>0) {
 			list($wsid, $crmid) = explode('x', $crmid);
 		}
+		$context = array(
+			'Email_AutomaticMerge' => $mergetemplate
+		);
 		require_once 'include/Webservices/DescribeObject.php';
 		$type = getSalesEntityType($crmid);
 		$obj = vtws_describe($type, $current_user);
 		$focus = CRMEntity::getInstance($type);
 		$focus->retrieve_entity_info($crmid, $type);
-		$returndata[1] = getMergedDescription($returndata[1], $crmid, $type);
-		$returndata[2] = getMergedDescription($returndata[2], $crmid, $type);
+		$returndata[1] = getMergedDescription($returndata[1], $crmid, $type, $context);
+		$returndata[2] = getMergedDescription($returndata[2], $crmid, $type, $context);
 		foreach ($obj['fields'] as $field) {
 			if (isset($field['uitype']) && $field['uitype'] == '10') {
 				$relid = $focus->column_fields[$field['name']];
 				if (!empty($relid)) {
 					$reltype = getSalesEntityType($relid);
-					$returndata[1] = getMergedDescription($returndata[1], $relid, $reltype);
-					$returndata[2] = getMergedDescription($returndata[2], $relid, $reltype);
+					$returndata[1] = getMergedDescription($returndata[1], $relid, $reltype, $context);
+					$returndata[2] = getMergedDescription($returndata[2], $relid, $reltype, $context);
 				}
 			}
 		}
@@ -2595,7 +2619,9 @@ function getMergedDescription($description, $id, $parent_type, $context = []) {
 	}
 	if ($parent_type != 'Users') {
 		$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
-		$description = $emailTemplate->getProcessedDescription();
+		if (!isset($context['Email_AutomaticMerge']) || $context['Email_AutomaticMerge'] == 1) {
+			$description = $emailTemplate->getProcessedDescription();
+		}
 	}
 	$pmods = array('users', 'custom');
 	$token_data_pair = explode('$', $description);

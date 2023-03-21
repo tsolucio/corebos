@@ -61,6 +61,7 @@ class generateReportWfTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $logbg, $root_directory;
+		$this->logmessages[] = 'TYPE: '.$this->case_type;
 		$logbg->debug('> generateReportWfTask: '.$this->case_type);
 		$path = '';
 		$name = '';
@@ -88,6 +89,7 @@ class generateReportWfTask extends VTTask {
 			}
 			$baseFileName = sprintf($baseFileName, $now);
 			$path = 'cache/';
+			$this->logmessages[] = json_encode([$this->file_type, $reportId]);
 			$logbg->debug('(generateReportWfTask)', [$this->file_type, $reportId]);
 			$oReportRun = new ReportRun($reportId);
 			if ($this->file_type == 'pdf') {
@@ -133,6 +135,7 @@ class generateReportWfTask extends VTTask {
 			} else {
 				$qtype = 'File';
 			}
+			$this->logmessages[] = json_encode([$this->file_type, $qtype, $this->qnfield]);
 			$logbg->debug('(generateReportWfTask)', [$this->file_type, $qtype, $this->qnfield]);
 			$res = cbQuestion::getFormattedAnswer((int)$this->qnfield, $entity->WorkflowContext);
 			if ($res && $qtype=='File') {
@@ -158,6 +161,7 @@ class generateReportWfTask extends VTTask {
 						$name .= '.xls';
 						unlink($csvpath);
 					} catch (Exception $e) {
+						$this->logmessages[] = 'generateReportWfTask error '. $e->getMessage();
 						$logbg->debug('generateReportWfTask error '. $e->getMessage());
 					}
 				} elseif ($this->file_type == 'pdf') {

@@ -7103,7 +7103,7 @@ function findUp(element, searchterm) {
 
 function initSelect2() {
 	if (Application_AssignUser_Search == 1) {
-		const dataType = document.querySelectorAll(`[data-uitype="53"]`);
+		const dataType = document.querySelectorAll('[data-uitype="53"]');
 		for (let i = 0; i < dataType.length; i++) {
 			const el = document.getElementById(dataType[i].id);
 			if (el !== undefined && el !== null) {
@@ -7111,15 +7111,6 @@ function initSelect2() {
 					width: '100%',
 				});
 			}
-		}
-	}
-	//init basic search
-	const basicSearch = document.getElementById('bas_searchfield');
-	if (basicSearch !== undefined && basicSearch !== null) {
-		if (basicSearch !== undefined && basicSearch !== null) {
-			$(`#bas_searchfield`).select2({
-				width: '100%',
-			});
 		}
 	}
 }
@@ -7707,14 +7698,13 @@ async function handleDrawClick(checkmodule, checkaction, recordid, doc2edit = ''
 
 	if (!response) {
 		try {
-		  ldsModal.close(true);
+			ldsModal.close(true);
 		} catch (error) {
-			
 		}
 		ldsModal.show(alert_arr.JSLBL_DRAW_MODAL_TITLE, alert_arr.JSLBL_DRAW_MODAL_MESSAGE);
 		return;
-	  }
-  
+	}
+
 	const urlParams = new URLSearchParams();
 	urlParams.set('module', 'Utilities');
 	urlParams.set('action', 'UtilitiesAjax');
@@ -7723,13 +7713,11 @@ async function handleDrawClick(checkmodule, checkaction, recordid, doc2edit = ''
 	urlParams.set('forrecord', recordid);
 	urlParams.set('inwindow', '1');
 	if (doc2edit) {
-	  urlParams.set('doc2edit', doc2edit);
+		urlParams.set('doc2edit', doc2edit);
 	}
-  
 	const url = `index.php?${urlParams.toString()}`;
 	window.open(url, 'photo2doc', 'width=1416,height=830');
-  
-  }
+}
 
 function cbdzdropHandler(event) {
 	console.log('File(s) dropped');

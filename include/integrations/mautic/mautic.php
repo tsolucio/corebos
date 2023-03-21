@@ -127,10 +127,10 @@ class corebos_mautic {
 	public function getSettings($key = '') {
 		$settings = array(
 			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
-			'baseUrl' => coreBOS_Settings::getSetting(self::KEY_BASEURL, ''),
+			'baseUrl' => html_entity_decode(coreBOS_Settings::getSetting(self::KEY_BASEURL, '')),
 			'version' => coreBOS_Settings::getSetting(self::KEY_VERSION, ''),
-			'clientKey' => coreBOS_Settings::getSetting(self::KEY_CLIENTKEY, ''),
-			'clientSecret' => coreBOS_Settings::getSetting(self::KEY_CLIENTSECRET, ''),
+			'clientKey' => html_entity_decode(coreBOS_Settings::getSetting(self::KEY_CLIENTKEY, '')),
+			'clientSecret' => html_entity_decode(coreBOS_Settings::getSetting(self::KEY_CLIENTSECRET, '')),
 			'callback' => coreBOS_Settings::getSetting(self::KEY_CALLBACK, ''),
 			'accessToken' => coreBOS_Settings::getSetting(self::KEY_ACCESSTOKEN, ''),
 			'accessTokenSecret' => coreBOS_Settings::getSetting(self::KEY_ACCESSTOKENSECRET, ''),
@@ -139,8 +139,8 @@ class corebos_mautic {
 			'leadSync' => coreBOS_Settings::getSetting(self::KEY_LEADSYNC, ''),
 			'companiesSync' => coreBOS_Settings::getSetting(self::KEY_COMPANIESSYNC, ''),
 			'userName' => coreBOS_Settings::getSetting(self::KEY_MAUTICUSERNAME, ''),
-			'password' => coreBOS_Settings::getSetting(self::KEY_MAUTICPASSWORD, ''),
-			'webhookSecret' => coreBOS_Settings::getSetting(self::KEY_MAUTICWEBHOOKSECRET, ''),
+			'password' => html_entity_decode(coreBOS_Settings::getSetting(self::KEY_MAUTICPASSWORD, '')),
+			'webhookSecret' => html_entity_decode(coreBOS_Settings::getSetting(self::KEY_MAUTICWEBHOOKSECRET, '')),
 		);
 		if (!empty($key)) {
 			return $settings[$key];

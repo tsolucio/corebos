@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
 }, false);
 
 const MCGrid = {
-
 	ActiveColumns: [],
 	MatchFields: [],
 	Module: gVTModule,
@@ -61,7 +60,7 @@ const MCGrid = {
 
 	FormValidation: (data) => {
 		let response = Array();
-		data.map(function(row) {
+		data.map(function (row) {
 			for (let field in row) {
 				if (isNaN(field) && field != 'rowKey' && field != '_attributes') {
 					let fieldType = MCGrid.FindFieldType(field);
@@ -85,7 +84,7 @@ const MCGrid = {
 	FindFieldType: (field) => {
 		let typeofdata = '';
 		let moduleFields = JSON.parse(ListFields);
-		moduleFields.map(function(row) {
+		moduleFields.map(function (row) {
 			if (row.name == field) {
 				typeofdata = row.type;
 			}
@@ -136,14 +135,14 @@ const MCGrid = {
 	EditFields: () => {
 		const activeCols = JSON.parse(ListFields);
 		const activeMatchFields = JSON.parse(MatchFields);
-		let content = `<div class="slds-grid slds-wrap">`;
-		activeCols.map(function(currentValue, index) {
+		let content = '<div class="slds-grid slds-wrap">';
+		activeCols.map(function (currentValue, index) {
 			let typeofdata = '';
 			let checked = '';
 			let disabled = '';
 			let modules = '';
 			if (currentValue.typeofdata == 'M') {
-				typeofdata = `<span class="slds-text-color_error">*</span>`;
+				typeofdata = '<span class="slds-text-color_error">*</span>';
 				checked = 'checked';
 				disabled = 'disabled';
 			}
@@ -156,7 +155,7 @@ const MCGrid = {
 					}
 					modules += `<option ${selected} value="${currentValue.relatedModules[i]}">${currentValue.relatedModules[i]}</option>`;
 				}
-				modules += `</select>`;
+				modules += '</select>';
 			}
 			content += `
 			<div class="slds-col slds-size_4-of-12">
@@ -193,9 +192,8 @@ const MCGrid = {
 				</h2>
 			</div>
 		</header>
-		</div><br><br>
-		`;
-		activeMatchFields.map(function(currentValue, index) {
+		</div><br><br>`;
+		activeMatchFields.map(function (currentValue, index) {
 			content += `
 			<div class="slds-col slds-size_4-of-12">
 				<div class="slds-form-element">
@@ -211,7 +209,7 @@ const MCGrid = {
 				</div>
 			</div>`;
 		});
-		content += `</div>`;
+		content += '</div>';
 		ldsModal.show(alert_arr.LBL_SELECT_COLUMNS, content, 'medium', 'MCGrid.UpdateView()');
 	},
 
@@ -222,7 +220,7 @@ const MCGrid = {
 		let newMatchFields = Array();
 		let ColumnsDiff = Array();
 		let MatchDiff = Array();
-		columns.map(function(currentValue, idx) {
+		columns.map(function (currentValue, idx) {
 			const checkbox = document.getElementById(`checkbox-${currentValue.name}`);
 			if (checkbox.checked) {
 				columns[idx].active = 1;
@@ -235,7 +233,7 @@ const MCGrid = {
 				columns[idx].active = 0;
 			}
 		});
-		matchColumns.map(function(currentValue, idx) {
+		matchColumns.map(function (currentValue, idx) {
 			const match = document.getElementById(`match-${currentValue.name}`);
 			if (match.checked) {
 				matchColumns[idx].active = 1;

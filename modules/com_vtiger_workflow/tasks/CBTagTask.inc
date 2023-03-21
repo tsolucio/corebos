@@ -51,18 +51,29 @@ class CBTagTask extends VTTask {
 					$users = $current_user->id;
 				}
 				$freetag->tag_object($users, $cto_id, $this->listoftags, $setype);
-				$logbg->debug('(TagTask) ADD object tag', [$users, $cto_id, $this->listoftags, $setype]);
+				$logmsg = '(TagTask) ADD object tag';
+				$this->logmessages[] = $logmsg;
+				$this->logmessages[] = json_encode([$users, $cto_id, $this->listoftags, $setype]);
+				$logbg->debug($logmsg, [$users, $cto_id, $this->listoftags, $setype]);
 			} else {
 				if ($this->forallusers) {
-					$logbg->debug('(TagTask) DELETE object tags for all users', [$cto_id, $this->listoftags]);
+					$logmsg = '(TagTask) DELETE object tags for all users';
+					$this->logmessages[] = $logmsg;
+					$this->logmessages[] = json_encode([$cto_id, $this->listoftags]);
+					$logbg->debug($logmsg, [$cto_id, $this->listoftags]);
 					$freetag->delete_object_tags($cto_id, $this->listoftags);
 				} else {
-					$logbg->debug('(TagTask) DELETE object tag for', [$current_user->id, $cto_id, $this->listoftags]);
+					$logmsg = '(TagTask) DELETE object tag for';
+					$this->logmessages[] = $logmsg;
+					$this->logmessages[] = json_encode([$current_user->id, $cto_id, $this->listoftags]);
+					$logbg->debug($logmsg, [$current_user->id, $cto_id, $this->listoftags]);
 					$freetag->delete_object_tag($current_user->id, $cto_id, $this->listoftags);
 				}
 			}
 		} else {
-			$logbg->debug('(TagTask) not called: cto_id or listoftags are empty');
+			$logmsg = '(TagTask) not called: cto_id or listoftags are empty';
+			$this->logmessages[] = $logmsg;
+			$logbg->debug($logmsg);
 		}
 		$logbg->debug('< TagTask');
 	}

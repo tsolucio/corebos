@@ -1410,9 +1410,11 @@ $app_strings = array (
 	'Paste the link here' => 'Pega el enlace aquí',
 	'LBL_UITYPE10_NOTALLOWED' => 'El módulo relacionado tiene un campo relacional obligatorio.',
 	'LBL_PAINT2DOCUMENT' => 'Dibujo a Documento',
+	'LBL_PREVIEW' => 'Visualizar',
 	'Slider' => 'Carrusel',
 	'LBL_WIZARD' => 'Asistente',
 	'LBL_ROW' => 'Fila',
+	'LBL_WIZARD_COMPLETED' => 'El proceso ha termiando correctamente.',
 );
 
 // Translation for currency names

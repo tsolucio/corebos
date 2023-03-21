@@ -229,7 +229,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 							$valueArr[$key] = getTranslatedString($value, $module);
 						}
 						if ($field['uitype'] == '33') {
-							$field['value'] = implode(',', $valueArr) ;
+							$field['value'] = implode(',', $valueArr);
 						} else {
 							$field['value'] = $valueArr[0];
 						}

@@ -54,17 +54,19 @@ function __cbwf_getimageurl($arr) {
 			where vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?';
 		$image_res = $adb->pquery($sql, array(str_replace(' ', '_', $arr[0]),$crmid));
 	}
+	$imageurl = '';
 	if ($adb->num_rows($image_res)>0) {
 		$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
 		$image_path = $adb->query_result($image_res, 0, 'path');
 		$image_name = decode_html($adb->query_result($image_res, 0, 'name'));
 		if ($image_name != '') {
 			$imageurl = $image_path . $image_id . '_' . urlencode($image_name);
-		} else {
-			$imageurl = '';
 		}
 	} else {
-		$imageurl = '';
+		$crmid = vtws_getCRMID($arr[0]);
+		if ($crmid && is_numeric($crmid)) { // it is a direct foreign key to a document record (we hope)
+			$imageurl = Documents::getAttachmentPath($crmid);
+		}
 	}
 	return $imageurl;
 }
@@ -316,12 +318,26 @@ function __cb_getISODate($arr) {
 
 function __cb_getidof($arr) {
 	global $current_user, $adb;
-	if (count($arr)!=3 || empty($arr[0]) || empty($arr[1]) || empty($arr[2])) {
+	if (count($arr)<3 || empty($arr[0])) {
 		return 0;
 	}
 	$qg = new QueryGenerator($arr[0], $current_user);
 	$qg->setFields(array('id'));
-	$qg->addCondition($arr[1], $arr[2], 'e');
+	if (count($arr) > 3) {
+		unset($arr[0]);
+		$chunkedArr = array_chunk($arr, count($arr)/2);
+		if (count($chunkedArr[0]) != count($chunkedArr[1])) {
+			return 0;
+		}
+		foreach ($chunkedArr[1] as $k => $v) {
+			$qg->addCondition($chunkedArr[0][$k], $v, 'e', QueryGenerator::$AND);
+		}
+	} else {
+		if (empty($arr[1]) || empty($arr[2])) {
+			return 0;
+		}
+		$qg->addCondition($arr[1], $arr[2], 'e');
+	}
 	$rs = $adb->query($qg->getQuery(false, 1));
 	if ($rs && $adb->num_rows($rs)>0) {
 		return $adb->query_result($rs, 0, 0);
@@ -567,6 +583,17 @@ function __cb_readMessage($arr) {
 	$cbmq = coreBOS_MQTM::getInstance();
 	$msg = $cbmq->getMessage($channel, 'wfmessagereader', 'workflow');
 	return $msg['information'];
+}
+
+function __cb_evaluateExpression($arr) {
+	global $current_user;
+	$env = $arr[1];
+	$data = $env->getData();
+	$entity = new VTWorkflowEntity($current_user, $data['id']);
+	$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($arr[0])));
+	$expression = $parser->expression();
+	$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+	return $exprEvaluater->evaluate($entity);
 }
 
 function __cb_evaluateRule($arr) {

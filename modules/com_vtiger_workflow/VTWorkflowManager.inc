@@ -27,6 +27,7 @@ class VTWorkflowManager {
 	public static $RECORD_ACCESS_CONTROL = 8;
 	public static $ON_RELATE = 9;
 	public static $ON_UNRELATE = 10;
+	private $adb;
 
 	public function __construct($adb) {
 		$this->adb = $adb;
@@ -77,6 +78,9 @@ class VTWorkflowManager {
 		if (!isset($workflow->onerecord)) {
 			$workflow->onerecord = null;
 		}
+		if (!isset($workflow->multipleschtime)) {
+			$workflow->multipleschtime = null;
+		}
 		$wf=$workflow;
 		if (!empty($workflow->id)) {
 			$adb->pquery(
@@ -84,7 +88,7 @@ class VTWorkflowManager {
 					module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
 					schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=?,
 					purpose=?, relatemodule=?, wfstarton=?, wfendon=?, active=?, options=?, cbquestion=?,
-					recordset=?, onerecord=? where workflow_id=?',
+					recordset=?, onerecord=?, multipleschtime=? where workflow_id=?',
 				array(
 					$wf->moduleName,
 					$wf->description,
@@ -106,6 +110,7 @@ class VTWorkflowManager {
 					$wf->cbquestion,
 					$wf->recordset,
 					$wf->onerecord,
+					$wf->multipleschtime,
 					$wf->id,
 				)
 			);
@@ -138,11 +143,12 @@ class VTWorkflowManager {
 					$wf->cbquestion,
 					$wf->recordset,
 					$wf->onerecord,
+					$wf->multipleschtime,
 				);
 				$adb->pquery(
 					'insert into com_vtiger_workflows
-						(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow, schtypeid, schtime, schdayofmonth,
-						schdayofweek, schannualdates, schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active, options, cbquestion, recordset, onerecord)
+						(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow, schtypeid, schtime,schdayofmonth, schdayofweek,
+						schannualdates, schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active, options, cbquestion, recordset, onerecord, multipleschtime)
 						values ('.generateQuestionMarks($vals).')',
 					$vals
 				);
@@ -169,11 +175,12 @@ class VTWorkflowManager {
 					$wf->cbquestion,
 					$wf->recordset,
 					$wf->onerecord,
+					$wf->multipleschtime,
 				);
 				$adb->pquery(
 					'insert into com_vtiger_workflows
-						(workflow_id, module_name, summary, test, execution_condition, defaultworkflow, schtypeid, schtime, schdayofmonth, schdayofweek,
-						schdayofweek, schannualdates,schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active, options, cbquestion, recordset, onerecord)
+						(workflow_id, module_name, summary, test, execution_condition, defaultworkflow, schtypeid, schtime, schdayofmonth, schdayofweek, schdayofweek,
+						schannualdates,schminuteinterval, purpose, relatemodule, wfstarton, wfendon, active, options, cbquestion, recordset, onerecord, multipleschtime)
 						values ('.generateQuestionMarks($vals).')',
 					$vals
 				);
@@ -403,6 +410,7 @@ class VTWorkflowManager {
 		$workflow->recordsetdisplay = '';
 		$workflow->onerecord = null;
 		$workflow->onerecorddisplay = '';
+		$workflow->multipleschtime = '';
 		return $workflow;
 	}
 

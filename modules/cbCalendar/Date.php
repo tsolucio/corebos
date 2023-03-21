@@ -403,14 +403,14 @@ class vt_DateTime {
 
 		if ($mode == 'increment') {
 			$mnth = $tmpDate['month'] + 1;
-			$yr = $tmpDate['year'] ;
+			$yr = $tmpDate['year'];
 		} else {
 			if ($tmpDate['month'] == 1) {
 				$mnth = 12;
 				$yr = $tmpDate['year'] - 1;
 			} else {
 				$mnth = $tmpDate['month'] - 1;
-				$yr = $tmpDate['year'] ;
+				$yr = $tmpDate['year'];
 			}
 		}
 		$date_data = array('day'=>1, 'month'=>$mnth, 'year'=>$yr);

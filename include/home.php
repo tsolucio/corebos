@@ -391,7 +391,7 @@ class Homestuff {
 					$currencyField = new CurrencyField($r);
 					$list[$i][]= '<a href="'.$wlisturl.'">'.$currencyField->getDisplayValue($current_user).'</a>';
 				} else {
-					$list[$i][]='<a href="'.$wlisturl.'">'.$r.'</a>' ;
+					$list[$i][]='<a href="'.$wlisturl.'">'.$r.'</a>';
 				}
 			} else {
 				echo "<font color='red'>getTranslatedString('LBL_FILTERSELECTEDNOTFOUND')</font>";

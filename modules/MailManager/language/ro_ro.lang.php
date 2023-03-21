@@ -173,5 +173,7 @@ $mod_strings = array(
 	'LBL_TO_LEADS' => 'La Potentiali',
 	'LBL_TO_USERS' => 'La Utilizatori',
 	'LBL_SENT_MAILS' => 'Mail-uri Trimise',
+	'LBL_VERIFY_SERVER' => 'Vă rugăm să verificați serverul de ieșire',
+	'LBL_DRAFT_NOT_SAVED' => 'Schița nu a fost salvată',
 );
 ?>

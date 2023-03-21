@@ -433,9 +433,9 @@ function handleToggle() {
 </script>
 <script type="text/javascript" defer="1">
 	var textAreaName = 'save_content';
-	CKEDITOR.replace( textAreaName,	{ldelim}
+	CKEDITOR.replace(textAreaName, {ldelim}
 		extraPlugins : 'uicolor',
 		uiColor: '#dfdff1'
-	{rdelim} ) ;
+	{rdelim});
 	var oCKeditor = CKEDITOR.instances[textAreaName];
 </script>

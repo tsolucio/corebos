@@ -585,7 +585,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 							$result = $adb->pquery($sql, array($mycrmid));
 							$full_name = getFullNameFromQResult($result, 0, 'Leads');
 							$myemail=$adb->query_result($result, 0, 'email');
-							$parent_id .=$mycrmid.'@0|' ;
+							$parent_id .=$mycrmid.'@0|';
 							$parent_name .= $full_name.'<'.$myemail.'>; ';
 						} elseif ($parent_module == 'Contacts') {
 							$sql = 'select * from vtiger_contactdetails where contactid=?';

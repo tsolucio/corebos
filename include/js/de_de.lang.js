@@ -264,6 +264,8 @@ var alert_arr = {
 	'LBL_FORWARD_EMAIL': 'weiterleiten',
 	'LBL_REPLY_TO_SENDER': 'antworten',
 	'LBL_REPLY_TO_ALL': 'An alle antworten',
+	'ERR_EMAIL_SEND': 'Error sending email',
+	'LBL_EMAIL_SEND': 'Email sent correctly',
 
 	'LBL_WIDGET_HIDDEN' : 'Widget entfernt',
 	'LBL_RESTORE_FROM_PREFERENCES' : 'Sie können es unter Meine Einstellungen wieder herstellen',
@@ -477,6 +479,10 @@ var alert_arr = {
 	'LBL_REQUIRED_FIELDS': 'Please fill all required fields',
 	'LBL_ERROR_CREATING': 'Error while creating. Please try again.',
 	'LBL_ERROR_DROPZONE': 'Error uploading link. Check the link and try again.',
+	'LBL_PREVIEW_MAIL': 'Preview Email',
+	'LBL_SEND_MAIL': 'Send Mail',
+	'LBL_EXPAND_PANEL': 'Expand Panel',
+	'LBL_MIN_PANEL': 'Minimize Panel',
 	'LBL_DUPLICATE_PRODUCT': 'Please duplicate the product',
 	'LBL_SELECT_MORE_ROWS': 'Please select at least one row',
 	'LBL_SELECT_ROW': 'Please select one row',
@@ -488,6 +494,8 @@ var alert_arr = {
 	'LBL_EXPAND': 'Mehr',
 	'currentuser': 'Current User',
 	'wfmodule': 'Workflow Module',
+	'JSLBL_BACK': 'Back',
 	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 	'LBL_COPY_ROWS': 'Copy Rows',
+	'LBL_REMOVE': 'Remove',
 };

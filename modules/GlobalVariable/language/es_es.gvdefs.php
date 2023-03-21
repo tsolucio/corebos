@@ -106,6 +106,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'InBucket SMTP Listener',
 	'definition' => 'Si se establece, el valor se utilizará como servidor de correo saliente',
 ),
+'Debug_Workflow_Execution'=> array(
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0|1',
+	'definition' => 'Si 1, se generarán logs de la ejecución de los flujos de trabajo. Por defecto es 0',
+),
 'Application_Menu_Direction' => array(
 	'valuetype' => 'Cadena',
 	'category' => 'Applicación',
@@ -1887,6 +1893,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Activa la edición en línea según el tipo de vista. El valor predeterminado es 1',
+),
+'Email_Template_AutomaticMerge' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Si se establece en 1, la plantilla de correo electrónico se fusiona automáticamente. Si se establece en 0, la plantilla de correo electrónico no se fusiona y puede obtener una vista previa del correo electrónico. El valor predeterminado es 1.',
 ),
 );
 

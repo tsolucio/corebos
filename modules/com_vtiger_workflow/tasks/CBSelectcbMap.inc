@@ -44,21 +44,24 @@ class CBSelectcbMap extends VTTask {
 			$focus->id = $this->bmapid;
 			$focus->mode = '';
 			$focus->retrieve_entity_info($this->bmapid, 'cbMap');
-			$logbg->debug('(SelectcbMap) cbMapid: ' . $this->bmapid);
 			$contentok = processcbMap::isXML(htmlspecialchars_decode($focus->column_fields['content']));
 			if ($contentok !== true) {
+				$logmsg = '(SelectcbMap) Incorrect map cbMapid: ' . $this->bmapid;
+				$this->logmessages[] = $logmsg;
+				$logbg->debug($logmsg);
 				return false;
 			}
 			$return = $focus->RecordAccessControl();
 			list($mod,$rec) = explode('x', $recordid);
-			$logbg->debug('(SelectcbMap) $recordid: ' . $recordid);
+			$logmsg = '(SelectcbMap) cbMapid: '.$this->bmapid.', recordid: '.$recordid;
 			$return->setRelatedRecordID($rec);
-			return $return;
 		} else {
-			$logbg->debug('(SelectcbMap) not called: maprs is empty');
-			return false;
+			$logmsg = '(SelectcbMap) not called: maprs is empty';
+			$return = false;
 		}
-		$logbg->debug('< SelectcbMap');
+		$this->logmessages[] = $logmsg;
+		$logbg->debug('< '.$logmsg);
+		return $return;
 	}
 }
 ?>

@@ -21,7 +21,7 @@ class MailManager_RelationController extends MailManager_Controller {
 
 	/**
 	* Used to check the MailBox connection
-	* @var Boolean
+	* @var boolean
 	*/
 	protected $skipConnection = false;
 
@@ -225,9 +225,9 @@ class MailManager_RelationController extends MailManager_Controller {
 	/**
 	* Returns the Parent for Tickets module
 	* @global Users Instance $current_user
-	* @param Integer $parent - crmid of Parent
+	* @param integer $parent - crmid of Parent
 	* @param Email Address $from - Email Address of the received mail
-	* @return Integer - Parent(crmid)
+	* @return integer - Parent(crmid)
 	*/
 	public function setParentForHelpDesk($parent, $from) {
 		global $current_user;
@@ -246,9 +246,9 @@ class MailManager_RelationController extends MailManager_Controller {
 
 	/**
 	* Function used to set the record fields with the information from mail.
-	* @param Array $qcreate_array
+	* @param array $qcreate_array
 	* @param MailManager_Model_Message $mail
-	* @return Array
+	* @return array
 	*/
 	public function processFormData($qcreate_array, $mail) {
 		$subject = $mail->subject();
@@ -294,7 +294,7 @@ class MailManager_RelationController extends MailManager_Controller {
 
 	/**
 	* Returns the available List of accessible modules for Mail Manager
-	* @return Array
+	* @return array
 	*/
 	public function getCurrentUserMailManagerAllowedModules() {
 		$moduleListForCreateRecordFromMail = array('Contacts', 'Accounts', 'Leads', 'HelpDesk', 'cbCalendar','Potentials','Project','ProjectTask');
@@ -336,8 +336,8 @@ class MailManager_RelationController extends MailManager_Controller {
 	* Funtion used to build Web services query
 	* @param string $module - Name of the module
 	* @param string $text - Search String
-	* @param string $type - Tyoe of fields Phone, Email etc
-	* @return String
+	* @param string $type - Type of fields Phone, Email etc
+	* @return string
 	*/
 	public function buildSearchQuery($module, $text, $type) {
 		$describe = $this->wsDescribe($module);
@@ -364,7 +364,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	* @global Users Instance $current_user
 	* @param string $module
 	* @param Email Address $email
-	* @return Array
+	* @return array
 	*/
 	public function lookupModuleRecordsWithEmail($module, $email, $msguid) {
 		global $current_user;

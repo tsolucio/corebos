@@ -76,6 +76,7 @@
 <input type="hidden" name="createmode" value="{$CREATEMODE|@urlencode}" />
 <input type="hidden" name="cbcustominfo1" id="cbcustominfo1" value="{if isset($smarty.request.cbcustominfo1)}{$smarty.request.cbcustominfo1|@urlencode}{/if}" />
 <input type="hidden" name="cbcustominfo2" id="cbcustominfo2" value="{if isset($smarty.request.cbcustominfo2)}{$smarty.request.cbcustominfo2|@urlencode}{/if}" />
+<input type="hidden" name="_logwf" id="_logwf" value="{if isset($smarty.request._logwf)}{$smarty.request._logwf|@urlencode}{/if}" />
 {if isset($DUPLICATE) && $DUPLICATE eq 'true'}
 <input type="hidden" name="__cbisduplicatedfromrecordid" value="{$__cbisduplicatedfromrecordid}" />
 {/if}

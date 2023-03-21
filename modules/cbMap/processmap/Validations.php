@@ -468,7 +468,7 @@ class Validations extends processcbMap {
 			if ($tablename=='vtiger_crmentity') {
 				continue;
 			}
-			foreach ($adb->database->MetaColumns($tablename) as $fname => $finfo) {
+			foreach ($adb->getMetaColumns($tablename) as $fname => $finfo) {
 				if ($finfo->type == 'varchar' && !in_array($fname, $novalfields)) {
 					$fname = strtolower($fname);
 					if (isset($mapping['fields'][$fname])) {
@@ -555,6 +555,11 @@ class Validations extends processcbMap {
 					}
 				}
 			}
+			foreach ($meta->getImageFields() as $imageField) {
+				if (empty($screen_values[$imageField])) {
+					$screen_values[$imageField] = $screen_values['current_'.$imageField];
+				}
+			}
 		}
 		$valmaps = array();
 		$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbMap');
@@ -639,6 +644,9 @@ class Validations extends processcbMap {
 			},
 			$_FILES
 		);
+		if (!is_array($filefields)) {
+			$filefields = array();
+		}
 		return array_merge($structure, $filefields);
 	}
 }

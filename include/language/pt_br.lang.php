@@ -1424,9 +1424,11 @@ $app_strings = array (
 'LBL_SAVE_MAP' => 'Salvar mapa',
 'LBL_UITYPE10_NOTALLOWED' => 'O módulo relacionado tem um campo relacionado obrigatório.',
 'LBL_PAINT2DOCUMENT' => 'Paint to Document',
+'LBL_PREVIEW' => 'Preview',
 'Slider' => 'Slider',
 'LBL_WIZARD' => 'Wizard',
 'LBL_ROW' => 'Linha',
+'LBL_WIZARD_COMPLETED' => 'The process has been completed successfully.',
 );
 
 // Translation for currency names

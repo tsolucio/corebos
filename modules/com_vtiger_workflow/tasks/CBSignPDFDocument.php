@@ -118,7 +118,10 @@ class CBSignPDFDocument extends VTTask {
 					}
 					if ($signature_path != '') {
 						// Adding Image to PDF;
-						$logbg->debug('(SignPDFDocument) signing the PDF', [$signature_path, $width, $height]);
+						$logmsg = '(SignPDFDocument) signing the PDF';
+						$this->logmessages[] = $logmsg;
+						$this->logmessages[] = json_encode([$signature_path, $width, $height]);
+						$logbg->debug($logmsg, [$signature_path, $width, $height]);
 						$pdf = new FPDI();
 						$pages_count = $pdf->setSourceFile($file_storage_path);
 						for ($i = 1; $i <= $pages_count; $i++) {
@@ -132,17 +135,20 @@ class CBSignPDFDocument extends VTTask {
 						}
 						$pdf->Output($file_storage_path, 'F');
 					} else {
-						$logbg->debug('(SignPDFDocument) not called: the signature path is empty');
+						$logmsg = '(SignPDFDocument) not called: the signature path is empty';
 					}
+				} else {
+					$logmsg = '(SignPDFDocument) user ('.$current_user->id.') image field ('.$image_field.') is empty';
 				}
 				$util->revertUser();
 			} else {
-				$logbg->debug('(SignPDFDocument) not called: no PDFs where found');
+				$logmsg = '(SignPDFDocument) not called: no PDFs where found';
 			}
 		} else {
-			$logbg->debug('(SignPDFDocument) not called: the image_field is empty');
+			$logmsg = '(SignPDFDocument) not called: the image_field is empty';
 		}
-		$logbg->debug('< SignPDFDocument');
+		$this->logmessages[] = $logmsg;
+		$logbg->debug('< '.$logmsg);
 	}
 }
 ?>

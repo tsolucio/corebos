@@ -43,14 +43,22 @@ class DuplicateRecords extends VTTask {
 					list($wsdup, $duplicatedfrom) = explode('x', $duplicatedfrom);
 				}
 				$new_record_id = duplicateRecordRelations($module, $cto_id, $duplicatedfrom, $this->bmapid);
-				$logbg->debug('(DuplicateRecords) duplicating from', [$module, $cto_id, $duplicatedfrom, $this->bmapid, $new_record_id]);
+				$logmsg = '(DuplicateRecords) duplicating from';
+				$this->logmessages[] = $logmsg;
+				$this->logmessages[] = json_encode([$module, $cto_id, $duplicatedfrom, $this->bmapid, $new_record_id]);
+				$logbg->debug($logmsg, [$module, $cto_id, $duplicatedfrom, $this->bmapid, $new_record_id]);
 			} else {
 				$new_record_id = duplicaterec($module, $cto_id, $this->bmapid);
 				dq_updateRevisionFields($module, $cto_id, $new_record_id);
-				$logbg->debug('(DuplicateRecords) duplicating', [$module, $cto_id, $this->bmapid, $new_record_id]);
+				$logmsg = '(DuplicateRecords) duplicating';
+				$this->logmessages[] = $logmsg;
+				$this->logmessages[] = json_encode([$module, $cto_id, $this->bmapid, $new_record_id]);
+				$logbg->debug($logmsg, [$module, $cto_id, $this->bmapid, $new_record_id]);
 			}
 		} else {
-			$logbg->debug('(DuplicateRecords) not called: cto_id is empty or map does not exist');
+			$logmsg = '(DuplicateRecords) not called: cto_id is empty or map does not exist';
+			$this->logmessages[] = $logmsg;
+			$logbg->debug($logmsg);
 		}
 		$logbg->debug('< DuplicateRecords');
 	}

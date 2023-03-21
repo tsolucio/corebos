@@ -47,16 +47,11 @@ class GridListView {
 		$focus = new $this->module();
 		$focus->initSortbyField($this->module);
 		$sortArrayList = $focus->getOrderByAndSortOrderList();
-		if (isset($_REQUEST['sortAscending'])) {
-			$this->orderBy = $_REQUEST['sortAscending'] == 'true' ? 'ASC' : 'DESC';
-		} else {
-			$this->orderBy = !empty($sortArrayList) ? $sortArrayList[0]['sortOrder'] : '';
+		if (!empty($_REQUEST['sortAscending']) && !empty($_REQUEST['sortColumn'])) {
+			$sortOrder = filter_var($_REQUEST['sortAscending'], FILTER_VALIDATE_BOOLEAN) ? 'ASC' : 'DESC';
+			$sortArrayList = [array('orderBy' => $_REQUEST['sortColumn'], 'sortOrder' => $sortOrder)];
 		}
-		if ($this->sortColumn != '') {
-			$order_by = $this->sortColumn;
-		} else {
-			$order_by = !empty($sortArrayList) ? $sortArrayList[0]['orderBy'] : '';
-		}
+		$order_by = !empty($sortArrayList) ? $sortArrayList[0]['orderBy'] : '';
 		$queryGenerator = new QueryGenerator($this->module, $current_user);
 		try {
 			if ($viewid != '0') {
@@ -69,12 +64,11 @@ class GridListView {
 		}
 		$search_mode = false;
 		if ($this->searchtype == 'Basic' && $this->searchUrl != '') {
-			$this->searchUrl = urldecode($this->searchUrl);
 			$search = explode('&', $this->searchUrl);
 			foreach ($search as $value) {
 				if (!empty($value)) {
 					$param = explode('=', $value);
-					$searchCriteria[$param[0]] = $param[1];
+					$searchCriteria[$param[0]] = urldecode($param[1]);
 				}
 			}
 			$searchCriteria['action'] = $this->module.'Ajax';
@@ -82,7 +76,6 @@ class GridListView {
 			$searchCriteria['search'] = 'true';
 			$search_mode = true;
 		} elseif (($this->searchtype == 'Advanced' || $this->searchtype == 'advance') && $this->searchUrl != '') {
-			$this->searchUrl = urldecode($this->searchUrl);
 			$search = explode('&', $this->searchUrl);
 			if ($this->searchtype == 'advance') {
 				$searchCriteria['advft_criteria'] = $this->searchUrl;
@@ -92,7 +85,7 @@ class GridListView {
 				foreach ($search as $value) {
 					if (!empty($value)) {
 						$param = explode('=', $value);
-						$searchCriteria[$param[0]] = $param[1];
+						$searchCriteria[$param[0]] = urldecode($param[1]);
 					}
 				}
 			}

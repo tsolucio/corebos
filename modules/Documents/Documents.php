@@ -148,10 +148,20 @@ class Documents extends CRMEntity {
 			$filesize = 0;
 			$filedownloadcount = null;
 		}
-		if ($tryToFindMime && $filetype=='') {
+		if ($tryToFindMime && ($filetype=='' || stripos($filetype, 'x-empty') || stripos($filetype, 'octet-stream'))) {
+			$orgft = $filetype;
 			$finfo = new finfo(FILEINFO_MIME);
-			$filetype = explode(';', $finfo->buffer(file_get_contents(self::getAttachmentPath($this->id))));
-			$filetype = $filetype[0];
+			$attfpath = self::getAttachmentPath($this->id);
+			if ($attfpath!='') {
+				$filetype = explode(';', $finfo->buffer(file_get_contents($attfpath)));
+				$filetype = $filetype[0];
+			}
+			if ($orgft!=$filetype && $this->mode!='') { // we update the attachment filetype accordingly
+				$attid = self::getAttachmentID($this->id);
+				if ($attid) {
+					$adb->pquery('update vtiger_attachments set type=? where attachmentsid=?', [$filetype, $attid]);
+				}
+			}
 		}
 		$query = 'UPDATE vtiger_notes SET filename = ? ,filesize = ?, filetype = ? , filelocationtype = ? , filedownloadcount = ? WHERE notesid = ?';
 		$adb->pquery($query, array(decode_html($filename), $filesize, $filetype, $filelocationtype, $filedownloadcount, $this->id));
@@ -576,6 +586,26 @@ class Documents extends CRMEntity {
 	}
 
 	/**
+	 * Function to retrieve the attachment ID of the file attached to the document
+	 * @param mixed crmid or document number
+	 * @return integer related attachment ID
+	 */
+	public static function getAttachmentID($docid) {
+		global $adb;
+		$id = 0;
+		if (!empty($docid)) {
+			$res_att = $adb->pquery(
+				'SELECT attachmentsid FROM vtiger_seattachmentsrel INNER JOIN vtiger_notes ON notesid=crmid WHERE crmid=? or note_no=?',
+				array($docid, $docid)
+			);
+			if ($res_att && $adb->num_rows($res_att)>0) {
+				$id = $res_att->fields['attachmentsid'];
+			}
+		}
+		return $id;
+	}
+
+	/**
 	 * Customizing the restore procedure.
 	 */
 	public function restore($modulename, $id) {
@@ -637,7 +667,7 @@ class Documents extends CRMEntity {
 			$elink = '<a href="index.php?module='.$row['setype'].'&action=DetailView&return_module=Documents&return_action=DetailView&record='.$row['crmid'].
 				'&return_id='.$id.'">'.$ename.'</a>';
 			$entries[] = $elink;
-			$entries[] = getTranslatedString($row['setype']) ;
+			$entries[] = getTranslatedString($row['setype']);
 			$entries[] = $row['user_name'];
 			$entries_list[] = $entries;
 		}
