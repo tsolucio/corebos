@@ -1901,10 +1901,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Si se establece en 1, la plantilla de correo electrónico se fusiona automáticamente. Si se establece en 0, la plantilla de correo electrónico no se fusiona y puede obtener una vista previa del correo electrónico. El valor predeterminado es 1.',
 ),
 'Wizard_ListView_Pagination' => array(
-	'valuetype' => 'Integer',
-	'category' => 'Application',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
 	'values' => '',
-	'definition' => 'Number of rows to show per page in the wizard list view grid.',
+	'definition' => 'Número de filas para mostrar por página en la vista de lista del asistente.',
 ),
 );
 

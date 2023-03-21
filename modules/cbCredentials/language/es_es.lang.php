@@ -39,7 +39,7 @@ $mod_strings = array(
 	'tls' => 'TLS Validaciones de Certificado',
 	'tlsnc' => 'TLS',
 	'credentialsFile' => 'Archivo de Credenciales',
-	'emailSettings' => 'Ajustes del correo electrónico',
+	'emailSettings' => 'Correo Electrónico',
 	'Adapter' => 'Adaptador',
 );
 ?>
