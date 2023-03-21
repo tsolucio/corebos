@@ -31,7 +31,7 @@ class mastergrid_EditViewBlock extends DeveloperBlock {
 	protected $widgetName = 'masterGrid';
 
 	public function process($context = false) {
-		global $adb, $site_URL, $currentModule, $current_user;
+		global $currentModule;
 		$this->context = $context;
 		$smarty = $this->getViewer();
 		$bmapname = $currentModule.'_MasterGrid';
