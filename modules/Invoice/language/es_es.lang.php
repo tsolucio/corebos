@@ -181,6 +181,6 @@ $mod_strings = array(
 'Total Amount'=>'Total a Pagar',
 //PICKLIST VALUES
 'signede' => 'Firmado E',
-'sende' => 'Enviar E',
+'sende' => 'Enviado E',
 );
 ?>

@@ -182,8 +182,8 @@ $mod_strings = array(
 	'Unable2Connect' => 'Unable to connect',
 	'Able2Connect' => 'Able to connect',
 	//Electronic Invoice Settings
-	'Electronic Invoice' => "Electronic Invoice Settings",
-	'Electronic Invoice_Desc' => "Electronic Invoice",
+	'Electronic Invoice' => 'Electronic Invoice Settings',
+	'Electronic Invoice_Desc' => 'Confgure Electronic Invoice for Spain',
 	'EI_username' => 'Username',
 	'EI_password' => 'Password',
 	'EI_baseurl' => 'Base URL',

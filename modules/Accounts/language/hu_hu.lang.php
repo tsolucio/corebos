@@ -212,7 +212,5 @@ $mod_strings = array(
 	'brfolio' => 'Folio',
 	'brsection' => 'Szakasz',
 	'brvolume' => 'Hangerő',
-	'signede' => 'Aláírt E',
-	'sende' => 'Küldd el E',
 );
 ?>

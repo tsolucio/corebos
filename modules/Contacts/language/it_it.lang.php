@@ -284,7 +284,5 @@ $mod_strings = array (
 	'brfolio' => 'Folio',
 	'brsection' => 'Sezione',
 	'brvolume' => 'Volume',
-	'signede' => 'Firmato E',
-	'sende' => 'Manda E',
-	);
+);
 ?>

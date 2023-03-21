@@ -319,7 +319,5 @@ $mod_strings = array(
 	'brfolio' => 'Folio',
 	'brsection' => 'Secțiune',
 	'brvolume' => 'Volum',
-	'signede' => 'Semnat E',
-	'sende' => 'Trimite E',
-	);
+);
 ?>

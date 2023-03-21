@@ -38,7 +38,6 @@ if ($isadmin) {
 	$eiuname = (empty($_REQUEST['EI_username']) ? '' : vtlib_purify($_REQUEST['EI_username']));
 	$eipass = (empty($_REQUEST['EI_password']) ? '' : vtlib_purify($_REQUEST['EI_password']));
 	$electronicInvoice->saveSettings($isActive, $pubkey, $privkey, $pkey, $acenter, $pphrase, $accmap, $contmap, $face, $facb2b, $eibaseurl, $eiuname, $eipass);
-
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Electronic Invoice', $currentModule));
@@ -54,4 +53,4 @@ include 'include/integrations/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('ISADMIN', $isadmin);
 $smarty->display('modules/Utilities/electronicInvoice.tpl');
- ?>
+?>

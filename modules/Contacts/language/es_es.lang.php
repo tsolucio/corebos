@@ -297,18 +297,16 @@ $mod_strings = array (
 //ELECTRONIC INVOICE BLOCKS
 'LBL_EINVOICE' => 'Factura electrónica',
 'islegalentity' => 'Es persona juridica',
-'siccode' => 'SIC Code',
+'siccode' => 'CIF',
 'secondlastname' => 'Segundo apellido',
 'website' => 'Sitio web',
-'cnae' => 'Clasificación de la actividad económica',
-'inecode' => 'Código Estadístico del Municipio',
+'cnae' => 'Clasificación Actividad Económica',
+'inecode' => 'Código Estadístico Municipio',
 'brbook' => 'Libro',
 'brmregister' => 'Registro',
 'brsheet' => 'Hoja',
 'brfolio' => 'Folio',
 'brsection' => 'Sección',
 'brvolume' => 'Volumen',
-'signede' => 'Firmado E',
-'sende' => 'Enviar E',
 );
 ?>

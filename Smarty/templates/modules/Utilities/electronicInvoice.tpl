@@ -31,76 +31,85 @@
 	<div class="slds-form-element">
 		<label class="slds-form-element__label">{getTranslatedString('PublicKey')}</label>
 		<div class="slds-form-element__control">
-		  <div class="slds-grid slds-gutters">
-			<div class="slds-col slds-size_8-of-12">
-			  <input id="publickey" name="publickey" type="hidden">
-			  <input id="publickey_display" class="slds-input" name="publickey_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=cbCredentials&amp;action=Popup&amp;html=Popup_picker&amp;form=new_task&amp;forfield=publickey&amp;srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+			<div class="slds-grid slds-gutters">
+				<div class="slds-col slds-size_8-of-12">
+					<input id="publickey" name="publickey" type="hidden">
+					<input id="publickey_display" class="slds-input" name="publickey_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=publickey&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+				</div>
+				<div class="slds-col slds-size_2-of-12">
+					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button"
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=publickey&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
+					</button>
+					<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button"
+						onClick="this.form.publickey.value=''; this.form.publickey_display.value=''; return false;">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
+					</button>
+				</div>
 			</div>
-			<div class="slds-col slds-size_2-of-12">
-			  <button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button" onclick="return window.open('index.php?module=cbCredentials&amp;action=Popup&amp;html=Popup_picker&amp;form=new_task&amp;forfield=publickey&amp;srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
-			  </button>
-			  <button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button" onClick="this.form.publickey.value=''; this.form.publickey_display.value=''; return false;">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
-			  </button>
-			</div>
-		  </div>
 		</div>
 	</div>
 	<div class="slds-form-element">
 		<label class="slds-form-element__label">{getTranslatedString('PrivateKey')}</label>
 		<div class="slds-form-element__control">
-		  <div class="slds-grid slds-gutters">
-			<div class="slds-col slds-size_8-of-12">
-			  <input id="privatekeyid" name="privatekeyid" type="hidden">
-			  <input id="privatekeyid_display" class="slds-input" name="privatekeyid_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=privatekeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+			<div class="slds-grid slds-gutters">
+				<div class="slds-col slds-size_8-of-12">
+					<input id="privatekeyid" name="privatekeyid" type="hidden">
+					<input id="privatekeyid_display" class="slds-input" name="privatekeyid_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=privatekeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+				</div>
+				<div class="slds-col slds-size_2-of-12">
+					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button"
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=privatekeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
+					</button>
+					<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button"
+						onClick="this.form.privatekeyid.value=''; this.form.privatekeyid_display.value=''; return false;">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
+					</button>
+				</div>
 			</div>
-			<div class="slds-col slds-size_2-of-12">
-			  <button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button" onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=privatekeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
-			  </button>
-			  <button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button" onClick="this.form.privatekeyid.value=''; this.form.privatekeyid_display.value=''; return false;">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
-			  </button>
-			</div>
-		  </div>
 		</div>
 	</div>
 	<div class="slds-form-element">
 		<label class="slds-form-element__label">{getTranslatedString('PFKKey')}	</label>
 		<div class="slds-form-element__control">
-		  <div class="slds-grid slds-gutters">
-			<div class="slds-col slds-size_8-of-12">
-			  <input id="pfkkeyid" name="pfkkeyid" type="hidden">
-			  <input id="pfkkeyid_display" class="slds-input" name="pfkkeyid_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=pfkkeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+			<div class="slds-grid slds-gutters">
+				<div class="slds-col slds-size_8-of-12">
+					<input id="pfkkeyid" name="pfkkeyid" type="hidden">
+					<input id="pfkkeyid_display" class="slds-input" name="pfkkeyid_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=pfkkeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+				</div>
+				<div class="slds-col slds-size_2-of-12">
+					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button"
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=pfkkeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
+					</button>
+					<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button"
+						onClick="this.form.pfkkeyid.value=''; this.form.pfkkeyid_display.value=''; return false;">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
+					</button>
+				</div>
 			</div>
-			<div class="slds-col slds-size_2-of-12">
-			  <button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button" onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=pfkkeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
-			  </button>
-			  <button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button" onClick="this.form.pfkkeyid.value=''; this.form.pfkkeyid_display.value=''; return false;">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
-			  </button>
-			</div>
-		  </div>
 		</div>
 	</div>
 		<div class="slds-form-element slds-m-top_small">
@@ -112,93 +121,102 @@
 	<div class="slds-form-element">
 		<label class="slds-form-element__label">{getTranslatedString('Default Administrative Center')}</label>
 		<div class="slds-form-element__control">
-		  <div class="slds-grid slds-gutters">
-			<div class="slds-col slds-size_8-of-12">
-			  <input id="admcenter" name="admcenter" type="hidden">
-			  <input id="admcenter_display" class="slds-input" name="admcenter_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=AdministrativeCenter&action=Popup&html=Popup_picker&form=new_task&forfield=admcenter&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+			<div class="slds-grid slds-gutters">
+				<div class="slds-col slds-size_8-of-12">
+					<input id="admcenter" name="admcenter" type="hidden">
+					<input id="admcenter_display" class="slds-input" name="admcenter_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
+						onclick="return window.open('index.php?module=AdministrativeCenter&action=Popup&html=Popup_picker&form=new_task&forfield=admcenter&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+				</div>
+				<div class="slds-col slds-size_2-of-12">
+					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button"
+						onclick="return window.open('index.php?module=AdministrativeCenter&action=Popup&html=Popup_picker&form=new_task&forfield=admcenter&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
+					</button>
+					<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button"
+						onClick="this.form.admcenter.value=''; this.form.admcenter_display.value=''; return false;">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
+					</button>
+				</div>
 			</div>
-			<div class="slds-col slds-size_2-of-12">
-			  <button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button" onclick="return window.open('index.php?module=AdministrativeCenter&action=Popup&html=Popup_picker&form=new_task&forfield=admcenter&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
-			  </button>
-			  <button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button" onClick="this.form.admcenter.value=''; this.form.admcenter_display.value=''; return false;">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
-			  </button>
-			</div>
-		  </div>
 		</div>
 	</div>
 	<div class="slds-form-element">
 		<label class="slds-form-element__label">{getTranslatedString('Account Map')}</label>
 		<div class="slds-form-element__control">
-		  <div class="slds-grid slds-gutters">
-			<div class="slds-col slds-size_8-of-12">
-			  <input id="accountmap" name="accountmap" type="hidden">
-			  <input id="accountmap_display" class="slds-input" name="accountmap_display" for="accountmap_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=accountmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+			<div class="slds-grid slds-gutters">
+				<div class="slds-col slds-size_8-of-12">
+					<input id="accountmap" name="accountmap" type="hidden">
+					<input id="accountmap_display" class="slds-input" name="accountmap_display" for="accountmap_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
+						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=accountmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+				</div>
+				<div class="slds-col slds-size_2-of-12">
+					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button"
+						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=accountmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
+					</button>
+					<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button"
+						onClick="this.form.accountmap.value=''; this.form.accountmap_display.value=''; return false;">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
+					</button>
+				</div>
 			</div>
-			<div class="slds-col slds-size_2-of-12">
-			  <button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=accountmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
-			  </button>
-			  <button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button" onClick="this.form.accountmap.value=''; this.form.accountmap_display.value=''; return false;">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
-			  </button>
-			</div>
-		  </div>
 		</div>
 	</div>
 	<div class="slds-form-element">
 		<label class="slds-form-element__label">{getTranslatedString('Contact Map')}</label>
 		<div class="slds-form-element__control">
-		  <div class="slds-grid slds-gutters">
-			<div class="slds-col slds-size_8-of-12">
-			  <input id="contactmap" name="contactmap" type="hidden">
-			  <input id="contactmap_display" class="slds-input" name="contactmap_display" readonly="" style="border:1px solid #bababa;" type="text" value="" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=contactmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+			<div class="slds-grid slds-gutters">
+				<div class="slds-col slds-size_8-of-12">
+					<input id="contactmap" name="contactmap" type="hidden">
+					<input id="contactmap_display" class="slds-input" name="contactmap_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
+						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=contactmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+				</div>
+				<div class="slds-col slds-size_2-of-12">
+					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button"
+						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=contactmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
+					</button>
+					<button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button"
+						onClick="this.form.contactmap.value=''; this.form.contactmap_display.value=''; return false;">
+					<svg class="slds-button__icon" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
+					</button>
+				</div>
 			</div>
-			<div class="slds-col slds-size_2-of-12">
-			  <button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button" onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=contactmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_SELECT'|getTranslatedString}</span>
-			  </button>
-			  <button class="slds-button slds-button_icon" title="{'LBL_CLEAR'|getTranslatedString}" type="button" onClick="this.form.contactmap.value=''; this.form.contactmap_display.value=''; return false;">
-				<svg class="slds-button__icon" aria-hidden="true">
-				  <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
-				</svg>
-				<span class="slds-assistive-text">{'LBL_CLEAR'|getTranslatedString}</span>
-			  </button>
-			</div>
-		  </div>
 		</div>
 	</div>
 		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="DefaultSignType">{'DefaultSignType'|@getTranslatedString:$MODULE}</label>
 		</div>
-	<span class="slds-radio">
-	  <input name="assigntype" id="assigntypeFACe" checked="checked" value="FACe" type="radio">
-		<label class="slds-radio__label" for="assigntypeFACe">
-		  <span class="slds-radio_faux"></span>
-		  <span class="slds-form-element__label">FACe</span>
-		</label>
-	  <input name="assigntype" id="assigntypeFACB2B" value="FACB2B" type="radio">
-		<label class="slds-radio__label" for="assigntypeFACB2B">
-		  <span class="slds-radio_faux"></span>
-		  <span class="slds-form-element__label">FACB2B</span>
-		</label>
-	</span>
+		<span class="slds-radio">
+			<input name="assigntype" id="assigntypeFACe" checked="checked" value="FACe" type="radio">
+			<label class="slds-radio__label" for="assigntypeFACe">
+				<span class="slds-radio_faux"></span>
+				<span class="slds-form-element__label">FACe</span>
+			</label>
+			<input name="assigntype" id="assigntypeFACB2B" value="FACB2B" type="radio">
+			<label class="slds-radio__label" for="assigntypeFACB2B">
+				<span class="slds-radio_faux"></span>
+				<span class="slds-form-element__label">FACB2B</span>
+			</label>
+		</span>
 		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="TimeStamp" style="font-size: 20px;"><b>{'Time Stamp'|@getTranslatedString:$MODULE}</b></label>
 		</div>

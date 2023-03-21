@@ -120,6 +120,7 @@ class corebos_electronicInvoice {
 			'eipass' => $this->EIpassword,
 		);
 	}
+
 	public function isActive() {
 		$isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
 		return ($isactive=='1');
@@ -249,7 +250,7 @@ class corebos_electronicInvoice {
 			$field->setPicklistValues(array('signede', 'sende'));
 		}
 		$eIcbwrk->ExecuteQuery(
-			'CREATE TABLE `invoiceees` (
+			'CREATE TABLE IF NOT EXISTS `invoiceees` (
 				`inveid` INT(11) NOT NULL AUTO_INCREMENT,
 				`invoiceid` INT(11) DEFAULT NULL,
 				`fraeversion` VARCHAR(20) DEFAULT NULL,
@@ -346,7 +347,7 @@ class corebos_electronicInvoice {
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 		);
 		$eIcbwrk->ExecuteQuery(
-			'CREATE TABLE `invoiceeesline` (
+			'CREATE TABLE IF NOT EXISTS `invoiceeesline` (
 				`invelineid` INT(11) NOT NULL AUTO_INCREMENT,
 				`inveid` INT(11) DEFAULT NULL,
 				`lineseq` INT(11) DEFAULT NULL,
@@ -374,7 +375,7 @@ class corebos_electronicInvoice {
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 		);
 		$eIcbwrk->ExecuteQuery(
-			'CREATE TABLE `invoiceeeslinedc` (
+			'CREATE TABLE IF NOT EXISTS `invoiceeeslinedc` (
 				`inveldcid` INT(11) NOT NULL AUTO_INCREMENT,
 				`invelineid` INT(11) DEFAULT NULL,
 				`dctype` VARCHAR(10) DEFAULT NULL,
@@ -386,7 +387,7 @@ class corebos_electronicInvoice {
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 		);
 		$eIcbwrk->ExecuteQuery(
-			'CREATE TABLE `invoiceeessuplido` (
+			'CREATE TABLE IF NOT EXISTS `invoiceeessuplido` (
 				`invesuplidoid` INT(11) NOT NULL AUTO_INCREMENT,
 				`inveid` INT(11) DEFAULT NULL,
 				`lineseq` INT(11) DEFAULT NULL,
@@ -399,6 +400,7 @@ class corebos_electronicInvoice {
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 		);
 	}
+
 	public function deactivateFieldsModules() {
 		$module = Vtiger_Module::getInstance('Invoice');
 		$field = Vtiger_Field::getInstance('invoicestatus', $module);
@@ -431,4 +433,4 @@ class corebos_electronicInvoice {
 		$eIcbwrk->massHideFields($fieldLayout);
 	}
 }
- ?>
+?>
