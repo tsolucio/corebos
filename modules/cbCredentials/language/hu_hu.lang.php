@@ -38,5 +38,8 @@ $mod_strings = array(
 	'sslnc' => 'SSL',
 	'tls' => 'TLS Tanusítvány ellenőrzés',
 	'tlsnc' => 'TLS',
+	'credentialsFile' => 'Hitelesítési adatfájl',
+	'emailSettings' => 'E-mail beállítások',
+	'Adapter' => 'Adapter',
 );
 ?>
