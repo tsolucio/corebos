@@ -19,16 +19,18 @@ class Settings {
 		this.list_modules_raw = [];
 		this.list_modules_icons = [];
 		this.Data = [];
+		this.FilteredData = [];
 		this.Grid = false;
 		this.LastActive = '';
 	}
 
 	async Workflows(label, modulename) {
+		this.LastActive = modulename;
 		let rs = await this.Modules(modulename);
 		ldsModal.show(label, rs, 'large');
 		document.getElementsByClassName('slds-modal__footer')[0].remove();
 		document.getElementById('global-modal-container__content').style.background = '#f3f3f3';
-		this.LastActive = modulename;
+		document.getElementById('global-modal-container__content').style.height = '100%';
 		this.GridView(modulename);
 	}
 
@@ -43,12 +45,12 @@ class Settings {
 			}
 		});
 		let mods = `
-		<div class="slds-vertical-tabs" style="border: 0px !important">
+		<div class="slds-vertical-tabs" style="border: 0px !important;height:100% !important">
 			<ul id="Workflow_Modules" class="slds-vertical-tabs__nav cbds-scrollbar" style="max-height: 700px;overflow: hidden;overflow-y: auto;">
 				<input type="text" class="slds-input" placeholder="Search" style="width: 95%" oninput="settings.SearchModules(this)">
 				${this.RenderModules(current)}
 			</ul>
-			<div class="slds-vertical-tabs__content slds-show" id="workflow-treeview">
+			<div class="slds-vertical-tabs__content slds-show cbds-scrollbar" id="workflow-treeview" style="overflow-y: auto;max-height: 700px;overflow-x: hidden;">
 				${this.SearchBar()}
 			</div>
 		</div>`;
@@ -70,6 +72,7 @@ class Settings {
 		document.getElementById(`wf_module_${forModule}`).classList.add('slds-is-active');
 		document.getElementById(`wf_module_${this.LastActive}`).classList.remove('slds-is-active');
 		this.LastActive = forModule;
+		document.getElementById('workflow-treeview').innerHTML = this.SearchBar();
 		this.GridView(forModule);
 	}
 
@@ -92,7 +95,8 @@ class Settings {
 					renderer: {
 						type: WorkflowRender,
 						options: {
-							fieldname: 'Description'
+							fieldname: 'Description',
+							forModule: this.LastActive
 						}
 					},
 					width: 300
@@ -160,11 +164,155 @@ class Settings {
 	GetData() {
 		let treeData = [];
 		this.Data['data'].forEach(function(row) {
-			if (settings.LastActive == row.ModuleName) {
-				treeData.push(row);
+			if (settings.LastActive == 'All') {
+				treeData.push(settings.FormatData(row));
+			} else {
+				if (settings.LastActive == row.ModuleName) {
+					treeData.push(row);
+				}				
 			}
 		});
 		return treeData;
+	}
+
+	async GridFilter(ev, field) {
+		if (ev.value == '') {
+			return this.ResetData();
+		}
+		this.ClearFields(field);
+		let url = `index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page=all&forField=${field}&forValue=${ev.value}`;
+		let filteredData = [];
+		let data = this.Data['data'];
+		for (let i in data) {
+			if (settings.LastActive != data[i].ModuleName && settings.LastActive != 'All') {
+				continue;
+			}
+			if ((field == 'Status' || field == 'Trigger') && data[i][field] == ev.value) {
+				filteredData.push(this.FormatData(data[i]));
+			}
+			if (field == 'Purpose' && data[i][field].includes(ev.value)) {
+				filteredData.push(this.FormatData(data[i]));
+			}
+			if (field == 'summary' || field == 'tasktypelabel') {
+				if (data[i]._children !== undefined) {
+					let childs = [];
+					for (let j in data[i]._children) {
+						if (data[i]._children[j][field] === undefined) {
+							continue;
+						}
+						if (data[i]._children[j][field].includes(ev.value)) {
+							childs.push(data[i]._children[j]);
+						}
+					}
+					if (childs.length == 0) {
+						continue;
+					}
+					let fData = this.FormatData(data[i]);
+					fData._children = this.FormatChildrens(childs);
+					filteredData.push(this.FormatData(fData));
+				}
+			}
+			if (field == 'Description') {//this is a special field that search globally
+				if (data[i]._children !== undefined) {
+					let childs = [];
+					for (let j in data[i]._children) {
+						if (data[i]._children[j]['field_value_mapping'] === undefined) {
+							continue;
+						}
+						if (data[i]._children[j]['workflowid_display'] === undefined) {
+							continue;
+						}
+						if (data[i]._children[j]['bmapid_display'] === undefined) {
+							continue;
+						}
+						if (data[i]._children[j]['field_value_mapping'].includes(ev.value) || data[i]._children[j]['workflowid_display'].includes(ev.value) || data[i]._children[j]['bmapid_display'].includes(ev.value)) {
+							childs.push(data[i]._children[j]);
+						}
+					}
+					if (childs.length == 0) {
+						if (data[i][field].includes(ev.value)) {
+							filteredData.push(this.FormatData(data[i]));
+						}
+						continue;
+					}
+					let fData = this.FormatData(data[i]);
+					fData._children = this.FormatChildrens(childs);
+					filteredData.push(this.FormatData(fData));
+				} else {
+					if (data[i][field].includes(ev.value)) {
+						filteredData.push(this.FormatData(data[i]));
+					}
+				}
+			}
+		}
+		this.Grid.resetData(filteredData);
+	}
+
+	ResetData(clearFields = false) {
+		let filteredData = [];
+		let data = this.Data['data'];
+		for (let i in data) {
+			if (settings.LastActive != data[i].ModuleName && settings.LastActive != 'All') {
+				continue;
+			}
+			filteredData.push(this.FormatData(data[i]));
+		}
+		if (clearFields) {
+			this.ClearFields();
+		}
+		this.Grid.resetData(filteredData);
+	}
+
+	ClearFields(currentField = '') {
+		const fields = ['Description', 'tasktypelabel', 'summary', 'Purpose', 'Trigger', 'Status'];
+		for (let f in fields) {
+			if (fields[f] == currentField) {
+				continue;
+			}
+			document.getElementById(fields[f]).value = '';
+		}
+	}
+
+	FormatData(data) {
+		return {
+			'Description': data.Description,
+			'Module': data.Module,
+			'ModuleIcon': data.ModuleIcon,
+			'ModuleName': data.ModuleName,
+			'Purpose': data.Purpose,
+			'Record': data.Record,
+			'RecordDel': data.RecordDel,
+			'RecordDetail': data.RecordDetail,
+			'Status': data.Status,
+			'StatusRaw': data.StatusRaw,
+			'Trigger': data.Trigger,
+			'isDefaultWorkflow': data.isDefaultWorkflow,
+			'type': data.type,
+			'workflow_id': data.workflow_id,
+			'_children': this.FormatChildrens(data._children),
+		};
+	}
+
+	FormatChildrens(data) {
+		let rows = [];
+		for (let i in data) {
+			if (data[i].Record === undefined) {
+				continue;
+			}
+			rows.push({
+				'Record': data[i].Record,
+				'RecordDel': data[i].RecordDel,
+				'Status': data[i].Status,
+				'StatusRaw': data[i].StatusRaw,
+				'summary': data[i].summary,
+				'task_id': data[i].task_id,
+				'tasktype': data[i].tasktype,
+				'tasktypelabel': data[i].tasktypelabel,
+				'type': data[i].type,
+				'workflow_id': data[i].workflow_id,
+			});
+		}
+		return rows.length == 0 ? false : rows;
 	}
 
 	async DeleteWorkflow(workflow_id, type, rowKey) {
@@ -185,7 +333,20 @@ class Settings {
 	}
 
 	RenderModules(current) {
-		let mods = '';
+		let mods = `
+		<li class="slds-vertical-tabs__nav-item" data-value="All" data-valueraw="All" id="wf_module_All" onclick="settings.ShowWorkflow('All')">
+			<a class="slds-vertical-tabs__link" role="tab" tabindex="0" aria-selected="true">
+				<span class="slds-vertical-tabs__left-icon">
+					<span class="slds-icon_container">
+						<svg class="slds-icon slds-icon-text-default slds-icon_small" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#picklist_type"></use>
+						</svg>
+					</span>
+				</span>
+				<span class="slds-truncate" title="All">All Modules</span>
+			</a>
+		</li>
+		`;
 		this.list_modules.forEach(function(modulename, idx) {
 			let className = '';
 			if (settings.list_modules_raw[idx] == current) {
@@ -208,6 +369,34 @@ class Settings {
 		return mods;
 	}
 
+	RenderOptions(forField, depth = '') {
+		let types = [];
+		this.Data['data'].forEach(function(row) {
+			if (depth == '') {
+				if (!types.includes(row[forField]) && (settings.LastActive == row.ModuleName || settings.LastActive == 'All')) {
+					types.push(row[forField]);
+				}
+			} else {
+				if (row[depth] !== undefined) {
+					for (let i in row[depth]) {
+						if (!types.includes(row[depth][i][forField]) && (settings.LastActive == row.ModuleName || settings.LastActive == 'All')) {
+							types.push(row[depth][i][forField]);
+						}
+					}
+				}
+			}
+		});
+		let el = '';
+		let sortedTypes = types.sort();
+		for (let j in sortedTypes) {
+			if (sortedTypes[j] === undefined) {
+				continue;
+			}
+			el += `<option value="${sortedTypes[j]}">${sortedTypes[j]}</option>`;
+		}
+		return el;
+	}
+
 	SearchBar() {
 		return `
 		<div class="slds-page-header">
@@ -217,30 +406,44 @@ class Settings {
 						<div class="slds-media__body">
 							<div class="slds-grid slds-gutters">
 								<div class="slds-col slds-size_3-of-12">
-									<input type="text" class="slds-input" placeholder="Workflow">
+									<label class="slds-form-element__label">Workflow</label>
+									<input type="text" class="slds-input" id="Description" oninput="settings.GridFilter(this, 'Description')">
 								</div>
 								<div class="slds-col" style="width: 14%">
-									<select type="text" class="slds-select" placeholder="Type">
-										<option disabled selected>Type</option>
+									<label class="slds-form-element__label">Type</label>
+									<select type="text" class="slds-select" id="tasktypelabel" onchange="settings.GridFilter(this, 'tasktypelabel')">
+										<option value=""></option>
+										${this.RenderOptions('tasktypelabel', '_children')}
 									</select>
 								</div>
 								<div class="slds-col" style="width: 14%">
-									<input type="text" class="slds-input" placeholder="Description">
+									<label class="slds-form-element__label">Description</label>
+									<input type="text" class="slds-input" id="summary" oninput="settings.GridFilter(this, 'summary')">
 								</div>
 								<div class="slds-col" style="width: 15%">
-									<input type="text" class="slds-input" placeholder="Purpose">
+									<label class="slds-form-element__label">Purpose</label>
+									<input type="text" class="slds-input" id="Purpose" oninput="settings.GridFilter(this, 'Purpose')">
 								</div>
 								<div class="slds-col" style="width: 14%">
-									<select type="text" class="slds-select" placeholder="Trigger">
-										<option disabled selected>Trigger</option>
+									<label class="slds-form-element__label">Trigger</label>
+									<select type="text" class="slds-select" id="Trigger" onchange="settings.GridFilter(this, 'Trigger')">
+										<option value=""></option>
+										${this.RenderOptions('Trigger')}
 									</select>
 								</div>
 								<div class="slds-col" style="width: 10%">
-									<select type="text" class="slds-select" placeholder="Status">
-										<option disabled selected>Status</option>
+									<label class="slds-form-element__label">Status</label>
+									<select type="text" class="slds-select" id="Status" onchange="settings.GridFilter(this, 'Status')">
+										<option value=""></option>
+										${this.RenderOptions('Status')}
 									</select>
 								</div>
 								<div class="slds-col slds-size_1-of-12">
+									<button onclick="settings.ResetData(true)" class="slds-button slds-button_icon slds-button_icon-border-filled" style="margin-top:1.5rem">
+										<svg class="slds-button__icon" aria-hidden="true">
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#filter"></use>
+										</svg>				
+									</button>
 								</div>
 							</div>
 						</div>
@@ -299,9 +502,14 @@ class WorkflowRender {
 			</div>`;
 			break;
 		case 'Description':
+			let { forModule } = props.columnInfo.renderer.options;
 			let Description = props.grid.getValue(rowKey, 'Description');
 			if (Description !== null) {
-				actions += `<a href="${Record}">${Description}</a>`;
+				let modLabel = '';
+				if (forModule == 'All') {
+					modLabel = `(${props.grid.getValue(rowKey, 'Module')})`;
+				}
+				actions += `<a href="${Record}">${modLabel} ${Description}</a>`;
 			}
 			break;
 		case 'Type':

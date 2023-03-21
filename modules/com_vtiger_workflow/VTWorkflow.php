@@ -774,7 +774,6 @@ class Workflow {
 	public function getWorkFlowJSON($conds, $params, $page, $order_by) {
 		global $log, $adb, $current_user, $app_strings;
 		$log->debug('> getWorkFlowJSON');
-
 		$workflow_execution_condtion_list = self::geti18nTriggerLabels();
 		$where = is_admin($current_user) ? '' : (empty($conds) ? 'where defaultworkflow=2' : 'and defaultworkflow=2');
 		if ($order_by != '') {
@@ -882,7 +881,13 @@ class Workflow {
 	public function getWorkflowTasks($vtwfappObject, $wfid, $module) {
 		global $log, $adb, $current_user, $app_strings;
 		$log->debug('> getWorkflowTasks');
-		$rs = $adb->pquery('select * from com_vtiger_workflowtasks where workflow_id=? order by executionorder', array($wfid));
+		if (in_array($forField, $searchFields)) {
+			if ($forField == 'tasktypelabel') {
+				$forField = 'task';
+			}
+			$where = $adb->convert2Sql( ' and '.$forField.'=?', array($forValue));
+		}
+		$rs = $adb->pquery('select * from com_vtiger_workflowtasks where workflow_id=? '.$where.' order by executionorder', array($wfid));
 		$tasks = array();
 		$tm = new VTTaskManager($adb);
 		while ($task = $adb->fetch_array($rs)) {
@@ -895,8 +900,12 @@ class Workflow {
 				'Status' => boolval($taskinfo->active) ? $app_strings['Active'] : $app_strings['Inactive'],
 				'StatusRaw' => boolval($taskinfo->active) ? true : false,
 				'tasktypelabel' => getTranslatedString(get_class($taskinfo)),
+				'tasktype' => get_class($taskinfo),
 				'Record' => $vtwfappObject->editTaskUrl($task['task_id']),
-				'RecordDel' => $vtwfappObject->deleteTaskUrl($task['task_id'])
+				'RecordDel' => $vtwfappObject->deleteTaskUrl($task['task_id']),
+				'field_value_mapping' => isset($taskinfo->field_value_mapping) ? $taskinfo->field_value_mapping : '',
+				'workflowid_display' => isset($taskinfo->workflowid_display) ? $taskinfo->workflowid_display : '',
+				'bmapid_display' => isset($taskinfo->bmapid_display) ? $taskinfo->bmapid_display : '',
 			);
 		}
 		$log->debug('< getWorkflowTasks');
