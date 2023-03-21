@@ -11444,7 +11444,7 @@ precacheAndRoute([{
   "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
 }, {
   "url": "include/js/clipboard.min.js",
-  "revision": "3f3688138a1b9fc4ef669ce9056b6674"
+  "revision": "15f52a1ee547f2bdd46e56747332ca2d"
 }, {
   "url": "include/js/clock.js",
   "revision": "0b6bdbfee7b61226371c555ced95bde2"
@@ -11456,7 +11456,7 @@ precacheAndRoute([{
   "revision": "5c870b070f867f9e010109f6faace4b1"
 }, {
   "url": "include/js/de_de.lang.js",
-  "revision": "2422cde4b57f03841beb5bb64e4d32a0"
+  "revision": "27f572c785210658d115d826116de121"
 }, {
   "url": "include/js/dedup.js",
   "revision": "f09b1b73041383bfe8a85ccce9641617"
@@ -11465,16 +11465,16 @@ precacheAndRoute([{
   "revision": "130f9210a4bec854a576da0d74ddce9b"
 }, {
   "url": "include/js/en_gb.lang.js",
-  "revision": "c23e92bbc4d498637e55ebc30ffa6fa1"
+  "revision": "6c2c6bfd2103bb5e2adac456c29a2ab5"
 }, {
   "url": "include/js/en_us.lang.js",
-  "revision": "a8eab9439f5278f6e454ebff07adf274"
+  "revision": "1a2cb1182bdba6989b75be53014b938c"
 }, {
   "url": "include/js/es_es.lang.js",
-  "revision": "a98b1445697187b355a97c8a998d3651"
+  "revision": "2e0f48aafc38a82bd8300f119da561d6"
 }, {
   "url": "include/js/es_mx.lang.js",
-  "revision": "f80c65df65600b2f82a0f55d9021606a"
+  "revision": "d87f8c3215b9726c30b4b3bf1bfaa381"
 }, {
   "url": "include/js/FieldDependencies.js",
   "revision": "634902ccc164334746e730d72bb3ba78"
@@ -11483,19 +11483,19 @@ precacheAndRoute([{
   "revision": "fdbce1da1a215e8de2a1cf289341397d"
 }, {
   "url": "include/js/fr_fr.lang.js",
-  "revision": "91058dc37dacd0c64dd9ca074712d931"
+  "revision": "c736cb5696a83850ca90fdb7631d59f1"
 }, {
   "url": "include/js/general.js",
-  "revision": "9f7c20207a6181568b0e62fdc258f905"
+  "revision": "adfc4103c628d89baae57b9fa0a9254c"
 }, {
   "url": "include/js/hu_hu.lang.js",
-  "revision": "01ff6a5e8e4ee0a3beed2bee4a06df63"
+  "revision": "4307327d004e846784b3aba4d27be5d9"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "733037aedbea5f5a6a76f9afd5ebc54d"
 }, {
   "url": "include/js/it_it.lang.js",
-  "revision": "df66e7bc66d5447a7d9009cb90133363"
+  "revision": "8aef6abe3e12143f486c429488c7dc11"
 }, {
   "url": "include/js/jslog.js",
   "revision": "4fad4667b01c3c4db2f1313c9e24968e"
@@ -11521,6 +11521,9 @@ precacheAndRoute([{
   "url": "include/js/masterdetailgrid.js",
   "revision": "c9210a3b53b884275eda0b9410be5402"
 }, {
+  "url": "include/js/mastergrid.js",
+  "revision": "95e6522683a5eafcc6662123ce43ac48"
+}, {
   "url": "include/js/meld.js",
   "revision": "7c3894eb22d16cb4743a7ea226557ed1"
 }, {
@@ -11528,7 +11531,7 @@ precacheAndRoute([{
   "revision": "92db09ac10a555be4bfc0398f2a93379"
 }, {
   "url": "include/js/nl_nl.lang.js",
-  "revision": "d578c6f4c1e0d2e7bc1158ef8052ef9f"
+  "revision": "15bec25ed72feca9246394fe1f305519"
 }, {
   "url": "include/js/notebook.js",
   "revision": "73d64bfb31e007a957e7de2ed1fdc5aa"
@@ -11546,13 +11549,13 @@ precacheAndRoute([{
   "revision": "f7193e74de91d378f10f4cb9941dc70c"
 }, {
   "url": "include/js/pt_br.lang.js",
-  "revision": "b12b0bab020c67918b0116589802f930"
+  "revision": "a52774f76f14440a770861f131c2fa81"
 }, {
   "url": "include/js/QuickCreate.js",
   "revision": "89ad8ae2e8972f6085b6728624061ac2"
 }, {
   "url": "include/js/relatedlistgrid.js",
-  "revision": "82054e815c92b7bada2a455174233ce8"
+  "revision": "b08771e4380c5d10675ff0a06983b132"
 }, {
   "url": "include/js/relatedlists.js",
   "revision": "a4b927aa3b2de3e40f85e12f3e9e54db"
@@ -11561,7 +11564,7 @@ precacheAndRoute([{
   "revision": "5939e45063d7400f478b0b4a37a91e81"
 }, {
   "url": "include/js/ro_ro.lang.js",
-  "revision": "21acdfdf80b81017ff9df4db75571fca"
+  "revision": "f4b25c068b2fb4f526d2c103674b2677"
 }, {
   "url": "include/js/search.js",
   "revision": "d5c8ddcb6451bc0c05aa26f123363e0f"
@@ -11570,10 +11573,10 @@ precacheAndRoute([{
   "revision": "008f3e9768bd2d226e65ea69999c9f14"
 }, {
   "url": "include/js/vtlib.js",
-  "revision": "f57cc8b2d8beae8bea21a928adb84efe"
+  "revision": "272dfef65e41f340c056678025555e07"
 }, {
   "url": "include/js/wizard.js",
-  "revision": "c353ae59e596f7758b4dc0377842e33a"
+  "revision": "6849f0140014e53925cffb9408bc1efe"
 }, {
   "url": "include/components/Carousel/vanilla-js-carousel.css",
   "revision": "3c84a75d9db4550dc2954a596bbf6f58"
