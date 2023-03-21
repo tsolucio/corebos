@@ -115,17 +115,17 @@ class MasterGrid {
 				</div>
 				<div class="slds-col slds-size_2-of-10">
 					<div class="slds-grid slds-grid_vertical slds-align_absolute-center">
-						<button class="slds-button slds-button_icon" title="Select" type="button" onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
+						<button class="slds-button slds-button_icon" title="${alert_arr.LBL_SELECT}" type="button" onclick="return window.open('${url}', 'vtlibui10', cbPopupWindowSettings);">
 							<svg class="slds-button__icon" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 							</svg>
-							<span class="slds-assistive-text">Select</span>
+							<span class="slds-assistive-text">${alert_arr.LBL_SELECT}</span>
 						</button>
-						<button class="slds-button slds-button_icon" type="button" onclick="mg[${this.id}].ClearValues('${field.name}', ${this.idx}, ${this.id});">
+						<button class="slds-button slds-button_icon" title="${alert_arr.LBL_CLEAR}" type="button" onclick="mg[${this.id}].ClearValues('${field.name}', ${this.idx}, ${this.id});">
 							<svg class="slds-button__icon" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 							</svg>
-							<span class="slds-assistive-text">Clear</span>
+							<span class="slds-assistive-text">${alert_arr.LBL_CLEAR}</span>
 						</button>
 					</div>
 				</div>
@@ -243,11 +243,11 @@ class MasterGrid {
 		let actions = `
 		<div class="slds-button-group" role="group">
 			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
-				<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="Show More">
+				<button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="${alert_arr.LBL_SHOW_MORE}">
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#threedots"></use>
 					</svg>
-					<span class="slds-assistive-text"></span>
+					<span class="slds-assistive-text">${alert_arr.LBL_SHOW_MORE}</span>
 				</button>
 				<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions">
 				<ul class="slds-dropdown__list" role="menu">

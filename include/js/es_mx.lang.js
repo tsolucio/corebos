@@ -499,4 +499,6 @@ var alert_arr = {
 	'GENDOC_CONFIRM_ACTION': '¿Estás seguro que quieres ejecutar esta operación?',
 	'LBL_COPY_ROWS': 'Copiar Registros',
 	'LBL_REMOVE': 'Eliminar',
+	'LBL_SELECT': 'Seleccionar',
+	'LBL_CLEAR': 'Limpiar',
 };

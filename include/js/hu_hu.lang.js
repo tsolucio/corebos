@@ -472,4 +472,6 @@ var alert_arr = {
 	'GENDOC_SAVE_PDF': 'Are you sure you want to override template?',
 	'LBL_COPY_ROWS': 'Copy Rows',
 	'LBL_REMOVE': 'Remove',
+	'LBL_SELECT': 'Select',
+	'LBL_CLEAR': 'Clear',
 };

@@ -498,4 +498,6 @@ var alert_arr = {
 	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
 	'LBL_COPY_ROWS': 'Copy Rows',
 	'LBL_REMOVE': 'Remove',
+	'LBL_SELECT': 'Select',
+	'LBL_CLEAR': 'Clear',
 };
