@@ -37,6 +37,7 @@
 ./include/js/nl_nl.lang.js
 ./include/js/notebook.js
 ./include/js/notificationPopup.js
+./include/js/mastergrid.js
 ./include/js/PasswordManagement.js
 ./include/js/picklist.js
 ./include/js/popup.js
