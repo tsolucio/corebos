@@ -12,7 +12,7 @@
 							<li class="slds-tabs_{$TABSCOPED}__item slds-is-active" role="presentation">
 								<a class="slds-tabs_{$TABSCOPED}__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px;">
 									<span class="{$currentModuleIcon['containerClass']}">
-										<svg class="slds-icon slds-icon_small" aria-hidden="true">
+										<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/{$currentModuleIcon['library']}-sprite/svg/symbols.svg#{$currentModuleIcon['icon']}"></use>
 										</svg>
 									</span>
@@ -22,6 +22,11 @@
 							<li class="slds-tabs_{$TABSCOPED}__item slds-tabs_{$TABSCOPED}__overflow-button" role="presentation">
 								<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
 									<a class="slds-button" aria-haspopup="true" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}" style="font-size: 13px">
+										<span class="slds-icon_container slds-icon-standard-account slds-m-right_xxx-small">
+											<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#more"></use>
+											</svg>
+										</span>
 										{$APP.LBL_MORE} {$APP.LBL_INFORMATION}
 										<svg class="slds-button__icon slds-button__icon_x-small slds-button__icon_right" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
@@ -35,9 +40,9 @@
 													<span class="slds-truncate">
 														<span class="slds-media slds-media_center">
 															{if isset($REL_MOD_ICONS[$_RELATION_ID]['icon'])}
-															<span class="slds-media__figure">
+															<span class="slds-m-right_xx-small">
 																<span class="{$REL_MOD_ICONS[$_RELATION_ID]['containerClass']}">
-																	<svg class="slds-icon slds-icon_small" aria-hidden="true">
+																	<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 																		<use xlink:href="include/LD/assets/icons/{$REL_MOD_ICONS[$_RELATION_ID]['library']}-sprite/svg/symbols.svg#{$REL_MOD_ICONS[$_RELATION_ID]['icon']}"></use>
 																	</svg>
 																</span>

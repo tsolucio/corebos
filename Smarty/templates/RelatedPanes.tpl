@@ -31,7 +31,7 @@
 		<li class="slds-tabs_{$TABSCOPED}__item slds-is-active" role="presentation">
 			<a class="slds-tabs_{$TABSCOPED}__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
 				<span class="{$currentModuleIcon['containerClass']}">
-					<svg class="slds-icon slds-icon_small" aria-hidden="true">
+					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/{$currentModuleIcon['library']}-sprite/svg/symbols.svg#{$currentModuleIcon['icon']}"></use>
 					</svg>
 				</span>
