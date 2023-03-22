@@ -65,6 +65,9 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	$smarty->assign('NAME', empty($focus->column_fields[$focus->def_detailview_recname]) ? '' : $focus->column_fields[$focus->def_detailview_recname]);
 	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
+	if (isset($focus->column_fields['currency_id'])) {
+		$smarty->assign('CURRENCY_ID', $focus->column_fields['currency_id']);
+	}
 
 	// Module Sequence Numbering
 	$mod_seq_field = getModuleSequenceField($currentModule);
@@ -153,6 +156,9 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		Vtiger_Link::getAllByType(getTabid($currentModule), array('DETAILVIEWBUTTON','DETAILVIEWBUTTONMENU'), $customlink_params, null, $focus->id)
 	);
 
+	if (!empty($custom_related_include)) {
+		include $custom_related_include;
+	}
 	$smarty->display('RelatedLists.tpl');
 }
 ?>
