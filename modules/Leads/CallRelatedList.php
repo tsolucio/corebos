@@ -7,6 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$custom_related_include = 'modules/Contacts/CallRelatedListLeads.php';
+$custom_related_include = 'modules/Leads/CallRelatedListLeads.php';
 require_once 'modules/Vtiger/CallRelatedList.php';
 ?>
