@@ -17,19 +17,19 @@
 
 {foreach key=RLTAB item=RLARR from=$RLTabs name=rltab}
 {if $RETURN_RELATEDPANE eq $RLTAB}
-	<li class="slds-tabs_default__item slds-is-active" role="presentation">
-		<a class="slds-tabs_default__link"role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
+	<li class="slds-tabs_{$TABSCOPED}__item slds-is-active" role="presentation">
+		<a class="slds-tabs_{$TABSCOPED}__link"role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
 			{$RLARR.label}
 		</a>
 	</li>
 {else}
 {if !isset($rlmode)}
-<div class="slds-tabs_default slds-tabs_medium">
-	<ul class="slds-tabs_default__nav" role="tablist">
+<div class="slds-tabs_{$TABSCOPED} slds-tabs_medium">
+	<ul class="slds-tabs_{$TABSCOPED}__nav" role="tablist">
 	{/if}
 		{if $smarty.foreach.rltab.index eq 0 && $rlmode neq 'RelatedPane'}
-		<li class="slds-tabs_default__item slds-is-active" role="presentation">
-			<a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
+		<li class="slds-tabs_{$TABSCOPED}__item slds-is-active" role="presentation">
+			<a class="slds-tabs_{$TABSCOPED}__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
 				<span class="{$currentModuleIcon['containerClass']}">
 					<svg class="slds-icon slds-icon_small" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/{$currentModuleIcon['library']}-sprite/svg/symbols.svg#{$currentModuleIcon['icon']}"></use>
@@ -39,9 +39,9 @@
 			</a>
 		</li>
 		{/if}
-		<li class="slds-tabs_default__item" role="presentation">
+		<li class="slds-tabs_{$TABSCOPED}__item" role="presentation">
 			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-				<a class="slds-tabs_default__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}" style="font-size: 12px">
+				<a class="slds-tabs_{$TABSCOPED}__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}" style="font-size: 12px">
 					{$RLARR.label}
 				</a>
 				{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}

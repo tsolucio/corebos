@@ -155,6 +155,7 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		'CUSTOM_LINKS',
 		Vtiger_Link::getAllByType(getTabid($currentModule), array('DETAILVIEWBUTTON','DETAILVIEWBUTTONMENU'), $customlink_params, null, $focus->id)
 	);
+	$smarty->assign('TABSCOPED', empty(GlobalVariable::getVariable('Application_RelatedPane_Scoped', '1')) ? 'default' : 'scoped');
 
 	if (!empty($custom_related_include)) {
 		include $custom_related_include;

@@ -7,10 +7,10 @@
 					{include file='RelatedPanes.tpl' tabposition='top' RETURN_RELATEDPANE=''}
 				{else}
 					{if !(GlobalVariable::getVariable('Application_Hide_Related_List', 0))}
-					<div class="slds-tabs_default slds-tabs_medium">
-						<ul class="slds-tabs_default__nav" role="tablist">
-							<li class="slds-tabs_default__item slds-is-active" role="presentation">
-								<a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
+					<div class="slds-tabs_{$TABSCOPED} slds-tabs_medium">
+						<ul class="slds-tabs_{$TABSCOPED}__nav" role="tablist">
+							<li class="slds-tabs_{$TABSCOPED}__item slds-is-active" role="presentation">
+								<a class="slds-tabs_{$TABSCOPED}__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px;">
 									<span class="{$currentModuleIcon['containerClass']}">
 										<svg class="slds-icon slds-icon_small" aria-hidden="true">
 											<use xlink:href="include/LD/assets/icons/{$currentModuleIcon['library']}-sprite/svg/symbols.svg#{$currentModuleIcon['icon']}"></use>
@@ -19,7 +19,7 @@
 									{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}
 								</a>
 							</li>
-							<li class="slds-tabs_default__item slds-tabs_default__overflow-button" role="presentation">
+							<li class="slds-tabs_{$TABSCOPED}__item slds-tabs_{$TABSCOPED}__overflow-button" role="presentation">
 								<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
 									<a class="slds-button" aria-haspopup="true" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}" style="font-size: 13px">
 										{$APP.LBL_MORE} {$APP.LBL_INFORMATION}

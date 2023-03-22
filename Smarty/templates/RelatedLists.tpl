@@ -15,10 +15,10 @@
 <div id="editlistprice" style="position:absolute;width:300px;"></div>
 <div class="slds-grid slds-gutters" style="background: white; padding-top: 1%;width: 98%;margin-left: 1%;margin-top: -0.5%">
 	<div class="slds-col">
-		<div class="slds-tabs_default slds-tabs_medium">
-			<ul class="slds-tabs_default__nav" role="tablist">
-				<li class="slds-tabs_default__item" role="presentation">
-					<a class="slds-tabs_default__link" role="tab" tabindex="0" href="index.php?action=DetailView&module={$MODULE}&record={$ID}" style="font-size: 13px">
+		<div class="slds-tabs_{$TABSCOPED} slds-tabs_medium">
+			<ul class="slds-tabs_{$TABSCOPED}__nav" role="tablist">
+				<li class="slds-tabs_{$TABSCOPED}__item" role="presentation">
+					<a class="slds-tabs_{$TABSCOPED}__link" role="tab" tabindex="0" href="index.php?action=DetailView&module={$MODULE}&record={$ID}" style="font-size: 13px">
 						<span class="{$currentModuleIcon['containerClass']}">
 							<svg class="slds-icon slds-icon_small" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/{$currentModuleIcon['library']}-sprite/svg/symbols.svg#{$currentModuleIcon['icon']}"></use>
@@ -32,8 +32,8 @@
 					{include file='RelatedPanes.tpl' tabposition='top'}
 				{else}
 					{if !(GlobalVariable::getVariable('Application_Hide_Related_List', 0))}
-					<li class="slds-tabs_default__item slds-is-active" role="presentation">
-						<a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
+					<li class="slds-tabs_{$TABSCOPED}__item slds-is-active" role="presentation">
+						<a class="slds-tabs_{$TABSCOPED}__link" role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
 							{$APP.LBL_MORE} {$APP.LBL_INFORMATION}
 						</a>
 					</li>
