@@ -154,9 +154,15 @@ $dvwidget = Vtiger_Link::getAllByType(
 	null,
 	$focus->id
 );
+$dvwidget = array_filter(
+	$dvwidget['DETAILVIEWWIDGET'],
+	function ($dvw) {
+		return substr($dvw->linkurl, 0, 8)=='block://';
+	}
+);
 $blocks = getBlocks($currentModule, 'detail_view', '', $focus->column_fields);
 $smarty->assign('BLOCKINITIALSTATUS', $_SESSION['BLOCKINITIALSTATUS']);
-$blocks = array_merge($blocks, $dvwidget['DETAILVIEWWIDGET']);
+$blocks = array_merge($blocks, $dvwidget);
 $mergedBlocks = array();
 $headers = array();
 foreach ($blocks as $block) {
