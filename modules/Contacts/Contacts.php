@@ -116,6 +116,7 @@ class Contacts extends CRMEntity {
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('lastname', 'createdtime', 'modifiedtime');
+	public $name = '';
 
 	/** Function to get the number of Contacts assigned to a particular User.
 	*  @param string assigned to user name

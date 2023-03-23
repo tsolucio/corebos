@@ -24,15 +24,6 @@ class Leads extends CRMEntity {
 	public $HasDirectImageField = false;
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-lead', 'class' => 'slds-icon', 'icon'=>'lead');
 
-	public $tab_name = array('vtiger_crmentity','vtiger_leaddetails','vtiger_leadsubdetails','vtiger_leadaddress','vtiger_leadscf');
-	public $tab_name_index = array(
-		'vtiger_crmentity'=>'crmid',
-		'vtiger_leaddetails'=>'leadid',
-		'vtiger_leadsubdetails'=>'leadsubscriptionid',
-		'vtiger_leadaddress'=>'leadaddressid',
-		'vtiger_leadscf'=>'leadid'
-	);
-
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -42,9 +33,25 @@ class Leads extends CRMEntity {
 		'vtiger_leadaddress' => array('leadaddressid', 'vtiger_leaddetails', 'leadid'),
 	);
 
-	public $sortby_fields = array('lastname','firstname','email','phone','company','smownerid','website');
+	/**
+	 * Mandatory for Saving, Include tables related to this module.
+	 */
+	public $tab_name = array('vtiger_crmentity','vtiger_leaddetails','vtiger_leadsubdetails','vtiger_leadaddress','vtiger_leadscf');
 
-	// This is the list of vtiger_fields that are in the lists.
+	/**
+	 * Mandatory for Saving, Include tablename and tablekey columnname here.
+	 */
+	public $tab_name_index = array(
+		'vtiger_crmentity'=>'crmid',
+		'vtiger_leaddetails'=>'leadid',
+		'vtiger_leadsubdetails'=>'leadsubscriptionid',
+		'vtiger_leadaddress'=>'leadaddressid',
+		'vtiger_leadscf'=>'leadid'
+	);
+
+	/**
+	 * Mandatory for Listing (Related listview)
+	 */
 	public $list_fields = array(
 		'Last Name'=>array('leaddetails'=>'lastname'),
 		'First Name'=>array('leaddetails'=>'firstname'),
@@ -80,18 +87,26 @@ class Leads extends CRMEntity {
 	// For Popup window record selection
 	public $popup_fields = array('lastname');
 
+	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
+	public $sortby_fields = array('lastname','firstname','email','phone','company','smownerid','website');
+
+	// For Alphabetical search
+	public $def_basicsearch_col = 'lastname';
+
+	// Column value to use on detail view record text display
+	public $def_detailview_recname = 'lastname';
+
+	// Required Information for enabling Import feature
 	public $required_fields = array();
 
+	public $default_order_by = 'lastname';
+	public $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('lastname', 'createdtime' ,'modifiedtime');
 
-	//Added these variables which are used as default order by and sortorder in ListView
-	public $default_order_by = 'lastname';
-	public $default_sort_order='ASC';
-
-	// For Alphabetical search
-	public $def_basicsearch_col = 'lastname';
+	public $firstname = '';
+	public $lastname = '';
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
