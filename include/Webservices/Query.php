@@ -13,6 +13,7 @@ $vtwsQueryHandler = '';
 
 function vtws_query($q, $user, $emptyCache = false) {
 	global $log, $adb, $vtwsQueryHandler;
+	$q = trim($q, ' ;').';';
 	static $vtws_query_cache = array();
 	if ($emptyCache) {
 		foreach ($vtws_query_cache as $cacheinfo) {
