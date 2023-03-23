@@ -479,9 +479,9 @@ function getFieldFromBlockArray($blocks, $fldlabel) {
 }
 
 /**
- * Function to get the CustomViewName
- * @param integer $cvid - customviewid
- * @return string cvname format
+ * Function to get the Custom View Name
+ * @param integer custom view id
+ * @return string custom view name format
  */
 function getCVname($cvid) {
 	global $log, $adb;

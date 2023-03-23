@@ -1272,7 +1272,7 @@ function getRelatedListsInformation($module, $focus) {
 	return $focus_list;
 }
 
-/** This function returns the related vtiger_tab details for a given entity or a module.
+/** This function returns the related tab details for a given entity or a module.
  * @param string module name
  * @param object module object
  * @param array of related list IDs that you want to access
