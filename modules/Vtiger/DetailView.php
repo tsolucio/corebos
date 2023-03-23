@@ -195,6 +195,14 @@ foreach ($blocks as $block) {
 	}
 }
 sort_array_data($mergedBlocks, '__sequence');
+// put same sequence widgets after the block
+for ($blk = 0; $blk<count($mergedBlocks)-1; $blk++) {
+	if ($mergedBlocks[$blk]['__type']=='widget' && $mergedBlocks[$blk+1]['__type']=='block' && $mergedBlocks[$blk]['__sequence']==$mergedBlocks[$blk+1]['__sequence']) {
+		$blkswap = $mergedBlocks[$blk];
+		$mergedBlocks[$blk] = $mergedBlocks[$blk+1];
+		$mergedBlocks[$blk+1] = $blkswap;
+	}
+}
 $smarty->assign('BLOCKS', $mergedBlocks);
 $smarty->assign(
 	'CUSTOM_LINKS',
