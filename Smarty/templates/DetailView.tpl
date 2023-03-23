@@ -66,7 +66,7 @@
 	</div>
 	{include file='Components/DetailView/MainHeader.tpl'}
 	<div class="small" style="padding:0px 7px 14px 14px;" onclick="hndCancelOutsideClick();">
-	{include file='applicationmessage.tpl'}
+	{include file='applicationmessage.tpl' isDetailView=true}
 	{include file='DetailViewWidgetBar.tpl'}
 	<div class="slds-grid slds-gutters" style="width: 99.5%;margin-left: 0.0%;">
 		<div class="slds-col slds-size_9-of-12" id="bodycolumn" style="background: white;">
