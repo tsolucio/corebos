@@ -51,14 +51,16 @@
 							<span class="slds-assistive-text">{$customlink_label}</span>
 						</span>
 					{else}
+						{strip}
 						<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">
 							<img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}">
 						</a>
+						{/strip}
 					{/if}
 				{else}
 					<a class="webMnu" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
 				{/if}
-					&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
+					<a class="slds-text-link_reset" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
 			{else}
 				<a class="slds-button {if empty($CUSTOMLINK->linkicon)}slds-button_neutral{else}{$CUSTOMLINK->linkicon}{/if}" href="{$customlink_href}" data-success="{$customlink_success}" data-error="{$customlink_error}" data-title="{$customlink_label}">{$customlink_label}</a>
 			{/if}
