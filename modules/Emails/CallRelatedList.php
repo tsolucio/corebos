@@ -61,6 +61,7 @@ if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 }
 $open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 $smarty->assign('SELECTEDHEADERS', $open_related_modules);
+$smarty->assign('TABSCOPED', empty(GlobalVariable::getVariable('Application_RelatedPane_Scoped', '1')) ? 'default' : 'scoped');
 
 $smarty->display('RelatedLists.tpl');
 ?>
