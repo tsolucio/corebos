@@ -109,7 +109,7 @@ class RelatedPanes extends processcbMap {
 						$block['icon'] = array(
 							'library' => $iconinfo['__ICONLibrary'],
 							'containerclass' => $iconinfo['__ICONContainerClass'],
-							'class' => $iconinfo['__ICONClass'],
+							'class' => 'slds-icon slds-icon_x-small',
 							'icon' => $iconinfo['__ICONName'],
 						);
 					} else {
@@ -170,7 +170,7 @@ class RelatedPanes extends processcbMap {
 								$block['icon'] = array(
 									'library' => $iconinfo['__ICONLibrary'],
 									'containerclass' => $iconinfo['__ICONContainerClass'],
-									'class' => $iconinfo['__ICONClass'],
+									'class' => 'slds-icon slds-icon_x-small',
 									'icon' => $iconinfo['__ICONName'],
 								);
 							}

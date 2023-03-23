@@ -19,6 +19,13 @@
 {if $RETURN_RELATEDPANE eq $RLTAB}
 	<li class="slds-tabs_{$TABSCOPED}__item slds-is-active" role="presentation">
 		<a class="slds-tabs_{$TABSCOPED}__link"role="tab" tabindex="0" aria-selected="true" style="font-weight: 600;font-size: 13px">
+			{if (isset($RLARR.icon))}
+			<span class="{$RLARR.icon['containerclass']}">
+				<svg class="{$RLARR.icon['class']}" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/{$RLARR.icon['library']}-sprite/svg/symbols.svg#{$RLARR.icon['icon']}"></use>
+				</svg>
+			</span>
+			{/if}
 			{$RLARR.label}
 		</a>
 	</li>
@@ -42,7 +49,19 @@
 		<li class="slds-tabs_{$TABSCOPED}__item" role="presentation">
 			<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
 				<a class="slds-tabs_{$TABSCOPED}__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}" style="font-size: 12px">
+					{if (isset($RLARR.icon))}
+					<span class="{$RLARR.icon['containerclass']}">
+						<svg class="{$RLARR.icon['class']}" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/{$RLARR.icon['library']}-sprite/svg/symbols.svg#{$RLARR.icon['icon']}"></use>
+						</svg>
+					</span>
+					{/if}
 					{$RLARR.label}
+					{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}
+						<svg class="slds-button__icon slds-button__icon_x-small slds-button__icon_right" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+						</svg>
+					{/if}
 				</a>
 				{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}
 				<div class="slds-dropdown slds-dropdown_left">
@@ -52,6 +71,13 @@
 							<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&RelatedPane={$RLTAB}&selected_header={$_RELATED_BLOCK.loadfrom}&relation_id={if isset($_RELATED_BLOCK.relatedid)}{$_RELATED_BLOCK.relatedid}{/if}#tbl_{$MODULE}_{$_RELATED_BLOCK.loadfrom}" role="menuitem" tabindex="-1">
 								<span class="slds-truncate">
 									<span class="slds-media slds-media_center">
+										{if (isset($_RELATED_BLOCK.icon))}
+										<span class="slds-m-right_xx-small {$_RELATED_BLOCK.icon['containerclass']}">
+											<svg class="{$_RELATED_BLOCK.icon['class']}" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/{$_RELATED_BLOCK.icon['library']}-sprite/svg/symbols.svg#{$_RELATED_BLOCK.icon['icon']}"></use>
+											</svg>
+										</span>
+										{/if}
 										<span class="slds-media__body" style="font-size: 12px">
 											{$_RELATED_BLOCK.label|@getTranslatedString:$_RELATED_BLOCK.label}
 										</span>

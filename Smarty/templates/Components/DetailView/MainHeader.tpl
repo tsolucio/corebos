@@ -40,12 +40,10 @@
 													<span class="slds-truncate">
 														<span class="slds-media slds-media_center">
 															{if isset($REL_MOD_ICONS[$_RELATION_ID]['icon'])}
-															<span class="slds-m-right_xx-small">
-																<span class="{$REL_MOD_ICONS[$_RELATION_ID]['containerClass']}">
-																	<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-																		<use xlink:href="include/LD/assets/icons/{$REL_MOD_ICONS[$_RELATION_ID]['library']}-sprite/svg/symbols.svg#{$REL_MOD_ICONS[$_RELATION_ID]['icon']}"></use>
-																	</svg>
-																</span>
+															<span class="slds-m-right_xx-small {$REL_MOD_ICONS[$_RELATION_ID]['containerClass']}">
+																<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+																	<use xlink:href="include/LD/assets/icons/{$REL_MOD_ICONS[$_RELATION_ID]['library']}-sprite/svg/symbols.svg#{$REL_MOD_ICONS[$_RELATION_ID]['icon']}"></use>
+																</svg>
 															</span>
 															{/if}
 															<span class="slds-media__body" style="font-size: 13px">
