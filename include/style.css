@@ -382,7 +382,7 @@
 	-webkit-animation-duration: 0.1s;
 	animation-duration: 0.1s;
 	-webkit-animation-fill-mode: both;
-	animation-fill-mode: both;	
+	animation-fill-mode: both;
 }
 
 .cbds-anim-slideout--right {
@@ -391,7 +391,23 @@
 	-webkit-animation-duration: 0.1s;
 	animation-duration: 0.1s;
 	-webkit-animation-fill-mode: both;
-	animation-fill-mode: both;	
+	animation-fill-mode: both;
+}
+
+.cbds-scrollbar::-webkit-scrollbar {
+	width: 1px;
+}
+
+.cbds-scrollbar::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+.cbds-scrollbar::-webkit-scrollbar-thumb {
+	background: #888;
+}
+
+.cbds-scrollbar::-webkit-scrollbar-thumb:hover {
+	background: #555;
 }
 
 @-webkit-keyframes slideInLeft {

@@ -3041,22 +3041,6 @@ a.allMnu:Hover{
 	width: 350px !important;
 }
 
-.cbds-scrollbar::-webkit-scrollbar {
-  width: 1px;
-}
-
-.cbds-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
- 
-.cbds-scrollbar::-webkit-scrollbar-thumb {
-  background: #888; 
-}
-
-.cbds-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-}
-
 .imageDetailViewFields {
 	border-bottom: 1px solid #dedede;
 	border-right: 1px solid #dedede;
