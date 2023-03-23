@@ -88,6 +88,12 @@ class RelatedPanes extends processcbMap {
 			$pane['blocks'] = $restrictedRelations = array();
 			if (isset($v->defaultMoreInformation)) {
 				$pane['label'] = getTranslatedString('LBL_MORE').' '.getTranslatedString('LBL_INFORMATION');
+				$pane['icon'] = array(
+					'library' => 'action',
+					'containerclass' => 'slds-icon_container slds-icon-standard-account',
+					'class' => 'slds-icon slds-icon_x-small',
+					'icon' => 'more',
+				);
 				$rltb = getRelatedLists($mapping['origin'], '');
 				$seq=0;
 				foreach ($rltb as $label => $relinfo) {
@@ -97,10 +103,42 @@ class RelatedPanes extends processcbMap {
 					$block['label'] = $label;
 					$block['loadfrom'] = $label;
 					$block['relatedid'] = $relinfo['relationId'];
+					$modulename = getTabModuleName($relinfo['related_tabid']);
+					if (vtlib_isModuleActive($modulename)) {
+						$iconinfo = getModuleIcon($modulename);
+						$block['icon'] = array(
+							'library' => $iconinfo['__ICONLibrary'],
+							'containerclass' => $iconinfo['__ICONContainerClass'],
+							'class' => $iconinfo['__ICONClass'],
+							'icon' => $iconinfo['__ICONName'],
+						);
+					} else {
+						$block['icon'] = array(
+							'library' => 'standard',
+							'containerclass' => 'slds-icon_container slds-icon-standard-account',
+							'class' => 'slds-icon slds-icon_x-small',
+							'icon' => 'relationship',
+						);
+					}
 					$pane['blocks'][$block['sequence']] = $block;
 				}
 				$pane['restrictedRelations'] = null;
 			} else {
+				if (isset($v->icon)) {
+					$pane['icon'] = array(
+						'library' => (string)$v->icon->library,
+						'containerclass' => (string)$v->icon->containerclass,
+						'class' => (string)$v->icon->class,
+						'icon' => (string)$v->icon->icon,
+					);
+				} else {
+					$pane['icon'] = array(
+						'library' => 'standard',
+						'containerclass' => 'slds-icon_container slds-icon-standard-account',
+						'class' => 'slds-icon slds-icon_x-small',
+						'icon' => 'relationship',
+					);
+				}
 				foreach ($v->blocks->block as $value) {
 					$block = array();
 					$block['type'] = (string)$value->type;
@@ -108,6 +146,14 @@ class RelatedPanes extends processcbMap {
 					$block['label'] = getTranslatedString((string)$value->label, $mapping['origin']);
 					$block['loadfrom'] = (string)$value->loadfrom;
 					$block['loadphp'] = (isset($value->loadphp) ? (string)$value->loadphp : '');
+					if (isset($value->icon)) {
+						$block['icon'] = array(
+							'library' => (string)$value->icon->library,
+							'containerclass' => (string)$value->icon->containerclass,
+							'class' => (string)$value->icon->class,
+							'icon' => (string)$value->icon->icon,
+						);
+					}
 					if ($block['type']=='RelatedList') {
 						if (is_numeric($block['loadfrom']) && !vtlib_isModuleActive($block['loadfrom'])) {
 							continue;
@@ -119,6 +165,15 @@ class RelatedPanes extends processcbMap {
 						if (!empty($rels[$block['loadfrom']])) {
 							$block['relatedid'] = $rels[$block['loadfrom']];
 							$restrictedRelations[] = $rels[$block['loadfrom']];
+							if (vtlib_isModuleActive($block['loadfrom'])) {
+								$iconinfo = getModuleIcon($block['loadfrom']);
+								$block['icon'] = array(
+									'library' => $iconinfo['__ICONLibrary'],
+									'containerclass' => $iconinfo['__ICONContainerClass'],
+									'class' => $iconinfo['__ICONClass'],
+									'icon' => $iconinfo['__ICONName'],
+								);
+							}
 						} else {
 							$block['relatedid'] = 0;
 						}
