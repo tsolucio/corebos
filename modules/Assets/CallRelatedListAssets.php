@@ -7,6 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$custom_related_include = 'modules/Assets/CallRelatedListAssets.php';
-require_once 'modules/Vtiger/CallRelatedList.php';
+if ($record != '') {
+	$service_base_currency = getProductBaseCurrency($focus->id, $currentModule);
+} else {
+	$service_base_currency = fetchCurrency($current_user->id);
+}
+$smarty->assign('CURRENCY_ID', $service_base_currency);
 ?>

@@ -31,6 +31,10 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	}
 
 	$smarty = new vtigerCRM_Smarty;
+	if (strpos($focus->moduleIcon['icon'], '-') !== false) {
+		$focus->moduleIcon['icon'] = end(explode('-', $focus->moduleIcon['icon']));
+	}
+	$smarty->assign('currentModuleIcon', $focus->moduleIcon);
 
 	if ($isduplicate == 'true') {
 		$focus->id = '';
@@ -61,6 +65,9 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	$smarty->assign('NAME', empty($focus->column_fields[$focus->def_detailview_recname]) ? '' : $focus->column_fields[$focus->def_detailview_recname]);
 	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
+	if (isset($focus->column_fields['currency_id'])) {
+		$smarty->assign('CURRENCY_ID', $focus->column_fields['currency_id']);
+	}
 
 	// Module Sequence Numbering
 	$mod_seq_field = getModuleSequenceField($currentModule);
@@ -148,7 +155,11 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		'CUSTOM_LINKS',
 		Vtiger_Link::getAllByType(getTabid($currentModule), array('DETAILVIEWBUTTON','DETAILVIEWBUTTONMENU'), $customlink_params, null, $focus->id)
 	);
+	$smarty->assign('TABSCOPED', empty(GlobalVariable::getVariable('Application_RelatedPane_Scoped', '1')) ? 'default' : 'scoped');
 
+	if (!empty($custom_related_include)) {
+		include $custom_related_include;
+	}
 	$smarty->display('RelatedLists.tpl');
 }
 ?>

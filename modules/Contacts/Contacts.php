@@ -116,6 +116,7 @@ class Contacts extends CRMEntity {
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('lastname', 'createdtime', 'modifiedtime');
+	public $name = '';
 
 	/** Function to get the number of Contacts assigned to a particular User.
 	*  @param string assigned to user name
@@ -219,7 +220,7 @@ class Contacts extends CRMEntity {
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
-					"' class='crmbutton small edit' type='button' ".
+					"' class='slds-button slds-button_success' type='button' ".
 					"onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable".
 					"&form=EditView&form_submit=false&recordid=$id', 'test', cbPopupWindowSettings);\" value='".
 					getTranslatedString('LBL_SELECT'). ' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
@@ -229,7 +230,7 @@ class Contacts extends CRMEntity {
 				$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 				if (!$racbr || $racbr->hasRelatedListPermissionTo('create', $related_module)) {
 					$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-					$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+					$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='slds-button slds-button_neutral'" .
 						" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\";' type='submit' name='button'" .
 						" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 				}
@@ -288,14 +289,14 @@ class Contacts extends CRMEntity {
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
-					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
+					."' class='slds-button slds-button_success' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '
 					.getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='slds-button slds-button_neutral'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
@@ -349,14 +350,14 @@ class Contacts extends CRMEntity {
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
-					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
+					."' class='slds-button slds-button_success' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '
 					.getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='slds-button slds-button_neutral'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
@@ -413,7 +414,7 @@ class Contacts extends CRMEntity {
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
-					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
+					."' class='slds-button slds-button_success' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '
 					.getTranslatedString($related_module, $related_module) ."'>&nbsp;";
@@ -421,7 +422,7 @@ class Contacts extends CRMEntity {
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 				$button .= "<input title='". getTranslatedString('LBL_ADD_NEW').' '. $singular_modname
-					."' accessyKey='F' class='crmbutton small create' onclick='fnvshobj(this,".'"sendmail_cont");sendmail("'.$this_module.'",'.$id
+					."' accessyKey='F' class='slds-button slds-button_neutral' onclick='fnvshobj(this,".'"sendmail_cont");sendmail("'.$this_module.'",'.$id
 					.");' type='button' name='button' value='". getTranslatedString('LBL_ADD_NEW').' '. $singular_modname."'></td>";
 			}
 		}
@@ -476,14 +477,14 @@ class Contacts extends CRMEntity {
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
-					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
+					."' class='slds-button slds-button_success' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '
 					.getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='slds-button slds-button_neutral'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}
@@ -541,14 +542,14 @@ class Contacts extends CRMEntity {
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module)
-					."' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
+					."' class='slds-button slds-button_success' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule"
 					."&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',"
 					."cbPopupWindowSettings);\" value='". getTranslatedString('LBL_SELECT'). ' '
 					. getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='slds-button slds-button_neutral'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW'). ' ' . $singular_modname ."'>&nbsp;";
 			}

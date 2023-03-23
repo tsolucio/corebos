@@ -71,8 +71,30 @@ if (GlobalVariable::getVariable('Application_DetailView_Record_Navigation', 1) &
 	$smarty->assign('privrecord', '');
 	$smarty->assign('nextrecord', '');
 }
-
-$smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
+$IS_REL_LIST = isPresentRelatedLists($currentModule, true);
+$RLdata = array();
+if (!empty($IS_REL_LIST)) {
+	foreach ($IS_REL_LIST as $id => $label) {
+		$name = getTabModuleName($id);
+		if (empty($name)) {
+			continue;
+		}
+		$modInstance = CRMEntity::getInstance($name);
+		if (strpos($modInstance->moduleIcon['icon'], '-') !== false) {
+			$iconArray = explode('-', $modInstance->moduleIcon['icon']);
+			$modInstance->moduleIcon['icon'] = end($iconArray);
+		}
+		$icon = $modInstance->moduleIcon;
+		$RLdata[$id] = $icon;
+	}
+}
+$smarty->assign('IS_REL_LIST', $IS_REL_LIST);
+$smarty->assign('REL_MOD_ICONS', $RLdata);
+if (strpos($focus->moduleIcon['icon'], '-') !== false) {
+	$iconArray = explode('-', $focus->moduleIcon['icon']);
+	$focus->moduleIcon['icon'] = end($iconArray);
+}
+$smarty->assign('currentModuleIcon', $focus->moduleIcon);
 $isPresentRelatedListBlock = isPresentRelatedListBlock($currentModule);
 $smarty->assign('IS_RELBLOCK_LIST', $isPresentRelatedListBlock);
 $singlepane_view = GlobalVariable::getVariable('Application_Single_Pane_View', 0, $currentModule);
@@ -113,8 +135,6 @@ if (isPermitted($currentModule, 'Delete', $record) == 'yes') {
 	$smarty->assign('DELETE', '');
 }
 
-$blocks = getBlocks($currentModule, 'detail_view', '', $focus->column_fields);
-$smarty->assign('BLOCKS', $blocks);
 $custom_blocks = getCustomBlocks($currentModule, 'detail_view');
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);
 $smarty->assign('FIELDS', $focus->column_fields);
@@ -124,10 +144,66 @@ if (is_admin($current_user)) {
 	$smarty->assign('hdtxt_IsAdmin', 0);
 }
 
-$smarty->assign('BLOCKINITIALSTATUS', $_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
+$dvwidget = Vtiger_Link::getAllByType(
+	$tabid,
+	array('DETAILVIEWWIDGET'),
+	$customlink_params,
+	null,
+	$focus->id
+);
+$dvwidget = array_filter(
+	$dvwidget['DETAILVIEWWIDGET'],
+	function ($dvw) {
+		return substr($dvw->linkurl, 0, 8)=='block://';
+	}
+);
+$blocks = getBlocks($currentModule, 'detail_view', '', $focus->column_fields);
+$smarty->assign('BLOCKINITIALSTATUS', $_SESSION['BLOCKINITIALSTATUS']);
+$blocks = array_merge($blocks, $dvwidget);
+$mergedBlocks = array();
+$headers = array();
+foreach ($blocks as $block) {
+	if (is_object($block)) {
+		$mergedBlocks[] = array(
+			'__type' => 'widget',
+			'__sequence' => (int)$block->sequence,
+			'__fields' => $block
+		);
+	} else {
+		if (isset($block['__header']) && $block['__type'] != 'relatedlist') {
+			if (in_array($block['__header'], $headers)) {
+				continue;
+			}
+			$headers[] = $block['__header'];
+			$mergedBlocks[] = $block;
+		} else {
+			//suport for related lists
+			if (!isset($block['__type'])) {
+				continue;
+			}
+			$header = array_keys($block['__fields']);
+			$mergedBlocks[] = array(
+				'__sequence' => (int)$block['__sequence'],
+				'__type' => 'relatedlist',
+				'__header' => $header[0],
+				'__fields' => $block['__fields'],
+			);
+		}
+	}
+}
+sort_array_data($mergedBlocks, '__sequence');
+// put same sequence widgets after the block
+for ($blk = 0; $blk<count($mergedBlocks)-1; $blk++) {
+	if ($mergedBlocks[$blk]['__type']=='widget' && $mergedBlocks[$blk+1]['__type']=='block' && $mergedBlocks[$blk]['__sequence']==$mergedBlocks[$blk+1]['__sequence']) {
+		$blkswap = $mergedBlocks[$blk];
+		$mergedBlocks[$blk] = $mergedBlocks[$blk+1];
+		$mergedBlocks[$blk+1] = $blkswap;
+	}
+}
+$smarty->assign('BLOCKS', $mergedBlocks);
 $smarty->assign(
 	'CUSTOM_LINKS',
 	Vtiger_Link::getAllByType(
@@ -141,10 +217,13 @@ $smarty->assign(
 if ($isPresentRelatedListBlock) {
 	$related_list_block = array();
 	foreach ($blocks as $blabel => $binfo) {
-		if (!empty($binfo['relatedlist'])) {
+		if (is_object($binfo)) {
+			continue;
+		}
+		if (!empty($binfo['__fields']['relatedlist'])) {
 			foreach ($related_array as $rlabel => $rinfo) {
-				if ($rinfo['relationId']==$binfo['relatedlist']) {
-					$related_list_block[$binfo['relatedlist']] = array($rlabel=>$rinfo);
+				if ($rinfo['relationId']==$binfo['__fields']['relatedlist']) {
+					$related_list_block[$binfo['__fields']['relatedlist']] = array($rlabel=>$rinfo);
 					break;
 				}
 			}
@@ -183,6 +262,7 @@ $smarty->assign('DETAILVIEW_AJAX_EDIT', $Application_Inline_Edit_Boolean);
 $smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
 $smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
+$smarty->assign('TABSCOPED', empty(GlobalVariable::getVariable('Application_RelatedPane_Scoped', '1')) ? 'default' : 'scoped');
 
 // sending PopupFilter map results to the frontEnd
 $bmapname = $currentModule.'_PopupFilter';

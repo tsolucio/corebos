@@ -68,6 +68,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_DetailView_Record_Navigation',
 				'Application_DetailView_Sticky_BlockStatus',
 				'Application_DetailView_PageHeader_Message',
+				'Application_RelatedPane_Scoped',
 				'Application_Filter_All_Edit',
 				'Application_Filter_Remove_RelatedModule_Label',
 				'Application_EditView_Submit_Form_WithEnter',

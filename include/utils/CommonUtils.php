@@ -460,6 +460,9 @@ function getFieldFromBlockArray($blocks, $fldlabel) {
 	if (is_array($blocks)) {
 		$found = false;
 		foreach ($blocks as $blklabel => $fieldarray) {
+			if (isset($fieldarray['__fields'])) {
+				$fieldarray = $fieldarray['__fields'];
+			}
 			foreach ($fieldarray as $key => $value) {
 				$found = array_key_exists($fldlabel, $value);
 				if ($found && is_array($value[$fldlabel]) && isset($value[$fldlabel]['value']) && isset($value[$fldlabel]['fldname'])) { // avoid false positives
@@ -476,9 +479,9 @@ function getFieldFromBlockArray($blocks, $fldlabel) {
 }
 
 /**
- * Function to get the CustomViewName
- * @param integer $cvid - customviewid
- * @return string cvname format
+ * Function to get the Custom View Name
+ * @param integer custom view id
+ * @return string custom view name format
  */
 function getCVname($cvid) {
 	global $log, $adb;
@@ -1332,16 +1335,18 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	}
 	$tabid = getTabid($module);
 	$getBlockInfo = array();
-	$query = "select blockid,blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible=0 order by sequence";
+	$query = "select blockid,blocklabel,display_status,isrelatedlist,sequence from vtiger_blocks where tabid=? and $disp_view=0 and visible=0 order by sequence";
 	$result = $adb->pquery($query, array($tabid));
 	$noofrows = $adb->num_rows($result);
 	$blockid_list = array();
 	$block_label = array();
+	$block_sequence = array();
 	$aBlockStatus = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		$blockid = $adb->query_result($result, $i, 'blockid');
 		$blockid_list[] = $blockid;
 		$block_label[$blockid] = decode_html_force($adb->query_result($result, $i, 'blocklabel'));
+		$block_sequence[] = $adb->query_result($result, $i, 'sequence');
 		$isrelatedlist = $adb->query_result($result, $i, 'isrelatedlist');
 		$sLabelVal = $block_label[$blockid];
 		if (is_null($isrelatedlist) || $isrelatedlist == 0) {
@@ -1407,7 +1412,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		// Added to unset the previous record's related listview session values
 		coreBOS_Session::delete('rlvs');
 
-		$getBlockInfo = getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label);
+		$getBlockInfo = getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label, $block_sequence);
 	} else {
 		if ($info_type != '') {
 			if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == 'Emails') {

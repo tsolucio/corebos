@@ -712,7 +712,7 @@ class cbCalendar extends CRMEntity {
 				$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 				if (!$racbr || $racbr->hasRelatedListPermissionTo('select', $related_module)) {
 					$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . $singular_modname . "' class='crmbutton small edit' ".
+					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . $singular_modname . "' class='slds-button slds-button_success' ".
 						"type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview".
 						"&select=enable&form=EditView&form_submit=false&recordid=$id', 'test', cbPopupWindowSettings);\" ".
 						"value='" . getTranslatedString('LBL_SELECT') . " " . $singular_modname . "'>&nbsp;";

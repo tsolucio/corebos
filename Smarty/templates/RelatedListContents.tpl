@@ -9,9 +9,7 @@
   *********************************************************************************/
 -->*}
 <script type='text/javascript' src='include/js/Mail.js'></script>
-
 {foreach key=header item=detail from=$RELATEDLISTS}
-
 {if is_numeric($header)}
 	{if $detail.type eq 'CodeWithHeader'}
 	<table width="100%" cellspacing="0" cellpadding="0" border="0" class="small lvt rel_mod_table">
@@ -39,45 +37,54 @@
 {else}
 	{assign var=rel_mod value=$header}
 	{assign var="HEADERLABEL" value=$header|@getTranslatedString:$rel_mod}
+	<div class="slds-is-open">
+		<h3 class="slds-section__title" style="background: #f3f3f3">
+			<button type="button" aria-expanded="true" class="slds-button slds-section__title-action">
+				<span class="toggle_rel_mod_table">
+				{strip}
+					<a href="javascript:loadRelatedListBlock(
+						'module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}',
+						'tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
+						<svg id="show_{$MODULE}_{$header|replace:' ':''}" class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+						</svg>
+					</a>
+					<a href="javascript:hideRelatedListBlock('tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
+						<span class="exp_coll_block inactivate" style="display: none">
+							<svg id="hide_{$MODULE}_{$header|replace:' ':''}" class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+							</svg>
+						</span>
+					</a>
+				{/strip}
+				</span>
+				<span class="slds-truncate" title="{$header}">
+					<strong>{$HEADERLABEL}</strong>
+				</span>
+			</button>
+		</h3>
+		<span id="indicator_{$MODULE}_{$header|replace:' ':''}" style="display:none;" valign="absmiddle">
+			<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_xx-small" style="position:relative; left: -15px; top: -12px;">
+				<div class="slds-spinner__dot-a"></div>
+				<div class="slds-spinner__dot-b"></div>
+			</div>
+		</span>
+		<span style="display:none;" id="delete_{$MODULE}_{$header|replace:' ':''}">
+			<a href="javascript:disableRelatedListBlock(
+				'module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&ajxaction=DISABLEMODULE&relation_id={$detail.relationId}&header={$header}',
+				'tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
+				<svg style="display:none;" id="delete_{$MODULE}_{$header|replace:' ':''}" id="show_{$MODULE}_{$header|replace:' ':''}" class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#minimize_window"></use>
+				</svg>
+			</a>
+		</span>
+		{if $MODULE eq 'Campaigns'}
+		<input id="{$MODULE}_{$header|replace:' ':''}_numOfRows" type="hidden" value="">
+		<input id="{$MODULE}_{$header|replace:' ':''}_excludedRecords" type="hidden" value="">
+		<input id="{$MODULE}_{$header|replace:' ':''}_selectallActivate" type="hidden" value="false">
+		{/if}
+	</div>
 	<table width="100%" cellspacing="0" cellpadding="0" border="0" class="small lvt rel_mod_table">
-		<tr>
-			<td class="dvInnerHeader" class="rel_mod_header_wrapper">
-				<div style="font-weight: bold;height: 1.75em;" class="rel_mod_header">
-					<span class="toggle_rel_mod_table">
-					{strip}
-						<a href="javascript:loadRelatedListBlock(
-							'module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}',
-							'tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
-							<span class="exp_coll_block activate"><img id="show_{$MODULE}_{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/></span>
-						</a>
-						<a href="javascript:hideRelatedListBlock('tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
-							<span class="exp_coll_block inactivate" style="display: none"><img id="hide_{$MODULE}_{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;display:none;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/></span>
-						</a>
-					{/strip}
-					</span>
-					&nbsp;{$HEADERLABEL}&nbsp;
-					<span id="indicator_{$MODULE}_{$header|replace:' ':''}" style="display:none;" valign="absmiddle">
-					<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_xx-small" style="position:relative; left: -16px; top: -12px;">
-						<div class="slds-spinner__dot-a"></div>
-						<div class="slds-spinner__dot-b"></div>
-					</div>
-					</span>
-
-					<div style="float: right;width: 2em;" class="disable_rel_mod_table">
-						<a href="javascript:disableRelatedListBlock(
-							'module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&ajxaction=DISABLEMODULE&relation_id={$detail.relationId}&header={$header}',
-							'tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
-							<img id="delete_{$MODULE}_{$header|replace:' ':''}" style="display:none;" src="{'windowMinMax.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
-						</a>
-					</div>
-					{if $MODULE eq 'Campaigns'}
-					<input id="{$MODULE}_{$header|replace:' ':''}_numOfRows" type="hidden" value="">
-					<input id="{$MODULE}_{$header|replace:' ':''}_excludedRecords" type="hidden" value="">
-					<input id="{$MODULE}_{$header|replace:' ':''}_selectallActivate" type="hidden" value="false">
-					{/if}
-				</div>
-			</td>
-		</tr>
 		<tr>
 			<td class="rel_mod_content_wrapper">
 				<div id="tbl_{$MODULE}_{$header|replace:' ':''}" class="rel_mod_content"></div>

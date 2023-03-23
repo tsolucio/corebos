@@ -184,13 +184,7 @@ var masterdetailwork = {
 
 	MDToggle: (ev, mid = '') => {
 		let label = alert_arr.LBL_COLLAPSE;
-		if (ev == '') {
-			masterdetailwork.ToggleStatus[mid] = 'block';
-			document.getElementById(mid).style.display = masterdetailwork.ToggleStatus[mid];
-			document.getElementById(`btn-${mid}`).innerHTML = label;
-			window.dispatchEvent(new Event('resize'));
-			return;
-		} else {
+		if (ev != '') {
 			const id = ev.dataset.id;
 			if (masterdetailwork.ToggleStatus[id] === undefined) {
 				masterdetailwork.ToggleStatus[id] = 'none';
@@ -211,7 +205,6 @@ var masterdetailwork = {
 			}
 			document.getElementById(id).style.display = masterdetailwork.ToggleStatus[id];
 			document.getElementById(`btn-${id}`).innerHTML = label;
-			window.dispatchEvent(new Event('resize'));
 		}
 	},
 

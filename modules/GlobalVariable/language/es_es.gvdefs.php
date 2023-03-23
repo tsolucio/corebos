@@ -442,6 +442,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'OFF | {Business Map ID} | UPDATE',
 	'definition' => 'Qué mostrar en el subtítulo del encabezado de página. Nada (OFF), el resultado de un mapa de negocio o el texto "Actualizado" predeterminado.',
 ),
+'Application_RelatedPane_Scoped' => array(
+	'valuetype' => 'booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Utilizar pestañas scoped (por defecto) o default.',
+),
 'Application_EditView_Submit_Form_WithEnter' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',

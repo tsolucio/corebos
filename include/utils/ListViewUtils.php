@@ -186,7 +186,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 								'file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=' . $moduleHeader .
 								"&order_by=$col&record=$relatedlist&sorder=$temp_sorder$relationURL" .
 								"$actionsURL\",\"tbl_" . $relatedmodule . "_$moduleLabel\"," .
-								'"'.$relatedmodule.'_'.$moduleLabel."\");' class='listFormHeaderLinks'>$lbl_name$arrow</a>";
+								'"'.$relatedmodule.'_'.$moduleLabel."\");' class='slds-th__action slds-text-link_reset'>$lbl_name$arrow</a>";
 						} elseif ($module == 'Users' && $name == 'User Name') {
 							$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . '","order_by=' . $col;
 							$name.= '&start=1&sorder=' . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>";

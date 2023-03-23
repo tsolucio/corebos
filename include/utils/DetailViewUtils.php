@@ -1272,7 +1272,7 @@ function getRelatedListsInformation($module, $focus) {
 	return $focus_list;
 }
 
-/** This function returns the related vtiger_tab details for a given entity or a module.
+/** This function returns the related tab details for a given entity or a module.
  * @param string module name
  * @param object module object
  * @param array of related list IDs that you want to access
@@ -1377,7 +1377,11 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 			} else {
 				$presence = $adb->query_result($result, $i, 'presence');
 				if ($presence == 0 && ($userprivs->isAdmin() || $userprivs->hasModuleAccess($relatedTabId))) {
-					$retval[$relatedId] = $relationLabel;
+					if ($activity_mode) {
+						$retval[$relatedTabId] = $relationLabel;
+					} else {
+						$retval[$relatedId] = $relationLabel;
+					}
 				}
 			}
 		}
@@ -1393,7 +1397,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
  * @param integer tab id
  * @return array
  */
-function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label) {
+function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label, $block_sequence = array()) {
 	global $log, $adb;
 	$log->debug('> getDetailBlockInformation', [$module, $result->sql, $col_fields, $tabid, $block_label]);
 	$label_data = array();
@@ -1511,6 +1515,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		}
 		$label_data[$headerid] = $detailview_data;
 	}
+	$idx = 0;
 	$returndata = array();
 	foreach ($block_label as $blockid => $label) {
 		if ($label == '') {
@@ -1537,18 +1542,43 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				}
 				$returndata[$i18nidx]=array_merge((array)$returndata[$i18nidx], array($label=>array()));
 			} else {
-				$brs = $adb->pquery('select isrelatedlist from vtiger_blocks where blockid=?', array($blockid));
+				$brs = $adb->pquery('select isrelatedlist, sequence from vtiger_blocks where blockid=?', array($blockid));
 				if ($brs && $adb->num_rows($brs)>0) {
 					$rellist = $adb->query_result($brs, 0, 'isrelatedlist');
+					$sequence = $adb->query_result($brs, 0, 'sequence');
 					if ($rellist>0) {
 						if (!isset($returndata[$curBlock])) {
 							$returndata[$curBlock] = array();
 						}
-						$returndata[$curBlock]=array_merge((array)$returndata[$curBlock], array($label=>array(),'relatedlist'=>$rellist));
+						$returndata[$curBlock]=array_merge((array)$returndata[$curBlock], array($label=>array(),'relatedlist'=>$rellist, 'sequence'=>$sequence));
 					}
 				}
 			}
 		}
+		$specialModules = array('Users', 'Emails');
+		if (!empty($block_sequence) && !in_array($module, $specialModules)) {
+			if (!isset($i18nidx)) {
+				$header = array_keys($returndata[$curBlock]);
+				$returndata_[$curBlock]['__header'] = $header[0];
+				$returndata_[$curBlock]['__fields'] = $returndata_[$curBlock];
+			} else {
+				$returndata_[$curBlock]['__header'] = $i18nidx;
+				$returndata_[$curBlock]['__fields'] = $returndata[$i18nidx];
+			}
+			if (isset($returndata[$curBlock]['relatedlist'])) {
+				$returndata_[$curBlock]['__type'] = 'relatedlist';
+			} else {
+				$returndata_[$curBlock]['__type'] = 'block';
+			}
+			$returndata_[$curBlock]['__sequence'] = empty($block_sequence[$idx]) ? 0 : (int)$block_sequence[$idx];
+			if (isset($returndata[$curBlock])) {
+				$returndata_[$curBlock]['__fields'] = $returndata[$curBlock];
+			}
+			$idx++;
+		}
+	}
+	if (isset($returndata_)) {
+		$returndata = $returndata_;
 	}
 	$log->debug('< getDetailBlockInformation');
 	return $returndata;

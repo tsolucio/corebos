@@ -7,6 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$custom_related_include = 'modules/Assets/CallRelatedListAssets.php';
-require_once 'modules/Vtiger/CallRelatedList.php';
+if ($record != '') {
+	$focus->firstname = $focus->column_fields['firstname'];
+	$focus->lastname = $focus->column_fields['lastname'];
+} else {
+	$focus->firstname = '';
+	$focus->lastname = '';
+}
+$smarty->assign('NAME', $focus->lastname.' '.$focus->firstname);
+$parent_email = getEmailParentsList('Leads', $focus->id, $focus);
+$smarty->assign('HIDDEN_PARENTS_LIST', $parent_email);
+$smarty->assign('EMAIL', $focus->column_fields['email']);
+$smarty->assign('SECONDARY_EMAIL', $focus->column_fields['secondaryemail']);
 ?>

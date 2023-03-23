@@ -9,30 +9,37 @@
 
 {if empty($smarty.request.ajax)}
 	<input type="hidden" id="comments_parentId" value="{$ID}" />
-	<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr class="detailview_block_header comments_block_header">
-	<td colspan="4" class="dvInnerHeader">
-		<div style="float: left; font-weight: bold;">
-		<div style="float: left;">
-		<a href="javascript:showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');">
-		{if $BLOCKOPEN}
-		<span class="exp_coll_block inactivate"><img id="aid{$UIKEY}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid rgb(0, 0, 0);" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"></span></a>
-		{else}
-		<span class="exp_coll_block activate"><img id="aid{$UIKEY}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid rgb(0, 0, 0);" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}">
-		{/if}
-		</span></a>
-		</div><b>&nbsp;{$WIDGET_TITLE}</b></div>
-		<span style="float: right;">
-			<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border=0 id="indicator{$UIKEY}" style="display:none;">
+	<div class="slds-section slds-is-open" style="margin-bottom: 0rem !important">
+		<h3 class="slds-section__title">
+			<button aria-expanded="true" class="slds-button slds-section__title-action" onclick="showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');">
+				{if $BLOCKOPEN}
+					<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$UIKEY}_block">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+					</svg>
+					<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$UIKEY}_none" style="display: none">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+					</svg>
+				{else}
+					<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$UIKEY}_block" style="display: none">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+					</svg>
+					<svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true" id="svg_tbl{$UIKEY}_none">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+					</svg>
+				{/if}
+				<span class="slds-truncate" title="{$WIDGET_TITLE}">
+					<strong>{$WIDGET_TITLE}</strong>
+				</span>
+			</button>
+		</h3>
+		<span style="float: right;position:relative; left: -16px; top: -25px;">
 			{$APP.LBL_SHOW} <select class="small" onchange="ModCommentsCommon.reloadContentWithFiltering('{$WIDGET_NAME}', '{$ID}', this.value, 'tbl{$UIKEY}', 'indicator{$UIKEY}');">
 				<option value="All" {if $CRITERIA eq 'All'}selected{/if}>{$APP.LBL_ALL}</option>
 				<option value="Last5" {if $CRITERIA eq 'Last5'}selected{/if}>{$MOD.LBL_LAST5}</option>
 				<option value="Mine" {if $CRITERIA eq 'Mine'}selected{/if}>{$MOD.LBL_MINE}</option>
 			</select>
 		</span>
-		</td>
-	</tr>
-	</table>
+	</div>
 	{/if}
 	<div id="tbl{$UIKEY}" style="display: {if $BLOCKOPEN}block{else}none{/if};">
 		<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">

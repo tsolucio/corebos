@@ -18,11 +18,11 @@ require_once 'modules/Vtiger/DetailView.php';
 require_once 'modules/GlobalVariable/LoadGlobalVariableDefinitions.php';
 $fieldlabel = getTranslatedString('Name', $currentModule);
 $kk = getFieldFromDetailViewBlockArray($blocks, $fieldlabel);
-$gvnamearray = $blocks[$kk['block_label']][$kk['field_key']][$fieldlabel]['options'];
+$gvnamearray = $blocks[$kk['block_label']]['__fields'][$kk['field_key']][$fieldlabel]['options'];
 uasort($gvnamearray, function ($a, $b) {
 	return strtolower($a[0]) < strtolower($b[0]) ? -1 : 1;
 });
-$blocks[$kk['block_label']][$kk['field_key']][$fieldlabel]['options'] = $gvnamearray;
+$blocks[$kk['block_label']]['__fields'][$kk['field_key']][$fieldlabel]['options'] = $gvnamearray;
 $smarty->assign('BLOCKS', $blocks);
 if ($focus->column_fields['gvname']=='Application_Upload_MaxSize') {
 	$phpmaxsize = get_maxloadsize();

@@ -3917,6 +3917,14 @@ function validateClickHouseSecret($signedvalue, $signedkey, $input) {
 	return ($receivedSignature === $computedSignature);
 }
 
+function sort_array_data(&$arr, $col, $dir = SORT_ASC) {
+	$sort_col = array();
+	foreach ($arr as $key => $row) {
+		$sort_col[$key] = $row[$col];
+	}
+	array_multisort($sort_col, $dir, $arr);
+}
+
 function convertPathFromAbsoluteToRelative($absolutePath) {
 	global $root_directory;
 	$prefix_pos = strpos($absolutePath, $root_directory);
