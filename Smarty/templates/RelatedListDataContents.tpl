@@ -56,7 +56,7 @@
 			{/if}
 			{foreach key=index item=_RECORD_DATA from=$_RECORD}
 				{* vtlib customization: Trigger events on listview cell *}
-				<td class="slds-cell_action-mode" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$_RECORD_DATA}</td>
+				<td class="slds-cell_action-mode cbds-data-overflow" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$_RECORD_DATA}</td>
 			{/foreach}
 		</tr>
 		{foreachelse}

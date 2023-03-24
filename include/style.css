@@ -545,3 +545,6 @@
   position: relative;
   z-index: 2;
 }
+.cbds-data-overflow {
+  overflow: hidden;
+}
