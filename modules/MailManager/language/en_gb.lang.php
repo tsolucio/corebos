@@ -165,6 +165,8 @@ $mod_strings = array(
 	'LBL_TO_ACCOUNTS' => 'To Organizations',
 	'LBL_TO_LEADS' => 'To Leads',
 	'LBL_TO_USERS' => 'To Users',
-	'LBL_SENT_MAILS' => 'Sent Mails'
+	'LBL_SENT_MAILS' => 'Sent Mails',
+	'LBL_VERIFY_SERVER' => 'Please verify outgoing server',
+	'LBL_DRAFT_NOT_SAVED' => 'Draft was not saved',
 );
 ?>

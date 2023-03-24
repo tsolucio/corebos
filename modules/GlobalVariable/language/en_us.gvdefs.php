@@ -442,6 +442,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'OFF | {Business Map ID} | UPDATE',
 	'definition' => 'What to show in page header sub title. Nothing (OFF), the result of a Business Map or the default Updated text.',
 ),
+'Application_RelatedPane_Scoped' => array(
+	'valuetype' => 'boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Use scoped (by default) or default tabs.',
+),
 'Application_EditView_Submit_Form_WithEnter' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
@@ -1893,6 +1899,18 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Activates inline edit depending on the View type. The default is 1',
+),
+'Email_Template_AutomaticMerge' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1, the email template is merged automatically. If set to 0, the email template is not merged and you can preview the email. The default value is 1.',
+),
+'Wizard_ListView_Pagination' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Number of rows to show per page in the wizard list view grid.',
 ),
 );
 

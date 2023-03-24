@@ -228,5 +228,19 @@ $mod_strings = array(
 'Frequency' => 'Frecuencia de Facturación',
 'ship_countrycode' => 'Código País Envío',
 'bill_countrycode' => 'Código País Facturación',
+//ELECTRONIC INVOICE BLOCKS
+'LBL_EINVOICE' => 'Factura electrónica',
+'islegalentity' => 'Es persona juridica',
+'siccode' => 'SIC Code',
+'secondlastname' => 'Segundo apellido',
+'website' => 'Sitio web',
+'cnae' => 'Clasificación de la actividad económica',
+'inecode' => 'Código Estadístico del Municipio',
+'brbook' => 'Libro',
+'brmregister' => 'Registro',
+'brsheet' => 'Hoja',
+'brfolio' => 'Folio',
+'brsection' => 'Sección',
+'brvolume' => 'Volumen',
 );
 ?>

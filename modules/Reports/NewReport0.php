@@ -95,6 +95,7 @@ if ($recordid!='') {
 	$list_report_form->assign('RESTRICTEDMODULES', '');
 }
 if (!empty($_REQUEST['reportmodule'])) {
+	$_REQUEST['reportmodule'] = strip_selected_tags(vtlib_purify($_REQUEST['reportmodule']), 'a');
 	if (!vtlib_isModuleActive($_REQUEST['reportmodule']) || isPermitted($_REQUEST['reportmodule'], 'index')!= 'yes') {
 		$list_report_form->assign('APMSG_LOADLDS', 1);
 		$list_report_form->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');

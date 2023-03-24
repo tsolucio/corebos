@@ -27,7 +27,8 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 	if (count($ids) == 1) {
 		$crmid = $ids[0];
 	}
-	$tpl = getTemplateDetails($_REQUEST['action_id'], $crmid);
+	$Email_AutomaticMerge = GlobalVariable::getVariable('Email_Template_AutomaticMerge', 1);
+	$tpl = getTemplateDetails($_REQUEST['action_id'], $crmid, $Email_AutomaticMerge);
 
 	// Merge template
 	$mids = array();
@@ -41,7 +42,6 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 			$tpl[1] = getMergedDescription($tpl[1], $mid, $module);
 		}
 	}
-
 	// Get Related Documents
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 	$query='select vtiger_notes.notesid,vtiger_notes.filename
@@ -59,6 +59,7 @@ $req->set('callfrom', isset($_REQUEST['callfrom']) ? $_REQUEST['callfrom'] : '')
 ?>
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <form name="frmrepstr" onsubmit="VtigerJS_DialogBox.block();">
+<input type="hidden" name="templateid" value="<?php echo $tpl[0];?>">
 <input type="hidden" name="subject" value="<?php echo $tpl[2];?>">
 <textarea name="repstr" style="visibility:hidden">
 <?php echo htmlentities($tpl[1], ENT_NOQUOTES, $default_charset); ?>
@@ -67,6 +68,7 @@ $req->set('callfrom', isset($_REQUEST['callfrom']) ? $_REQUEST['callfrom'] : '')
 <script type="text/javascript">
 if (typeof window.opener.document.getElementById('subject') != 'undefined' && window.opener.document.getElementById('subject') != null) {
 	window.opener.document.getElementById('subject').value = window.document.frmrepstr.subject.value;
+	window.opener.document.getElementById('templateid').value = window.document.frmrepstr.templateid.value;
 	window.opener.document.getElementById('description').value = window.document.frmrepstr.repstr.value;
 	window.opener.oCKeditor.setData(window.document.frmrepstr.repstr.value);
 <?php while ($row = $adb->getNextRow($result, false)) { ?>
@@ -74,7 +76,7 @@ if (typeof window.opener.document.getElementById('subject') != 'undefined' && wi
 	window.opener.addOption(<?php echo $row['notesid']; ?>, attachment);
 <?php } ?>
 } else {
-	vtlib_setvalue_from_popup('<?php echo $req->get('action_id'); ?>', '<?php echo $req->get('callvalue') ; ?>', '<?php echo $req->get('targetfield'); ?>', '<?php echo $req->get('callform'); ?>');
+	vtlib_setvalue_from_popup('<?php echo $req->get('action_id'); ?>', '<?php echo $req->get('callvalue'); ?>', '<?php echo $req->get('targetfield'); ?>', '<?php echo $req->get('callform'); ?>');
 }
 window.close();
 </script>

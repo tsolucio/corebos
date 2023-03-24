@@ -127,13 +127,22 @@ function validate_sendmail(idlist, module) {
 	}
 	if (email_type != '') {
 		var field_lists = email_type.join(':');
-		var url= 'index.php?module=Emails&action=EmailsAjax&pmodule='+module+'&file=EditView&sendmail=true&idlist='+idlist+'&field_lists='+field_lists+url1;
-		openPopUp('xComposeEmail', this, url, 'createemailWin', 1200, 900, 'menubar=no,toolbar=no,location=no,status=no,resizable=no');
+		var url= `index.php?module=Emails&action=EmailsAjax&pmodule=${module}&paction=${gVTviewType}&file=EditView&sendmail=true&modalmode=true&idlist=${idlist}&field_lists=${field_lists}${url1}`;
+		ldsMail.show(alert_arr.LBL_SEND_MAIL, '');
+		$('#global-mail-content').load(url, function () {
+			mailfooter();
+		});
 		fninvsh('roleLay');
 		return true;
 	} else {
 		alert(alert_arr.SELECT_MAILID);
 	}
+}
+
+function mailfooter() {
+	const cloneAc = document.getElementById('send-mail-actions');
+	document.getElementById('global-mail-footer').innerHTML = cloneAc.innerHTML;
+	cloneAc.innerHTML = '';
 }
 
 function sendmail(module, idstrings, url) {
@@ -204,4 +213,53 @@ function sendToselectedAdd() {
 	}
 	window.close();
 	return true;
+}
+
+function SelectMail(type) {
+	switch (type) {
+	case 'to':
+		window.open(`index.php?module=${document.EditView.parent_type.value}&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails`, `test`, cbPopupWindowSettings);
+		break;
+	case 'cc':
+		window.open(`index.php?module=${document.EditView.parent_type.value}&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=cc_name`, `test`, cbPopupWindowSettings);
+		break;
+	case 'bcc':
+		window.open(`index.php?module=${document.EditView.parent_type.value}&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=bcc_name`, `test`, cbPopupWindowSettings);
+		break;
+	case 'template':
+		vtlib_open_popup_window('', 'msgtpopup', 'MsgTemplate', `${document.EditView.parent_type.value}&relmod_id=0&parent_module=${document.EditView.parent_type.value}`);
+		break;
+	default:
+		//do nothing
+	}
+}
+
+function ClearMail(type) {
+	switch (type) {
+	case 'to':
+		document.getElementById('parent_id').value= '';
+		document.getElementById('saved_toid').value='';
+		document.getElementById('hidden_toid').value= '';
+		document.getElementById('parent_name').value= '';
+		break;
+	case 'cc':
+		document.getElementById('cc_name').value='';
+		break;
+	case 'bcc':
+		document.getElementById('bcc_name').value='';
+		break;
+	default:
+		//do nothing
+	}
+}
+
+function MailPreview() {
+	const templateid = document.getElementById('templateid').value;
+	const listofids = document.getElementById('listofids').value;
+	jQuery.ajax({
+		method: 'get',
+		url: `index.php?module=MsgTemplate&action=MsgTemplateAjax&file=PreviewTemplate&templateid=${templateid}&listofids=${listofids}`
+	}).done(function (response) {
+		ldsModal.show(alert_arr.LBL_PREVIEW_MAIL, response);
+	});
 }

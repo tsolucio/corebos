@@ -129,7 +129,7 @@ $(function() {
 				$('.pvtRowLabel').click(function(e) {
 					let vTotalAxisLabels = $('.pvtAxisLabel').length;
 					let vTotalRowLabels =  ($(this).siblings('th').length)+1;
-					let vColRowLabels = vTotalAxisLabels - vTotalRowLabels ;
+					let vColRowLabels = vTotalAxisLabels - vTotalRowLabels;
 					let thHeaderName = $('.pvtAxisLabel').eq($(this).index()+vColRowLabels);
 					const advSearch = [{
 						'columnname': rowFields[thHeaderName.html()],

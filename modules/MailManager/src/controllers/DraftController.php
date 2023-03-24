@@ -11,7 +11,7 @@ include_once 'modules/MailManager/src/controllers/Controller.php';
 include_once 'modules/MailManager/src/models/Draft.php';
 
 /**
- * Class that handles Internal vtiger Drafts
+ * Class that handles Internal Email Drafts
  */
 class MailManager_DraftController extends MailManager_Controller {
 
@@ -23,8 +23,8 @@ class MailManager_DraftController extends MailManager_Controller {
 	}
 
 	/**
-	* Returns a List of search strings on the internal vtiger Drafts
-	* @return Array of vtiger Email Fields
+	* Returns a List of search strings on the internal email Drafts
+	* @return array of Email Fields
 	*/
 	public static function getSearchOptions() {
 		return array('subject'=>'SUBJECT', 'saved_toid'=>'TO', 'description'=>'BODY', 'bccmail'=>'BCC', 'ccmail'=>'CC');

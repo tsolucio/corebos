@@ -100,8 +100,10 @@ class WizardView {
 	public function Init() {
 		require_once 'modules/'.$this->module.'/'.$this->module.'.php';
 		global $smarty;
+		$Wizard_ListView_Pagination = GlobalVariable::getVariable('Wizard_ListView_Pagination', 10, $this->module);
 		$smarty->assign('formodule', $this->module);
 		$smarty->assign('GroupBy', $this->groupby);
+		$smarty->assign('Wizard_ListView_Pagination', intval($Wizard_ListView_Pagination));
 		$WizardSuboperation = $smarty->getTemplateVars('WizardSuboperation');
 		//suboperation support into steps
 		if (!empty($WizardSuboperation)) {
@@ -299,10 +301,13 @@ class WizardActions extends WizardCustomFunctions {
 			$qg->setFields(array('*'));
 			$newRecords = $this->GetSession($current_user->id);
 			if ($filterrows) {
-				//filter records for the next step based on some givend ids
+				//filter records for the next step based on some given ids
 				if (!empty($forids)) {
 					$qg->startGroup();
 					foreach ($forids as $id) {
+						if (strpos($id, 'x') !== false) {
+							list($wsid,$id) = explode('x', $id);
+						}
 						$qg->addCondition('id', $id, 'e', 'or');
 					}
 					$qg->endGroup();
@@ -570,8 +575,8 @@ class WizardActions extends WizardCustomFunctions {
 		if (!empty($subaction)) {
 			$target = $this->$subaction();
 		}
-		if ($target == '__MassCreateSuccess__') {
-			return true;
+		if (is_array($target)) {
+			return $target;
 		}
 		if (!empty($target)) {
 			$response = MassCreate($target, $current_user);
@@ -659,9 +664,13 @@ class WizardActions extends WizardCustomFunctions {
 							$row[$fieldname] = $relid;
 						}
 					}
-					vtws_create($createmodule, $row, $current_user);
+					$rs = vtws_create($createmodule, $row, $current_user);
+					$createdids[] = isset($rs['id']) ? $rs['id'] : 0;
 				}
-				return '__MassCreateSuccess__';
+				if (isset($createdids)) {
+					return $createdids;
+				}
+				return false;
 			}
 		}
 		return false;
@@ -744,7 +753,7 @@ class WizardActions extends WizardCustomFunctions {
 		$noOfRows = $adb->num_rows($sql);
 		if ($noOfRows > 0) {
 			$res = array();
-			for ($i=0; $i < $noOfRows; $i++) { 
+			for ($i=0; $i < $noOfRows; $i++) {
 				$res[] = array(
 					'activityid' => $adb->query_result($sql, $i, 'activityid'),
 					'subject' => $adb->query_result($sql, $i, 'subject'),

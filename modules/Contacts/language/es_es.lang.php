@@ -294,5 +294,19 @@ $mod_strings = array (
 'Template Language' => 'Idioma Plantillas',
 'ship_countrycode' => 'Código País Envío',
 'bill_countrycode' => 'Código País Facturación',
+//ELECTRONIC INVOICE BLOCKS
+'LBL_EINVOICE' => 'Factura electrónica',
+'islegalentity' => 'Es persona juridica',
+'siccode' => 'CIF',
+'secondlastname' => 'Segundo apellido',
+'website' => 'Sitio web',
+'cnae' => 'Clasificación Actividad Económica',
+'inecode' => 'Código Estadístico Municipio',
+'brbook' => 'Libro',
+'brmregister' => 'Registro',
+'brsheet' => 'Hoja',
+'brfolio' => 'Folio',
+'brsection' => 'Sección',
+'brvolume' => 'Volumen',
 );
 ?>

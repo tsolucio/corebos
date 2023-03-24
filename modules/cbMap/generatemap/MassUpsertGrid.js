@@ -14,7 +14,6 @@
  *************************************************************************************************/
 
 const MGInstance = {
-
 	MapID: 0,
 	MapFields: [],
 	ModuleName: '',
@@ -26,7 +25,7 @@ const MGInstance = {
 		if (typeof MGInstance.MapFields == 'string') {
 			MGInstance.MapFields = JSON.parse(MGInstance.MapFields);
 		}
-		MGInstance.MapFields.map(function(currentValue, idx) {
+		MGInstance.MapFields.map(function (currentValue, idx) {
 			const checkbox = document.getElementById(`checkbox-${currentValue.name}`);
 			if (checkbox.checked) {
 				fields.push(currentValue.name);
@@ -56,4 +55,4 @@ const MGInstance = {
 			window.close();
 		});
 	}
-}
+};

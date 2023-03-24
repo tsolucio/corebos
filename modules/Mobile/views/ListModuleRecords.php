@@ -43,7 +43,7 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 			}
 		}
 		$current_user = $this->getActiveUser();
-		$current_language = $this->sessionGet('language') ;
+		$current_language = $this->sessionGet('language');
 		$current_module_strings = return_module_language($current_language, 'Mobile');
 
 		$response = false;

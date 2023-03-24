@@ -219,5 +219,19 @@ $mod_strings = array(
 	'Frequency' => 'Invoice Frequency',
 	'ship_countrycode' => 'A Landcode',
 	'bill_countrycode' => 'P landcode',
+	//ELECTRONIC INVOICE BLOCKS
+	'LBL_EINVOICE' => 'Elektronische factuur',
+	'islegalentity' => 'Is rechtspersoon',
+	'siccode' => 'SIC Code',
+	'secondlastname' => 'Tweede achternaam',
+	'website' => 'Website',
+	'cnae' => 'Classificatie van economische activiteiten',
+	'inecode' => 'Statistische gemeentecode',
+	'brbook' => 'Boek',
+	'brmregister' => 'Register',
+	'brsheet' => 'Laken',
+	'brfolio' => 'Folio',
+	'brsection' => 'Sectie',
+	'brvolume' => 'Volume',
 );
 ?>

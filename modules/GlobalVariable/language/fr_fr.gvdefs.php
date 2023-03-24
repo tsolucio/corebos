@@ -442,6 +442,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'OFF | {Business Map ID} | UPDATE',
 	'definition' => 'What to show in page header sub title. Nothing (OFF), the result of a Business Map or the default Updated text.',
 ),
+'Application_RelatedPane_Scoped' => array(
+	'valuetype' => 'boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Use scoped (by default) or default tabs.',
+),
 'Application_EditView_Submit_Form_WithEnter' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
@@ -623,7 +629,7 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Durée maximale de vie q\'une session doit être maintenue active après la dernière transaction. La valeur par défaut est (1800) secondes.',
 ),
 'Application_UI_Name' => array(
-	'valuetype' => 'String',
+	'valuetype' => 'Chaîne',
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Name of the application that will be shown as the title of the Application_UI_NameHTML variable.',
@@ -1881,6 +1887,18 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'documents | fields | both',
 	'definition' => 'select which images to show on the image slider: documents will show images from related documents, fields will show image fields in the record and both will show, well... both types :-)',
+),
+'Email_Template_AutomaticMerge' => array(
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1, the email template is merged automatically. If set to 0, the email template is not merged and you can preview the email. The default value is 1.',
+),
+'Wizard_ListView_Pagination' => array(
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Number of rows to show per page in the wizard list view grid.',
 ),
 );
 

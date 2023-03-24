@@ -150,7 +150,7 @@ class Vtiger_DependencyPicklist {
 			$mapping['sourcevalue'] = $sourceValue;
 			$mapping['targetvalues'] = $unserializedTargetValues;
 
-			$valueMapping[$i] = $mapping ;
+			$valueMapping[$i] = $mapping;
 		}
 		$dependencyMap['valuemapping'] = $valueMapping;
 

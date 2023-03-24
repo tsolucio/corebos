@@ -31,7 +31,7 @@ class MailManager_Model_DraftEmail {
 		if ($type == 'all') {
 			$where = $this->constructAllClause($q);
 		} else {
-			$where = $type ." LIKE '%". $q ."%'" ;
+			$where = $type ." LIKE '%". $q ."%'";
 		}
 		$where = ' AND '.$where;
 		return $this->getDrafts($page, $limit, $folder, $where);
@@ -89,7 +89,7 @@ class MailManager_Model_DraftEmail {
 		}
 		$folder->setMails($draftMails);
 
-		return $draftMails ;
+		return $draftMails;
 	}
 
 	public function getTotalDraftCount() {

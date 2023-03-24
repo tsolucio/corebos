@@ -114,8 +114,9 @@ FieldDependencies.prototype.init = function (sourceform, datasource) {
  * On Loading of Page handler of detail view.
  */
 FieldDependencies.prototype.actOnDetailViewLoad = function () {
-	var sourcename = Object.keys(this.DS)[0];
-	this.controlActions(sourcename);
+	Object.keys(this.DS).forEach((sourcename) => {
+		this.controlActions(sourcename);
+	});
 };
 
 /**
@@ -512,13 +513,16 @@ FieldDependencies.prototype.fieldHideDetailView = function (hideFields) {
 	var field='';
 	for (var i=0; i<hideFields.length; i++) {
 		field=hideFields[i]['field'];
-		document.getElementById('mouseArea_'+field).style.visibility='hidden';
-		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.style.visibility='hidden';
-		let parentRow = document.getElementById('mouseArea_'+field).parentElement;
-		let allGone = [...parentRow.getElementsByTagName('TD')].filter(cell => cell.style.visibility === 'hidden');
-		if (allGone.length == 4) {
-			parentRow.style.visibility = 'collapse';
-			parentRow.style.height = '0px';
+		let hfld = document.getElementById('mouseArea_'+field);
+		if (hfld) {
+			hfld.style.visibility='hidden';
+			hfld.previousSibling.previousSibling.style.visibility='hidden';
+			let parentRow = hfld.parentElement;
+			let allGone = [...parentRow.getElementsByTagName('TD')].filter(cell => cell.style.visibility === 'hidden');
+			if (allGone.length == 4) {
+				parentRow.style.visibility = 'collapse';
+				parentRow.style.height = '0px';
+			}
 		}
 	}
 };
@@ -549,7 +553,7 @@ FieldDependencies.prototype.fieldShowDetailView = function (hideFields) {
 		field=hideFields[i]['field'];
 		document.getElementById('mouseArea_'+field).style.visibility='visible';
 		document.getElementById('mouseArea_'+field).previousSibling.previousSibling.style.visibility='visible';
-		let parentRow = document.getElementById('mouseArea_'+field).parentElement
+		let parentRow = document.getElementById('mouseArea_'+field).parentElement;
 		parentRow.style.visibility = 'visible';
 		parentRow.style.height = '25px';
 	}

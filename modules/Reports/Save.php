@@ -376,6 +376,11 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 		saveReportErrorMessage($errormessage);
 		die;
 	}
+	// making sure we set the next_trigger_time as the scheduled time
+	$time = json_decode($scheduledInterval, true);
+	if (is_array($time) && isset($time['time']) && is_numeric($time['time'])) {
+		$adb->pquery('UPDATE vtiger_scheduled_reports SET next_trigger_time=? WHERE reportid=?', array(date('Y-m-d ').$time['time'].':00', $reportid));
+	}
 	echo '<script>window.opener.location.href = window.opener.location.href;self.close();</script>';
 }
 

@@ -460,6 +460,9 @@ function getFieldFromBlockArray($blocks, $fldlabel) {
 	if (is_array($blocks)) {
 		$found = false;
 		foreach ($blocks as $blklabel => $fieldarray) {
+			if (isset($fieldarray['__fields'])) {
+				$fieldarray = $fieldarray['__fields'];
+			}
 			foreach ($fieldarray as $key => $value) {
 				$found = array_key_exists($fldlabel, $value);
 				if ($found && is_array($value[$fldlabel]) && isset($value[$fldlabel]['value']) && isset($value[$fldlabel]['fldname'])) { // avoid false positives
@@ -476,9 +479,9 @@ function getFieldFromBlockArray($blocks, $fldlabel) {
 }
 
 /**
- * Function to get the CustomViewName
- * @param integer $cvid - customviewid
- * @return string cvname format
+ * Function to get the Custom View Name
+ * @param integer custom view id
+ * @return string custom view name format
  */
 function getCVname($cvid) {
 	global $log, $adb;
@@ -1332,16 +1335,18 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	}
 	$tabid = getTabid($module);
 	$getBlockInfo = array();
-	$query = "select blockid,blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible=0 order by sequence";
+	$query = "select blockid,blocklabel,display_status,isrelatedlist,sequence from vtiger_blocks where tabid=? and $disp_view=0 and visible=0 order by sequence";
 	$result = $adb->pquery($query, array($tabid));
 	$noofrows = $adb->num_rows($result);
 	$blockid_list = array();
 	$block_label = array();
+	$block_sequence = array();
 	$aBlockStatus = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		$blockid = $adb->query_result($result, $i, 'blockid');
 		$blockid_list[] = $blockid;
 		$block_label[$blockid] = decode_html_force($adb->query_result($result, $i, 'blocklabel'));
+		$block_sequence[] = $adb->query_result($result, $i, 'sequence');
 		$isrelatedlist = $adb->query_result($result, $i, 'isrelatedlist');
 		$sLabelVal = $block_label[$blockid];
 		if (is_null($isrelatedlist) || $isrelatedlist == 0) {
@@ -1407,7 +1412,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		// Added to unset the previous record's related listview session values
 		coreBOS_Session::delete('rlvs');
 
-		$getBlockInfo = getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label);
+		$getBlockInfo = getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label, $block_sequence);
 	} else {
 		if ($info_type != '') {
 			if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == 'Emails') {
@@ -2372,6 +2377,27 @@ function decideFilePath() {
 }
 
 /**
+ * Function to retrieve the physical path of the file referenced by given attachment ID
+ * @param int attachment ID
+ * @param boolean return relative (true) or absolute path (false). default is absolute
+ * @return string path to attachment
+ */
+function getAttachmentPathFromID($attid, $relative = false) {
+	global $adb, $root_directory;
+	$path = '';
+	if (!empty($attid)) {
+		$res_att = $adb->pquery('SELECT attachmentsid,name,path FROM vtiger_attachments WHERE attachmentsid=?', array($attid));
+		if ($res_att && $adb->num_rows($res_att)>0) {
+			$name = $res_att->fields['name'];
+			$ruta = $res_att->fields['path'];
+			$prefix = $res_att->fields['attachmentsid'].'_';
+			$path = ($relative ? '' : $root_directory).$ruta.$prefix.$name;
+		}
+	}
+	return $path;
+}
+
+/**
  * This function is used to check whether the attached file is a image file or not
  * @param array files array which contains all the uploaded file details
  * @return string if the image can be uploaded then 'true' will be returned otherwise 'false'
@@ -2523,7 +2549,7 @@ function validateImageContents($filename) {
  * @param integer Template Id for an Email Template
  * @return array Returns Subject, Body of Template of the the particular email template.
  */
-function getTemplateDetails($templateid, $crmid = null) {
+function getTemplateDetails($templateid, $crmid = null, $mergetemplate = 1) {
 	global $adb, $log, $current_user;
 	$log->debug("> into getTemplateDetails $templateid");
 	$returndata = array();
@@ -2550,20 +2576,23 @@ function getTemplateDetails($templateid, $crmid = null) {
 		if (strpos($crmid, 'x')>0) {
 			list($wsid, $crmid) = explode('x', $crmid);
 		}
+		$context = array(
+			'Email_AutomaticMerge' => $mergetemplate
+		);
 		require_once 'include/Webservices/DescribeObject.php';
 		$type = getSalesEntityType($crmid);
 		$obj = vtws_describe($type, $current_user);
 		$focus = CRMEntity::getInstance($type);
 		$focus->retrieve_entity_info($crmid, $type);
-		$returndata[1] = getMergedDescription($returndata[1], $crmid, $type);
-		$returndata[2] = getMergedDescription($returndata[2], $crmid, $type);
+		$returndata[1] = getMergedDescription($returndata[1], $crmid, $type, $context);
+		$returndata[2] = getMergedDescription($returndata[2], $crmid, $type, $context);
 		foreach ($obj['fields'] as $field) {
 			if (isset($field['uitype']) && $field['uitype'] == '10') {
 				$relid = $focus->column_fields[$field['name']];
 				if (!empty($relid)) {
 					$reltype = getSalesEntityType($relid);
-					$returndata[1] = getMergedDescription($returndata[1], $relid, $reltype);
-					$returndata[2] = getMergedDescription($returndata[2], $relid, $reltype);
+					$returndata[1] = getMergedDescription($returndata[1], $relid, $reltype, $context);
+					$returndata[2] = getMergedDescription($returndata[2], $relid, $reltype, $context);
 				}
 			}
 		}
@@ -2595,7 +2624,9 @@ function getMergedDescription($description, $id, $parent_type, $context = []) {
 	}
 	if ($parent_type != 'Users') {
 		$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
-		$description = $emailTemplate->getProcessedDescription();
+		if (!isset($context['Email_AutomaticMerge']) || $context['Email_AutomaticMerge'] == 1) {
+			$description = $emailTemplate->getProcessedDescription();
+		}
 	}
 	$pmods = array('users', 'custom');
 	$token_data_pair = explode('$', $description);
@@ -3956,5 +3987,80 @@ function getModuleFieldsInfo($module, $columns = ['*']) {
 		return $rs->GetRows();
 	}
 	return false;
+}
+
+function CreateMasterRecord($data, $module, $relatedfield, $related_id) {
+	global $current_user;
+	$masterfocus = CRMEntity::getInstance($module);
+	$masterfocus->mode = '';
+	if ($data['id'] != 0) {
+		$masterfocus->retrieve_entity_info($data['id'], $module);
+		$masterfocus->id = $data['id'];
+		$masterfocus->mode = 'edit';
+	}
+	foreach ($data as $key => $value) {
+		$masterfocus->column_fields[$key] = $value;
+	}
+	$masterfocus->column_fields[$relatedfield] = $related_id;
+	$handler = vtws_getModuleHandlerFromName($module, $current_user);
+	$meta = $handler->getMeta();
+	$masterfocus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($masterfocus->column_fields, $meta);
+	$masterfocus->saveentity($module);
+}
+
+function getMasterGridData($relatedModule, $currentModule, $relatedfield, $record, $MapMG, $__mastergridid = 0) {
+	global $current_user, $adb;
+	$rows = array();
+	$qfields = array('id');
+	$matchFields = array();
+	foreach ($MapMG['fields'] as $r) {
+		$qfields[] = $r['name'];
+		$matchFields[$r['columnname']] = array(
+			$r['name'],
+			$r['uitype'],
+			isset($r['searchin']) ? $r['searchin'] : ''
+		);
+	}
+	$qfields[] = '__mastergridid';
+	$qg = new QueryGenerator($relatedModule, $current_user);
+	$qg->setFields(array('*'));
+	$qg->addReferenceModuleFieldCondition($currentModule, $relatedfield, 'id', $record, 'e', 'and');
+	if ($__mastergridid != 0) {
+		$qg->addCondition('__mastergridid', $__mastergridid, 'e', QueryGenerator::$AND);
+	}
+	$sql = $qg->getQuery();
+	$results = $adb->pquery($sql, array());
+	$noOfRows = $adb->num_rows($results);
+	if ($noOfRows > 0) {
+		$entityField = getEntityField($relatedModule);
+		while ($row = $adb->fetch_array($results)) {
+			if (!isset($row['__mastergridid'])) {
+				continue;
+			}
+			$currentRow = array();
+			if (isset($row['smownerid'])) {
+				$currentRow['assigned_user_id'] = $row['smownerid'];
+				$currentRow['assigned_user_id_displayValue'] = getUserFullName($row['smownerid']);
+			}
+			foreach ($row as $key => $value) {
+				if (isset($matchFields[$key])) {
+					$currentRow[$matchFields[$key][0]] = $value;
+				}
+				if (!empty($matchFields[$key][2])) {
+					$displayValue = getEntityName($matchFields[$key][2], $value);
+					if (isset($displayValue[$value])) {
+						$currentRow[$matchFields[$key][0].'_displayValue'] = $displayValue[$value];
+					} else {
+						$currentRow[$matchFields[$key][0].'_displayValue'] = '';
+						$currentRow[$matchFields[$key][0]] = 0;
+					}
+				}
+			}
+			$currentRow['id'] = $row[$entityField['entityid']];
+			$currentRow['__mastergridid'] = intval($row['__mastergridid']);
+			$rows[] = $currentRow;
+		}
+	}
+	return $rows;
 }
 ?>

@@ -123,7 +123,7 @@ class CBWatermark extends VTTask {
 				$mainImageFileType = $data['filetype'];
 				$mainImageFileSize = $data['filesize'];
 				$mainImageDownloadUrl = $data['_downloadurl'];
-				$mainImagePath = $root_directory . substr(parse_url($mainImageDownloadUrl)['path'], strlen(explode('/', parse_url($mainImageDownloadUrl)['path'])[1])+1) ;
+				$mainImagePath = $root_directory . substr(parse_url($mainImageDownloadUrl)['path'], strlen(explode('/', parse_url($mainImageDownloadUrl)['path'])[1])+1);
 			} else {
 				$imageKey = $imagefieldName . 'imageinfo';
 				$mainImageFileName = $data[$imageKey]['name'];

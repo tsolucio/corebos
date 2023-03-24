@@ -2157,25 +2157,35 @@ function showBlock(divId) {
 }
 
 function showHideStatus(sId, anchorImgId, sImagePath) {
+	let svg_block = document.getElementById(`svg_${sId}_block`);
+	let svg_none = document.getElementById(`svg_${sId}_none`);
 	oObj = document.getElementById(sId);
 	var params = '&dvblock='+sId+'&dvmodule='+gVTModule+'&dvstatus=';
 	if (oObj.style.display == 'block') {
 		oObj.style.display = 'none';
 		ExecuteFunctions('setDetailViewBlockStatus', params+'0');
-		if (anchorImgId !=null) {
+		if (anchorImgId !=null && document.getElementById(anchorImgId)!=null) {
 			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
 			document.getElementById(anchorImgId).alt = alert_arr.LBL_Show;
 			document.getElementById(anchorImgId).title = alert_arr.LBL_Show;
 			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
 		}
+		if (svg_block !=null && svg_none!=null) {
+			svg_block.style.display = 'none';
+			svg_none.style.display = 'block';
+		}
 	} else {
 		oObj.style.display = 'block';
 		ExecuteFunctions('setDetailViewBlockStatus', params+'1');
-		if (anchorImgId !=null) {
+		if (anchorImgId !=null && document.getElementById(anchorImgId)!=null) {
 			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
 			document.getElementById(anchorImgId).alt = alert_arr.LBL_Hide;
 			document.getElementById(anchorImgId).title = alert_arr.LBL_Hide;
 			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate';
+		}
+		if (svg_block !=null && svg_none!=null) {
+			svg_block.style.display = 'block';
+			svg_none.style.display = 'none';
 		}
 	}
 }
@@ -4489,16 +4499,53 @@ function submitFormForActionWithConfirmation(formName, action, confirmationMsg) 
 	return false;
 }
 
-function submitFormForAction(formName, action) {
+async function submitFormForAction(formName, action) {
 	var form = document.forms[formName];
 	if (!form) {
 		return false;
 	}
 	form.action.value = action;
+	let isValid = true;
 	if (corebosjshook_submitFormForAction(formName, action)) {
-		form.submit();
+		//check for MasterGridWidget if is available
+		if (typeof MasterGridInsances !== 'undefined' && gVTviewType != 'DetailView') {
+			let data = await submitMasterGrid();
+			for (let i in data[2]) {
+				if (!data[2][i]) {
+					VtigerJS_DialogBox.unblock();
+					ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_REQUIRED_FIELDS);
+					isValid = false;
+					break;
+				}
+			}
+			form.MasterGridValues.value = JSON.stringify(Object.entries(MasterGridData));
+			form.MasterGridModule.value = JSON.stringify(Object.entries(data[0]));
+			form.MasterGridRelatedField.value = JSON.stringify(Object.entries(data[1]));
+		}
+		if (isValid) {
+			form.submit();
+		}
 	}
 	return true;
+}
+
+async function submitMasterGrid(forInstance = 0) {
+	let modules = [];
+	let relatedfields = [];
+	let isValid = [];
+	for (let i in MasterGridInsances) {
+		if (forInstance != 0 && MasterGridInsances[i] != forInstance) {
+			continue;
+		}
+		isValid[MasterGridInsances[i]] = await mg[MasterGridInsances[i]].TableData(MasterGridInsances[i]);
+		modules[MasterGridInsances[i]] = {
+			module: mg[MasterGridInsances[i]].module,
+		};
+		relatedfields[MasterGridInsances[i]] = {
+			relatedfield: mg[MasterGridInsances[i]].relatedfield
+		};
+	}
+	return [modules, relatedfields, isValid];
 }
 
 /** Javascript dialog box utility functions **/
@@ -7066,7 +7113,7 @@ function findUp(element, searchterm) {
 
 function initSelect2() {
 	if (Application_AssignUser_Search == 1) {
-		const dataType = document.querySelectorAll(`[data-uitype="53"]`);
+		const dataType = document.querySelectorAll('[data-uitype="53"]');
 		for (let i = 0; i < dataType.length; i++) {
 			const el = document.getElementById(dataType[i].id);
 			if (el !== undefined && el !== null) {
@@ -7636,7 +7683,7 @@ function openWizard(mapid) {
 	}
 	let url = 'index.php?module=Utilities&action=UtilitiesAjax&file=RelatedListWidgetActions&rlaction=Wizard&mapid='+mapid;
 	ldsModal.show('Wizard', '<div id="cbds-loader" style="height: 200px"></div>', 'large');
-	loadJS('include/js/wizard.js');
+	loadJS('include/js/wizard.js?ver=1.0.1');
 	setTimeout(function () {
 		Request(url, 'post', {
 			grid: mapid,
@@ -7661,14 +7708,13 @@ async function handleDrawClick(checkmodule, checkaction, recordid, doc2edit = ''
 
 	if (!response) {
 		try {
-		  ldsModal.close(true);
+			ldsModal.close(true);
 		} catch (error) {
-			
 		}
 		ldsModal.show(alert_arr.JSLBL_DRAW_MODAL_TITLE, alert_arr.JSLBL_DRAW_MODAL_MESSAGE);
 		return;
-	  }
-  
+	}
+
 	const urlParams = new URLSearchParams();
 	urlParams.set('module', 'Utilities');
 	urlParams.set('action', 'UtilitiesAjax');
@@ -7677,13 +7723,11 @@ async function handleDrawClick(checkmodule, checkaction, recordid, doc2edit = ''
 	urlParams.set('forrecord', recordid);
 	urlParams.set('inwindow', '1');
 	if (doc2edit) {
-	  urlParams.set('doc2edit', doc2edit);
+		urlParams.set('doc2edit', doc2edit);
 	}
-  
 	const url = `index.php?${urlParams.toString()}`;
 	window.open(url, 'photo2doc', 'width=1416,height=830');
-  
-  }
+}
 
 function cbdzdropHandler(event) {
 	console.log('File(s) dropped');

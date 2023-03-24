@@ -163,7 +163,7 @@ class ConvertInventoryModule extends VTTask {
 				$related['qty'] = empty($data['qty'.$i]) ? $associated_prod[$i]['qty'.$i] : $data['qty'.$i];
 				$related['listprice'] = empty($data['listPrice'.$i]) ? $associated_prod[$i]['listPrice'.$i] : $data['listPrice'.$i];
 				$list_price_sum += ($related['qty'] * $related['listprice']);
-				$related['discount'] = 0 ;
+				$related['discount'] = 0;
 				$related['discount_type'] = 0;
 				$related['discount_percentage'] = 0;
 				$related['discount_amount'] = 0;

@@ -26,26 +26,26 @@ if (isset($_REQUEST['record'])) {
 		left join vtiger_activity on vtiger_emaildetails.emailid = vtiger_activity.activityid
 		where emailid = ?';
 	$result = $adb->pquery($query, array($focus->id));
-	$smarty->assign('FROM_MAIL', $adb->query_result($result, 0, 'from_email'));
-	$to_email = json_decode($adb->query_result($result, 0, 'to_email'), true);
-	$cc_email = json_decode($adb->query_result($result, 0, 'cc_email'), true);
+	$smarty->assign('FROM_MAIL', $result->fields['from_email']);
+	$to_email = json_decode($result->fields['to_email'], true);
+	$cc_email = json_decode($result->fields['cc_email'], true);
 	$smarty->assign('TO_MAIL', vt_suppressHTMLTags(@implode(',', $to_email)));
-	$smarty->assign('REPLYTO', $adb->query_result($result, 0, 'replyto'));
+	$smarty->assign('REPLYTO', $result->fields['replyto']);
 	$smarty->assign('CC_MAIL', vt_suppressHTMLTags(@implode(',', $cc_email)));
-	$bcc_email = json_decode($adb->query_result($result, 0, 'bcc_email'), true);
+	$bcc_email = json_decode($result->fields['bcc_email'], true);
 	$smarty->assign('BCC_MAIL', vt_suppressHTMLTags(@implode(',', $bcc_email)));
-	$smarty->assign('EMAIL_FLAG', $adb->query_result($result, 0, 'email_flag'));
-	$smarty->assign('EMDelivered', $adb->query_result($result, 0, 'delivered'));
-	$smarty->assign('EMDropped', $adb->query_result($result, 0, 'dropped'));
-	$smarty->assign('EMBounce', $adb->query_result($result, 0, 'bounce'));
-	$smarty->assign('EMOpen', $adb->query_result($result, 0, 'open'));
-	$smarty->assign('EMClicked', $adb->query_result($result, 0, 'clicked'));
-	$smarty->assign('EMUnsubscribe', $adb->query_result($result, 0, 'unsubscribe'));
+	$smarty->assign('EMAIL_FLAG', $result->fields['email_flag']);
+	$smarty->assign('EMDelivered', $result->fields['delivered']);
+	$smarty->assign('EMDropped', $result->fields['dropped']);
+	$smarty->assign('EMBounce', $result->fields['bounce']);
+	$smarty->assign('EMOpen', $result->fields['open']);
+	$smarty->assign('EMClicked', $result->fields['clicked']);
+	$smarty->assign('EMUnsubscribe', $result->fields['unsubscribe']);
 
-	$dt = new DateTimeField($adb->query_result($result, 0, 'date_start'));
+	$dt = new DateTimeField($result->fields['date_start']);
 	$fmtdate = $dt->getDisplayDate($current_user);
 	$smarty->assign('DATE_START', $fmtdate);
-	$smarty->assign('TIME_START', $adb->query_result($result, 0, 'time_start'));
+	$smarty->assign('TIME_START', $result->fields['time_start']);
 	if (!empty($focus->column_fields['name'])) {
 		$focus->name = $focus->column_fields['name'];
 	} else {
@@ -137,9 +137,5 @@ $smarty->assign('CUSTOM_LINKS', '');
 include 'include/integrations/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('MOD_SEQ_ID', '');
-if ($_REQUEST['action']=='EmailsAjax') {
-	$smarty->display('EmailDetailView.tpl');
-} else {
-	$smarty->display('EmailDetailViewInside.tpl');
-}
+$smarty->display('EmailDetailViewInside.tpl');
 ?>

@@ -15,7 +15,7 @@ class MailManager_MainUIController extends MailManager_Controller {
 
 	/**
 	* Process the request for displaying UI
-	* @global String $currentModule
+	* @global string $currentModule
 	* @param MailManager_Request $request
 	* @return MailManager_Response
 	*/

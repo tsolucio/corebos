@@ -178,5 +178,7 @@ $mod_strings = array (
 	'Junk E-Mail'	=> 'Spam',
 	'Sent Items'	=> 'Enviadas',
 	'Drafts'		=> 'Rascunho',
+	'LBL_VERIFY_SERVER' => 'Verifique o servidor de saída',
+	'LBL_DRAFT_NOT_SAVED' => 'O rascunho não foi salvo',
 );
 ?>

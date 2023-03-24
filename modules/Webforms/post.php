@@ -154,11 +154,11 @@ function webforms_init() {
 
 		if ($userData === null) {
 			webforms_returnError(array('code'=>'WEBFORMS_INVALID_DATA','message'=>'data provided is invalid'), $module);
-			return ;
+			return;
 		}
 		if (count($userData)<1) {
 			webforms_returnError(array('code'=>'WEBFORMS_INVALID_DATA', 'message'=>'data provided is invalid'), $module);
-			return ;
+			return;
 		}
 		$createResult = vtws_create($module, $userData, $user);
 		webforms_returnSuccess($createResult, $module);

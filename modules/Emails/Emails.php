@@ -27,6 +27,9 @@ class Emails extends CRMEntity {
 
 	// added to check email save from plugin or not
 	public $plugin_save = false;
+	public $filename = '';
+	public $parent_id = 0;
+	public $parent_type = '';
 	public $rel_users_table = 'vtiger_salesmanactivityrel';
 	public $rel_contacts_table = 'vtiger_cntactivityrel';
 	public $rel_serel_table = 'vtiger_seactivityrel';
@@ -386,12 +389,12 @@ class Emails extends CRMEntity {
 			}
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module) .
-				"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup".
+				"' class='slds-button slds-button_success' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup".
 				"&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test',".
 				"cbPopupWindowSettings);\" value='" . getTranslatedString('LBL_SELECT') .' '. getTranslatedString($related_module) . "'>&nbsp;";
 			}
 			if (in_array('BULKMAIL', $actions) && isPermitted($related_module, 1, '') == 'yes') {
-				$button .= "<input title='" . getTranslatedString('LBL_BULK_MAILS') . "' class='crmbutton small create'" .
+				$button .= "<input title='" . getTranslatedString('LBL_BULK_MAILS') . "' class='slds-button slds-button_neutral'" .
 					" onclick='this.form.action.value=\"sendmail\";this.form.module.value=\"$this_module\"' type='submit' name='button'" .
 					" value='" . getTranslatedString('LBL_BULK_MAILS') . "'>";
 			}

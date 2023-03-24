@@ -442,6 +442,12 @@ $GlobalVariableDefinitons = array(
 	'values' => 'OFF | {Business Map ID} | UPDATE',
 	'definition' => 'Qué mostrar en el subtítulo del encabezado de página. Nada (OFF), el resultado de un mapa de negocio o el texto "Actualizado" predeterminado.',
 ),
+'Application_RelatedPane_Scoped' => array(
+	'valuetype' => 'booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Utilizar pestañas scoped (por defecto) o default.',
+),
 'Application_EditView_Submit_Form_WithEnter' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
@@ -1893,6 +1899,18 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Activa la edición en línea según el tipo de vista. El valor predeterminado es 1',
+),
+'Email_Template_AutomaticMerge' => array(
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Si se establece en 1, la plantilla de correo electrónico se fusiona automáticamente. Si se establece en 0, la plantilla de correo electrónico no se fusiona y puede obtener una vista previa del correo electrónico. El valor predeterminado es 1.',
+),
+'Wizard_ListView_Pagination' => array(
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número de filas para mostrar por página en la vista de lista del asistente.',
 ),
 );
 

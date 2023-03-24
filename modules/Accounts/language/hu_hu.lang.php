@@ -198,5 +198,19 @@ $mod_strings = array(
 	'Frequency' => 'Invoice Frequency',
 	'ship_countrycode' => 'Shipping Country Code',
 	'bill_countrycode' => 'Billing Country Code',
+	//ELECTRONIC INVOICE BLOCKS
+	'LBL_EINVOICE' => 'Elektronikus számla',
+	'islegalentity' => 'Jogi személy',
+	'siccode' => 'SIC Code',
+	'secondlastname' => 'Második vezetéknév',
+	'website' => 'Weboldal',
+	'cnae' => 'Gazdasági tevékenység osztályozása',
+	'inecode' => 'Statisztikai Önkormányzati kódex',
+	'brbook' => 'Könyv',
+	'brmregister' => 'Regisztráció',
+	'brsheet' => 'Lap',
+	'brfolio' => 'Folio',
+	'brsection' => 'Szakasz',
+	'brvolume' => 'Hangerő',
 );
 ?>

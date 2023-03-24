@@ -78,7 +78,7 @@
         <table>
             <name>its4you_calendar4you_settings</name>
             <sql>
-            <![CDATA[ALTER TABLE `its4you_calendar4you_settings` ADD `user_view` VARCHAR( 100 ) NULL ;]]>
+            <![CDATA[ALTER TABLE `its4you_calendar4you_settings` ADD `user_view` VARCHAR( 100 ) NULL;]]>
             </sql>
         </table>
     </tables>

@@ -540,7 +540,7 @@ function getdayEventLayer(&$cal, $slice, $rows) {
 	$arrow_img_name = '';
 	$rows = $rows + 1;
 	$last_colwidth = 100 / $rows;
-	$width = 100 / $rows ;
+	$width = 100 / $rows;
 	$act = $cal['calendar']->day_slice[$slice]->activities;
 	if (!empty($act)) {
 		for ($i=0; $i<count($act); $i++) {

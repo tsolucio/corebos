@@ -205,6 +205,7 @@ $smarty->assign('DETAILVIEW_AJAX_EDIT', $Application_Inline_Edit_Boolean);
 $smarty->assign('Application_Toolbar_Show', GlobalVariable::getVariable('Application_Toolbar_Show', 1));
 $smarty->assign('Application_Textarea_Style', GlobalVariable::getVariable('Application_Textarea_Style', 'height:140px;', $currentModule, $current_user->id));
 $smarty->assign('App_Header_Buttons_Position', GlobalVariable::getVariable('Application_Header_Buttons_Position', ''));
+$smarty->assign('TABSCOPED', empty(GlobalVariable::getVariable('Application_RelatedPane_Scoped', '1')) ? 'default' : 'scoped');
 
 // sending PopupFilter map results to the frontEnd
 $bmapname = $currentModule.'_PopupFilter';

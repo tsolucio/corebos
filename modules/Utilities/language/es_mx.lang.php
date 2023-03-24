@@ -187,5 +187,21 @@ $mod_strings = array(
 	'facebook_destination_module' => 'Módulo Destino',
 	'Unable2Connect' => 'No se ha podido conectar',
 	'Able2Connect' => 'Se ha podido conectar',
+	//Electronic Invoice Settings
+	'Electronic Invoice' => 'Configuración de factura electrónica',
+	'Electronic Invoice_Desc' => 'Factura electrónica española',
+	'EI_username' => 'Nombre de usuario',
+	'EI_password' => 'Password',
+	'EI_baseurl' => 'Base URL',
+	'Passphrase' => 'Frase de contraseña',
+	'PublicKey' => 'Llave pública',
+	'PrivateKey' => 'Llave privada',
+	'PFKKey' => 'Llave PFK',
+	'Default Administrative Center' => 'Centro administrativo predeterminado',
+	'Account Map' => 'Mapa de cuenta',
+	'Contact Map' => 'Mapa de contacto',
+	'Invoice Map' => 'Mapa de facturas',
+	'DefaultSignType' =>'Tipo de firma predeterminada',
+	'Time Stamp' => 'Sello de tiempo',
 );
 ?>

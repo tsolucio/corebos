@@ -15,7 +15,7 @@ class crmtogo_UI_Delete extends crmtogo_WS_Controller {
 
 	public function process(crmtogo_API_Request $request) {
 		$response = new crmtogo_API_Response();
-		$current_language = $this->sessionGet('language') ;
+		$current_language = $this->sessionGet('language');
 		$current_module_strings = return_module_language($current_language, 'Mobile');
 		$module = $request->get('module');
 		$record = $request->get('record');

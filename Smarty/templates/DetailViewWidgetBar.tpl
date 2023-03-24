@@ -1,5 +1,5 @@
 {if !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
-	<div>
+	<div class="slds-grid slds-gutters" style="background: white; width: 99.5%;margin-left: 0.0%;">
 	{foreach key=CUSTOMLINK_NO item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
 		{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 		{assign var="customlink_label" value=$CUSTOMLINK->linklabel}

@@ -1151,7 +1151,7 @@ Array (
 			$this->out['select'] = $this->yystack[$this->yyidx + -7]->minor;
 		}
 		if ($this->yystack[$this->yyidx + -5]->minor) {
-			$this->out['from'] = $this->yystack[$this->yyidx + -5]->minor ;
+			$this->out['from'] = $this->yystack[$this->yyidx + -5]->minor;
 		}
 		if ($this->out['select']) {
 			$this->buildSelectStmt($this->out);

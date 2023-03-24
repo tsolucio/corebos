@@ -171,6 +171,8 @@ $mod_strings = array(
 	'BCC' => 'Rejtett másolat',
 	'FROM' => 'Feladó',
 	'BODY' => 'Levél szövege',
-	'JSLBL_SendWith_EmptyText' => 'Elküldjük anélkül, hogy szöveg lenne az e-mail törzsben?'
+	'JSLBL_SendWith_EmptyText' => 'Elküldjük anélkül, hogy szöveg lenne az e-mail törzsben?',
+	'LBL_VERIFY_SERVER' => 'Kérjük, ellenőrizze a kimenő szervert',
+	'LBL_DRAFT_NOT_SAVED' => 'A piszkozat mentése nem sikerült',
 );
 ?>

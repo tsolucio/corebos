@@ -10,7 +10,7 @@
 -->*}
 {if $RELATEDLISTDATA.navigation.0!='' || $RELATEDLISTDATA.navigation.1 != '' || isset($RELATEDLISTDATA.CUSTOM_BUTTON)}
 <table border=0 cellspacing=0 cellpadding=0 width=100% class="small rel_mod_data_paging"
-	style="border-bottom:1px solid #999999;padding:5px; background-color: #eeeeff;">
+	style="background-color: #f3f3f3;">
 	<tr>
 		<td align="left">
 			{$RELATEDLISTDATA.navigation.0}
@@ -22,17 +22,21 @@
 	</tr>
 </table>
 {/if}
-
-<table border=0 cellspacing=1 cellpadding=3 width=100% style="background-color:#eaeaea;" class="small rel_mod_data">
-	<tr style="height:25px" bgcolor=white class="rel_mod_data_header">
+<table class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols">
+	<thead>
+	<tr class="slds-line-height_reset">
 		{if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads' || $RELATED_MODULE eq 'Accounts')
 			&& $RELATEDLISTDATA.entries|@count > 0}
-		<td class="lvtCol">
+		<th class="slds-is-resizable slds-is-sortable slds-cell_action-mode">
 			<input name ="{$RELATED_MODULE}_selectall" id="{$MODULE}_{$RELATED_MODULE}_selectCurrentPageRec" onclick="rel_toggleSelect(this.checked,'{$MODULE}_{$RELATED_MODULE}_selected_id','{$RELATED_MODULE}');"  type="checkbox">
-		</td>
+		</th>
 		{/if}
 		{foreach key=index item=_HEADER_FIELD from=$RELATEDLISTDATA.header}
-		<td class="lvtCol">{$_HEADER_FIELD}</td>
+		<th class="slds-is-resizable slds-is-sortable slds-cell_action-mode">
+			<span class="slds-truncate">
+				{$_HEADER_FIELD}
+			</span>
+		</th>
 		{/foreach}
 	</tr>
 	{if $MODULE eq 'Campaigns'}
@@ -43,21 +47,28 @@
 		</td>
 	</tr>
 	{/if}
-	{foreach key=_RECORD_ID item=_RECORD from=$RELATEDLISTDATA.entries}
-		<tr bgcolor=white class="rel_mod_data_row" id="row_{$_RECORD_ID}">
+	</thead>
+		<tbody>
+		{foreach key=_RECORD_ID item=_RECORD from=$RELATEDLISTDATA.entries}
+		<tr id="row_{$_RECORD_ID}">
 			{if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads' || $RELATED_MODULE eq 'Accounts')}
-			<td><input name="{$MODULE}_{$RELATED_MODULE}_selected_id" id="{$_RECORD_ID}" value="{$_RECORD_ID}" onclick="rel_check_object(this,'{$RELATED_MODULE}');" type="checkbox" {if isset($RELATEDLISTDATA.checked)}{$RELATEDLISTDATA.checked.$_RECORD_ID}{/if}></td>
+			<td class="slds-cell_action-mode"><input name="{$MODULE}_{$RELATED_MODULE}_selected_id" id="{$_RECORD_ID}" value="{$_RECORD_ID}" onclick="rel_check_object(this,'{$RELATED_MODULE}');" type="checkbox" {if isset($RELATEDLISTDATA.checked)}{$RELATEDLISTDATA.checked.$_RECORD_ID}{/if}></td>
 			{/if}
 			{foreach key=index item=_RECORD_DATA from=$_RECORD}
 				{* vtlib customization: Trigger events on listview cell *}
-				<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$_RECORD_DATA}</td>
+				<td class="slds-cell_action-mode" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$_RECORD_DATA}</td>
 			{/foreach}
 		</tr>
-	{foreachelse}
-		<tr style="height: 25px;" bgcolor="white" class="rel_mod_data_emptyrow"><td><i>{$APP.LBL_NONE_INCLUDED}</i></td></tr>
-	{/foreach}
+		{foreachelse}
+		<tr>
+			<td class="slds-cell_action-mode">
+				<i>{$APP.LBL_NONE_INCLUDED}</i>
+			</td>
+		</tr>
+		{/foreach}
+	</tbody>
 </table>
 {if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads' || $RELATED_MODULE eq 'Accounts')
 	&& $RELATEDLISTDATA.entries|@count > 0 && $RESET_COOKIE eq 'true'}
-		<script type='text/javascript'>set_cookie('{$RELATED_MODULE}_all', '');</script>
+	<script type='text/javascript'>set_cookie('{$RELATED_MODULE}_all', '');</script>
 {/if}

@@ -91,4 +91,18 @@
 	<classname>addworkflowlogstable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add ondemand workflow logs table index</description>
+	<filename>build/changeSets/2023/addworkflowlogstableindex.php</filename>
+	<classname>addworkflowlogstableindex</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>ketlinapuci</author>
+	<description>Add picklist values in Adapter Credentials module </description>
+	<filename>build/changeSets/2023/addPicklistValuesAdapterCbCredentials.php</filename>
+	<classname>addPicklistValuesAdapterCbCredentials</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

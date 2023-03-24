@@ -618,7 +618,7 @@
 	</td>
 {elseif $keyid eq 69 || $keyid eq '69m'}
 	<!-- for Image Reflection -->
-	<td align="left" width=25% class="imageDetailViewFields">{$keyval}</td>
+	<td id="mouseArea_{$keyfldname}" align="left" width="25%" class="imageDetailViewFields">{$keyval}</td>
 {elseif $keyid eq 68 || $keyid eq 101}
 	<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25%
 		onmouseover="vtlib_listview.trigger('cell.onmouseover', this);"

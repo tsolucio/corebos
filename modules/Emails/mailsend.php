@@ -95,7 +95,10 @@ if (isset($_REQUEST['individual_emails']) && $_REQUEST['individual_emails'] == '
 $logo = '';
 $subject = '';
 $description = '';
-
+$Email_AutomaticMerge = GlobalVariable::getVariable('Email_Template_AutomaticMerge', 1);
+$context = array(
+	'Email_AutomaticMerge' => $Email_AutomaticMerge
+);
 for ($i=0; $i<(count($myids)-1); $i++) {
 	$realid=explode('@', $myids[$i]);
 	$nemail=count($realid);
@@ -105,7 +108,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 		$rs = $adb->pquery('select email1 from vtiger_users where id=?', array($mycrmid));
 		$emailadd = $adb->query_result($rs, 0, 'email1');
 		$pmodule = 'Users';
-		$description = getMergedDescription($_REQUEST['description'], $mycrmid, $pmodule);
+		$description = getMergedDescription($_REQUEST['description'], $mycrmid, $pmodule, $context);
 		$all_to_emailids[]= $emailadd;
 		if ($individual_emails) {
 			$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $_REQUEST['subject'], $description, $cc, '', 'all', $focus->id);
@@ -125,8 +128,8 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 		if (count($ids) > 0) {
 			foreach ($ids as $id) {
 				$module = getSalesEntityType($id);
-				$subject = getMergedDescription($subject, $id, $module);
-				$description = getMergedDescription($description, $id, $module);
+				$subject = getMergedDescription($subject, $id, $module, $context);
+				$description = getMergedDescription($description, $id, $module, $context);
 			}
 		}
 
@@ -138,16 +141,16 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 			$myfocus = CRMEntity::getInstance($pmodule);
 			$myfocus->retrieve_entity_info($mycrmid, $pmodule);
 
-			$subject=getMergedDescription($subject, $mycrmid, $pmodule);
-			$description = getMergedDescription($description, $mycrmid, $pmodule);
+			$subject=getMergedDescription($subject, $mycrmid, $pmodule, $context);
+			$description = getMergedDescription($description, $mycrmid, $pmodule, $context);
 
-			$subject=getMergedDescription($subject, $current_user->id, 'Users');
-			$description=getMergedDescription($description, $current_user->id, 'Users');
+			$subject=getMergedDescription($subject, $current_user->id, 'Users', $context);
+			$description=getMergedDescription($description, $current_user->id, 'Users', $context);
 
 			$accid = getRelatedAccountContact($mycrmid, 'Accounts');
 			if (!empty($accid)) {
-				$subject=getMergedDescription($subject, $accid, 'Accounts');
-				$description=getMergedDescription($description, $accid, 'Accounts');
+				$subject=getMergedDescription($subject, $accid, 'Accounts', $context);
+				$description=getMergedDescription($description, $accid, 'Accounts', $context);
 			}
 			$fldname=$adb->query_result($fresult, 0, 'fieldname');
 			$emailadd=br2nl($myfocus->column_fields[$fldname]);
@@ -218,8 +221,14 @@ if ($errorheader1 == 1 || $errorheader2 == 1) {
 //The following function call is used to parse and form a encoded error message and then pass to result page
 $mail_error_str = getMailErrorString($mail_status_str);
 $adb->println("Mail Sending Process has been finished.\n\n");
-if (isset($_REQUEST['popupaction']) && $_REQUEST['popupaction'] != '') {
-	echo '<script>window.opener.location.href=window.opener.location.href;window.self.close();</script>';
+if (!empty($_REQUEST['popupaction']) && !isset($_REQUEST['ajax'])) {
+	echo '<script>
+		if (window.opener !== null) {
+			window.opener.location.href=window.opener.location.href;window.self.close();
+		} else {
+			history.back();
+		}
+	</script>';
 	die(); // to avoid unnecessay output to closing screen
 }
 ?>

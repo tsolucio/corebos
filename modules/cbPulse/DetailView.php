@@ -30,7 +30,7 @@ if (!empty($workflowId)) {
 	$nxttTime = $workflow->getNextTriggerTime();
 	$tflabel = getTranslatedString('nexttrigger_time', $currentModule);
 	$idx = getFieldFromDetailViewBlockArray($blocks, $tflabel);
-	$blocks[$idx['block_label']][$idx['field_key']][$tflabel]['value'] = $nxttTime;
+	$blocks[$idx['block_label']]['__fields'][$idx['field_key']][$tflabel]['value'] = $nxttTime;
 	$smarty->assign('BLOCKS', $blocks);
 }
 $smarty->display('DetailView.tpl');

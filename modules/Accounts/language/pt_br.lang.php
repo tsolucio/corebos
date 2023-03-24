@@ -210,5 +210,19 @@ $mod_strings = array(
 'Add event' => 'Adciona evento',
 'ship_countrycode' => 'Shipping Country Code',
 'bill_countrycode' => 'Billing Country Code',
+//ELECTRONIC INVOICE BLOCKS
+'LBL_EINVOICE' => 'Nota Fiscal Eletrônica',
+'islegalentity' => 'E pessoa jurídica',
+'siccode' => 'SIC Code',
+'secondlastname' => 'Segundo sobrenome',
+'website' => 'Site da Internet',
+'cnae' => 'Classificação da Atividade Econômica',
+'inecode' => 'Código Estatístico do Município',
+'brbook' => 'Livro',
+'brmregister' => 'Registro',
+'brsheet' => 'Folha',
+'brfolio' => 'Folio',
+'brsection' => 'Seção',
+'brvolume' => 'Volume',
 );
 ?>

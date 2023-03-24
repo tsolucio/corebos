@@ -181,5 +181,21 @@ $mod_strings = array(
 	'facebook_destination_module' => 'Destination Module',
 	'Unable2Connect' => 'Unable to connect',
 	'Able2Connect' => 'Able to connect',
+	//Electronic Invoice Settings
+	'Electronic Invoice' => "Instellingen elektronische factuur",
+	'Electronic Invoice_Desc' => "Elektronische factuur",
+	'EI_username' => 'Gebruikersnaam',
+	'EI_password' => 'Password',
+	'EI_baseurl' => 'Base URL',
+	'Passphrase' => 'Wachtwoordzin',
+	'PublicKey' => 'Publieke sleutel',
+	'PrivateKey' => 'Prive sleutel',
+	'PFKKey' => 'PFK-sleutel',
+	'Default Administrative Center' => 'Standaard Beheercentrum',
+	'Account Map' => 'Account kaart',
+	'Contact Map' => 'Contact kaart',
+	'Invoice Map' => 'Factuur kaart',
+	'DefaultSignType' =>'Standaard tekentype',
+	'Time Stamp' => 'Tijdstempel',
 );
 ?>

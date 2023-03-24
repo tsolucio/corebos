@@ -269,6 +269,8 @@ var alert_arr = {
 	'LBL_FORWARD_EMAIL': 'Encaminhar',
 	'LBL_REPLY_TO_SENDER': 'Responder remetente',
 	'LBL_REPLY_TO_ALL': 'Responder todos',
+	'ERR_EMAIL_SEND': 'Error sending email',
+	'LBL_EMAIL_SEND': 'Email sent correctly',
 
 	'LBL_WIDGET_HIDDEN': 'Widget ocultado',
 	'LBL_RESTORE_FROM_PREFERENCES': ' Você poderá restaura-lo em minhas preferências',
@@ -474,6 +476,10 @@ var alert_arr = {
 	'LBL_REQUIRED_FIELDS': 'Por favor, preencha todos os campos obrigatórios',
 	'LBL_ERROR_CREATING': 'Erro ao criar. Por favor, tente novamente.',
 	'LBL_ERROR_DROPZONE': 'Erro ao carregar o link. Verifique o link e tente novamente.',
+	'LBL_PREVIEW_MAIL': 'Preview Email',
+	'LBL_SEND_MAIL': 'Send Mail',
+	'LBL_EXPAND_PANEL': 'Expand Panel',
+	'LBL_MIN_PANEL': 'Minimize Panel',
 	'LBL_DUPLICATE_PRODUCT': 'Por favor, duplique o produto',
 	'LBL_SELECT_MORE_ROWS': 'Selecione pelo menos uma linha',
 	'LBL_SELECT_ROW': 'Selecione uma linha',
@@ -490,4 +496,8 @@ var alert_arr = {
 	'MoveFile': 'Move file',
 	'JSLBL_BACK': 'Back',
 	'GENDOC_CONFIRM_ACTION': 'Are you sure you want to execute this action?',
+	'LBL_COPY_ROWS': 'Copiar Registros',
+	'LBL_REMOVE': 'Remove',
+	'LBL_SELECT': 'Select',
+	'LBL_CLEAR': 'Clear',
 };

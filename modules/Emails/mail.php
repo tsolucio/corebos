@@ -353,8 +353,8 @@ function setMailServerProperties($mail) {
 	$inBucketServeUrl = GlobalVariable::getVariable('Debug_Email_Send_To_Inbucket', '');
 	if (!empty($inBucketServeUrl)) {
 		$mail->Host = $inBucketServeUrl; // Url for InBucket Server
-		$mail->Username = '';	// SMTP username
-		$mail->Password = '' ;	// SMTP password
+		$mail->Username = ''; // SMTP username
+		$mail->Password = ''; // SMTP password
 		$mail->SMTPAuth = false;
 	} else {
 		$adb->println('> setMailServerProperties');
@@ -417,9 +417,9 @@ function setMailServerProperties($mail) {
 				$mail->SMTPSecure = $smtp_auth;
 			}
 		}
-		$mail->Host = $server;		// specify main and backup server
-		$mail->Username = $username ;	// SMTP username
-		$mail->Password = $password ;	// SMTP password
+		$mail->Host = $server; // specify main and backup server
+		$mail->Username = $username; // SMTP username
+		$mail->Password = $password; // SMTP password
 
 		$debugEmail = GlobalVariable::getVariable('Debug_Email_Sending', 0);
 		if ($debugEmail) {
@@ -642,14 +642,12 @@ function getMailError($mail, $mail_status) {
 	$msg = array_search($mail_status, $mail->getTranslations());
 	$adb->println('Error message: '.$msg);
 
-	if ($msg == 'connect_host') {
+	if ($msg == 'connect_host' || strstr($msg, 'from_failed') || strstr($msg, 'recipients_failed')) {
 		$error_msg = $msg;
-	} elseif (strstr($msg, 'from_failed')) {
-		$error_msg = $msg;
-	} elseif (strstr($msg, 'recipients_failed')) {
-		$error_msg = $msg;
+	} elseif (substr($mail_status, 0, 21)=='SMTP connect() failed') {
+		$error_msg = 'connect_host';
 	} else {
-		$error_msg = 'Mail error is not connect_host, from_failed nor recipients_failed';
+		$error_msg = $mail_status;
 	}
 	$adb->println('< getMailError '.$error_msg);
 	return $error_msg;

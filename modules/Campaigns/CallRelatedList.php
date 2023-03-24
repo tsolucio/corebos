@@ -29,6 +29,11 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	}
 
 	$smarty = new vtigerCRM_Smarty;
+	if (strpos($focus->moduleIcon['icon'], '-') !== false) {
+		$iconArray = explode('-', $focus->moduleIcon['icon']);
+		$focus->moduleIcon['icon'] = end($iconArray);
+	}
+	$smarty->assign('currentModuleIcon', $focus->moduleIcon);
 
 	if ($isduplicate == 'true') {
 		$focus->id = '';
@@ -110,6 +115,7 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		'CUSTOM_LINKS',
 		Vtiger_Link::getAllByType(getTabid($currentModule), array('DETAILVIEWBUTTON','DETAILVIEWBUTTONMENU'), $customlink_params, null, $focus->id)
 	);
+	$smarty->assign('TABSCOPED', empty(GlobalVariable::getVariable('Application_RelatedPane_Scoped', '1')) ? 'default' : 'scoped');
 
 	if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 		$smarty->display('RelatedListContents.tpl');

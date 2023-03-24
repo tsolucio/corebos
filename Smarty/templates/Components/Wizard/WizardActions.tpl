@@ -54,7 +54,7 @@
 						</svg>
 						<span class="slds-assistive-text"></span>
 					</button>
-					<div class="slds-dropdown slds-dropdown_table slds-dropdown_right" style="max-width: 100rem">
+					<div class="slds-dropdown slds-dropdown_table slds-dropdown_right" style="max-width: 100rem;max-height: 300px;overflow: auto">
 						<table class="slds-table slds-table_cell-buffer slds-table_bordered">
 							<thead>
 								<tr class="slds-text-title_caps" id="wizard-columns-info-{$smarty.foreach.stepwizard.index}">

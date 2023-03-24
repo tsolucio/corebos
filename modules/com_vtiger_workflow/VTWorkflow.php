@@ -32,6 +32,7 @@ class Workflow {
 	public $executionCondition;
 	public $schtypeid;
 	public $schtime;
+	public $multipleschtime;
 	public $schdayofmonth;
 	public $schdayofweek;
 	public $schannualdates;
@@ -185,6 +186,7 @@ class Workflow {
 		$this->executionCondition = $row['execution_condition'];
 		$this->schtypeid = isset($row['schtypeid']) ? $row['schtypeid'] : '';
 		$this->schtime = isset($row['schtime']) ? $row['schtime'] : '';
+		$this->multipleschtime = isset($row['multipleschtime']) ? $row['multipleschtime'] : '';
 		$this->schdayofmonth = isset($row['schdayofmonth']) ? $row['schdayofmonth'] : '';
 		$this->schdayofweek = isset($row['schdayofweek']) ? $row['schdayofweek'] : '';
 		$this->schannualdates = isset($row['schannualdates']) ? $row['schannualdates'] : '';
@@ -521,7 +523,39 @@ class Workflow {
 	}
 
 	public function getWFScheduleTime() {
+		/**
+		 * Algorithm
+		 * 1. sort multipleschtime in asc order
+		 * 2. find schtime on multipleschtime sorted array
+		 * 3. If found, next value will be next trigger time
+		 * 4. update schtime value with new value
+		 */
+		if (isset($this->multipleschtime)) {
+			$multipleschtime = explode(',', $this->multipleschtime);
+			usort($multipleschtime, function ($time1, $time2) {
+				$t1 = strtotime($time1);
+				$t2 = strtotime($time2);
+				return $t1 - $t2;
+			});
+			$currentTrigger = array_search(date('g:i a', strtotime($this->schtime)), $multipleschtime);
+			if (!$currentTrigger && $currentTrigger !== 0) {
+				$nextTiggerTime = date('H:i', strtotime($multipleschtime[0]));
+				$this->updateSchtime($multipleschtime[0]);
+			} elseif (!isset($multipleschtime[$currentTrigger + 1])) {
+				$nextTiggerTime =  date('H:i', strtotime($multipleschtime[count($multipleschtime)-1]));
+				$this->updateSchtime($nextTiggerTime);
+			} else {
+				$nextTiggerTime = date('H:i', strtotime($multipleschtime[$currentTrigger + 1]));
+				$this->updateSchtime($nextTiggerTime);
+			}
+			return $nextTiggerTime;
+		}
 		return $this->schtime;
+	}
+
+	public function updateSchtime($schtime) {
+		global $adb;
+		$adb->pquery('update com_vtiger_workflows set schtime=? where workflow_id=?', [date('H:i', strtotime($schtime)), $this->id]);
 	}
 
 	public function getWFScheduleDay() {

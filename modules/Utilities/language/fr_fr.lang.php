@@ -180,5 +180,21 @@ $mod_strings = array (
 	'facebook_destination_module' => 'Destination Module',
 	'Unable2Connect' => 'Unable to connect',
 	'Able2Connect' => 'Able to connect',
+	//Electronic Invoice Settings
+	'Electronic Invoice' => "Paramètres de facturation électronique",
+	'Electronic Invoice_Desc' => "Facture électronique",
+	'EI_username' => 'Nom d`utilisateur',
+	'EI_password' => 'Password',
+	'EI_baseurl' => 'Base URL',
+	'Passphrase' => 'Mot de passe',
+	'PublicKey' => 'Clé publique',
+	'PrivateKey' => 'Clé privée',
+	'PFKKey' => 'Clé PFK',
+	'Default Administrative Center' => 'Centre d`administration par défaut',
+	'Account Map' => 'Plan du compte',
+	'Contact Map' => 'Plan de contact',
+	'Invoice Map' => 'Carte de facturation',
+	'DefaultSignType' =>'Type de panneau par défaut',
+	'Time Stamp' => 'Horodatage',
 );
 ?>

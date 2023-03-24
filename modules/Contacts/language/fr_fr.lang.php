@@ -263,6 +263,20 @@ $mod_strings = array (
 		'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
 		'Template Language' => 'Template Language',
 		'ship_countrycode' => 'Shipping Country Code',
-		'bill_countrycode' => 'Billing Country Code'
+		'bill_countrycode' => 'Billing Country Code',
+		//ELECTRONIC INVOICE BLOCKS
+		'LBL_EINVOICE' => 'Facture électronique',
+		'islegalentity' => 'Est une personne morale',
+		'siccode' => 'SIC Code',
+		'secondlastname' => 'Deuxième nom de famille',
+		'website' => 'Site Internet',
+		'cnae' => 'Nomenclature des activités économiques',
+		'inecode' => 'Code statistique de la commune',
+		'brbook' => 'Livre',
+		'brmregister' => 'Enregistrer',
+		'brsheet' => 'Feuille',
+		'brfolio' => 'Folio',
+		'brsection' => 'Section',
+		'brvolume' => 'Volume',
 );
 ?>

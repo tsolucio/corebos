@@ -229,7 +229,7 @@ table
 
 .posLayPopup {
 	border:2px solid #ddd;
-	background:#fffff5 url(../../themes/softed/images/layerPopupBg.gif) ;
+	background:#fffff5 url(../../themes/softed/images/layerPopupBg.gif);
 	position:absolute;
 	width: 40em;
 	padding-left: 0.5em;

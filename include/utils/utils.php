@@ -3140,7 +3140,7 @@ function getFieldsResultForMerge($tabid) {
 		$params[] = $nonmergable_displaytypes;
 	}
 	if (count($nonmergable_uitypes) > 0) {
-		$where .= ' AND uitype NOT IN ('. generateQuestionMarks($nonmergable_uitypes) .')' ;
+		$where .= ' AND uitype NOT IN ('. generateQuestionMarks($nonmergable_uitypes) .')';
 		$params[] = $nonmergable_uitypes;
 	}
 
@@ -3915,6 +3915,14 @@ function validateClickHouseSecret($signedvalue, $signedkey, $input) {
 	$receivedSignature = $headers['CH-Webhook-Signature'];
 	$computedSignature = base64_encode(hash_hmac('sha256', $input, $signedvalue, true));
 	return ($receivedSignature === $computedSignature);
+}
+
+function sort_array_data(&$arr, $col, $dir = SORT_ASC) {
+	$sort_col = array();
+	foreach ($arr as $key => $row) {
+		$sort_col[$key] = $row[$col];
+	}
+	array_multisort($sort_col, $dir, $arr);
 }
 
 function convertPathFromAbsoluteToRelative($absolutePath) {

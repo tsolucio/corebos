@@ -138,6 +138,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigfacebook':
 		include_once 'include/integrations/facebook/settings.php';
 		break;
+	case 'getconfigelectronicinvoice':
+	case 'setconfigelectronicinvoice':
+		include_once 'include/integrations/electronicInvoice/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
@@ -255,6 +259,12 @@ switch ($_REQUEST['_op']) {
 				'title' => getTranslatedString('Facebook Activation', 'Utilities'),
 				'desc' => getTranslatedString('Facebook Activation_Desc', 'Utilities'),
 				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigfacebook',
+			),
+			array(
+				'abbr' => 'EI',
+				'title' => getTranslatedString('Electronic Invoice', 'Utilities'),
+				'desc' => getTranslatedString('Electronic Invoice_Desc', 'Utilities'),
+				'url' => 'index.php?action=integration&module=Utilities&_op=getconfigelectronicinvoice',
 			),
 		);
 		if (file_exists('build/wsChanges/LoginSession.php')) {

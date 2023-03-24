@@ -55,7 +55,7 @@ class paint2Document_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('FOLDERS', $folders);
 		$smarty->assign('FOLDERID', $this->getFromContext('folderid'));
 		$smarty->assign('USER_LANG', $current_user->language);
-		if ($doc2edit){
+		if ($doc2edit) {
 			$d = CRMEntity::getInstance('Documents');
 			$d->retrieve_entity_info($doc2edit, 'Documents');
 			$d->id = $doc2edit;

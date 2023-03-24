@@ -266,7 +266,7 @@ class ReportRun extends CRMEntity {
 				$this->queryPlanner->addTable($targetTableName);
 			}
 		}
-		$columnslist['vtiger_crmentity:crmid:LBL_ACTION:crmid:I'] = 'vtiger_crmentity.crmid AS "LBL_ACTION"' ;
+		$columnslist['vtiger_crmentity:crmid:LBL_ACTION:crmid:I'] = 'vtiger_crmentity.crmid AS "LBL_ACTION"';
 		// Save the information
 		$this->_columnslist[$outputformat] = $columnslist;
 		// we add the TOTALS tables to the planner in case they are aggregating on a field that is not included in the report
@@ -3059,7 +3059,7 @@ class ReportRun extends CRMEntity {
 				if ($skvalue[count($arr_val)-1] == 1) {
 					$col_width[] = ($skvalue[count($arr_val)-1] * 35);
 				} else {
-					$col_width[] = ($skvalue[count($arr_val)-1] * 6) + 10 ;
+					$col_width[] = ($skvalue[count($arr_val)-1] * 6) + 10;
 				}
 			}
 			$count = 0;

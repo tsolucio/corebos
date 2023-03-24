@@ -67,7 +67,7 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 			$entity['filetype'] = $adb->query_result($result, $i, 'filetype');
 			$entity['filename'] = $adb->query_result($result, $i, 'filename');
 			$entity['filesize'] = 0;
-			$entity['attachment'] = base64_encode('') ;
+			$entity['attachment'] = base64_encode('');
 		} elseif ($filetype=='I') {
 			$entity = vtws_retrievedocattachment_get_attachment($document_id, true, $returnfile);
 		}

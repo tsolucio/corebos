@@ -25,6 +25,11 @@ if ($record != '') {
 }
 
 $smarty = new vtigerCRM_Smarty;
+if (strpos($focus->moduleIcon['icon'], '-') !== false) {
+	$iconArray = explode('-', $focus->moduleIcon['icon']);
+	$focus->moduleIcon['icon'] = end($iconArray);
+}
+$smarty->assign('currentModuleIcon', $focus->moduleIcon);
 
 if (isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') {
 	$smarty->assign('OP_MODE', vtlib_purify($_REQUEST['mode']));
@@ -56,6 +61,7 @@ if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 }
 $open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 $smarty->assign('SELECTEDHEADERS', $open_related_modules);
+$smarty->assign('TABSCOPED', empty(GlobalVariable::getVariable('Application_RelatedPane_Scoped', '1')) ? 'default' : 'scoped');
 
 $smarty->display('RelatedLists.tpl');
 ?>

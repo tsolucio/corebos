@@ -38,5 +38,8 @@ $mod_strings = array(
 	'sslnc' => 'SSL',
 	'tls' => 'TLS Zertifikat überprüfungen',
 	'tlsnc' => 'TLS',
+	'credentialsFile' => 'Berechtigungsdatei',
+	'emailSettings' => 'Email Einstellungen',
+	'Adapter' => 'Adapter',
 );
 ?>

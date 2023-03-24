@@ -1,0 +1,43 @@
+.body-bg {
+	background: white
+}
+.padding-5p {
+	padding: 5px;
+}
+.wd-525 {
+	width: 88% !important;
+}
+.border-1p {
+	border: 1px solid #c9c9c9;
+}
+.attach-box {
+	overflow: auto;
+	height: 100px;
+	width: 100%;
+	max-width: 200px;
+	position: relative;
+	left: 0px;
+	top: 0px;
+}
+.file-box {
+	border: 1px solid #c9c9c9;
+	border-radius: 5px;
+	padding: 7px;
+	background: rgb(255, 255, 255) none repeat scroll 0%;
+	-moz-background-clip: initial;
+	-moz-background-origin: initial;
+	-moz-background-inline-policy: initial;
+	font-size: x-small;
+}
+.limit-box {
+	color: red;
+	display: '';
+	float: right;
+}
+.btn-red {
+	color: #ef1a1e;
+}
+
+.mt-1 {
+	margin-top: -1%;
+}

@@ -27,7 +27,7 @@ if ($_SESSION['authentication_key'] != $auth_key) {
 }
 global $selected_optional_modules;
 if (isset($_REQUEST['selected_modules'])) {
-	$_SESSION['installation_info']['selected_optional_modules'] = $_REQUEST['selected_modules'] ;
+	$_SESSION['installation_info']['selected_optional_modules'] = $_REQUEST['selected_modules'];
 }
 
 if (isset($_SESSION['installation_info']['admin_email'])) {

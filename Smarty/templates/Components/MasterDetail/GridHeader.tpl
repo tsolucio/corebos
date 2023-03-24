@@ -33,7 +33,7 @@
 {/if}
 {if !empty($MasterDetailLayoutMap.toolbar.actions)}
 {foreach from=$MasterDetailLayoutMap.toolbar.actions item=$i}
-	<button type="button" class="slds-button slds-button_neutral" title="{$i.label}" onclick="masterdetailwork.CallToAction(this, '{$i.workflow}')" data-id="{$MasterDetailLayoutMap.mapname}--actions" id="btn-{$MasterDetailLayoutMap.mapname}--actions">
+	<button type="button" class="slds-button slds-button_neutral" title="{$i.label}" onclick="masterdetailwork.CallToAction(this, '{$i.workflow}')" data-id="{$MasterDetailLayoutMap.mapname}--actions" id="btn-{$MasterDetailLayoutMap.mapname}--actions" data-gridname="mdgrid{$MasterDetailLayoutMap.mapname}">
 		{$i.label}
 	</button>
 {/foreach}
@@ -54,11 +54,4 @@
 </div>
 </div>
 </div>
-<script>
-window.addEventListener('load', (event) => {
-	if (document.getElementById('module') != null && document.getElementById('record').value != null) {
-		dtlViewReload(document.getElementById('module').value, document.getElementById('record').value);
-	}
-});
-</script>
 </div>

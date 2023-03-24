@@ -13,7 +13,6 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 const Slider = {
-
 	Instance: false,
 	Autoplay: false,
 	Infinite: true,
@@ -89,18 +88,17 @@ const Slider = {
 						<span class="slds-assistive-text">${alert_arr.JSLBL_RIGHT}</span>
 					</button>
 				</div>
-			</div>
-		`;
+			</div>`;
 		let doc2edit = encodeURIComponent(id);
-		let forrecord = recordid
-		let module = currentmodule
+		let forrecord = recordid;
+		let module = currentmodule;
 		let drawButton = (doc2edit != '') ?
 			`<button class="slds-button slds-button_neutral" id="drawOnImage" onClick="handleDrawClick('${module}', 'EditView', '${forrecord}', '${doc2edit}')">${alert_arr.JSLBL_DRAW}</button>`
 			: '';
 		ldsModal.show(header, content, 'large', '', '', true, drawButton);
 	}
-}
+};
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
 	Slider.Init('carousel');
 });

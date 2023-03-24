@@ -179,6 +179,9 @@ function getDataGridResponse($mdmap) {
 	$qg = new QueryGenerator($mdmap['targetmodule'], $current_user);
 	$qg->setFields(array_merge(['id'], $mdmap['listview']['fieldnames']));
 	$qg->addReferenceModuleFieldCondition($mdmap['originmodule'], $mdmap['linkfields']['targetfield'], 'id', vtlib_purify($_REQUEST['pid']), 'e', QueryGenerator::$AND);
+	if (!empty($mdmap['mastergridid'])) {
+		$qg->addCondition('__mastergridid', $mdmap['mastergridid'], 'e', QueryGenerator::$AND);
+	}
 	$conditions = $mdmap['condition'];
 	$conditions = json_decode(decode_html($conditions));
 	if (!empty($conditions)) {
@@ -230,7 +233,7 @@ function getDataGridResponse($mdmap) {
 			'data' => array(
 				'contents' => $ret,
 				'pagination' => array(
-					'page' => 1,
+					'page' => isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1,
 					'totalCount' => (int)$count,
 				),
 			),

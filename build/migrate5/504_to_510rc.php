@@ -1857,7 +1857,7 @@ $adb->query("insert into vtiger_field (tabid, fieldid, columnname, tablename, ge
 
 $result = $adb->query("SELECT * FROM vtiger_emaildetails");
 $rows = $adb->num_rows($result);
-for($i=0 ; $i<$rows ;$i++) {
+for ($i=0; $i<$rows; $i++) {
 	$emailid = $adb->query_result($result,$i,'emailid');
 	$to = $adb->query_result($result,$i,'to_email');
 	$cc = $adb->query_result($result,$i,'cc_email');

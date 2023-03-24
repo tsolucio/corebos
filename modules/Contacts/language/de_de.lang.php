@@ -294,6 +294,20 @@ $mod_strings = array(
 'ERR_GContactsSync'=>'Es gab einen Fehler beim Zugriff auf Google. Die Einstellungen wurden gelöscht. Bitte konfigurieren Sie den Zugang neu.',
 'Template Language' => 'Template Language',
 'ship_countrycode' => 'Shipping Country Code',
-'bill_countrycode' => 'Billing Country Code'
+'bill_countrycode' => 'Billing Country Code',
+//ELECTRONIC INVOICE BLOCKS
+'LBL_EINVOICE' => 'Elektronische Rechnung',
+'islegalentity' => 'Ist eine juristische Person',
+'siccode' => 'SIC Code',
+'secondlastname' => 'Zweiter Nachname',
+'website' => 'Webseite',
+'cnae' => 'Klassifikation der Wirtschaftszweige',
+'inecode' => 'Statistische Gemeindeordnung',
+'brbook' => 'Buch',
+'brmregister' => 'Registrieren',
+'brsheet' => 'Blatt',
+'brfolio' => 'Folio',
+'brsection' => 'Abschnitt',
+'brvolume' => 'Volumen',
 );
 ?>
