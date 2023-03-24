@@ -233,7 +233,7 @@ function getDataGridResponse($mdmap) {
 			'data' => array(
 				'contents' => $ret,
 				'pagination' => array(
-					'page' => 1,
+					'page' => isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1,
 					'totalCount' => (int)$count,
 				),
 			),
