@@ -7719,7 +7719,7 @@ function cbdzdragFinish() {
 }
 
 async function downloadFilesAsZip(fileName, urls) {
-	var baseurl = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=compressAndDownloadFiles&zipFileName=test.zip&filesToBeCompressed=${JSON.stringify(urls)}`;
+	var baseurl = `index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=compressAndDownloadFiles&zipFileName=${fileName}.zip&filesToBeCompressed=${JSON.stringify(urls)}`;
 	fetch(baseurl)
 	.then(response => response.blob())
 	.then(blob => {
@@ -7731,6 +7731,17 @@ async function downloadFilesAsZip(fileName, urls) {
 		a.click();
 		a.remove();
 	});
+}
+
+function generateUUID() {
+	let uuid = '';
+	for (let i = 0; i < 32; i++) {
+		uuid += Math.floor(Math.random() * 16).toString(16);
+		if (i === 7 || i === 11 || i === 15 || i === 19) {
+			uuid += '-';
+		}
+	}
+	return uuid;
 }
 
 var cbdzClearDrag = null;
