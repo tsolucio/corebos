@@ -109,10 +109,11 @@ async function handleGenerateLinkButton() {
 	const imageSliderShareLinkPopupContainer = document.getElementById('imageSliderShareLinkPopupContainer');
 	const imageSliderValidUntill = document.getElementById('imageSliderValidUntill');
 	const imageSliderShareLink = document.getElementById('imageSliderShareLink');
-	imageSliderShareLinkPopupContainer.style.display = 'flex'
+	imageSliderShareLinkPopupContainer.style.display = 'flex';
 	const shareLink = `${gVTsiteUrl}/notifications.php?type=docshare&share_token=${shareToken}`;
-	imageSliderShareLink.innerHTML = `Your share link is: <a id="imageSliderShareLinkATag" href="${shareLink}">${shareLink}</a>`;
-	imageSliderValidUntill.innerHTML = `The link will be valid until ${validUntil}`;
+	const translation = JSON.parse(await ExecuteFunctions('getTranslatedStrings', 'tkeys=LBL_YOUR_SHARE_LINK;LBL_LINK_VALID_UNTIL'));
+	imageSliderShareLink.innerHTML = `${translation['LBL_YOUR_SHARE_LINK']} <a id="imageSliderShareLinkATag" href="${shareLink}">${shareLink}</a>`;
+	imageSliderValidUntill.innerHTML = `${translation['LBL_LINK_VALID_UNTIL']} ${validUntil}`;
 }
 
 async function handleGenerateLinkCopyButton() {
@@ -133,7 +134,7 @@ async function handleClosingGenerateLinkPopupWindow() {
 function handleDownloadAllImages() {
 	const arr = JSON.parse(Slider.Data);
 	const imageUrls = arr.map(obj => obj.path);
-	downloadFilesAsZip('document', imageUrls);
+	downloadFilesAsZip('document_' + generateUUID(), imageUrls);
 }
 
 window.addEventListener('load', function() {

@@ -171,7 +171,7 @@ class ShareDocLinkWidgetDetailViewBlock extends DeveloperBlock {
 
 
 function handleSliderShareLink($smq) {
-	global $current_user, $adb, $site_URL, $log;
+	global $current_user, $adb, $site_URL, $log, $app_strings;
 	require_once 'modules/Utilities/cbSliderWidget.php';
 	require_once 'include/utils/utils.php';
 	require_once 'Smarty_setup.php';
@@ -180,7 +180,7 @@ function handleSliderShareLink($smq) {
 	$share_token = vtlib_purify($_REQUEST['share_token']);
 	$tokenObject = json_decode(coreBOS_Settings::getSetting("slider_" . $share_token, 0), true);
 	if (empty($tokenObject)) {
-		echo "This token doesnt exist or it is expired";
+		echo getTranslatedString('LBL_TOKEN_DOESNT_EXIST');
 		die();
 	}
 	$docid = $tokenObject['recordId'];
@@ -218,11 +218,12 @@ function handleSliderShareLink($smq) {
 	}
 
 	if (empty($dataIMG)) {
-		echo "there are no images to show";
+		echo getTranslatedString('LBL_NO_IMAGES_TO_SHOW');
 		die();
 	}
 
 	$smarty->assign('images', json_encode($dataIMG));
+	$smarty->assign('APP', $app_strings);
 
 	$smarty->display('Smarty/templates/shareLinkImageSlider.tpl');
 
