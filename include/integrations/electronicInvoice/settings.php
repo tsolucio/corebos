@@ -25,24 +25,39 @@ $isadmin = is_admin($current_user);
 
 if ($isadmin) {
 	$isActive = ((empty($_REQUEST['electronicInvoice_active']) || $_REQUEST['electronicInvoice_active']!='on') ? '0' : '1');
-	$pubkey = (empty($_REQUEST['publickey_display']) ? '' : vtlib_purify($_REQUEST['publickey_display']));
-	$privkey = (empty($_REQUEST['privatekeyid_display']) ? '' : vtlib_purify($_REQUEST['privatekeyid_display']));
-	$pkey = (empty($_REQUEST['pfkkeyid_display']) ? '' : vtlib_purify($_REQUEST['pfkkeyid_display']));
-	$acenter = (empty($_REQUEST['admcenter_display']) ? '' : vtlib_purify($_REQUEST['admcenter_display']));
+	$pubkey = (empty($_REQUEST['publickey']) ? '' : vtlib_purify($_REQUEST['publickey']));
+	$privkey = (empty($_REQUEST['privatekeyid']) ? '' : vtlib_purify($_REQUEST['privatekeyid']));
+	$pkey = (empty($_REQUEST['pfkkeyid']) ? '' : vtlib_purify($_REQUEST['pfkkeyid']));
+	$acenter = (empty($_REQUEST['admcenter']) ? '' : vtlib_purify($_REQUEST['admcenter']));
 	$pphrase = (empty($_REQUEST['passphrase']) ? '' : vtlib_purify($_REQUEST['passphrase']));
-	$accmap = (empty($_REQUEST['accountmap_display']) ? '' : vtlib_purify($_REQUEST['accountmap_display']));
-	$contmap = (empty($_REQUEST['contactmap_display']) ? '' : vtlib_purify($_REQUEST['contactmap_display']));
+	$accmap = (empty($_REQUEST['accountmap']) ? '' : vtlib_purify($_REQUEST['accountmap']));
+	$contmap = (empty($_REQUEST['contactmap']) ? '' : vtlib_purify($_REQUEST['contactmap']));
 	$face = (empty($_REQUEST['assigntypeFACe']) ? '' : vtlib_purify($_REQUEST['assigntypeFACe']));
 	$facb2b = (empty($_REQUEST['assigntypeFACB2B']) ? '' : vtlib_purify($_REQUEST['assigntypeFACB2B']));
 	$eibaseurl = (empty($_REQUEST['EI_baseurl']) ? '' : vtlib_purify($_REQUEST['EI_baseurl']));
 	$eiuname = (empty($_REQUEST['EI_username']) ? '' : vtlib_purify($_REQUEST['EI_username']));
 	$eipass = (empty($_REQUEST['EI_password']) ? '' : vtlib_purify($_REQUEST['EI_password']));
-	$electronicInvoice->saveSettings($isActive, $pubkey, $privkey, $pkey, $acenter, $pphrase, $accmap, $contmap, $face, $facb2b, $eibaseurl, $eiuname, $eipass);
+
+	if ($isActive != 0) {
+		$electronicInvoice->saveSettings($isActive, $pubkey, $privkey, $pkey, $acenter, $pphrase, $accmap, $contmap, $face, $facb2b, $eibaseurl, $eiuname, $eipass);
+	}
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Electronic Invoice', $currentModule));
 $eInvoiceSettings = $electronicInvoice->getSettings();
 $smarty->assign('isActive', $electronicInvoice->isActive());
+$smarty->assign('pubkey', $eInvoiceSettings['pubkey']);
+$smarty->assign('privkey', $eInvoiceSettings['privkey']);
+$smarty->assign('pkey', $eInvoiceSettings['pkey']);
+$smarty->assign('acenter', $eInvoiceSettings['acenter']);
+$smarty->assign('accmap', $eInvoiceSettings['accmap']);
+$smarty->assign('contmap', $eInvoiceSettings['contmap']);
+$smarty->assign('face', $eInvoiceSettings['face']);
+$smarty->assign('facb2b', $eInvoiceSettings['facb2b']);
+$smarty->assign('eibaseurl', $eInvoiceSettings['eibaseurl']);
+$smarty->assign('eiuname', $eInvoiceSettings['eiuname']);
+$smarty->assign('eipass', $eInvoiceSettings['eipass']);
+$smarty->assign('pphrase', $eInvoiceSettings['pphrase']);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);

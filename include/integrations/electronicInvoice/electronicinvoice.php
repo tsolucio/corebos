@@ -49,13 +49,13 @@ class corebos_electronicInvoice {
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'electronicInvoice_isactive';
-	const KEY_PUBLICKEY = 'ispublickey_display';
-	const KEY_PRIVATEKEY = 'isprivatekeyid_display';
-	const KEY_PFKKEY = 'ispfkkeyid_display';
-	const KEY_ADMCENTER = 'isadmcenter_display';
+	const KEY_PUBLICKEY = 'ispublickeyid';
+	const KEY_PRIVATEKEY = 'isprivatekeyid';
+	const KEY_PFKKEY = 'ispfkkeyid';
+	const KEY_ADMCENTER = 'isadmcenterid';
 	const KEY_PASSPHRASE = 'ispassphrase';
-	const KEY_ACCOUNNTMAP = 'isaccountmap_display';
-	const KEY_CONTACTMAP = 'iscontactmap_display';
+	const KEY_ACCOUNNTMAP = 'isaccountmapid';
+	const KEY_CONTACTMAP = 'iscontactmapid';
 	const KEY_FACE = 'isassigntypeFACe';
 	const KEY_FACB2B = 'isassigntypeFACB2B';
 	const KEY_BASEURL = 'isEI_baseurl';
