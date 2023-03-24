@@ -15,20 +15,13 @@
 	height: 100% !important;
 	padding: 3rem 0rem 0rem 0 !important;
 }
-.cbds-scrollbar::-webkit-scrollbar {
-  width: 1px;
-}
-
-.cbds-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
- 
-.cbds-scrollbar::-webkit-scrollbar-thumb {
-  background: #888; 
-}
-
-.cbds-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+.cbds-modulelist {
+	margin: 0.75rem -1rem -1rem;
+	padding: 1rem;
+	border-radius: 0 0 0.25rem 0.25rem;
+	background-color: white;
+	position: relative;
+	z-index: 2;
 }
 </style>
 <script src="include/js/Settings.js"></script>
@@ -60,7 +53,7 @@
 	</div>
 	<div class="slds-page-header__row slds-page-header__row_gutters">
 		<div class="slds-page-header__col-details">
-			<ul style="margin: 0.75rem -1rem -1rem;padding: 1rem;border-radius: 0 0 0.25rem 0.25rem;background-color: white;position: relative;z-index: 2;">
+			<ul class="cbds-modulelist">
 				{foreach key=mod_name item=mods_array from=$MENU_ARRAY name=itr}
 					<div class="slds-grid slds-gutters slds-m-around_medium">
 					{foreach from=$mods_array item=mod_array}

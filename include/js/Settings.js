@@ -18,20 +18,29 @@ class Settings {
 		this.list_modules = [];
 		this.list_modules_raw = [];
 		this.list_modules_icons = [];
+		this.label = [];
 		this.Data = [];
 		this.FilteredData = [];
 		this.Grid = false;
 		this.LastActive = '';
+		this.ModuleLabel = '';
+		this.CheckedRows = [];
+		this.Total = {};
+		this.Active = {};
+		this.Inactive = {};
 	}
 
 	async Workflows(label, modulename) {
 		this.LastActive = modulename;
+		this.label = label;
 		let rs = await this.Modules(modulename);
-		ldsModal.show(label, rs, 'large');
+		ldsModal.show('', rs, 'large');
 		document.getElementsByClassName('slds-modal__footer')[0].remove();
-		document.getElementById('global-modal-container__content').style.background = '#f3f3f3';
-		document.getElementById('global-modal-container__content').style.height = '100%';
+		this.Element('global-modal-container__content').style.background = '#f3f3f3';
+		this.Element('global-modal-container__content').style.height = '100%';
+		await this.CreateWorkflow();
 		this.GridView(modulename);
+		this.Element('currentModule').innerHTML = this.ModuleLabel;
 	}
 
 	async Modules(current = '') {
@@ -46,19 +55,20 @@ class Settings {
 		});
 		let mods = `
 		<div class="slds-vertical-tabs" style="border: 0px !important;height:100% !important">
-			<ul id="Workflow_Modules" class="slds-vertical-tabs__nav cbds-scrollbar" style="max-height: 700px;overflow: hidden;overflow-y: auto;">
+			<ul id="Workflow_Modules" class="slds-vertical-tabs__nav cbds-scrollbar" style="max-height: 700px;overflow: hidden;overflow-y: auto;width:10rem !important">
 				<input type="text" class="slds-input" placeholder="Search" style="width: 95%" oninput="settings.SearchModules(this)">
 				${this.RenderModules(current)}
 			</ul>
 			<div class="slds-vertical-tabs__content slds-show cbds-scrollbar" id="workflow-treeview" style="overflow-y: auto;max-height: 700px;overflow-x: hidden;">
 				${this.SearchBar()}
 			</div>
+			<div id="new_workflow" style="width: 12rem"></div>
 		</div>`;
 		return mods;
 	}
 
 	SearchModules(ev) {
-		let modules = document.getElementById('Workflow_Modules').querySelectorAll('li');
+		let modules = this.Element('Workflow_Modules').querySelectorAll('li');
 		for (let i in modules) {
 			if (!modules[i].dataset.value.toLowerCase().includes(ev.value)) {
 				modules[i].style.display = 'none';
@@ -68,11 +78,15 @@ class Settings {
 		}
 	}
 
-	ShowWorkflow(forModule) {
-		document.getElementById(`wf_module_${forModule}`).classList.add('slds-is-active');
-		document.getElementById(`wf_module_${this.LastActive}`).classList.remove('slds-is-active');
+	ShowWorkflow(ev, forModule) {
+		this.Element(`wf_module_${forModule}`).classList.add('slds-is-active');
+		if (this.Element(`wf_module_${this.LastActive}`) !== null) {
+			this.Element(`wf_module_${this.LastActive}`).classList.remove('slds-is-active');
+		}
 		this.LastActive = forModule;
-		document.getElementById('workflow-treeview').innerHTML = this.SearchBar();
+		this.Element('workflow-treeview').innerHTML = this.SearchBar();
+		this.Element('currentModule').innerHTML = ev.dataset.value;
+		this.CreateWorkflow();
 		this.GridView(forModule);
 	}
 
@@ -90,6 +104,18 @@ class Settings {
 			},
 			columns: [
 				{
+					header: '-',
+					name: 'checkbox',
+					renderer: {
+						type: WorkflowRender,
+						options: {
+							fieldname: 'checkbox',
+							forModule: this.LastActive
+						}
+					},
+					width: 5
+				},
+				{
 					header: 'Workflow',
 					name: 'Description',
 					renderer: {
@@ -99,7 +125,7 @@ class Settings {
 							forModule: this.LastActive
 						}
 					},
-					width: 300
+					width: 270
 				},
 				{
 					header: 'Type',
@@ -159,16 +185,34 @@ class Settings {
 			contextMenu: null
 		});
 		tui.Grid.applyTheme('default');
+		this.Element('total_workflows').innerHTML = this.Total[this.LastActive].length;
+		this.Element('active_workflows').innerHTML = this.Active[this.LastActive].length;
+		this.Element('inactive_workflows').innerHTML = this.Inactive[this.LastActive].length;
 	}
 
 	GetData() {
 		let treeData = [];
+		this.Total[settings.LastActive] = [];
+		this.Active[settings.LastActive] = [];
+		this.Inactive[settings.LastActive] = [];
 		this.Data['data'].forEach(function(row) {
 			if (settings.LastActive == 'All') {
 				treeData.push(settings.FormatData(row));
+				settings.Total[settings.LastActive].push(true);
+				if (row.StatusRaw) {
+					settings.Active[settings.LastActive].push(true);
+				} else {
+					settings.Inactive[settings.LastActive].push(true);
+				}
 			} else {
 				if (settings.LastActive == row.ModuleName) {
 					treeData.push(row);
+					settings.Total[settings.LastActive].push(true);
+					if (row.StatusRaw) {
+						settings.Active[settings.LastActive].push(true);
+					} else {
+						settings.Inactive[settings.LastActive].push(true);
+					}
 				}				
 			}
 		});
@@ -269,7 +313,7 @@ class Settings {
 			if (fields[f] == currentField) {
 				continue;
 			}
-			document.getElementById(fields[f]).value = '';
+			this.Element(fields[f]).value = '';
 		}
 	}
 
@@ -316,7 +360,7 @@ class Settings {
 	}
 
 	async DeleteWorkflow(workflow_id, type, rowKey) {
-		if (!confirm('Are you sure?')) {
+		if (!confirm('Are you sure you want to perform this acttion?')) {
 			return false;
 		}
 		let url = `index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=deleteworkflow&workflow_id=${workflow_id}&mode=ajax`;
@@ -334,7 +378,7 @@ class Settings {
 
 	RenderModules(current) {
 		let mods = `
-		<li class="slds-vertical-tabs__nav-item" data-value="All" data-valueraw="All" id="wf_module_All" onclick="settings.ShowWorkflow('All')">
+		<li class="slds-vertical-tabs__nav-item" data-value="All Modules" data-valueraw="All" id="wf_module_All" onclick="settings.ShowWorkflow(this, 'All')">
 			<a class="slds-vertical-tabs__link" role="tab" tabindex="0" aria-selected="true">
 				<span class="slds-vertical-tabs__left-icon">
 					<span class="slds-icon_container">
@@ -351,9 +395,10 @@ class Settings {
 			let className = '';
 			if (settings.list_modules_raw[idx] == current) {
 				className = 'slds-is-active';
+				settings.ModuleLabel = modulename;
 			}
 			mods += `
-			<li class="slds-vertical-tabs__nav-item ${className}" data-value="${modulename}" data-valueraw="${settings.list_modules_raw[idx]}" id="wf_module_${settings.list_modules_raw[idx]}" onclick="settings.ShowWorkflow('${settings.list_modules_raw[idx]}')">
+			<li class="slds-vertical-tabs__nav-item ${className}" data-value="${modulename}" data-valueraw="${settings.list_modules_raw[idx]}" id="wf_module_${settings.list_modules_raw[idx]}" onclick="settings.ShowWorkflow(this, '${settings.list_modules_raw[idx]}')">
 				<a class="slds-vertical-tabs__link" role="tab" tabindex="0" aria-selected="true">
 					<span class="slds-vertical-tabs__left-icon">
 						<span class="slds-icon_container">
@@ -397,9 +442,320 @@ class Settings {
 		return el;
 	}
 
+	async doActions(type) {
+		if (type == 'export') {
+			return this.ExportWorkflow();
+		}
+		if (this.CheckedRows.length == 0) {
+			ldsNotification.show(alert_arr.ERROR, alert_arr.SELECT, 'error');
+			return false;
+		}
+		if (!confirm('Are You sure to proceed?')) {
+			return false;
+		}
+		for (let i in this.CheckedRows) {
+			let url = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&wfajax=1';
+			if (type == 'delete') {
+				url += '&file=deleteworkflow';
+			} else if (type == 'activate') {
+				url += '&file=activatedeactivateWF&active=true';
+			} else if ('deactivate') {
+				url += '&file=activatedeactivateWF&active=false';
+			}
+			url += `&workflow_id=${this.CheckedRows[i]}`;
+			await Request(url, 'post');
+		}
+		this.UpdateGrid();
+	}
+
+	async UpdateGrid() {
+		let url = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page=all';
+		this.Data = JSON.parse(await Request(url, 'get'));
+		this.GridView(this.LastActive);
+	}
+
+	ExportWorkflow() {
+		let exporturl = 'index.php?module=com_vtiger_workflow&action=Export';
+		if (this.CheckedRows.length > 0) {
+			let idstring = '';
+			this.CheckedRows.forEach(function (item) {
+				idstring += item.workflow_id+';';
+			});
+			exporturl += '&export_data=selecteddata&search_type=includesearch&filters=&idstring='+idstring;
+		} else {
+			exporturl += '&export_data=&search_type=all';
+		}
+		gotourl(exporturl);
+	}
+
+	Element(id) {
+		return document.getElementById(id);
+	}
+
+	async LoadTemplates(ev, mode = '') {
+		if (ev.value == 'from_module') {
+			this.Element('template_select_field').style.display = 'none';
+			this.Element('template_list_foundnone').style.display = 'none';
+		} else {
+			let holdModules = this.LastActive;
+			if (mode == 'modules') {
+				this.LastActive = ev.value;
+			}	
+			let url = `index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=templatesformodulejson&ajax=true&module_name=${this.Element('module_list').value}`;
+			this.LastActive = holdModules;
+			let response = JSON.parse(await Request(url, 'get'));
+			if (response.length == 0) {
+				this.Element('template_list').style.display = 'none';
+				this.Element('choose_template').style.display = 'none';
+				let source = document.getElementsByName('source');
+				if (!source[0].checked) {
+					this.Element('template_list_foundnone').style.display = 'block';
+				} else {
+					this.Element('template_list_foundnone').style.display = 'none';
+				}
+				this.Element('template_list').innerHTML = '';
+				this.Element('template_select_field').style.display = 'none';
+			} else {
+				this.Element('template_select_field').style.display = 'block';
+				this.Element('template_list').style.display = 'block';
+				this.Element('choose_template').style.display = 'block';
+				this.Element('template_list_foundnone').style.display = 'none';
+				let templates = '';
+				for (let i in response) {
+					templates += `<option value="${response[i].id}">${response[i].title}</option>`;
+				}
+				this.Element('template_list').innerHTML = templates;
+			}
+		}
+	}
+
+	CreateSubmit() {
+		if (this.Element('module_list').value=='') {
+			alert(alert_arr.SELECT);
+			return false;
+		}
+		let source = document.getElementsByName('source');
+		if (source[1].checked && this.Element('template_list').value=='') {
+			ldsNotification.show(alert_arr.ERROR, alert_arr.SELECT, 'error');
+			return false;
+		}
+		return true;
+	}
+
+	SetCheckedRows() {
+		this.CheckedRows = [];
+		const rows = document.querySelectorAll('input[name=workflow_list]:checked');
+		for (let i = 0; i < rows.length; i++) {
+			this.CheckedRows.push(rows[i].dataset.value);
+		}
+	}
+
+
+	async CreateWorkflow() {
+		let url = `index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=WorkflowAPI&operation=getModules`;
+		let response = JSON.parse(await Request(url, 'get'));
+		let modules = '';
+		for (let i in response) {
+			let selected = '';
+			if (response[i] == this.LastActive) {
+				selected = 'selected';
+			}
+			modules += `<option value="${response[i]}" ${selected}>${response[i]}</option>`;
+		}
+		let content = `
+		<form action="index.php" method="post" accept-charset="utf-8" onsubmit="return settings.CreateSubmit();">
+		<div class="slds-m-around_small">
+			<div class="slds-form-element__control">
+				<span class="slds-radio">
+				<input type="radio" name="source" id="wffrommodule" value="from_module" onchange="settings.LoadTemplates(this)" checked="" />
+				<label class="slds-radio__label" for="wffrommodule">
+					<span class="slds-radio_faux"></span>
+					<span class="slds-form-element__label slds-page-header__meta-text">For Module</span>
+				</label>
+				</span>
+				<span class="slds-radio slds-m-top_xx-small slds-m-bottom_xx-small">
+				<input type="radio" name="source" id="wffromtpl" value="from_template" onchange="settings.LoadTemplates(this)" />
+				<label class="slds-radio__label" for="wffromtpl">
+					<span class="slds-radio_faux"></span>
+					<span class="slds-form-element__label slds-page-header__meta-text">From Template</span>
+				</label>
+				</span>
+			</div>
+			<div class="slds-form-element">
+				<div class="slds-form-element__control">
+					<div class="slds-select_container">
+						<input type="hidden" name="pick_module" value="" id="pick_module">
+						<select class="slds-select slds-page-header__meta-text" name="module_name" id="module_list" onchange="settings.LoadTemplates(this, 'modules')">
+							${modules}
+						</select>
+					</div>
+				</div>
+			</div>
+			<span id="template_list_foundnone" style="display:none">No Templates</span>
+			<div class="slds-form-element" id="template_select_field" style="display:none">
+				<label class="slds-form-element__label slds-page-header__meta-text" for="module_list" id="choose_template">Choose a template</label>
+				<div class="slds-form-element__control">
+					<div class="slds-select_container">
+						<select id="template_list" name="template_id" class="slds-select slds-page-header__meta-text"></select>
+					</div>
+				</div>
+			</div>
+			<button class="slds-button slds-button_brand slds-m-top_x-small" type="submit" name="save" id='new_workflow_popup_save'>
+				<svg class="slds-icon slds-icon_x-small slds-button__icon_left" aria-hidden="true">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
+				</svg>
+				Create
+			</button>
+			<input type="hidden" name="__vt5rftk" value="${csrfMagicToken}">
+			<input type="hidden" name="save_type" value="new">
+			<input type="hidden" name="module" value="com_vtiger_workflow">
+			<input type="hidden" name="action" value="editworkflow">
+		</div>
+		</form>
+		<hr>
+		<label class="slds-text-heading_small slds-m-around_small slds-m-top_medium">
+			Workflow Statistics
+		</label>
+		<a class="slds-box slds-box_link slds-box_xx-small slds-media slds-m-around_small" style="background:white">
+			<div class="slds-media__figure slds-media__figure_fixed-width slds-align_absolute-center slds-m-left_xx-small">
+				<span class="slds-icon_container slds-icon-utility-knowledge_base">
+					<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#list"></use>
+					</svg>
+				</span>
+			</div>
+			<div class="slds-media__body slds-border_left slds-p-around_small">
+				<h4 class="slds-truncate" title="Total">
+					Total
+				</h4>
+				<p class="slds-m-top_small">
+					<strong id="total_workflows"></strong>
+				</p>
+			</div>
+		</a>
+		<a class="slds-box slds-box_link slds-box_xx-small slds-media slds-m-around_small" style="background:white">
+			<div class="slds-media__figure slds-media__figure_fixed-width slds-align_absolute-center slds-m-left_xx-small">
+				<span class="slds-icon_container slds-icon-utility-knowledge_base">
+					<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+					</svg>
+				</span>
+			</div>
+			<div class="slds-media__body slds-border_left slds-p-around_small">
+				<h4 class="slds-truncate" title="Active">
+					Active
+				</h4>
+				<p class="slds-m-top_small">
+					<strong id="active_workflows"></strong>
+				</p>
+			</div>
+		</a>
+		<a class="slds-box slds-box_link slds-box_xx-small slds-media slds-m-around_small" style="background:white">
+			<div class="slds-media__figure slds-media__figure_fixed-width slds-align_absolute-center slds-m-left_xx-small">
+				<span class="slds-icon_container slds-icon-utility-knowledge_base">
+					<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+					</svg>
+				</span>
+			</div>
+			<div class="slds-media__body slds-border_left slds-p-around_small">
+				<h4 class="slds-truncate" title="Inactive">
+					Inactive
+				</h4>
+				<p class="slds-m-top_small">
+					<strong id="inactive_workflows"></strong>
+				</p>
+			</div>
+		</a>
+		`;
+		document.getElementById('new_workflow').innerHTML = content;
+		if (this.Total[this.LastActive] !== undefined) {
+			this.Element('total_workflows').innerHTML = this.Total[this.LastActive].length;
+			this.Element('active_workflows').innerHTML = this.Active[this.LastActive].length;
+			this.Element('inactive_workflows').innerHTML = this.Inactive[this.LastActive].length;
+		}
+		return true;
+	}
+
 	SearchBar() {
 		return `
 		<div class="slds-page-header">
+			<div class="slds-page-header__row">
+				<div class="slds-page-header__col-title">
+					<div class="slds-media">
+						<div class="slds-media__figure">
+							<span class="slds-icon_container slds-icon-standard-opportunity">
+								<svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#bundle_config"></use>
+								</svg>
+							</span>
+						</div>
+						<div class="slds-media__body">
+							<div class="slds-page-header__name">
+								<div class="slds-page-header__name-title">
+									<h1>
+										<span id="currentModule"></span>
+										<span class="slds-page-header__title slds-truncate">${this.label}</span>
+									</h1>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slds-page-header__col-actions">
+					<div class="slds-page-header__controls">
+						<div class="slds-page-header__control">
+							<ul class="slds-button-group-list">
+								<li>
+									<button class="slds-button slds-button_neutral" onclick="settings.CreateWorkflow()">
+										New Workflow
+									</button>
+								</li>
+								<li>
+									<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
+										<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="Show More">
+											<svg class="slds-button__icon" aria-hidden="true">
+												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+											</svg>
+											<span class="slds-assistive-text">Show More</span>
+										</button>
+										<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions">
+										<ul class="slds-dropdown__list" role="menu">
+											<li class="slds-dropdown__item" role="presentation">
+												<a onclick="settings.doActions('activate')" role="menuitem" tabindex="0">
+													<span class="slds-truncate" title="Activate">Activate</span>
+												</a>
+											</li>
+											<li class="slds-dropdown__item" role="presentation">
+												<a onclick="settings.doActions('deactivate')" role="menuitem" tabindex="0">
+													<span class="slds-truncate" title="Deactivate">Deactivate</span>
+												</a>
+											</li>
+											<li class="slds-dropdown__item" role="presentation">
+												<a onclick="gotourl('index.php?module=com_vtiger_workflow&action=Import');" role="menuitem" tabindex="0">
+													<span class="slds-truncate" title="Import">Import</span>
+												</a>
+											</li>
+											<li class="slds-dropdown__item" role="presentation">
+												<a onclick="settings.doActions('export')" role="menuitem" tabindex="-1">
+													<span class="slds-truncate" title="Export">Export</span>
+												</a>
+											</li>
+											</li>
+											<li class="slds-dropdown__item" role="presentation">
+												<a onclick="settings.doActions('delete')" role="menuitem" tabindex="-1">
+													<span class="slds-truncate cbds-color-compl-red--sober" title="Delete">Delete</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="slds-page-header__row">
 				<div class="slds-page-header__col-title">
 					<div class="slds-media">
@@ -470,6 +826,11 @@ class WorkflowRender {
 		let el = document.createElement('span');
 		let actions = ``;
 		switch (fieldname) {
+		case 'checkbox':
+			if (type == 'workflow') {
+				actions += `<input type="checkbox" data-value="${workflow_id}" name="workflow_list" onclick="settings.SetCheckedRows()">`;
+			}
+			break;
 		case 'Status':
 			let Status = props.grid.getValue(rowKey, 'Status');
 			let StatusRaw = props.grid.getValue(rowKey, 'StatusRaw');
