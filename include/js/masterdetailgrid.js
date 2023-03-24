@@ -84,6 +84,8 @@ var masterdetailwork = {
 						if (res.success) {
 							ev.instance.readData(1);
 							if (ReloadScreenAfterEdit == 1) {
+								localStorage.setItem('MasterDetail_currentPage', MDInstance[`mdgrid${ev.instance.el.id}`].getPagination()._currentPage);
+								localStorage.setItem('MasterDetail_Name', `mdgrid${ev.instance.el.id}`);
 								masterdetailwork.MDReload();
 							}
 						} else {
@@ -100,17 +102,24 @@ var masterdetailwork = {
 	save: (mdgridInstance, module) => {
 		const method_prefix = mdgridInstance.substring(6);
 		masterdetailwork.MDToggle('', method_prefix);
-		setTimeout(function () {
-			if (ReloadScreenAfterEdit == 1) {
-				masterdetailwork.MDReload();
-			} else {
-				MDInstance[mdgridInstance].destroy();
-				window['loadMDGrid'+method_prefix]();
+		if (ReloadScreenAfterEdit == 1) {
+			masterdetailwork.MDReload();
+		} else {
+			MDInstance[mdgridInstance].destroy();
+			window['loadMDGrid'+method_prefix]();
+			let MasterDetail_currentPage = localStorage.getItem('MasterDetail_currentPage');
+			if (MasterDetail_currentPage ===  null) {
+				MasterDetail_currentPage = 1;
 			}
-		}, 1300);
+			MDInstance[mdgridInstance].readData(MasterDetail_currentPage, {
+				page: MasterDetail_currentPage
+			}, true);
+		}
 	},
 
 	MDUpsert: (MDGrid, module, recordid, CurrentRecord = '') => {
+		localStorage.setItem('MasterDetail_currentPage', MDInstance[MDGrid].getPagination()._currentPage);
+		localStorage.setItem('MasterDetail_Name', MDGrid);
 		let record = recordid || '';
 		if (record!='') {
 			record = '&record='+record;
@@ -175,6 +184,13 @@ var masterdetailwork = {
 					const target = document.getElementsByClassName('detailview_wrapper_table')[0];
 					target.innerHTML = result[2];
 					vtlib_executeJavascriptInElement(target);
+					let MasterDetail_currentPage = localStorage.getItem('MasterDetail_currentPage');
+					let MasterDetail_Name = localStorage.getItem('MasterDetail_Name');
+					if (MasterDetail_Name !== null && MasterDetail_currentPage !== null) {
+						MDInstance[MasterDetail_Name].readData(MasterDetail_currentPage, {
+							page: MasterDetail_currentPage
+						}, true);
+					}
 				}
 				VtigerJS_DialogBox.hidebusy();
 			}
@@ -224,6 +240,8 @@ var masterdetailwork = {
 	},
 
 	CallToAction: (ev, workflowid) => {
+		localStorage.setItem('MasterDetail_currentPage', MDInstance[ev.dataset.gridname].getPagination()._currentPage);
+		localStorage.setItem('MasterDetail_Name', ev.dataset.gridname);
 		if (SelectedRecordsIds.length > 0) {
 			runBAWorkflow(workflowid.split(','), SelectedRecordsIds.join(';'));
 			masterdetailwork.MDReload();
