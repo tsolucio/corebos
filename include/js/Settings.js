@@ -24,6 +24,7 @@ class Settings {
 		this.Grid = false;
 		this.LastActive = '';
 		this.ModuleLabel = '';
+		this.ModuleIcon = '';
 		this.CheckedRows = [];
 		this.Total = {};
 		this.Active = {};
@@ -41,6 +42,7 @@ class Settings {
 		await this.CreateWorkflow();
 		this.GridView(modulename);
 		this.Element('currentModule').innerHTML = this.ModuleLabel;
+		this.Element('currentModuleIcon').innerHTML = this.RenderIcon(this.ModuleIcon);
 	}
 
 	async Modules(current = '') {
@@ -86,6 +88,7 @@ class Settings {
 		this.LastActive = forModule;
 		this.Element('workflow-treeview').innerHTML = this.SearchBar();
 		this.Element('currentModule').innerHTML = ev.dataset.value;
+		this.Element('currentModuleIcon').innerHTML = this.RenderIcon(ev.dataset.icon);
 		this.CreateWorkflow();
 		this.GridView(forModule);
 	}
@@ -220,21 +223,38 @@ class Settings {
 	}
 
 	async GridFilter(ev, field) {
-		if (ev.value == '') {
+		let filteredData = [];
+		let searchFields = [];
+		const fields = ['Status', 'Trigger', 'Purpose', 'summary', 'tasktypelabel', 'Description'];
+		for (let f in fields) {
+			if (this.Element(fields[f]).value != '') {
+				searchFields.push(fields[f]);
+			}
+		}
+		if (searchFields.length == 0) {
 			return this.ResetData();
 		}
-		this.ClearFields(field);
-		let url = `index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page=all&forField=${field}&forValue=${ev.value}`;
-		let filteredData = [];
 		let data = this.Data['data'];
+		for (let j in searchFields) {
+			if (filteredData.length > 0) {
+				data = filteredData;
+			}
+			let value = this.Element(searchFields[j]).value;
+			filteredData = this.SearchData(data, value, searchFields[j]);
+		}
+		this.Grid.resetData(filteredData);
+	}
+
+	SearchData(data, value, field) {
+		let filteredData = [];
 		for (let i in data) {
-			if (settings.LastActive != data[i].ModuleName && settings.LastActive != 'All') {
+			if (this.LastActive != data[i].ModuleName && this.LastActive != 'All') {
 				continue;
 			}
-			if ((field == 'Status' || field == 'Trigger') && data[i][field] == ev.value) {
+			if ((field == 'Status' || field == 'Trigger') && data[i][field] == value) {
 				filteredData.push(this.FormatData(data[i]));
 			}
-			if (field == 'Purpose' && data[i][field].includes(ev.value)) {
+			if (field == 'Purpose' && data[i][field].includes(value)) {
 				filteredData.push(this.FormatData(data[i]));
 			}
 			if (field == 'summary' || field == 'tasktypelabel') {
@@ -244,7 +264,7 @@ class Settings {
 						if (data[i]._children[j][field] === undefined) {
 							continue;
 						}
-						if (data[i]._children[j][field].includes(ev.value)) {
+						if (data[i]._children[j][field].includes(value)) {
 							childs.push(data[i]._children[j]);
 						}
 					}
@@ -269,12 +289,12 @@ class Settings {
 						if (data[i]._children[j]['bmapid_display'] === undefined) {
 							continue;
 						}
-						if (data[i]._children[j]['field_value_mapping'].includes(ev.value) || data[i]._children[j]['workflowid_display'].includes(ev.value) || data[i]._children[j]['bmapid_display'].includes(ev.value)) {
+						if (data[i]._children[j]['field_value_mapping'].includes(value) || data[i]._children[j]['workflowid_display'].includes(value) || data[i]._children[j]['bmapid_display'].includes(value)) {
 							childs.push(data[i]._children[j]);
 						}
 					}
 					if (childs.length == 0) {
-						if (data[i][field].includes(ev.value)) {
+						if (data[i][field].includes(value)) {
 							filteredData.push(this.FormatData(data[i]));
 						}
 						continue;
@@ -283,13 +303,13 @@ class Settings {
 					fData._children = this.FormatChildrens(childs);
 					filteredData.push(this.FormatData(fData));
 				} else {
-					if (data[i][field].includes(ev.value)) {
+					if (data[i][field].includes(value)) {
 						filteredData.push(this.FormatData(data[i]));
 					}
 				}
 			}
 		}
-		this.Grid.resetData(filteredData);
+		return filteredData;
 	}
 
 	ResetData(clearFields = false) {
@@ -369,16 +389,26 @@ class Settings {
 		}
 		let response = await Request(url, 'post');
 		if (response) {
-			this.Grid.removeRow(rowKey);
+			this.UpdateGrid();
 			ldsNotification.show(alert_arr.LBL_SUCCESS, alert_arr.LBL_DELETE_SUCCESS, 'success');
 		} else {
 			ldsNotification.show(alert_arr.ERROR, alert_arr.LBL_WRONG, 'error');
 		}
 	}
 
+	RenderIcon(icon) {
+		return `
+		<span class="slds-icon_container slds-icon-standard-opportunity">
+			<svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#${icon}"></use>
+			</svg>
+		</span>	
+		`;
+	}
+
 	RenderModules(current) {
 		let mods = `
-		<li class="slds-vertical-tabs__nav-item" data-value="All Modules" data-valueraw="All" id="wf_module_All" onclick="settings.ShowWorkflow(this, 'All')">
+		<li class="slds-vertical-tabs__nav-item" data-value="All Modules" data-icon="bundle_config" data-valueraw="All" id="wf_module_All" onclick="settings.ShowWorkflow(this, 'All')">
 			<a class="slds-vertical-tabs__link" role="tab" tabindex="0" aria-selected="true">
 				<span class="slds-vertical-tabs__left-icon">
 					<span class="slds-icon_container">
@@ -396,9 +426,10 @@ class Settings {
 			if (settings.list_modules_raw[idx] == current) {
 				className = 'slds-is-active';
 				settings.ModuleLabel = modulename;
+				settings.ModuleIcon = settings.list_modules_icons[idx];
 			}
 			mods += `
-			<li class="slds-vertical-tabs__nav-item ${className}" data-value="${modulename}" data-valueraw="${settings.list_modules_raw[idx]}" id="wf_module_${settings.list_modules_raw[idx]}" onclick="settings.ShowWorkflow(this, '${settings.list_modules_raw[idx]}')">
+			<li class="slds-vertical-tabs__nav-item ${className}" data-value="${modulename}" data-icon="${settings.list_modules_icons[idx]}" data-valueraw="${settings.list_modules_raw[idx]}" id="wf_module_${settings.list_modules_raw[idx]}" onclick="settings.ShowWorkflow(this, '${settings.list_modules_raw[idx]}')">
 				<a class="slds-vertical-tabs__link" role="tab" tabindex="0" aria-selected="true">
 					<span class="slds-vertical-tabs__left-icon">
 						<span class="slds-icon_container">
@@ -683,7 +714,7 @@ class Settings {
 			<div class="slds-page-header__row">
 				<div class="slds-page-header__col-title">
 					<div class="slds-media">
-						<div class="slds-media__figure">
+						<div class="slds-media__figure" id="currentModuleIcon">
 							<span class="slds-icon_container slds-icon-standard-opportunity">
 								<svg class="slds-icon slds-page-header__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#bundle_config"></use>
@@ -720,30 +751,45 @@ class Settings {
 											<span class="slds-assistive-text">Show More</span>
 										</button>
 										<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions">
-										<ul class="slds-dropdown__list" role="menu">
+										<ul class="slds-dropdown__list" role="menu" style="width:8rem">
 											<li class="slds-dropdown__item" role="presentation">
 												<a onclick="settings.doActions('activate')" role="menuitem" tabindex="0">
+													<svg class="slds-button__icon" aria-hidden="true">
+														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+													</svg>
 													<span class="slds-truncate" title="Activate">Activate</span>
 												</a>
 											</li>
 											<li class="slds-dropdown__item" role="presentation">
 												<a onclick="settings.doActions('deactivate')" role="menuitem" tabindex="0">
+													<svg class="slds-button__icon" aria-hidden="true">
+														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
+													</svg>
 													<span class="slds-truncate" title="Deactivate">Deactivate</span>
 												</a>
 											</li>
 											<li class="slds-dropdown__item" role="presentation">
 												<a onclick="gotourl('index.php?module=com_vtiger_workflow&action=Import');" role="menuitem" tabindex="0">
+													<svg class="slds-button__icon" aria-hidden="true">
+														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
+													</svg>
 													<span class="slds-truncate" title="Import">Import</span>
 												</a>
 											</li>
 											<li class="slds-dropdown__item" role="presentation">
 												<a onclick="settings.doActions('export')" role="menuitem" tabindex="-1">
+													<svg class="slds-button__icon" aria-hidden="true">
+														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>
+													</svg>
 													<span class="slds-truncate" title="Export">Export</span>
 												</a>
 											</li>
 											</li>
 											<li class="slds-dropdown__item" role="presentation">
 												<a onclick="settings.doActions('delete')" role="menuitem" tabindex="-1">
+													<svg class="slds-button__icon cbds-color-compl-red--sober" aria-hidden="true">
+														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+													</svg>
 													<span class="slds-truncate cbds-color-compl-red--sober" title="Delete">Delete</span>
 												</a>
 											</li>
