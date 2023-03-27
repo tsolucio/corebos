@@ -31,17 +31,28 @@ class Settings {
 		this.Inactive = {};
 	}
 
-	async Workflows(label, modulename) {
+	async Workflows(label = '', modulename = '') {
+		if (label == '') {
+			label = alert_arr.LBL_WF_AllModules;
+		}
+		if (modulename == '') {
+			modulename = 'All';
+		}
 		this.LastActive = modulename;
 		this.label = label;
 		let rs = await this.Modules(modulename);
 		ldsModal.show('', rs, 'large');
-		document.getElementsByClassName('slds-modal__footer')[0].remove();
+		if (document.getElementsByClassName('slds-modal__footer')[0] !== undefined) {
+			document.getElementsByClassName('slds-modal__footer')[0].remove();
+		}
 		this.Element('global-modal-container__content').style.background = '#f3f3f3';
 		this.Element('global-modal-container__content').style.height = '100%';
 		await this.CreateWorkflow();
 		this.GridView(modulename);
 		this.Element('currentModule').innerHTML = this.ModuleLabel;
+		if (this.ModuleIcon == '') {
+			this.ModuleIcon = 'bundle_config';
+		}
 		this.Element('currentModuleIcon').innerHTML = this.RenderIcon(this.ModuleIcon);
 	}
 
@@ -119,7 +130,7 @@ class Settings {
 					width: 5
 				},
 				{
-					header: 'Workflow',
+					header: alert_arr.LBL_WF_Workflow,
 					name: 'Description',
 					renderer: {
 						type: WorkflowRender,
@@ -131,7 +142,7 @@ class Settings {
 					width: 270
 				},
 				{
-					header: 'Type',
+					header: alert_arr.LBL_WF_Type,
 					name: 'tasktypelabel',
 					renderer: {
 						type: WorkflowRender,
@@ -141,19 +152,19 @@ class Settings {
 					},
 				},
 				{
-					header: 'Description',
+					header: alert_arr.LBL_WF_Description,
 					name: 'summary'
 				},
 				{
-					header: 'Purpose',
+					header: alert_arr.LBL_WF_Purpose,
 					name: 'Purpose'
 				},
 				{
-					header: 'Trigger',
+					header: alert_arr.LBL_WF_Trigger,
 					name: 'Trigger'
 				},
 				{
-					header: 'Status',
+					header: alert_arr.LBL_WF_Status,
 					name: 'Status',
 					renderer: {
 						type: WorkflowRender,
@@ -164,7 +175,7 @@ class Settings {
 					width: 120
 				},
 				{
-					header: 'Tools',
+					header: alert_arr.LBL_WF_Tools,
 					name: 'tools',
 					renderer: {
 						type: WorkflowRender,
@@ -408,7 +419,7 @@ class Settings {
 
 	RenderModules(current) {
 		let mods = `
-		<li class="slds-vertical-tabs__nav-item" data-value="All Modules" data-icon="bundle_config" data-valueraw="All" id="wf_module_All" onclick="settings.ShowWorkflow(this, 'All')">
+		<li class="slds-vertical-tabs__nav-item" data-value="${alert_arr.LBL_WF_AllModules}" data-icon="bundle_config" data-valueraw="All" id="wf_module_All" onclick="settings.ShowWorkflow(this, 'All')">
 			<a class="slds-vertical-tabs__link" role="tab" tabindex="0" aria-selected="true">
 				<span class="slds-vertical-tabs__left-icon">
 					<span class="slds-icon_container">
@@ -417,7 +428,7 @@ class Settings {
 						</svg>
 					</span>
 				</span>
-				<span class="slds-truncate" title="All">All Modules</span>
+				<span class="slds-truncate" title="${alert_arr.LBL_WF_AllModules}">${alert_arr.LBL_WF_AllModules}</span>
 			</a>
 		</li>
 		`;
@@ -481,7 +492,7 @@ class Settings {
 			ldsNotification.show(alert_arr.ERROR, alert_arr.SELECT, 'error');
 			return false;
 		}
-		if (!confirm('Are You sure to proceed?')) {
+		if (!confirm(alert_arr.GENDOC_CONFIRM_ACTION)) {
 			return false;
 		}
 		for (let i in this.CheckedRows) {
@@ -601,14 +612,18 @@ class Settings {
 				<input type="radio" name="source" id="wffrommodule" value="from_module" onchange="settings.LoadTemplates(this)" checked="" />
 				<label class="slds-radio__label" for="wffrommodule">
 					<span class="slds-radio_faux"></span>
-					<span class="slds-form-element__label slds-page-header__meta-text">For Module</span>
+					<span class="slds-form-element__label slds-page-header__meta-text">
+						${alert_arr.LBL_WF_ForModule}
+					</span>
 				</label>
 				</span>
 				<span class="slds-radio slds-m-top_xx-small slds-m-bottom_xx-small">
 				<input type="radio" name="source" id="wffromtpl" value="from_template" onchange="settings.LoadTemplates(this)" />
 				<label class="slds-radio__label" for="wffromtpl">
 					<span class="slds-radio_faux"></span>
-					<span class="slds-form-element__label slds-page-header__meta-text">From Template</span>
+					<span class="slds-form-element__label slds-page-header__meta-text">
+						${alert_arr.LBL_WF_FromTemplate}
+					</span>
 				</label>
 				</span>
 			</div>
@@ -622,9 +637,11 @@ class Settings {
 					</div>
 				</div>
 			</div>
-			<span id="template_list_foundnone" style="display:none">No Templates</span>
+			<span id="template_list_foundnone" style="display:none">${alert_arr.LBL_WF_NoTemplate}</span>
 			<div class="slds-form-element" id="template_select_field" style="display:none">
-				<label class="slds-form-element__label slds-page-header__meta-text" for="module_list" id="choose_template">Choose a template</label>
+				<label class="slds-form-element__label slds-page-header__meta-text" for="module_list" id="choose_template">
+					${alert_arr.LBL_WF_ChooseTemplate}
+				</label>
 				<div class="slds-form-element__control">
 					<div class="slds-select_container">
 						<select id="template_list" name="template_id" class="slds-select slds-page-header__meta-text"></select>
@@ -656,8 +673,8 @@ class Settings {
 				</span>
 			</div>
 			<div class="slds-media__body slds-border_left slds-p-around_small">
-				<h4 class="slds-truncate" title="Total">
-					Total
+				<h4 class="slds-truncate" title="${alert_arr.LBL_WF_Total}">
+					${alert_arr.LBL_WF_Total}
 				</h4>
 				<p class="slds-m-top_small">
 					<strong id="total_workflows"></strong>
@@ -673,8 +690,8 @@ class Settings {
 				</span>
 			</div>
 			<div class="slds-media__body slds-border_left slds-p-around_small">
-				<h4 class="slds-truncate" title="Active">
-					Active
+				<h4 class="slds-truncate" title="${alert_arr.LBL_WF_Active}">
+					${alert_arr.LBL_WF_Active}
 				</h4>
 				<p class="slds-m-top_small">
 					<strong id="active_workflows"></strong>
@@ -690,8 +707,8 @@ class Settings {
 				</span>
 			</div>
 			<div class="slds-media__body slds-border_left slds-p-around_small">
-				<h4 class="slds-truncate" title="Inactive">
-					Inactive
+				<h4 class="slds-truncate" title="${alert_arr.LBL_WF_Inactive}">
+					${alert_arr.LBL_WF_Inactive}
 				</h4>
 				<p class="slds-m-top_small">
 					<strong id="inactive_workflows"></strong>
@@ -739,16 +756,16 @@ class Settings {
 							<ul class="slds-button-group-list">
 								<li>
 									<button class="slds-button slds-button_neutral" onclick="settings.CreateWorkflow()">
-										New Workflow
+										${alert_arr.LBL_WF_New}
 									</button>
 								</li>
 								<li>
 									<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
-										<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="Show More">
+										<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="${alert_arr.LBL_SHOW_MORE}">
 											<svg class="slds-button__icon" aria-hidden="true">
 												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
 											</svg>
-											<span class="slds-assistive-text">Show More</span>
+											<span class="slds-assistive-text">${alert_arr.LBL_SHOW_MORE}</span>
 										</button>
 										<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions">
 										<ul class="slds-dropdown__list" role="menu" style="width:8rem">
@@ -757,7 +774,7 @@ class Settings {
 													<svg class="slds-button__icon" aria-hidden="true">
 														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
 													</svg>
-													<span class="slds-truncate" title="Activate">Activate</span>
+													<span class="slds-truncate" title="${alert_arr.LBL_WF_Activate}">${alert_arr.LBL_WF_Activate}</span>
 												</a>
 											</li>
 											<li class="slds-dropdown__item" role="presentation">
@@ -765,7 +782,7 @@ class Settings {
 													<svg class="slds-button__icon" aria-hidden="true">
 														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
 													</svg>
-													<span class="slds-truncate" title="Deactivate">Deactivate</span>
+													<span class="slds-truncate" title="${alert_arr.LBL_WF_Deactivate}">${alert_arr.LBL_WF_Deactivate}</span>
 												</a>
 											</li>
 											<li class="slds-dropdown__item" role="presentation">
@@ -773,7 +790,7 @@ class Settings {
 													<svg class="slds-button__icon" aria-hidden="true">
 														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
 													</svg>
-													<span class="slds-truncate" title="Import">Import</span>
+													<span class="slds-truncate" title="${alert_arr.LBL_IMPORT}">${alert_arr.LBL_IMPORT}</span>
 												</a>
 											</li>
 											<li class="slds-dropdown__item" role="presentation">
@@ -781,7 +798,7 @@ class Settings {
 													<svg class="slds-button__icon" aria-hidden="true">
 														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>
 													</svg>
-													<span class="slds-truncate" title="Export">Export</span>
+													<span class="slds-truncate" title="${alert_arr.LBL_EXPORT}">${alert_arr.LBL_EXPORT}</span>
 												</a>
 											</li>
 											</li>
@@ -790,7 +807,7 @@ class Settings {
 													<svg class="slds-button__icon cbds-color-compl-red--sober" aria-hidden="true">
 														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 													</svg>
-													<span class="slds-truncate cbds-color-compl-red--sober" title="Delete">Delete</span>
+													<span class="slds-truncate cbds-color-compl-red--sober" title="${alert_arr.LNK_DELETE_ACTION}">${alert_arr.LNK_DELETE_ACTION}</span>
 												</a>
 											</li>
 										</ul>
@@ -808,33 +825,33 @@ class Settings {
 						<div class="slds-media__body">
 							<div class="slds-grid slds-gutters">
 								<div class="slds-col slds-size_3-of-12">
-									<label class="slds-form-element__label">Workflow</label>
+									<label class="slds-form-element__label">${alert_arr.LBL_WF_Workflow}</label>
 									<input type="text" class="slds-input" id="Description" oninput="settings.GridFilter(this, 'Description')">
 								</div>
 								<div class="slds-col" style="width: 14%">
-									<label class="slds-form-element__label">Type</label>
+									<label class="slds-form-element__label">${alert_arr.LBL_WF_Type}</label>
 									<select type="text" class="slds-select" id="tasktypelabel" onchange="settings.GridFilter(this, 'tasktypelabel')">
 										<option value=""></option>
 										${this.RenderOptions('tasktypelabel', '_children')}
 									</select>
 								</div>
 								<div class="slds-col" style="width: 14%">
-									<label class="slds-form-element__label">Description</label>
+									<label class="slds-form-element__label">${alert_arr.LBL_WF_Description}</label>
 									<input type="text" class="slds-input" id="summary" oninput="settings.GridFilter(this, 'summary')">
 								</div>
 								<div class="slds-col" style="width: 15%">
-									<label class="slds-form-element__label">Purpose</label>
+									<label class="slds-form-element__label">${alert_arr.LBL_WF_Purpose}</label>
 									<input type="text" class="slds-input" id="Purpose" oninput="settings.GridFilter(this, 'Purpose')">
 								</div>
 								<div class="slds-col" style="width: 14%">
-									<label class="slds-form-element__label">Trigger</label>
+									<label class="slds-form-element__label">${alert_arr.LBL_WF_Trigger}</label>
 									<select type="text" class="slds-select" id="Trigger" onchange="settings.GridFilter(this, 'Trigger')">
 										<option value=""></option>
 										${this.RenderOptions('Trigger')}
 									</select>
 								</div>
 								<div class="slds-col" style="width: 10%">
-									<label class="slds-form-element__label">Status</label>
+									<label class="slds-form-element__label">${alert_arr.LBL_WF_Status}</label>
 									<select type="text" class="slds-select" id="Status" onchange="settings.GridFilter(this, 'Status')">
 										<option value=""></option>
 										${this.RenderOptions('Status')}
@@ -894,7 +911,7 @@ class WorkflowRender {
 					<svg class="slds-button__icon cbds-color-compl-red--sober" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 					</svg>
-					<span class="slds-assistive-text">Delete</span>
+					<span class="slds-assistive-text">${alert_arr.LNK_DELETE_ACTION}</span>
 				</a>`;
 			}
 			actions += `
@@ -903,7 +920,7 @@ class WorkflowRender {
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#forward_up"></use>
 					</svg>
-					<span class="slds-assistive-text">Redirect</span>
+					<span class="slds-assistive-text">${alert_arr.LBL_WF_Redirect}</span>
 				</a>
 				${deleteWf}
 			</div>`;
@@ -943,3 +960,9 @@ class WorkflowRender {
 }
 
 var settings = new Settings();
+const urlParams = new URLSearchParams(window.location.search);
+const openWorkflow = urlParams.get('openWorkflow');
+const formodule = urlParams.get('formodule');
+if (openWorkflow !== null && formodule !== null) {
+	settings.Workflows(alert_arr.LBL_WF_List, formodule);
+}

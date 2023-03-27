@@ -93,8 +93,12 @@
 									alert('{$MOD.LBL_WF_MANUAL_WARNING}');
 								}
 							}
+							function gotoURL() {
+								let currentModuleURL = 'index.php?module=Settings&action=ModuleManager&module_settings=true&openWorkflow=true&formodule='+document.getElementsByName('module_name')[0].value;
+								window.location.href = currentModuleURL;
+							}
 						</script>
-						<button class="slds-button slds-button_destructive" type="button" onclick="window.location.href='index.php?module=com_vtiger_workflow&action=workflowlist'">
+						<button class="slds-button slds-button_destructive" type="button" onclick="gotoURL()">
 							<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use>
 							</svg>
