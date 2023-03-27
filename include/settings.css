@@ -1,0 +1,13 @@
+.slds-modal__container_custom {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 3rem 0rem 0rem 0 !important;
+}
+.cbds-modulelist {
+  margin: 0.75rem -1rem -1rem;
+  padding: 1rem;
+  border-radius: 0 0 0.25rem 0.25rem;
+  background-color: white;
+  position: relative;
+  z-index: 2;
+}

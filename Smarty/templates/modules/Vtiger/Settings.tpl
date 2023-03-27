@@ -9,21 +9,7 @@
  ********************************************************************************/
 -->*}
 {include file='SetMenu.tpl'}
-<style type="text/css">
-.slds-modal__container {
-	width: 100% !important;
-	height: 100% !important;
-	padding: 3rem 0rem 0rem 0 !important;
-}
-.cbds-modulelist {
-	margin: 0.75rem -1rem -1rem;
-	padding: 1rem;
-	border-radius: 0 0 0.25rem 0.25rem;
-	background-color: white;
-	position: relative;
-	z-index: 2;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="include/settings.css">
 <script src="include/js/Settings.js"></script>
 <div class="slds-page-header slds-page-header_record-home slds-m-horizontal_small">
 	<div class="slds-page-header__row">

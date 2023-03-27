@@ -9,6 +9,8 @@
  ********************************************************************************/
 -->*}
 {include file='SetMenu.tpl'}
+<link rel="stylesheet" type="text/css" href="include/settings.css">
+<script src="include/js/Settings.js"></script>
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43" aria-modal="true">
 	<div class="slds-modal__container slds-p-around_none">
 		<div class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
