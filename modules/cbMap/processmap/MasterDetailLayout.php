@@ -34,6 +34,7 @@
 	<title></title>
 	<expandall>1</expandall>
 	<create>1</create>
+	<massedit>1</massedit>
 	<actions>
 		<action>
 			<label></label>
@@ -149,6 +150,7 @@ class MasterDetailLayout extends processcbMap {
 			'icon' => (string)$xml->toolbar->icon,
 			'expandall' => (string)$xml->toolbar->expandall,
 			'create' => (string)$xml->toolbar->create,
+			'massedit' => (string)$xml->toolbar->massedit,
 			'actions' => $actions
 		);
 		$mapping_arr['listview'] = array();
