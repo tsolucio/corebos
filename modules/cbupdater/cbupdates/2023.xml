@@ -105,4 +105,11 @@
 	<classname>addPicklistValuesAdapterCbCredentials</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Update Workflow Link</description>
+	<filename>build/changeSets/2023/updateWorkflowLink.php</filename>
+	<classname>updateWorkflowLink</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
