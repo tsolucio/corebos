@@ -3925,4 +3925,8 @@ function convertPathFromAbsoluteToRelative($absolutePath) {
 	}
 	return substr($absolutePath, $prefix_pos + strlen($root_directory));
 }
+
+function escapeUnderscores($sql) {
+	return str_replace('_', '\_', $sql);
+}
 ?>

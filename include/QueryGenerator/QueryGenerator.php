@@ -1421,27 +1421,33 @@ class QueryGenerator {
 					break;
 				case 's':
 					$sqlOperator = 'LIKE';
+					$value = escapeUnderscores($value);
 					$value = "$value%";
 					break;
 				case 'ew':
 					$sqlOperator = 'LIKE';
+					$value = escapeUnderscores($value);
 					$value = "%$value";
 					break;
 				case 'c':
 				case 'cnc':
 					$sqlOperator = 'LIKE';
+					$value = escapeUnderscores($value);
 					$value = "%$value%";
 					break;
 				case 'k':
 					$sqlOperator = 'NOT LIKE';
+					$value = escapeUnderscores($value);
 					$value = "%$value%";
 					break;
 				case 'dnsw':
 					$sqlOperator = 'NOT LIKE';
+					$value = escapeUnderscores($value);
 					$value = "$value%";
 					break;
 				case 'dnew':
 					$sqlOperator = 'NOT LIKE';
+					$value = escapeUnderscores($value);
 					$value = "%$value";
 					break;
 				case 'monthday':
