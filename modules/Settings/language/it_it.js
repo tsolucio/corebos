@@ -99,4 +99,7 @@ var mod_alert_arr = {
 	'LBL_CALL': 'Call',
 	'LBL_MEETING': 'Meeting',
 	'LBL_TASK': 'Task',
+	'LBL_IMPORTFILE': 'Il file di importazione non può essere vuoto',
+	'LBL_CATEGORY': 'La categoria non può essere vuota',
+	'LBL_SUPPORTEDFILE': 'Tipo di file supportato Solo .XML',
 };

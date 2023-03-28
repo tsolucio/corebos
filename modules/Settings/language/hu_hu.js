@@ -99,4 +99,7 @@ var mod_alert_arr = {
 	'LBL_CALL': 'Call',
 	'LBL_MEETING': 'Meeting',
 	'LBL_TASK': 'Task',
+	'LBL_IMPORTFILE': 'Az importfájl nem lehet üres',
+	'LBL_CATEGORY': 'A kategória nem lehet üres',
+	'LBL_SUPPORTEDFILE': 'Csak .XML fájltípus támogatott',
 };
