@@ -59,6 +59,7 @@ class MasterDetailGridLayout_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('MasterButtons', $mdbuttons['MASTERDETAILBUTTON']);
 		$smarty->assign('MasterMapID', $cbMap->column_fields['record_id']);
 		$smarty->assign('MasterDetailHide', !empty($mdmap['hide']) ? $mdmap['hide'] : 0);
+		$smarty->assign('MasterDetailDragDrop', !empty($mdmap['dragdrop']) ? $mdmap['dragdrop'] : 0);
 		return $smarty->fetch('Components/MasterDetail/Grid.tpl');
 	}
 }

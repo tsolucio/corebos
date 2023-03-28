@@ -591,6 +591,39 @@ function gridDeleteRow($adb, $request) {
 	return $result;
 }
 
+function gridDragDrop($adb, $request) {
+	$dataSequence = json_decode($request['dataSequence'], true);
+	$module = empty($_REQUEST['detail_module']) ? '' : vtlib_purify($_REQUEST['detail_module']);
+	if (empty($module) || empty($dataSequence) || isPermitted($module, 'EditView', $recordid)!='yes') {
+		return array('success' => false, 'msg' => getTranslatedString('LBL_PERMISSION'));
+	}
+	$result = array('success' => false, 'msg' => 'failed');
+	if (!empty($request['mapname'])) {
+		$mapname = vtlib_purify($_REQUEST['mapname']);
+		$cbMap = cbMap::getMapByName($mapname);
+		if ($cbMap) {
+			$mtype = $cbMap->column_fields['maptype'];
+			$mdmap = $cbMap->$mtype();
+			$focus = CRMEntity::getInstance($module);
+			$tableindex = $focus->table_index;
+			if (!empty($mdmap['sortfield'])) {
+				$sortfield = $mdmap['sortfield'];
+				$tablename = getTableNameForField($module, $sortfield);
+				foreach ($dataSequence as $row) {
+					$rs = $adb->pquery("select $sortfield from $tablename where $tableindex=? limit 1", array($row['id']));
+					if ($rs && $adb->num_rows($rs) > 0) {
+						$sql = "update $tablename set $sortfield=? where $tableindex = ?";
+						$adb->pquery($sql, array($row['sequence'], $row['id']));
+						$result['success'] = true;
+						$result['msg'] = '';
+					}
+				}
+			}
+		}
+	}
+	return $result;
+}
+
 function gridMoveRowUpDown($adb, $request) {
 	$recordid = empty($_REQUEST['recordid']) ? '' : vtlib_purify($_REQUEST['recordid']);
 	$module = empty($_REQUEST['detail_module']) ? '' : vtlib_purify($_REQUEST['detail_module']);

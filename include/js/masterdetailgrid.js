@@ -13,6 +13,34 @@ var masterdetailwork = {
 	MasterButtons: [],
 	MasterHide: [],
 
+	DragDrop: (ev) => {
+		let dataSequence = [];
+		let record_module = '';
+		let data = ev.instance.getData();
+		let index = 1;
+		for (let i in data) {
+			dataSequence.push({
+				id: data[i].record_id,
+				sequence: index++
+			});
+			record_module = data[i].record_module;
+		}
+		let mapname = document.getElementById(ev.instance.el.id).dataset.mapname;
+		var fileurl = 'module=Utilities&action=UtilitiesAjax&file=MasterDetailGridLayoutActions&mdaction=dragdrop&detail_module='+record_module+'&mapname='+mapname;
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?' + fileurl,
+			data: {
+				dataSequence: JSON.stringify(dataSequence)
+			}
+		}).done(function (response) {
+			let res = JSON.parse(response);
+			if (res.success) {
+				MDInstance[`mdgrid${ev.instance.el.id}`].readData(1);
+			}
+		});
+	},
+
 	moveup: (MDGrid, recordid, module, rowkey) => {
 		if (rowkey == 0) {
 			return false;

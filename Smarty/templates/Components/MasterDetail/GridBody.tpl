@@ -63,7 +63,8 @@ function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 		header: {
 			align: 'left',
 		},
-		contextMenu: null
+		contextMenu: null,
+		draggable: {$MasterDetailDragDrop}
 	});
 
 	tui.Grid.applyTheme('striped');
@@ -73,6 +74,7 @@ function loadMDGrid{$MasterDetailLayoutMap.mapname}() {
 	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('uncheck', masterdetailwork.checkUnCheckRows);
 	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('checkAll', masterdetailwork.checkUnCheckRows);
 	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('uncheckAll', masterdetailwork.checkUnCheckRows);
+	MDInstance['mdgrid{$MasterDetailLayoutMap.mapname}'].on('drop', masterdetailwork.DragDrop);
 }
 loadMDGrid{$MasterDetailLayoutMap.mapname}();
 </script>
