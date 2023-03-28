@@ -48,7 +48,7 @@ class MasterDetailGridLayout_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('MasterDetailLayoutMap', $mdmap);
 		$smarty->assign('MasterDetaiCurrentRecord', $_REQUEST['record']);
 		$smarty->assign('MasterID', $masterid);
-		$smarty->assign('MasterDetail_Pagination', GlobalVariable::getVariable('MasterDetail_Pagination', 0));
+		$smarty->assign('MasterDetail_Pagination', !empty($mdmap['pagination']) ? intval($mdmap['pagination']) : 0);
 		$targetfield = '';
 		if (isset($mdmap['linkfields']['targetfield'])) {
 			$targetfield = $mdmap['linkfields']['targetfield'];

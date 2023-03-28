@@ -30,6 +30,7 @@
   <sortfield>designquotesid</sortfield>
   <defaultorder>DESC</defaultorder>
   <dragdrop>0|1</dragdrop>
+  <pagination>0...n</pagination>
   <hide>0|1</hide>//default 0
   <toolbar>
 	<title></title>
@@ -129,6 +130,7 @@ class MasterDetailLayout extends processcbMap {
 		$mapping_arr['condition'] = (string)$xml->condition;
 		$mapping_arr['hide'] = boolval((string)$xml->hide);
 		$mapping_arr['dragdrop'] = boolval((string)$xml->dragdrop);
+		$mapping_arr['pagination'] = (string)$xml->pagination;
 		$this->detailModule = $mapping_arr['targetmodule'];
 		$dmf = CRMEntity::getInstance($this->detailModule);
 		$mapping_arr['targetmoduleidfield'] = $dmf->table_index;
