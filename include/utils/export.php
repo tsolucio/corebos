@@ -181,6 +181,10 @@ function export($type, $format = 'CSV') {
 		} else {
 			$tablename = getTableNameForField($type, $order_by);
 			$tablename = (($tablename != '')?($tablename.'.'):'');
+			$entity = getEntityFieldNames($type);
+			if (empty($tablename) && $entity['entityidfield'] == $order_by) {
+				$tablename = $focus->table_name.'.';
+			}
 			$query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 		}
 	}
