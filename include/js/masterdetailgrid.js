@@ -84,8 +84,10 @@ var masterdetailwork = {
 						if (res.success) {
 							ev.instance.readData(1);
 							if (ReloadScreenAfterEdit == 1) {
-								localStorage.setItem('MasterDetail_currentPage', MDInstance[`mdgrid${ev.instance.el.id}`].getPagination()._currentPage);
-								localStorage.setItem('MasterDetail_Name', `mdgrid${ev.instance.el.id}`);
+								if (MDInstance[`mdgrid${ev.instance.el.id}`].getPagination() !== null) {
+									localStorage.setItem('MasterDetail_currentPage', MDInstance[`mdgrid${ev.instance.el.id}`].getPagination()._currentPage);
+									localStorage.setItem('MasterDetail_Name', `mdgrid${ev.instance.el.id}`);
+								}
 								masterdetailwork.MDReload();
 							}
 						} else {
@@ -118,8 +120,10 @@ var masterdetailwork = {
 	},
 
 	MDUpsert: (MDGrid, module, recordid, CurrentRecord = '') => {
-		localStorage.setItem('MasterDetail_currentPage', MDInstance[MDGrid].getPagination()._currentPage);
-		localStorage.setItem('MasterDetail_Name', MDGrid);
+		if (MDInstance[MDGrid].getPagination() !== null) {
+			localStorage.setItem('MasterDetail_currentPage', MDInstance[MDGrid].getPagination()._currentPage);
+			localStorage.setItem('MasterDetail_Name', MDGrid);
+		}
 		let record = recordid || '';
 		if (record!='') {
 			record = '&record='+record;
@@ -240,8 +244,10 @@ var masterdetailwork = {
 	},
 
 	CallToAction: (ev, workflowid) => {
-		localStorage.setItem('MasterDetail_currentPage', MDInstance[ev.dataset.gridname].getPagination()._currentPage);
-		localStorage.setItem('MasterDetail_Name', ev.dataset.gridname);
+		if (MDInstance[ev.dataset.gridname].getPagination() !== null) {
+			localStorage.setItem('MasterDetail_currentPage', MDInstance[ev.dataset.gridname].getPagination()._currentPage);
+			localStorage.setItem('MasterDetail_Name', ev.dataset.gridname);
+		}
 		if (SelectedRecordsIds.length > 0) {
 			runBAWorkflow(workflowid.split(','), SelectedRecordsIds.join(';'));
 			masterdetailwork.MDReload();
