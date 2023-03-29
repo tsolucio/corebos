@@ -503,10 +503,10 @@ function gridGetActionColumn($renderer, $actions) {
 			'renderer' => [
 				'type' => $renderer, // 'ActionRender', 'mdActionRender',
 				'options' => [
-					'moveup' => $actions['moveup'],
-					'movedown' => $actions['movedown'],
-					'edit' => $actions['edit'],
-					'delete' => $actions['delete'],
+					'moveup' => boolval($actions['moveup']),
+					'movedown' => boolval($actions['movedown']),
+					'edit' => boolval($actions['edit']),
+					'delete' => boolval($actions['delete']),
 				]
 			],
 		];
