@@ -99,4 +99,7 @@ var mod_alert_arr = {
 	'LBL_CALL': 'Call',
 	'LBL_MEETING': 'Meeting',
 	'LBL_TASK': 'Task',
+	'LBL_IMPORTFILE': 'Fișierul de import nu poate fi gol',
+	'LBL_CATEGORY': 'Categoria nu poate fi goală',
+	'LBL_SUPPORTEDFILE': 'Tip de fișier acceptat numai .XML',
 };

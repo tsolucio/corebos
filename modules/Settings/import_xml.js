@@ -6,10 +6,10 @@ $(document).ready(function () {
 		var form_data = new FormData();
 		if (filename[0] == undefined || category == '') {
 			if (filename[0] == undefined) {
-				window.alert('Import File cannot be empty');
+				window.alert(getTranslatedString('LBL_IMPORTFILE'));
 			}
 			if (category == '') {
-				window.alert('Category cannot be empty');
+				window.alert(getTranslatedString('LBL_CATEGORY'));
 			}
 		} else {
 			var file_extension = filename[0]['name'].split('.').pop();
@@ -46,7 +46,7 @@ $(document).ready(function () {
 					}
 				});
 			} else {
-				window.alert('Supported File Type .XML only');
+				window.alert(getTranslatedString('LBL_SUPPORTEDFILE'));
 			}
 		}
 	});
