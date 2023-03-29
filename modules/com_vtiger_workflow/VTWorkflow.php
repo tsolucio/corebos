@@ -919,7 +919,7 @@ class Workflow {
 			if ($forField == 'tasktypelabel') {
 				$forField = 'task';
 			}
-			$where = $adb->convert2Sql( ' and '.$forField.'=?', array($forValue));
+			$where = $adb->convert2Sql(' and '.$forField.'=?', array($forValue));
 		}
 		$rs = $adb->pquery('select * from com_vtiger_workflowtasks where workflow_id=? '.$where.' order by executionorder', array($wfid));
 		$tasks = array();
