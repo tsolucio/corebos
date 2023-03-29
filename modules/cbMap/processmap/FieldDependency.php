@@ -232,7 +232,6 @@ class FieldDependency extends processcbMap {
 				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
-				//$field = trim((string)$action->field);
 				$actions['change'][] = array('field'=>trim((string)$action->field),'value'=>(string)$action->value);
 				if ($mapping_arr['blocktriggerfields']) {
 					$hasBlockingAction = true;
