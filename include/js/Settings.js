@@ -753,68 +753,38 @@ class Settings {
 				<div class="slds-page-header__col-actions">
 					<div class="slds-page-header__controls">
 						<div class="slds-page-header__control">
-							<ul class="slds-button-group-list">
-								<li>
-									<button class="slds-button slds-button_neutral" onclick="settings.CreateWorkflow()">
-										${alert_arr.LBL_WF_New}
-									</button>
-								</li>
-								<li>
-									<div class="slds-dropdown-trigger slds-dropdown-trigger_hover slds-is-open slds-button_last">
-										<button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="${alert_arr.LBL_SHOW_MORE}">
-											<svg class="slds-button__icon" aria-hidden="true">
-												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-											</svg>
-											<span class="slds-assistive-text">${alert_arr.LBL_SHOW_MORE}</span>
-										</button>
-										<div class="slds-dropdown slds-dropdown_right slds-dropdown_actions">
-										<ul class="slds-dropdown__list" role="menu" style="width:8rem">
-											<li class="slds-dropdown__item" role="presentation">
-												<a onclick="settings.doActions('activate')" role="menuitem" tabindex="0">
-													<svg class="slds-button__icon" aria-hidden="true">
-														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
-													</svg>
-													<span class="slds-truncate" title="${alert_arr.LBL_WF_Activate}">${alert_arr.LBL_WF_Activate}</span>
-												</a>
-											</li>
-											<li class="slds-dropdown__item" role="presentation">
-												<a onclick="settings.doActions('deactivate')" role="menuitem" tabindex="0">
-													<svg class="slds-button__icon" aria-hidden="true">
-														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
-													</svg>
-													<span class="slds-truncate" title="${alert_arr.LBL_WF_Deactivate}">${alert_arr.LBL_WF_Deactivate}</span>
-												</a>
-											</li>
-											<li class="slds-dropdown__item" role="presentation">
-												<a onclick="gotourl('index.php?module=com_vtiger_workflow&action=Import');" role="menuitem" tabindex="0">
-													<svg class="slds-button__icon" aria-hidden="true">
-														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
-													</svg>
-													<span class="slds-truncate" title="${alert_arr.LBL_IMPORT}">${alert_arr.LBL_IMPORT}</span>
-												</a>
-											</li>
-											<li class="slds-dropdown__item" role="presentation">
-												<a onclick="settings.doActions('export')" role="menuitem" tabindex="-1">
-													<svg class="slds-button__icon" aria-hidden="true">
-														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>
-													</svg>
-													<span class="slds-truncate" title="${alert_arr.LBL_EXPORT}">${alert_arr.LBL_EXPORT}</span>
-												</a>
-											</li>
-											</li>
-											<li class="slds-dropdown__item" role="presentation">
-												<a onclick="settings.doActions('delete')" role="menuitem" tabindex="-1">
-													<svg class="slds-button__icon cbds-color-compl-red--sober" aria-hidden="true">
-														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-													</svg>
-													<span class="slds-truncate cbds-color-compl-red--sober" title="${alert_arr.LNK_DELETE_ACTION}">${alert_arr.LNK_DELETE_ACTION}</span>
-												</a>
-											</li>
-										</ul>
-									</div>
-								</div>
-								</li>
-							</ul>
+							<div class="slds-button-group" role="group">
+								<button onclick="settings.doActions('activate')" type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" title="${alert_arr.LBL_WF_Activate}" aria-pressed="false">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+									</svg>
+									<span class="slds-assistive-text">${alert_arr.LBL_WF_Activate}</span>
+								</button>
+								<button onclick="settings.doActions('deactivate')" type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" title="${alert_arr.LBL_WF_Deactivate}" aria-pressed="false">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
+									</svg>
+									<span class="slds-assistive-text">${alert_arr.LBL_WF_Deactivate}</span>
+								</button>
+								<button onclick="gotourl('index.php?module=com_vtiger_workflow&action=Import');" type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" title="${alert_arr.LBL_IMPORT}" aria-pressed="false">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#download"></use>
+									</svg>
+									<span class="slds-assistive-text">${alert_arr.LBL_IMPORT}</span>
+								</button>
+								<button onclick="settings.doActions('export')" type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" title="${alert_arr.LBL_EXPORT}" aria-pressed="false">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>
+									</svg>
+									<span class="slds-assistive-text">${alert_arr.LBL_EXPORT}</span>
+								</button>
+								<button onclick="settings.doActions('delete')" type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" title="${alert_arr.LNK_DELETE_ACTION}" aria-pressed="false">
+									<svg class="slds-button__icon cbds-color-compl-red--sober" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+									</svg>
+									<span class="slds-assistive-text cbds-color-compl-red--sober">${alert_arr.LNK_DELETE_ACTION}</span>
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
