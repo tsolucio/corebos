@@ -262,10 +262,10 @@ class Settings {
 			if (this.LastActive != data[i].ModuleName && this.LastActive != 'All') {
 				continue;
 			}
-			if ((field == 'Status' || field == 'Trigger') && data[i][field] == value) {
+			if ((field == 'Status' || field == 'Trigger') && data[i][field].toLowerCase() == value.toLowerCase()) {
 				filteredData.push(this.FormatData(data[i]));
 			}
-			if (field == 'Purpose' && data[i][field].includes(value)) {
+			if (field == 'Purpose' && data[i][field].toLowerCase().includes(value.toLowerCase())) {
 				filteredData.push(this.FormatData(data[i]));
 			}
 			if (field == 'summary' || field == 'tasktypelabel') {
@@ -275,7 +275,7 @@ class Settings {
 						if (data[i]._children[j][field] === undefined) {
 							continue;
 						}
-						if (data[i]._children[j][field].includes(value)) {
+						if (data[i]._children[j][field].toLowerCase().includes(value.toLowerCase())) {
 							childs.push(data[i]._children[j]);
 						}
 					}
@@ -300,12 +300,12 @@ class Settings {
 						if (data[i]._children[j]['bmapid_display'] === undefined) {
 							continue;
 						}
-						if (data[i]._children[j]['field_value_mapping'].includes(value) || data[i]._children[j]['workflowid_display'].includes(value) || data[i]._children[j]['bmapid_display'].includes(value)) {
+						if (data[i]._children[j]['field_value_mapping'].toLowerCase().includes(value.toLowerCase()) || data[i]._children[j]['workflowid_display'].toLowerCase().includes(value.toLowerCase()) || data[i]._children[j]['bmapid_display'].toLowerCase().includes(value.toLowerCase())) {
 							childs.push(data[i]._children[j]);
 						}
 					}
 					if (childs.length == 0) {
-						if (data[i][field].includes(value)) {
+						if (data[i][field].toLowerCase().includes(value.toLowerCase())) {
 							filteredData.push(this.FormatData(data[i]));
 						}
 						continue;
@@ -314,7 +314,7 @@ class Settings {
 					fData._children = this.FormatChildrens(childs);
 					filteredData.push(this.FormatData(fData));
 				} else {
-					if (data[i][field].includes(value)) {
+					if (data[i][field].toLowerCase().includes(value.toLowerCase())) {
 						filteredData.push(this.FormatData(data[i]));
 					}
 				}
