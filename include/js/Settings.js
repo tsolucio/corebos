@@ -830,7 +830,7 @@ class Settings {
 								<div class="slds-col slds-size_1-of-12">
 									<button onclick="settings.ResetData(true)" class="slds-button slds-button_icon slds-button_icon-border-filled" style="margin-top:1.5rem">
 										<svg class="slds-button__icon" aria-hidden="true">
-											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#filter"></use>
+											<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#clear"></use>
 										</svg>				
 									</button>
 								</div>
