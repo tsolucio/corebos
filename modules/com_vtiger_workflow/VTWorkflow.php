@@ -945,5 +945,11 @@ class Workflow {
 		$log->debug('< getWorkflowTasks');
 		return $tasks;
 	}
+
+	public function getModuleList() {
+		global $adb;
+		$util = new VTWorkflowUtils();
+		return $util->vtGetModules($adb);
+	}
 }
 ?>
