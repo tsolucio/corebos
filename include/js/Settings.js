@@ -265,7 +265,7 @@ class Settings {
 			if ((field == 'Status' || field == 'Trigger') && data[i][field].toLowerCase() == value.toLowerCase()) {
 				filteredData.push(this.FormatData(data[i]));
 			}
-			if (field == 'Purpose' && data[i][field].toLowerCase().includes(value.toLowerCase())) {
+			if (field == 'Purpose' && data[i][field] !== null && data[i][field].toLowerCase().includes(value.toLowerCase())) {
 				filteredData.push(this.FormatData(data[i]));
 			}
 			if (field == 'summary' || field == 'tasktypelabel') {
