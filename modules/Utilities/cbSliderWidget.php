@@ -32,7 +32,7 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 	protected $widgetName = 'sliderWidget';
 
 	public function process($context = false) {
-		global $adb, $site_URL, $currentModule, $current_user;
+		global $adb, $site_URL, $currentModule, $current_user, $app_strings;
 		$this->context = $context;
 		$smarty = $this->getViewer();
 		$BAInfo = json_decode($this->getFromContext('BusinessActionInformation'), true);
@@ -104,6 +104,7 @@ class sliderwidget_DetailViewBlock extends DeveloperBlock {
 		$smarty->assign('initial', empty($initial) ? '0' : (string)$initial);
 		$smarty->assign('customstyle', $customstyle);
 		$smarty->assign('title', empty($title) ? getTranslatedString('Slider') : $title);
+		$smarty->assign('APP', $app_strings);
 		return $smarty->fetch('sliderwidget.tpl');
 	}
 }
