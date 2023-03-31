@@ -44,6 +44,24 @@
 		{/foreach}
 	</ul>
 </div>
+<div id="imageSliderButtonsContainer">
+	<div id="imageSliderButtons">
+		<div id="generateShareLinkButton">
+			<button class="slds-button slds-button_outline-brand" onclick="handleGenerateLinkButton()">{$APP.LBL_GENERATE_LINK}</button>
+		</div>
+		<div id="downloadAllImagesButton">
+			<button class="slds-button slds-button_outline-brand" onclick="handleDownloadAllImages()">{$APP.LBL_DOWNLOAD_ALL_IMAGES}</button>
+		</div>
+	</div>
+</div>
+<div id="imageSliderShareLinkPopupContainer">
+	<div id="imageSliderShareLinkPopup">
+		<div id="imageSliderShareLink" class="slds-m-around_medium"></div>
+		<div id="imageSliderValidUntill" class="slds-m-around_medium"></div>
+		<button class="slds-button slds-button_outline-brand" onclick="handleGenerateLinkCopyButton()">{$APP.LBL_CLICK_TO_COPY}</button>
+		<div id="imageSliderClosePopup" onclick="handleClosingGenerateLinkPopupWindow()">X</div>
+	</div>
+</div>
 <script src="include/components/slider.js"></script>
 <script type="text/javascript">
 	Slider.Data = '{$imagesjson}';

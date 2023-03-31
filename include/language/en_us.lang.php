@@ -685,6 +685,15 @@ $app_strings = array(
 'LBL_END_DATE_TIME'=>'End Date & Time (System Date)',
 'LBL_CREATE_MERGE_TEMPLATE'=>'Create Mail Merge templates ',
 'LBL_IMG_FORMATS'=>'(Only jpg, gif, bmp and png images)',
+'LBL_IMG_FORMATS'=>'(Only jpg, gif, bmp and png images)',
+'LBL_GENERATE_LINK'=>'generate share link',
+'LBL_DOWNLOAD_ALL_IMAGES'=>'download all images (zip format)',
+'LBL_CLICK_TO_COPY'=>'Click to Copy',
+'LBL_YOUR_SHARE_LINK'=>'Your share link is:',
+'LBL_LINK_VALID_UNTIL'=>'The link will be valid until',
+'LBL_NO_IMAGES_TO_SHOW'=>'there are no images to show',
+'LBL_TOKEN_DOESNT_EXIST'=>'This token doesnt exist or it is expired',
+'LBL_SHARE_LINK_IMAGE_SLIDER_TITLE'=>'Image slider',
 
 //Added for Taxmode in detail view of Product Details.
 'group'=>'Group',

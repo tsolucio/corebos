@@ -26,6 +26,7 @@ var gcbpageisdirty = false;
 var gcbpagewhyisdirty = '';
 var goldcorebos_browsertabID = '{$corebos_browsertabID}';
 var gVTviewType = '{$gVTviewType}';
+var gVTsiteUrl = '{$gVTsiteUrl}';
 if (typeof(Storage) !== "undefined") {ldelim}
 	if (sessionStorage.corebos_browsertabID) {
 		var corebos_browsertabID = sessionStorage.corebos_browsertabID;

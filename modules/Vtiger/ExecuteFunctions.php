@@ -754,6 +754,40 @@ switch ($functiontocall) {
 			);
 		}
 		break;
+	case 'shareLink':
+		require_once 'modules/Documents/ShareDocLinkWidgetDetailViewBlock.php';
+		$recordId = vtlib_purify($_REQUEST['recordId']);
+		$operation = vtlib_purify($_REQUEST['operation']);
+		if ($operation == 'create') {
+			$doclink = new ShareDocLinkWidgetDetailViewBlock();
+			$expirationTime = time() + 86400; // one day
+			$timeString = date('Y-m-d H:i:s', $expirationTime);
+			$shareToken = $doclink->createShareLinkForSlider($recordId, $expirationTime);
+			$ret = array(
+				'shareToken' => $shareToken,
+				'validUntil' => $timeString,
+			);
+		}
+		break;
+	case 'compressAndDownloadFiles':
+		// you have to call this ExecuteFunctions with the downloadFilesAsZip() js function
+		// in order to be able to download the file. if you make a normal http request it will
+		// give the binary data of the zip file and will not download it automatically.
+		global $root_directory;
+		$zipFileName = vtlib_purify($_REQUEST['zipFileName']);
+		$filesToBeCompressed = json_decode(vtlib_purify($_REQUEST['filesToBeCompressed']));
+		$zip = new Vtiger_Zip('test.zip');
+		foreach ($filesToBeCompressed as $value) {
+			$filePath = convertFileUrlToRelativePath($value);
+			$fileName = explode('/', convertFileUrlToRelativePath($value))[count(explode('/', convertFileUrlToRelativePath($value)))-1];
+			$zip->addFile($root_directory  . $filePath, $fileName);
+		}
+		$zip->save();
+		$zip->forceDownload($zipFileName);
+		$ret = array(
+			'success' => true,
+		);
+		break;
 	default:
 		$ret = '';
 		break;

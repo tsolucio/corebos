@@ -99,6 +99,42 @@ const Slider = {
 	}
 };
 
+async function handleGenerateLinkButton() {
+	const result = await ExecuteFunctions('shareLink', 'recordId=1084&operation=create');
+	const resultObj = JSON.parse(result);
+	const shareToken = resultObj['shareToken'];
+	const validUntil = resultObj['validUntil'];
+	const imageSliderShareLinkPopupContainer = document.getElementById('imageSliderShareLinkPopupContainer');
+	const imageSliderValidUntill = document.getElementById('imageSliderValidUntill');
+	const imageSliderShareLink = document.getElementById('imageSliderShareLink');
+	imageSliderShareLinkPopupContainer.style.display = 'flex';
+	const shareLink = `${gVTsiteUrl}/notifications.php?type=docshare&share_token=${shareToken}`;
+	const translation = JSON.parse(await ExecuteFunctions('getTranslatedStrings', 'tkeys=LBL_YOUR_SHARE_LINK;LBL_LINK_VALID_UNTIL'));
+	imageSliderShareLink.innerHTML = `${translation['LBL_YOUR_SHARE_LINK']} <a id="imageSliderShareLinkATag" href="${shareLink}">${shareLink}</a>`;
+	imageSliderValidUntill.innerHTML = `${translation['LBL_LINK_VALID_UNTIL']} ${validUntil}`;
+}
+
+async function handleGenerateLinkCopyButton() {
+	const imageSliderShareLinkUrl = document.getElementById('imageSliderShareLinkATag');
+	const textarea = document.createElement("textarea");
+	textarea.value = imageSliderShareLinkUrl.href;
+	document.body.appendChild(textarea);
+	textarea.select();
+	navigator.clipboard.writeText(textarea.value);
+	document.body.removeChild(textarea);
+}
+
+async function handleClosingGenerateLinkPopupWindow() {
+	const imageSliderShareLinkPopupContainer = document.getElementById('imageSliderShareLinkPopupContainer');
+	imageSliderShareLinkPopupContainer.style.display = 'none';
+}
+
+function handleDownloadAllImages() {
+	const arr = JSON.parse(Slider.Data);
+	const imageUrls = arr.map(obj => obj.path);
+	downloadFilesAsZip('document_' + generateUUID(), imageUrls);
+}
+
 window.addEventListener('load', function () {
 	Slider.Init('carousel');
 });

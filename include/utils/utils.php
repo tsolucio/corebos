@@ -57,7 +57,7 @@ define('RB_RECORD_UPDATED', 'update');
  * @return array with the variables
  */
 function getBrowserVariables(&$smarty) {
-	global $currentModule,$current_user,$default_charset,$theme,$adb,$current_language;
+	global $currentModule,$current_user,$default_charset,$theme,$adb,$current_language,$site_URL;
 	$vars = array();
 	$vars['gVTModule'] = $currentModule;
 	$vars['gVTTheme'] = $theme;
@@ -117,6 +117,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('SW_MD5', $swmd5);
 		$smarty->assign('corebos_browsertabID', $corebos_browsertabID);
 		$smarty->assign('gVTviewType', isset($_REQUEST['action']) ? vtlib_purify($_REQUEST['action']) : '');
+		$smarty->assign('gVTsiteUrl', $site_URL);
 	}
 }
 
@@ -3925,6 +3926,10 @@ function sort_array_data(&$arr, $col, $dir = SORT_ASC) {
 	array_multisort($sort_col, $dir, $arr);
 }
 
+/**
+ * Converts /home/malik-ben/Desktop/dockerized_corebos/www/corebos/include/utils/utils.php
+ * to: include/utils/utils.php
+ */
 function convertPathFromAbsoluteToRelative($absolutePath) {
 	global $root_directory;
 	$prefix_pos = strpos($absolutePath, $root_directory);
@@ -3932,5 +3937,16 @@ function convertPathFromAbsoluteToRelative($absolutePath) {
 		return '';
 	}
 	return substr($absolutePath, $prefix_pos + strlen($root_directory));
+}
+
+/**
+ * Converts this: http://localhost:8880/corebos/storage/2023/March/week1/45361_image.png
+ * to: /storage/2023/March/week1/45361_image.png
+ */
+function convertFileUrlToRelativePath($url) {
+	$path = parse_url($url, PHP_URL_PATH);
+	$path_parts = explode('/', $path);
+	$result = implode('/', array_slice($path_parts, 2));
+	return $result;
 }
 ?>
