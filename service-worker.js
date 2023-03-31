@@ -11477,19 +11477,22 @@ precacheAndRoute([{
   "revision": "d87f8c3215b9726c30b4b3bf1bfaa381"
 }, {
   "url": "include/js/FieldDependencies.js",
-  "revision": "634902ccc164334746e730d72bb3ba78"
+  "revision": "452ed8c0dfe5b7634f641962135040e4"
 }, {
   "url": "include/js/FieldDepFunc.js",
-  "revision": "fdbce1da1a215e8de2a1cf289341397d"
+  "revision": "16e848bdd91632f731ef6ff0d23a63f7"
 }, {
   "url": "include/js/fr_fr.lang.js",
   "revision": "c736cb5696a83850ca90fdb7631d59f1"
 }, {
   "url": "include/js/general.js",
-  "revision": "06ac9d26276d6b0cd4c22606576766e6"
+  "revision": "5198b236592d872f65273b4c940483fb"
 }, {
   "url": "include/js/hu_hu.lang.js",
   "revision": "4307327d004e846784b3aba4d27be5d9"
+}, {
+  "url": "include/js/imageSlider.js",
+  "revision": "62f553b12d2f20af4cce0d56859767c2"
 }, {
   "url": "include/js/Inventory.js",
   "revision": "733037aedbea5f5a6a76f9afd5ebc54d"
@@ -11519,7 +11522,7 @@ precacheAndRoute([{
   "revision": "5a09d9ad89882ba8ad3e993e11a08055"
 }, {
   "url": "include/js/masterdetailgrid.js",
-  "revision": "16180f26df76f03e8dd2ccbc6f21dca1"
+  "revision": "a047f126266f374151b228060a3be91b"
 }, {
   "url": "include/js/mastergrid.js",
   "revision": "95e6522683a5eafcc6662123ce43ac48"
@@ -11579,7 +11582,7 @@ precacheAndRoute([{
   "revision": "6849f0140014e53925cffb9408bc1efe"
 }, {
   "url": "include/components/Carousel/vanilla-js-carousel.css",
-  "revision": "3c84a75d9db4550dc2954a596bbf6f58"
+  "revision": "9f369a3ac29680d4f2927284b7c35c88"
 }, {
   "url": "include/components/Carousel/vanilla-js-carousel.min.js",
   "revision": "d7116c33179a01a544aa8fa99f538821"
@@ -11621,7 +11624,7 @@ precacheAndRoute([{
   "revision": "3e6e33cd306b1235add3d25fcda8541d"
 }, {
   "url": "include/components/slider.js",
-  "revision": "d7e8240919cff39f0573ed3cd54230c3"
+  "revision": "1ad8520cf58cd3b2cd02199c1195798c"
 }, {
   "url": "include/components/toast-ui/grid/tui-grid.css",
   "revision": "fb40fb9c699a0e8b656b5345d2929b2c"
@@ -11783,7 +11786,7 @@ precacheAndRoute([{
   "revision": "05d043a466e1fab7035c92bf71cbb263"
 }, {
   "url": "include/style.css",
-  "revision": "8cd10e9ad611dec9ec582b0258fd9835"
+  "revision": "ea97f1978dd0739f6cf77ac97ed829cc"
 }, {
   "url": "include/print.css",
   "revision": "6b1e0c714dd4c389fb51b840e4cf01d2"
