@@ -3913,4 +3913,36 @@ function convertPathFromAbsoluteToRelative($absolutePath) {
 	}
 	return substr($absolutePath, $prefix_pos + strlen($root_directory));
 }
+
+/**
+ * Function that returns a 2d array of the previous and the next word of all instances of the $word variable  
+ * example:
+ * ```php
+ * $text = "my name is malik and malik is good";
+ * $word = "malik";
+ * getPreviousAndNextWords($text, $word);
+ * [["is", "and"], ["and", "is"]]	// returned value
+ * ```
+ */
+function getPreviousAndNextWords($text, $word) {
+	$words = explode(' ', $text);
+	$result = [];
+	for ($i = 0; $i < count($words); $i++) {
+		if ($words[$i] == $word) {
+			$prev_word = ($i > 0) ? $words[$i - 1] : null;
+			$next_word = ($i < count($words) - 1) ? $words[$i + 1] : null;
+			$result[] = [$prev_word, $next_word];
+		}
+	}
+	return $result;
+}
+
+/**
+ * Function to uppercase all instances of a specific substring in a string  
+ */
+function uppercaseAllInstancesOfsubstring($text, $substring) {
+	$upper_substring = strtoupper($substring);
+	$result = preg_replace("/\b{$substring}\b/i", $upper_substring, $text);
+	return $result;
+}
 ?>
