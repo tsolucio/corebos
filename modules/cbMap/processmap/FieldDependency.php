@@ -232,7 +232,7 @@ class FieldDependency extends processcbMap {
 				if (isset($action->mode) && !$this->isModeAcceptable($action->mode, $mode)) {
 					continue;
 				}
-				$actions['change'][] = array('field'=>(string)$action->field,'value'=>(string)$action->value);
+				$actions['change'][] = array('field'=>trim((string)$action->field),'value'=>(string)$action->value);
 				if ($mapping_arr['blocktriggerfields']) {
 					$hasBlockingAction = true;
 				}
@@ -242,7 +242,7 @@ class FieldDependency extends processcbMap {
 					continue;
 				}
 				foreach ($action->field as $fld => $name) {
-					$actions['hide'][] = array('field'=>(string)$name);
+					$actions['hide'][] = array('field'=>trim((string)$name));
 				}
 			}
 			foreach ($mapactions->readonly as $action) {
@@ -250,7 +250,7 @@ class FieldDependency extends processcbMap {
 					continue;
 				}
 				foreach ($action->field as $fld => $name) {
-					$actions['readonly'][] = array('field'=>(string)$name);
+					$actions['readonly'][] = array('field'=>trim((string)$name));
 				}
 			}
 			foreach ($mapactions->deloptions as $action) {
@@ -261,7 +261,7 @@ class FieldDependency extends processcbMap {
 				foreach ($mapactions->deloptions->option as $opt2) {
 					$opt[]=(string)$opt2;
 				}
-				$actions['deloptions'][] = array('field'=>(string)$action->field,'options'=>$opt);
+				$actions['deloptions'][] = array('field'=>trim((string)$action->field),'options'=>$opt);
 				if ($mapping_arr['blocktriggerfields']) {
 					$hasBlockingAction = true;
 				}
@@ -274,7 +274,7 @@ class FieldDependency extends processcbMap {
 				foreach ($mapactions->setoptions->option as $opt2) {
 					$opt[]=(string)$opt2;
 				}
-				$actions['setoptions'][] = array('field'=>(string)$action->field,'options'=>$opt);
+				$actions['setoptions'][] = array('field'=>trim((string)$action->field),'options'=>$opt);
 				if ($mapping_arr['blocktriggerfields']) {
 					$hasBlockingAction = true;
 				}
@@ -324,7 +324,7 @@ class FieldDependency extends processcbMap {
 					continue;
 				}
 				foreach ($action->field as $name) {
-					$actions['setclass'][] = array('field'=>(string)$name);
+					$actions['setclass'][] = array('field'=>trim((string)$name));
 				}
 				$actions['setclass'][] = array('fieldclass'=>(string)$action->fieldclass);
 				$actions['setclass'][] = array('labelclass'=>(string)$action->labelclass);
@@ -352,7 +352,7 @@ class FieldDependency extends processcbMap {
 					}
 				}
 				$actions['function'][] = array(
-					'field'=>(string)$action->field,
+					'field'=>trim((string)$action->field),
 					'value'=>(string)$action->name,
 					'params'=>$params
 				);
@@ -364,7 +364,7 @@ class FieldDependency extends processcbMap {
 				continue;
 			}
 			foreach ($v->field as $fld) {
-				$target_fields[(string)$fld][] = array('conditions'=>$conditions,'actions'=>$actions);
+				$target_fields[trim((string)$fld)][] = array('conditions'=>$conditions,'actions'=>$actions);
 				if ($mapping_arr['blocktriggerfields'] && $hasBlockingAction) {
 					$mapping_arr['blockedtriggerfields'][] = (string)$fld;
 				}
