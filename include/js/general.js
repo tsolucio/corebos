@@ -5966,6 +5966,9 @@ AutocompleteRelation.prototype.set = function (items) {
 		this.targetUL.show();
 		var acInstance = this;
 		var limit = acInstance.maxResults < items.length ? acInstance.maxResults : items.length;
+		if (this.data.limit !== undefined) {
+			limit = this.data.limit;
+		}
 		for (var i = 0; i < limit; i++) {
 			var li = this.buildListItem(items[i]);
 			this.targetUL.appendChild(li);

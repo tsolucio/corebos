@@ -39,6 +39,7 @@
   <originmodule>
 	<originname>ServiceContracts</originname>
   </originmodule>
+  <limit>5</limit>
   <fields>
 	<field>
 	  <fieldname>autocompletefieldx</fieldname>
@@ -87,6 +88,9 @@ class FieldInfo extends processcbMap {
 						}
 					}
 				}
+			}
+			if (isset($xml->limit)) {
+				$features['limit'] = intval($xml->limit);
 			}
 			$target_fields[$fieldname] = $features;
 		}

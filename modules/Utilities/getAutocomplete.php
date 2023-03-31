@@ -27,6 +27,9 @@ if (isReferenceField($data)) {
 }
 $search_value = getSearchValue($data);
 $limit = 10;
+if (isset($data['limit'])) {
+	$limit = $data['limit'];
+}
 
 $filters = array(
 	'logic' => 'or',
