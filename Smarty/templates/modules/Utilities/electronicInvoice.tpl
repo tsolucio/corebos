@@ -34,12 +34,12 @@
 			<div class="slds-grid slds-gutters">
 				<div class="slds-col slds-size_8-of-12">
 					<input id="publickey" name="publickey" type="hidden">
-					<input id="publickey_display" class="slds-input" name="publickey_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
-						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=publickey&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+					<input id="publickey_display" class="slds-input" name="publickey_display" readonly="" style="border:1px solid #bababa;" type="text" value="{$pubkey}"
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=publickey&srcmodule=GlobalVariable&query=true&search=true&searchtype=advance&advft_criteria=%5B%7B%22groupid%22%3A1%2C%22columnname%22%3A%22vtiger_cbcredentials%3Aadapter%3Aadapter%3AcbCredentials_Adapter%20%3AV%22%2C%22comparator%22%3A%22e%22%2C%22value%22%3A%22CredentialsFile%22%2C%22columncondition%22%3A%22%22%7D%5D', 'vtlibui10wf', cbPopupWindowSettings);">
 				</div>
 				<div class="slds-col slds-size_2-of-12">
 					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button"
-						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=publickey&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=publickey&srcmodule=GlobalVariable&query=true&search=true&searchtype=advance&advft_criteria=%5B%7B%22groupid%22%3A1%2C%22columnname%22%3A%22vtiger_cbcredentials%3Aadapter%3Aadapter%3AcbCredentials_Adapter%20%3AV%22%2C%22comparator%22%3A%22e%22%2C%22value%22%3A%22CredentialsFile%22%2C%22columncondition%22%3A%22%22%7D%5D', 'vtlibui10wf', cbPopupWindowSettings);">
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 					</svg>
@@ -62,12 +62,12 @@
 			<div class="slds-grid slds-gutters">
 				<div class="slds-col slds-size_8-of-12">
 					<input id="privatekeyid" name="privatekeyid" type="hidden">
-					<input id="privatekeyid_display" class="slds-input" name="privatekeyid_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
-						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=privatekeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+					<input id="privatekeyid_display" class="slds-input" name="privatekeyid_display" readonly="" style="border:1px solid #bababa;" type="text" value="{$privkey}"
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=privatekeyid&srcmodule=GlobalVariable&query=true&search=true&searchtype=advance&advft_criteria=%5B%7B%22groupid%22%3A1%2C%22columnname%22%3A%22vtiger_cbcredentials%3Aadapter%3Aadapter%3AcbCredentials_Adapter%20%3AV%22%2C%22comparator%22%3A%22e%22%2C%22value%22%3A%22CredentialsFile%22%2C%22columncondition%22%3A%22%22%7D%5D', 'vtlibui10wf', cbPopupWindowSettings);">
 				</div>
 				<div class="slds-col slds-size_2-of-12">
 					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button"
-						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=privatekeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=privatekeyid&srcmodule=GlobalVariable&query=true&search=true&searchtype=advance&advft_criteria=%5B%7B%22groupid%22%3A1%2C%22columnname%22%3A%22vtiger_cbcredentials%3Aadapter%3Aadapter%3AcbCredentials_Adapter%20%3AV%22%2C%22comparator%22%3A%22e%22%2C%22value%22%3A%22CredentialsFile%22%2C%22columncondition%22%3A%22%22%7D%5D', 'vtlibui10wf', cbPopupWindowSettings);">
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 					</svg>
@@ -90,12 +90,12 @@
 			<div class="slds-grid slds-gutters">
 				<div class="slds-col slds-size_8-of-12">
 					<input id="pfkkeyid" name="pfkkeyid" type="hidden">
-					<input id="pfkkeyid_display" class="slds-input" name="pfkkeyid_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
-						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=pfkkeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+					<input id="pfkkeyid_display" class="slds-input" name="pfkkeyid_display" readonly="" style="border:1px solid #bababa;" type="text" value="{$pkey}"
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=pfkkeyid&srcmodule=GlobalVariable&query=true&search=true&searchtype=advance&advft_criteria=%5B%7B%22groupid%22%3A1%2C%22columnname%22%3A%22vtiger_cbcredentials%3Aadapter%3Aadapter%3AcbCredentials_Adapter%20%3AV%22%2C%22comparator%22%3A%22e%22%2C%22value%22%3A%22CredentialsFile%22%2C%22columncondition%22%3A%22%22%7D%5D', 'vtlibui10wf', cbPopupWindowSettings);">
 				</div>
 				<div class="slds-col slds-size_2-of-12">
 					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button"
-						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=pfkkeyid&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+						onclick="return window.open('index.php?module=cbCredentials&action=Popup&html=Popup_picker&form=new_task&forfield=pfkkeyid&srcmodule=GlobalVariable&query=true&search=true&searchtype=advance&advft_criteria=%5B%7B%22groupid%22%3A1%2C%22columnname%22%3A%22vtiger_cbcredentials%3Aadapter%3Aadapter%3AcbCredentials_Adapter%20%3AV%22%2C%22comparator%22%3A%22e%22%2C%22value%22%3A%22CredentialsFile%22%2C%22columncondition%22%3A%22%22%7D%5D', 'vtlibui10wf', cbPopupWindowSettings);">
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 					</svg>
@@ -115,7 +115,7 @@
 		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="passphrase">{'Passphrase'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
-				<input type="text" id="passphrase" name="passphrase" class="slds-input" />
+				<input type="text" id="passphrase" name="passphrase" class="slds-input" value="{$pphrase}"/>
 			</div>
 		</div>
 	<div class="slds-form-element">
@@ -124,7 +124,7 @@
 			<div class="slds-grid slds-gutters">
 				<div class="slds-col slds-size_8-of-12">
 					<input id="admcenter" name="admcenter" type="hidden">
-					<input id="admcenter_display" class="slds-input" name="admcenter_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
+					<input id="admcenter_display" class="slds-input" name="admcenter_display" readonly="" style="border:1px solid #bababa;" type="text" value="{$acenter}"
 						onclick="return window.open('index.php?module=AdministrativeCenter&action=Popup&html=Popup_picker&form=new_task&forfield=admcenter&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
 				</div>
 				<div class="slds-col slds-size_2-of-12">
@@ -152,12 +152,12 @@
 			<div class="slds-grid slds-gutters">
 				<div class="slds-col slds-size_8-of-12">
 					<input id="accountmap" name="accountmap" type="hidden">
-					<input id="accountmap_display" class="slds-input" name="accountmap_display" for="accountmap_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
-						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=accountmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+					<input id="accountmap_display" class="slds-input" name="accountmap_display" for="accountmap_display" readonly="" style="border:1px solid #bababa;" type="text" value="{$accmap}"
+						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=accountmap&srcmodule=GlobalVariable&query=true&search=true&searchtype=advance&advft_criteria=%5B%7B%22groupid%22%3A1%2C%22columnname%22%3A%22vtiger_cbmap%3Amaptype%3Amaptype%3AcbMap_Map_Type%20%3AV%22%2C%22comparator%22%3A%22e%22%2C%22value%22%3A%22Mapping%22%2C%22columncondition%22%3A%22%22%7D%5D', 'vtlibui10wf', cbPopupWindowSettings);">
 				</div>
 				<div class="slds-col slds-size_2-of-12">
 					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button"
-						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=accountmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=accountmap&srcmodule=GlobalVariable&query=true&search=true&searchtype=advance&advft_criteria=%5B%7B%22groupid%22%3A1%2C%22columnname%22%3A%22vtiger_cbmap%3Amaptype%3Amaptype%3AcbMap_Map_Type%20%3AV%22%2C%22comparator%22%3A%22e%22%2C%22value%22%3A%22Mapping%22%2C%22columncondition%22%3A%22%22%7D%5D', 'vtlibui10wf', cbPopupWindowSettings);">
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 					</svg>
@@ -180,12 +180,12 @@
 			<div class="slds-grid slds-gutters">
 				<div class="slds-col slds-size_8-of-12">
 					<input id="contactmap" name="contactmap" type="hidden">
-					<input id="contactmap_display" class="slds-input" name="contactmap_display" readonly="" style="border:1px solid #bababa;" type="text" value=""
-						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=contactmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+					<input id="contactmap_display" class="slds-input" name="contactmap_display" readonly="" style="border:1px solid #bababa;" type="text" value="{$contmap}"
+						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=contactmap&srcmodule=GlobalVariable&query=true&search=true&searchtype=advance&advft_criteria=%5B%7B%22groupid%22%3A1%2C%22columnname%22%3A%22vtiger_cbmap%3Amaptype%3Amaptype%3AcbMap_Map_Type%20%3AV%22%2C%22comparator%22%3A%22e%22%2C%22value%22%3A%22Mapping%22%2C%22columncondition%22%3A%22%22%7D%5D', 'vtlibui10wf', cbPopupWindowSettings);">
 				</div>
 				<div class="slds-col slds-size_2-of-12">
 					<button class="slds-button slds-button_icon" title="{'LBL_SELECT'|getTranslatedString}" type="button"
-						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=contactmap&srcmodule=GlobalVariable', 'vtlibui10wf', cbPopupWindowSettings);">
+						onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=contactmap&srcmodule=GlobalVariable&query=true&search=true&searchtype=advance&advft_criteria=%5B%7B%22groupid%22%3A1%2C%22columnname%22%3A%22vtiger_cbmap%3Amaptype%3Amaptype%3AcbMap_Map_Type%20%3AV%22%2C%22comparator%22%3A%22e%22%2C%22value%22%3A%22Mapping%22%2C%22columncondition%22%3A%22%22%7D%5D', 'vtlibui10wf', cbPopupWindowSettings);">
 					<svg class="slds-button__icon" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#choice"></use>
 					</svg>
@@ -206,12 +206,12 @@
 			<label class="slds-form-element__label" for="DefaultSignType">{'DefaultSignType'|@getTranslatedString:$MODULE}</label>
 		</div>
 		<span class="slds-radio">
-			<input name="assigntype" id="assigntypeFACe" checked="checked" value="FACe" type="radio">
+			<input name="assigntype" id="assigntypeFACe" checked="checked" value="{$face}" type="radio">
 			<label class="slds-radio__label" for="assigntypeFACe">
 				<span class="slds-radio_faux"></span>
 				<span class="slds-form-element__label">FACe</span>
 			</label>
-			<input name="assigntype" id="assigntypeFACB2B" value="FACB2B" type="radio">
+			<input name="assigntype" id="assigntypeFACB2B" value="{$facb2b}" type="radio">
 			<label class="slds-radio__label" for="assigntypeFACB2B">
 				<span class="slds-radio_faux"></span>
 				<span class="slds-form-element__label">FACB2B</span>
@@ -223,25 +223,25 @@
 		<div class="slds-form-element slds-m-top_small">
 			<label class="slds-form-element__label" for="EI_baseurl">{'EI_baseurl'|@getTranslatedString:$MODULE}</label>
 			<div class="slds-form-element__control">
-				<input type="text" id="EI_baseurl" name="EI_baseurl" class="slds-input" />
+				<input type="text" id="EI_baseurl" name="EI_baseurl" class="slds-input" value="{$eibaseurl}"/>
 			</div>
 		</div>
 		<div class="basic-auth-fields">
 			<div class="slds-form-element slds-m-top_small">
 				<label class="slds-form-element__label" for="EI_username">{'EI_username'|@getTranslatedString:$MODULE}</label>
 				<div class="slds-form-element__control">
-					<input type="text" id="EI_username" name="EI_username" class="slds-input" />
+					<input type="text" id="EI_username" name="EI_username" class="slds-input" value="{$eiuname}"/>
 				</div>
 			</div>
 			<div class="slds-form-element slds-m-top_small">
 				<label class="slds-form-element__label" for="EI_password">{'EI_password'|@getTranslatedString:$MODULE}</label>
 				<div class="slds-form-element__control">
-					<input type="text" id="EI_password" name="EI_password" class="slds-input" />
+					<input type="text" id="EI_password" name="EI_password" class="slds-input" value="{$eipass}"/>
 				</div>
 			</div>
 		</div>
 		<div class="slds-m-top_large">
-			<button type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+			<button type="submit" name="saveInvoiceE" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 		</div>
 		</form>
 	{/if}
