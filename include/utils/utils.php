@@ -3949,4 +3949,8 @@ function convertFileUrlToRelativePath($url) {
 	$result = implode('/', array_slice($path_parts, 2));
 	return $result;
 }
+
+function escapeUnderscores($sql) {
+	return str_replace('_', '\_', $sql);
+}
 ?>
