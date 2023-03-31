@@ -5820,10 +5820,12 @@ AutocompleteRelationPills.prototype.addPill = function () {
 		`;
 		if (this.newValue != '') {
 			const p = document.getElementById(`show-1025-pill-${this.field}`);
-			const currentTemplate = p.innerHTML;
-			p.innerHTML = currentTemplate+this.template;
-			AutocompletePills();
-			document.getElementById(`${this.field}_display_1025`).value = '';
+			if (p !== null) {
+				const currentTemplate = p.innerHTML;
+				p.innerHTML = currentTemplate+this.template;
+				AutocompletePills();
+				document.getElementById(`${this.field}_display_1025`).value = '';
+			}
 		}
 	}
 };
