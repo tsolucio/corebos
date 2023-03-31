@@ -508,6 +508,7 @@ class QueryGenerator {
 	}
 
 	public function getQuery($distinct = false, $limit = '') {
+		global $adb;
 		if (empty($this->query)) {
 			$allFields = array_merge($this->whereFields, $this->fields);
 			foreach ($allFields as $fieldName) {
@@ -528,7 +529,7 @@ class QueryGenerator {
 			$sql_query .= $this->getFromClause();
 			if ($this->meta->getTabName() == 'Documents' && $this->SearchDocuments) {
 				$search_text = vtlib_purify($_REQUEST['search_text']);
-				$sql_query .= ' WHERE vtiger_documentsearchinfo.text LIKE "%'.$search_text.'%" AND vtiger_notes.notesid>0';
+				$sql_query = $adb->convert2sql(' WHERE vtiger_documentsearchinfo.text LIKE ? AND vtiger_notes.notesid>0', ["%" . $search_text . "%"]);
 			} else {
 				$sql_query .= $this->getWhereClause();
 			}
@@ -1420,27 +1421,33 @@ class QueryGenerator {
 					break;
 				case 's':
 					$sqlOperator = 'LIKE';
+					$value = escapeUnderscores($value);
 					$value = "$value%";
 					break;
 				case 'ew':
 					$sqlOperator = 'LIKE';
+					$value = escapeUnderscores($value);
 					$value = "%$value";
 					break;
 				case 'c':
 				case 'cnc':
 					$sqlOperator = 'LIKE';
+					$value = escapeUnderscores($value);
 					$value = "%$value%";
 					break;
 				case 'k':
 					$sqlOperator = 'NOT LIKE';
+					$value = escapeUnderscores($value);
 					$value = "%$value%";
 					break;
 				case 'dnsw':
 					$sqlOperator = 'NOT LIKE';
+					$value = escapeUnderscores($value);
 					$value = "$value%";
 					break;
 				case 'dnew':
 					$sqlOperator = 'NOT LIKE';
+					$value = escapeUnderscores($value);
 					$value = "%$value";
 					break;
 				case 'monthday':
