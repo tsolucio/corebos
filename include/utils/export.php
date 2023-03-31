@@ -38,6 +38,8 @@ setCurrentLanguage();
 
 global $app_strings;
 
+$currentModuleName = vtlib_purify($_REQUEST['module']);
+
 $current_user = new Users();
 
 if (isset($_SESSION['authenticated_user_id'])) {
@@ -51,7 +53,7 @@ if (isset($_SESSION['authenticated_user_id'])) {
 
 $allow_exports = GlobalVariable::getVariable('Application_Allow_Exports', 'all');
 //Security Check
-if (isPermitted($_REQUEST['module'], 'Export') == 'no') {
+if (isPermitted($currentModuleName, 'Export') == 'no') {
 	$allow_exports='none';
 }
 
@@ -59,7 +61,7 @@ if ($allow_exports=='none' || ($allow_exports=='admin' && !is_admin($current_use
 	?>
 	<script type='text/javascript'>
 		alert("<?php echo $app_strings['NOT_PERMITTED_TO_EXPORT']?>");
-		window.location="index.php?module=<?php echo vtlib_purify($_REQUEST['module']) ?>&action=index";
+		window.location="index.php?module=<?php echo vtlib_purify($currentModuleName) ?>&action=index";
 	</script>
 	<?php exit;
 }
@@ -85,7 +87,7 @@ function obtainVisibleColumnNames(&$l, $k) {
  * Return type text
  */
 function export($type, $format = 'CSV') {
-	global $log, $adb;
+	global $log, $adb, $currentModuleName, $current_user;
 	$log->debug('> export '.$type);
 
 	$focus = 0;
@@ -97,114 +99,185 @@ function export($type, $format = 'CSV') {
 	}
 	$log = LoggerManager::getLogger('export_'.$type);
 
-	$oCustomView = new CustomView($type);
-	$viewid = $oCustomView->getViewId($type);
-	$sorder = $focus->getSortOrder();
-	$order_by = $focus->getOrderBy();
+	$query = $_SESSION['list_query'];
 
-	$search_type = vtlib_purify($_REQUEST['search_type']);
+	$notSupportedModulesInNewExport = ['com_vtiger_workflow', 'Documents', 'Users'];
+	$hasForeignColumn = $_SESSION['hasForeignColumn'];
+	$isNewExport = true;
+	if (!$hasForeignColumn || in_array($currentModuleName, $notSupportedModulesInNewExport)) {
+		$isNewExport = false;
+	}
+
 	$export_data = vtlib_purify($_REQUEST['export_data']);
+	$currentModuleTableName = $focus->table_name;
+	$currentModuleTableIndex = $focus->table_index;
+
 	$filtercolumns = (isset($_REQUEST['visiblecolumns']) && $_REQUEST['visiblecolumns']=='on');
 
-	if (isset($_SESSION['export_where']) && $_SESSION['export_where']!='' && $search_type == 'includesearch') {
-		$where =$_SESSION['export_where'];
+	if ($isNewExport) {
+		$idsArray = array();
+		if ($export_data == 'currentpage') {
+			$query .= $_SESSION['limitQuery'];
+		} elseif ($export_data == 'selecteddata') {
+			$idsArray = explode(';', vtlib_purify($_REQUEST['idstring']));
+			$where = $currentModuleTableName . '.' . $currentModuleTableIndex . " IN (" . generateQuestionMarks($idsArray) . ")";
+			$order_by_pos = strpos($query, "ORDER BY");
+			if ($order_by_pos !== false) {
+				$query = substr_replace($query, " AND ( $where ) ", $order_by_pos, 0);
+			} else {
+				$limit_pos = strpos($query, "LIMIT");
+				if ($limit_pos !== false) {
+					$query = substr_replace($query, " AND ( $where ) ", $limit_pos, 0);
+				} else {
+					$query .= " AND ( $where ) ";
+				}
+			}
+		}
+		if (empty($_REQUEST['visiblecolumns'])) {
+			$tab_name_index = array();
+			// changing the structure of the $tab_name_index
+			foreach ($focus->tab_name_index as $tableName => $idName) {
+				$tab_name_index[] = [$tableName, $idName, $currentModuleTableName, $currentModuleTableIndex];
+			}
+			// adding the additional_joins_for_new_export if it exists
+			if (property_exists($focus, 'additional_joins_for_new_export')) {
+				$tab_name_index = array_merge($tab_name_index, $focus->additional_joins_for_new_export);
+			}
+			$selectQuery = '';
+			$queryWordsForCondition = preg_split('/[\s\.]+/', $query);
+			$queryWords = preg_split('/\s+/', $query);
+			foreach ($tab_name_index as $value) {
+				// selecting all fields of all module related tables
+				$selectQuery .= $value[0] . ".*, ";
+				// joining those tables
+				if (!in_array($value[0], $queryWordsForCondition)) {
+					$addNewElementIndex = array_search('FROM', $queryWords) + 2;
+					$innerJoinSql = "LEFT JOIN $value[0] ON $value[2].$value[3] = $value[0].$value[1]";
+					array_splice($queryWords, $addNewElementIndex, 0, array($innerJoinSql));
+				}
+			}
+			$query = implode(' ', $queryWords);
+			$query = preg_replace("/(SELECT\s+)/", "SELECT " . $selectQuery, $query);
+
+		}
+		// change select module name if it has an alias
+		$query = uppercaseAllInstancesOfsubstring($query, " as ");
+		$sqlAliases = getPreviousAndNextWords($query, "AS");
+		foreach ($sqlAliases as $key => $value) {
+			$query = str_replace(" " . $value[0]. ".*", " " . $value[1]. ".*", $query);
+		}
 	} else {
-		$where = '';
-	}
+		$oCustomView = new CustomView($type);
+		$viewid = $oCustomView->getViewId($type);
+		$sorder = $focus->getSortOrder();
+		$order_by = $focus->getOrderBy();
 
-	$query = $focus->create_export_query($where);
-	if ($search_type != 'includesearch') {
-		$stdfiltersql = $oCustomView->getCVStdFilterSQL($viewid);
-		$advfiltersql = $oCustomView->getCVAdvFilterSQL($viewid);
-		if (isset($stdfiltersql) && $stdfiltersql != '') {
-			$query .= ' and '.$stdfiltersql;
-		}
-		if (isset($advfiltersql) && $advfiltersql != '') {
-			$query .= ' and '.$advfiltersql;
-		}
-	}
-	$params = array();
+		$search_type = isset($_REQUEST['search_type']) ? vtlib_purify($_REQUEST['search_type']) : "";
+		$export_data = isset($_REQUEST['export_data']) ? vtlib_purify($_REQUEST['export_data']) : "";
 
-	if (($search_type == 'withoutsearch' || $search_type == 'includesearch') && $export_data == 'selecteddata') {
-		$idstring = explode(';', vtlib_purify($_REQUEST['idstring']));
-		if ($type == 'Accounts' && count($idstring) > 0) {
-			$query .= ' and vtiger_account.accountid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif ($type == 'Contacts' && count($idstring) > 0) {
-			$query .= ' and vtiger_contactdetails.contactid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif ($type == 'Potentials' && count($idstring) > 0) {
-			$query .= ' and vtiger_potential.potentialid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif ($type == 'Leads' && count($idstring) > 0) {
-			$query .= ' and vtiger_leaddetails.leadid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif ($type == 'Products' && count($idstring) > 0) {
-			$query .= ' and vtiger_products.productid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif ($type == 'Documents' && count($idstring) > 0) {
-			$query .= ' and vtiger_notes.notesid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif ($type == 'HelpDesk' && count($idstring) > 0) {
-			$query .= ' and vtiger_troubletickets.ticketid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif ($type == 'Vendors' && count($idstring) > 0) {
-			$query .= ' and vtiger_vendor.vendorid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif ($type == 'Invoice' && count($idstring) > 0) {
-			$query .= ' and vtiger_invoice.invoiceid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif ($type == 'Quotes' && count($idstring) > 0) {
-			$query .= ' and vtiger_quotes.quoteid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif ($type == 'SalesOrder' && count($idstring) > 0) {
-			$query .= ' and vtiger_salesorder.salesorderid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif ($type == 'PurchaseOrder' && count($idstring) > 0) {
-			$query .= ' and vtiger_purchaseorder.purchaseorderid in ('. generateQuestionMarks($idstring) .')';
-			$params[] = $idstring;
-		} elseif (count($idstring) > 0) {
-			// vtlib customization: Hook to make the export feature available for custom modules.
-			$query .= " and $focus->table_name.$focus->table_index in (" . generateQuestionMarks($idstring) . ')';
-			$params[] = $idstring;
-			// END
-		}
-	}
-
-	if (isset($order_by) && $order_by != '') {
-		if ($order_by == 'smownerid') {
-			$query .= ' ORDER BY vtiger_users.user_name '.$sorder;
-		} elseif ($order_by == 'lastname' && $type == 'Documents') {
-			$query .= ' ORDER BY vtiger_contactdetails.lastname '. $sorder;
-		} elseif ($order_by == 'crmid' && $type == 'HelpDesk') {
-			$query .= ' ORDER BY vtiger_troubletickets.ticketid '. $sorder;
+		if (isset($_SESSION['export_where']) && $_SESSION['export_where']!='' && $search_type == 'includesearch') {
+			$where =$_SESSION['export_where'];
 		} else {
-			$tablename = getTableNameForField($type, $order_by);
-			$tablename = (($tablename != '')?($tablename.'.'):'');
-			$query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
+			$where = '';
+		}
+
+		$query = $focus->create_export_query($where);
+		if ($search_type != 'includesearch') {
+			$stdfiltersql = $oCustomView->getCVStdFilterSQL($viewid);
+			$advfiltersql = $oCustomView->getCVAdvFilterSQL($viewid);
+			if (isset($stdfiltersql) && $stdfiltersql != '') {
+				$query .= ' and '.$stdfiltersql;
+			}
+			if (isset($advfiltersql) && $advfiltersql != '') {
+				$query .= ' and '.$advfiltersql;
+			}
+		}
+		$params = array();
+
+		if (($search_type == 'withoutsearch' || $search_type == 'includesearch') && $export_data == 'selecteddata') {
+			$idstring = explode(';', vtlib_purify($_REQUEST['idstring']));
+			if ($type == 'Accounts' && count($idstring) > 0) {
+				$query .= ' and vtiger_account.accountid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif ($type == 'Contacts' && count($idstring) > 0) {
+				$query .= ' and vtiger_contactdetails.contactid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif ($type == 'Potentials' && count($idstring) > 0) {
+				$query .= ' and vtiger_potential.potentialid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif ($type == 'Leads' && count($idstring) > 0) {
+				$query .= ' and vtiger_leaddetails.leadid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif ($type == 'Products' && count($idstring) > 0) {
+				$query .= ' and vtiger_products.productid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif ($type == 'Documents' && count($idstring) > 0) {
+				$query .= ' and vtiger_notes.notesid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif ($type == 'HelpDesk' && count($idstring) > 0) {
+				$query .= ' and vtiger_troubletickets.ticketid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif ($type == 'Vendors' && count($idstring) > 0) {
+				$query .= ' and vtiger_vendor.vendorid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif ($type == 'Invoice' && count($idstring) > 0) {
+				$query .= ' and vtiger_invoice.invoiceid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif ($type == 'Quotes' && count($idstring) > 0) {
+				$query .= ' and vtiger_quotes.quoteid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif ($type == 'SalesOrder' && count($idstring) > 0) {
+				$query .= ' and vtiger_salesorder.salesorderid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif ($type == 'PurchaseOrder' && count($idstring) > 0) {
+				$query .= ' and vtiger_purchaseorder.purchaseorderid in ('. generateQuestionMarks($idstring) .')';
+				$params[] = $idstring;
+			} elseif (count($idstring) > 0) {
+				// vtlib customization: Hook to make the export feature available for custom modules.
+				$query .= " and $focus->table_name.$focus->table_index in (" . generateQuestionMarks($idstring) . ')';
+				$params[] = $idstring;
+				// END
+			}
+		}
+
+		if (isset($order_by) && $order_by != '') {
+			if ($order_by == 'smownerid') {
+				$query .= ' ORDER BY vtiger_users.user_name '.$sorder;
+			} elseif ($order_by == 'lastname' && $type == 'Documents') {
+				$query .= ' ORDER BY vtiger_contactdetails.lastname '. $sorder;
+			} elseif ($order_by == 'crmid' && $type == 'HelpDesk') {
+				$query .= ' ORDER BY vtiger_troubletickets.ticketid '. $sorder;
+			} else {
+				$tablename = getTableNameForField($type, $order_by);
+				$tablename = (($tablename != '')?($tablename.'.'):'');
+				$query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
+			}
+		}
+
+		if ($export_data == 'currentpage') {
+			$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $type);
+			$current_page = ListViewSession::getCurrentPage($type, $viewid);
+			$limit_start_rec = ($current_page - 1) * $list_max_entries_per_page;
+			if ($limit_start_rec < 0) {
+				$limit_start_rec = 0;
+			}
+			$query .= ' LIMIT '.$limit_start_rec.','.$list_max_entries_per_page;
 		}
 	}
 
-	if ($export_data == 'currentpage') {
-		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $type);
-		$current_page = ListViewSession::getCurrentPage($type, $viewid);
-		$limit_start_rec = ($current_page - 1) * $list_max_entries_per_page;
-		if ($limit_start_rec < 0) {
-			$limit_start_rec = 0;
-		}
-		$query .= ' LIMIT '.$limit_start_rec.','.$list_max_entries_per_page;
-	}
-
-	$result = $adb->pquery($query, $params, true, "Error exporting $type: <BR>$query");
+	// executing the query
+	$result = $adb->pquery($query, $isNewExport ? $idsArray : $params, true, "Error exporting $type: <BR>$query");
 	$fields_array = $adb->getFieldsArray($result);
 	$fields_array = array_diff($fields_array, array('user_name'));
-	if ($filtercolumns) {
-		$visiblecolumns_array = $oCustomView->getColumnsListByCvid($viewid);
-		array_walk($visiblecolumns_array, 'obtainVisibleColumnNames');
-		$fields_array = array_filter($visiblecolumns_array, function ($efield) use ($fields_array) {
-			return in_array($efield, $fields_array);
-		});
-		$fields_array[] = 'cbuuid';
+	if (!$hasForeignColumn) {
+		if ($filtercolumns) {
+			$visiblecolumns_array = $oCustomView->getColumnsListByCvid($viewid);
+			array_walk($visiblecolumns_array, 'obtainVisibleColumnNames');
+			$fields_array = array_filter($visiblecolumns_array, function ($efield) use ($fields_array) {
+				return in_array($efield, $fields_array);
+			});
+			$fields_array[] = 'cbuuid';
+		}
 	}
 
 	$columnsToExport = array_map(
@@ -241,9 +314,9 @@ function export($type, $format = 'CSV') {
 if (isset($_REQUEST['exportfile']) && $_REQUEST['exportfile']=='exportexcelfile') {
 	global $root_directory, $cache_dir;
 	$fname = tempnam($root_directory.$cache_dir, 'excel.xls');
-	$xlsobject = export(vtlib_purify($_REQUEST['module']), 'XLS');
+	$xlsobject = export($currentModuleName, 'XLS');
 	$xlsobject->save($fname);
-	$moduleName = getTranslatedString($_REQUEST['module'], $_REQUEST['module']);
+	$moduleName = getTranslatedString($currentModuleName, $currentModuleName);
 	header('Content-Type: application/x-msexcel');
 	header('Content-Length: '.@filesize($fname));
 	header('Content-disposition: attachment; filename="'.$moduleName.'.xls"');
@@ -251,7 +324,7 @@ if (isset($_REQUEST['exportfile']) && $_REQUEST['exportfile']=='exportexcelfile'
 	fpassthru($fh);
 } else {
 	/** Send the output header and invoke function for contents output */
-	$moduleName = vtlib_purify($_REQUEST['module']);
+	$moduleName = vtlib_purify($currentModuleName);
 	$moduleName = getTranslatedString($moduleName, $moduleName);
 	$moduleName = str_replace(' ', '_', $moduleName);
 	header("Content-Disposition:attachment;filename=$moduleName.csv");
@@ -259,7 +332,7 @@ if (isset($_REQUEST['exportfile']) && $_REQUEST['exportfile']=='exportexcelfile'
 	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 	header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 	header('Cache-Control: post-check=0, pre-check=0', false);
-	export(vtlib_purify($_REQUEST['module']), 'CSV');
+	export(vtlib_purify($currentModuleName), 'CSV');
 }
 exit;
 

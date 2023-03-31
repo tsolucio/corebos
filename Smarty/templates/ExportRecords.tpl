@@ -29,37 +29,9 @@
 								<tr>
 									<td border="0" cellpadding="5" cellspacing="0" width="50%" class="cblds-p_large">
 										<table>
-											<tr>
-												<td colspan="2" align="left" valign="top" style="padding-left:40px;">
-													<span class="genHeaderSmall">{$APP.LBL_SEARCH_CRITERIA_RECORDS}:</span>
-												</td>
-											</tr>
-											<tr>
-												{if $SESSION_WHERE neq ''}
-												<td align="right" valign="top" width="50%" class="small cblds-p_large cblds-t-align_right">{$APP.LBL_WITH_SEARCH}</td>
-												<td align="left" valign="top" width="5%" class="small cblds-p_large">
-													<input type="radio" name="search_type" checked value="includesearch" {if $MODULE eq 'Users'}disabled{/if}>
-												</td>
-												{else}
-												<td align="right" valign="top" width="50%" class="small cblds-p_large cblds-t-align_right">{$APP.LBL_WITH_SEARCH}</td>
-												<td align="left" valign="top" width="5%" class="small cblds-p_large">
-													<input type="radio" name="search_type" value="includesearch" {if $MODULE eq 'Users'}disabled{/if}>
-												</td>
-												{/if}
-											</tr>
-											<tr>
-												{if $SESSION_WHERE eq ''}
-												<td align="right" valign="top" width="50%" class="small cblds-p_large cblds-t-align_right">{$APP.LBL_WITHOUT_SEARCH}</td>
-												<td align="left" valign="top" width="5%" class="small cblds-p_large">
-													<input type="radio" name="search_type" checked value="withoutsearch">
-												</td>
-												{else}
-												<td align="right" valign="top" width="50%" class="small cblds-p_large cblds-t-align_right">{$APP.LBL_WITHOUT_SEARCH}</td>
-												<td align="left" valign="top" width="5%" class="small cblds-p_large">
-													<input type="radio" name="search_type" value="withoutsearch">
-												</td>
-												{/if}
-											</tr>
+											{if !empty($Search_Criteria_exists)}
+												{include file='applicationmessage.tpl'}
+											{/if}
 											<tr>
 												<td colspan="2" align="left" valign="top" style="padding-left:40px;">
 													<span class="genHeaderSmall">{$APP.LBL_EXPORT_RECORDS}:</span>

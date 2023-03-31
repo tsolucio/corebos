@@ -33,6 +33,18 @@ class PurchaseOrder extends CRMEntity {
 	);
 
 	/**
+	 * Mandatory for export, Include additional tablename and tablekey columnname here.
+	 */
+	public $additional_joins_for_new_export = [
+		['vtiger_products', 'productid', 'vtiger_inventoryproductrel', 'productid'],
+		['vtiger_service', 'serviceid', 'vtiger_inventoryproductrel', 'productid'],
+		['vtiger_inventoryproductrel', 'id', 'vtiger_purchaseorder', 'purchaseorderid'],
+		['vtiger_contactdetails', 'contactid', 'vtiger_purchaseorder', 'contactid'],
+		['vtiger_vendor', 'vendorid', 'vtiger_purchaseorder', 'vendorid'],
+		['vtiger_currency_info', 'id', 'vtiger_purchaseorder', 'currency_id'],
+	];
+
+	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	public $customFieldTable = array('vtiger_purchaseordercf', 'purchaseorderid');

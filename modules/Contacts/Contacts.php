@@ -48,6 +48,12 @@ class Contacts extends CRMEntity {
 		'vtiger_contactscf'=>'contactid',
 		'vtiger_customerdetails'=>'customerid'
 	);
+	/**
+	 * Mandatory for export, Include additional tablename and tablekey columnname here.
+	 */
+	public $additional_joins_for_new_export = [
+		['vtiger_account', 'accountid', 'vtiger_contactdetails', 'contactid'],
+	];
 
 	/**
 	 * Mandatory for Listing (Related listview)

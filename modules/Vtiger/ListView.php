@@ -127,18 +127,38 @@ if ($sql_error) {
 	$smarty->assign('LISTHEADER', '');
 	$smarty->assign('LISTENTITY', array());
 } else {
-// Enabling Module Search
+	// Enabling Module Search
 	$url_string = '';
 	if (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true') {
+		coreBOS_Session::set('Search_Criteria_exists', true);
 		$queryGenerator->addUserSearchConditions($_REQUEST);
 		$ustring = getSearchURL($_REQUEST);
 		$url_string .= "&query=true$ustring";
+	} else {
+		coreBOS_Session::set('Search_Criteria_exists', false);
 	}
 	$smarty->assign('SEARCH_URL', $url_string);
 	if (!empty($order_by)) {
 		$queryGenerator->addWhereField($order_by);
 	}
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.before', $queryGenerator);
+
+	// checking if there is a foreign column
+	$list_query_fields = $queryGenerator->getFields();
+	$hasForeignColumn = false;
+	foreach ($list_query_fields as $field) {
+		$field_data = $queryGenerator->getReferenceField($field, false);
+		if (!empty($field_data)) {
+			$fieldModule = getTabModuleName($field_data->getTabId());
+			$fieldUitype = $field_data->getUIType();
+			$tabid = getTabid($currentModule);
+			$moduleFieldId = getFieldid($tabid, $field);
+			if (strpos($field, ".") !== false) {
+				$hasForeignColumn = true;
+			}
+		}
+	}
+
 	$list_query = $queryGenerator->getQuery();
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.after', $queryGenerator);
 	$list_query = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.query', $list_query);
@@ -160,15 +180,19 @@ if ($sql_error) {
 			}
 		}
 	}
+	coreBOS_Session::set('hasForeignColumn', $hasForeignColumn);
+	coreBOS_Session::set('list_query', $list_query);
 	if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
 		echo '<br>'.$list_query.'<br>';
 	}
+	$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
+	$start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, $viewid, $queryMode);
+	$limit_start_rec = ($start-1) * $list_max_entries_per_page;
+	$limitQuery = " LIMIT $limit_start_rec, $list_max_entries_per_page";
+	coreBOS_Session::set('limitQuery', $limitQuery);
 	try {
 		if ($layout != 'tuigrid') {
-			$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
-			$start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, $viewid, $queryMode);
-			$limit_start_rec = ($start-1) * $list_max_entries_per_page;
-			$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+			$list_result = $adb->pquery($list_query. $limitQuery, array());
 			if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 				$count_result = $adb->query(mkCountQuery($list_query));
 				$noofrows = $adb->query_result($count_result, 0, 0);

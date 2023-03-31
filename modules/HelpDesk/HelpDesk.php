@@ -42,6 +42,17 @@ class HelpDesk extends CRMEntity {
 	);
 
 	/**
+	 * Mandatory for export, Include additional tablename and tablekey columnname here.
+	 */
+	public $additional_joins_for_new_export = [
+		['vtiger_account', 'accountid', 'vtiger_troubletickets', 'parent_id'],
+		['vtiger_contactdetails', 'contactid', 'vtiger_troubletickets', 'parent_id'],
+		['vtiger_attachments', 'attachmentsid', 'vtiger_seattachmentsrel', 'attachmentsid'],
+		['vtiger_seattachmentsrel', 'crmid', 'vtiger_troubletickets', 'ticketid'],
+		['vtiger_products', 'productid', 'vtiger_troubletickets', 'product_id'],
+	];
+
+	/**
 	 * Mandatory for Listing (Related listview)
 	 */
 	public $list_fields = array(

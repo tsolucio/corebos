@@ -2995,13 +2995,7 @@ function selectedRecords(module) {
 }
 
 function record_export(module, exform, idstring) {
-	var searchType = document.getElementsByName('search_type');
 	var exportData = document.getElementsByName('export_data');
-	for (var i=0; i<2; i++) {
-		if (searchType[i].checked) {
-			var sel_type = searchType[i].value;
-		}
-	}
 	for (i=0; i<3; i++) {
 		if (exportData[i].checked) {
 			var exp_type = exportData[i].value;
@@ -3009,30 +3003,12 @@ function record_export(module, exform, idstring) {
 	}
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module='+module+'&action=ExportAjax&export_record=true&search_type='+sel_type+'&export_data='+exp_type+'&idstring='+idstring
+		url: 'index.php?module='+module+'&action=ExportAjax&export_record=true&export_data='+exp_type+'&idstring='+idstring
 	}).done(function (response) {
-		if (response == 'NOT_SEARCH_WITHSEARCH_ALL') {
-			document.getElementById('not_search').style.display = 'block';
-			document.getElementById('not_search').innerHTML='<font color=\'red\'><b>'+alert_arr.LBL_NOTSEARCH_WITHSEARCH_ALL+' '+module+'</b></font>';
-			setTimeout(hideErrorMsg1, 6000);
-			exform.submit();
-		} else if (response == 'NOT_SEARCH_WITHSEARCH_CURRENTPAGE') {
-			document.getElementById('not_search').style.display = 'block';
-			document.getElementById('not_search').innerHTML='<font color=\'red\'><b>'+alert_arr.LBL_NOTSEARCH_WITHSEARCH_CURRENTPAGE+' '+module+'</b></font>';
-			setTimeout(hideErrorMsg1, 7000);
-			exform.submit();
-		} else if (response == 'NO_DATA_SELECTED') {
+		if (response == 'NO_DATA_SELECTED') {
 			document.getElementById('not_search').style.display = 'block';
 			document.getElementById('not_search').innerHTML='<font color=\'red\'><b>'+alert_arr.LBL_NO_DATA_SELECTED+'</b></font>';
 			setTimeout(hideErrorMsg1, 3000);
-		} else if (response == 'SEARCH_WITHOUTSEARCH_ALL') {
-			if (confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_ALL)) {
-				exform.submit();
-			}
-		} else if (response == 'SEARCH_WITHOUTSEARCH_CURRENTPAGE') {
-			if (confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE)) {
-				exform.submit();
-			}
 		} else {
 			exform.submit();
 		}

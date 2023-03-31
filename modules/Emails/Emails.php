@@ -39,6 +39,15 @@ class Emails extends CRMEntity {
 		'vtiger_email_track' => 'mailid',
 		'vtiger_emaildetails' => 'emailid',
 	);
+	/**
+	 * Mandatory for export, Include additional tablename and tablekey columnname here.
+	 */
+	public $additional_joins_for_new_export = [
+		['vtiger_attachments', 'attachmentsid', 'vtiger_seattachmentsrel', 'attachmentsid'],
+		['vtiger_contactdetails', 'contactid', 'vtiger_seactivityrel', 'crmid'],
+		['vtiger_salesmanactivityrel', 'activityid', 'vtiger_activity', 'activityid'],
+		['vtiger_seattachmentsrel', 'crmid', 'vtiger_activity', 'activityid'],
+	];
 	public $list_fields = array(
 		'Subject' => array('activity' => 'subject'),
 		'Related to' => array('seactivityrel' => 'parent_id'),
