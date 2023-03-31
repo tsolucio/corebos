@@ -125,7 +125,15 @@ FieldDependencies.prototype.actOnDetailViewLoad = function () {
 FieldDependencies.prototype.actOnSelectChange = function (event) {
 	var sourcenode = event.target;
 	var sourcename = sourcenode.name;
-	this.controlActions(sourcename);
+	let isAutocomplete = 0;
+	if (sourcenode.dataset.autocomp !== undefined) {
+		isAutocomplete = 100;
+		sourcename = sourcenode.name.replace('_display', '');
+	}
+	let thisContext = this;
+	setTimeout(function () {
+		thisContext.controlActions(sourcename);
+	}, isAutocomplete);
 };
 
 /**
