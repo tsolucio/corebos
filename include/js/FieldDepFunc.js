@@ -71,7 +71,9 @@ async function fieldDep_GetField(change_field, action_field, new_value, old_valu
 							document.getElementById(dispfname).value = JSON.parse(ename);
 						});
 					} else {
-						fld.value = rdo[srcfieldids[f]];
+						if (rdo[srcfieldids[f]] !== undefined) {
+							fld.value = rdo[srcfieldids[f]];
+						}
 					}
 				}
 			}
