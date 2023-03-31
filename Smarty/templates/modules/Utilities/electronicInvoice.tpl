@@ -241,7 +241,7 @@
 			</div>
 		</div>
 		<div class="slds-m-top_large">
-			<button type="submit" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+			<button type="submit"  name="saveInvoiceE" class="slds-button slds-button_brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 		</div>
 		</form>
 	{/if}

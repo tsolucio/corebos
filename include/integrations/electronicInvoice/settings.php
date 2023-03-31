@@ -23,7 +23,7 @@ $electronicInvoice = new corebos_electronicInvoice();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin) {
+if ($isadmin  && isset($_REQUEST['saveInvoiceE'])) {
 	$isActive = ((empty($_REQUEST['electronicInvoice_active']) || $_REQUEST['electronicInvoice_active']!='on') ? '0' : '1');
 	$pubkey = (empty($_REQUEST['publickey']) ? '' : vtlib_purify($_REQUEST['publickey']));
 	$privkey = (empty($_REQUEST['privatekeyid']) ? '' : vtlib_purify($_REQUEST['privatekeyid']));
@@ -37,10 +37,7 @@ if ($isadmin) {
 	$eibaseurl = (empty($_REQUEST['EI_baseurl']) ? '' : vtlib_purify($_REQUEST['EI_baseurl']));
 	$eiuname = (empty($_REQUEST['EI_username']) ? '' : vtlib_purify($_REQUEST['EI_username']));
 	$eipass = (empty($_REQUEST['EI_password']) ? '' : vtlib_purify($_REQUEST['EI_password']));
-
-	if ($isActive != 0) {
-		$electronicInvoice->saveSettings($isActive, $pubkey, $privkey, $pkey, $acenter, $pphrase, $accmap, $contmap, $face, $facb2b, $eibaseurl, $eiuname, $eipass);
-	}
+	$electronicInvoice->saveSettings($isActive, $pubkey, $privkey, $pkey, $acenter, $pphrase, $accmap, $contmap, $face, $facb2b, $eibaseurl, $eiuname, $eipass);
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('Electronic Invoice', $currentModule));
