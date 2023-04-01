@@ -87,7 +87,7 @@ if (!empty($_REQUEST['from_email'])) {
 }
 
 // Group emails
-if (isset($_REQUEST['individual_emails']) && $_REQUEST['individual_emails'] == 'on') {
+if (isset($_REQUEST['individual_emails']) && ($_REQUEST['individual_emails']=='on' || $_REQUEST['individual_emails']=='true' || $_REQUEST['individual_emails']=='1')) {
 	$individual_emails = 1;
 } else {
 	$individual_emails = 0;
