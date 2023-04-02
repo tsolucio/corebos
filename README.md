@@ -1,6 +1,12 @@
 coreBOS
 =======
 
+**This project is currently being developed elsewhere.** The development efforts have moved to private servers. This repository will only receive some security and major bug fixes.
+
+[Read more here](https://blog.corebos.org/blog/byebyeopensource)
+
+------
+
 **core Business Operating System**
 
 ![Stable Build](https://blog.corebos.org/stable.svg)
