@@ -401,7 +401,7 @@ class MailManager_Connector {
 			if (is_array($list)) {
 				foreach ($list as $val) {
 					$folder = $this->convertCharacterEncoding($val, 'ISO-8859-1', 'UTF7-IMAP'); //Decode folder name
-					$folderList[] =  preg_replace("/{(.*?)}/", "", $folder);
+					$folderList[] = preg_replace('/{(.*?)}/', '', $folder);
 				}
 			}
 		}

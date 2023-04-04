@@ -226,7 +226,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	* Returns the Parent for Tickets module
 	* @global Users Instance $current_user
 	* @param integer $parent - crmid of Parent
-	* @param Email Address $from - Email Address of the received mail
+	* @param array Email Address of the received mail
 	* @return integer - Parent(crmid)
 	*/
 	public function setParentForHelpDesk($parent, $from) {
