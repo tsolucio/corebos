@@ -1510,6 +1510,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'MailManager shows, by default, on the left panel a set of links to filter emails related to Accounts, Contacts and some other modules. Setting this variable to 0 will hide those quick actions.',
 ),
+'MailManager_Top_Folders' => array(
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'CSV list of folder names',
+	'definition' => 'MailManager sorts the folders to be shown. This list sets the given folders to the top of the list regardless of their sort order.',
+),
 'Calendar_Show_WeekNumber' => array(
 	'valuetype' => 'Boolean',
 	'category' => 'Module Functionality',

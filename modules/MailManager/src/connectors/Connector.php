@@ -169,6 +169,27 @@ class MailManager_Connector {
 			$folder = $this->convertCharacterEncoding($folderName, 'ISO-8859-1', 'UTF7-IMAP'); //Decode folder name
 			$folders[] = $this->folderInstance($folder);
 		}
+
+		$listfolders = GlobalVariable::getVariable('MailManager_Top_Folders', 'INBOX,Sent,Sent Items,sent-mail', 'MailManager');
+		$topFolders = explode(',', $listfolders);
+		usort(
+			$folders,
+			function ($a, $b) use ($topFolders) {
+				$foldera = preg_replace('/{(.*?)}/', '', $a->name($this->mBoxUrl));
+				$folderb = preg_replace('/{(.*?)}/', '', $b->name($this->mBoxUrl));
+				$topa = array_search($foldera, $topFolders);
+				$topb = array_search($folderb, $topFolders);
+				if (is_numeric($topa) && is_numeric($topb)) {
+					return $topa < $topb ? -1 : 1;
+				} elseif (is_numeric($topa)) {
+					return -1;
+				} elseif (is_numeric($topb)) {
+					return 1;
+				} else {
+					return strtolower($foldera) < strtolower($folderb) ? -1 : 1;
+				}
+			}
+		);
 		$this->mFolders = $folders;
 		return $folders;
 	}

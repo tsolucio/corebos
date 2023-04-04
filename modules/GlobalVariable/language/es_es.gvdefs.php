@@ -1510,6 +1510,12 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'MailManager muestra, de manera predeterminada, en el panel izquierdo un conjunto de enlaces para filtrar los correos electrónicos relacionados con Cuentas, Contactos y algunos otros módulos. Establecer esta variable a 0 ocultará esas acciones rápidas.',
 ),
+'MailManager_Top_Folders' => array(
+	'valuetype' => 'Texto',
+	'category' => 'Applicación',
+	'values' => 'lista CSV de nombres de carpetas',
+	'definition' => 'MailManager ordena las carpetas que se mostrarán. Esta lista coloca las carpetas dadas en la parte superior de la lista, independientemente de su orden de clasificación.',
+),
 'Calendar_Show_WeekNumber' => array(
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
