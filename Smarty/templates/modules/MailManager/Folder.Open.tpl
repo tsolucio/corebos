@@ -76,7 +76,7 @@
 	<tr class="mm_lvtColData {if $MAIL->isRead()}mm_normal{else}mm_bold{/if} mm_clickable"
 		 id="_mailrow_{$MAIL->msgNo()}" onmouseover='MailManager.highLightListMail(this);' onmouseout='MailManager.unHighLightListMail(this);'>
 		<td width="3%" class="cblds-p_mediumlarge"><input type='checkbox' value = "{$MAIL->msgNo()}" name = 'mc_box' class='small' onclick='MailManager.toggleSelectMail(this.checked, this);'></td>
-		<td width="27%" class="cblds-p_mediumlarge" onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->from(30)}</td>
+		<td width="27%" class="cblds-p_mediumlarge" onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{if $FOLDER->name()=='Sent'}{$MAIL->to(30)}{else}{$MAIL->from(30)}{/if}</td>
 		<td class="cblds-p_mediumlarge" onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->subject()}</td>
 		<td class="cblds-p_mediumlarge cblds-t-align_right" width="17%" align="right" onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->date(true)}</td>
 	</tr>

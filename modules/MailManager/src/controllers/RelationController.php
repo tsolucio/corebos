@@ -57,19 +57,20 @@ class MailManager_RelationController extends MailManager_Controller {
 			$results = array();
 			$modules = array();
 			$allowedModules = $this->getCurrentUserMailManagerAllowedModules();
-			foreach (self::$MODULES as $MODULE) {
-				if (!in_array($MODULE, $allowedModules)) {
-					continue;
+			$fname = $request->get('_folder');
+			$relateWith = $request->get('_mfrom');
+			if ($fname=='Sent') {
+				$relateWith = $request->get('_mto');
+			}
+			if (!empty($relateWith)) {
+				foreach (self::$MODULES as $MODULE) {
+					if (!in_array($MODULE, $allowedModules)) {
+						continue;
+					}
+					$results[$MODULE] = $this->lookupModuleRecordsWithEmail($MODULE, $relateWith, $msguid);
+					$describe = $this->wsDescribe($MODULE);
+					$modules[$MODULE] = array('label' => $describe['label'], 'name' => textlength_check($describe['name']), 'id' => $describe['idPrefix'] );
 				}
-
-				$from = $request->get('_mfrom');
-				if (empty($from)) {
-					continue;
-				}
-
-				$results[$MODULE] = $this->lookupModuleRecordsWithEmail($MODULE, $from, $msguid);
-				$describe = $this->wsDescribe($MODULE);
-				$modules[$MODULE] = array('label' => $describe['label'], 'name' => textlength_check($describe['name']), 'id' => $describe['idPrefix'] );
 			}
 			$viewer->assign('LOOKUPS', $results);
 			$viewer->assign('MODULES', $modules);
@@ -78,7 +79,7 @@ class MailManager_RelationController extends MailManager_Controller {
 			$viewer->assign('LinkToAvailableActions', $this->linkToAvailableActions());
 			$viewer->assign('AllowedModules', $allowedModules);
 			$viewer->assign('MSGNO', $request->get('_msgno'));
-			$viewer->assign('FOLDER', $request->get('_folder'));
+			$viewer->assign('FOLDER', $fname);
 			$response->setResult(array('ui' => $viewer->fetch($this->getModuleTpl('Relationship.tpl'))));
 		} elseif ('link' == $request->getOperationArg()) {
 			$linkto = $request->get('_mlinkto');
@@ -111,7 +112,7 @@ class MailManager_RelationController extends MailManager_Controller {
 			$validationData = $qcreate_array['data'];
 			$data = split_validationdataArray($validationData);
 
-			$qcreate_array['form'] = $this->processFormData($qcreate_array['form'], $mail);
+			$qcreate_array['form'] = $this->processFormData($qcreate_array['form'], $mail, $foldername);
 			$viewer->assign('QUICKCREATE', $qcreate_array['form']);
 			if ($moduleName == 'HelpDesk') {
 				$viewer->assign('QCMODULE', getTranslatedString('Ticket', 'HelpDesk'));
@@ -163,8 +164,12 @@ class MailManager_RelationController extends MailManager_Controller {
 
 			switch ($linkModule) {
 				case 'HelpDesk':
-					$from = $mail->from();
-					$focus->column_fields['parent_id'] = $this->setParentForHelpDesk($parent, $from);
+					if ($foldername=='Sent') {
+						$relwith = $mail->to();
+					} else {
+						$relwith = $mail->from();
+					}
+					$focus->column_fields['parent_id'] = $this->setParentForHelpDesk($parent, $relwith);
 					break;
 
 				case 'ModComments':
@@ -229,11 +234,11 @@ class MailManager_RelationController extends MailManager_Controller {
 	* @param array Email Address of the received mail
 	* @return integer - Parent(crmid)
 	*/
-	public function setParentForHelpDesk($parent, $from) {
+	public function setParentForHelpDesk($parent, $relwith) {
 		global $current_user;
 		if (empty($parent)) {
-			if (!empty($from)) {
-				$parentInfo = MailManager::lookupMailInVtiger($from[0], $current_user);
+			if (!empty($relwith)) {
+				$parentInfo = MailManager::lookupMailInVtiger($relwith[0], $current_user);
 				if (!empty($parentInfo[0]['record'])) {
 					$parentId = vtws_getIdComponents($parentInfo[0]['record']);
 					return $parentId[1];
@@ -250,11 +255,15 @@ class MailManager_RelationController extends MailManager_Controller {
 	* @param MailManager_Model_Message $mail
 	* @return array
 	*/
-	public function processFormData($qcreate_array, $mail) {
+	public function processFormData($qcreate_array, $mail, $foldername = '') {
 		$subject = $mail->subject();
-		$from = $mail->from();
-		if (!empty($from)) {
-			$mail_fromAddress = implode(',', $from);
+		if ($foldername=='Sent') {
+			$relwith = $mail->to();
+		} else {
+			$relwith = $mail->from();
+		}
+		if (!empty($relwith)) {
+			$mail_fromAddress = implode(',', (array)$relwith);
 		}
 		if (!empty($mail_fromAddress)) {
 			$name = explode('@', $mail_fromAddress);

@@ -450,8 +450,15 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @param string Email from
 	 */
 	public function setFrom($from) {
-		$mailFrom = str_replace('_', ' ', $from);
-		$this->_from = @self::__mime_decode($mailFrom);
+		$this->_from = @self::__mime_decode(str_replace('_', ' ', $from));
+	}
+
+	/**
+	 * Sets the Mail To Email Address
+	 * @param string Email to
+	 */
+	public function setTo($to) {
+		$this->_to = @self::__mime_decode(str_replace('_', ' ', $to));
 	}
 
 	/**
@@ -577,6 +584,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		$instance = new self();
 		$instance->setSubject(isset($result->subject) ? $result->subject : '');
 		$instance->setFrom((isset($result->from) ? $result->from : ''));
+		$instance->setTo((isset($result->to) ? $result->to : ''));
 		$instance->setDate($result->date);
 		$instance->setRead($result->seen);
 		$instance->setMsgNo($result->msgno);

@@ -571,7 +571,7 @@ if (typeof(MailManager) == 'undefined') {
 				method: 'POST',
 				url: 'index.php?'+MailManager._baseurl() + '_operation=relation&_operationarg=find&_mfrom=' + encodeURIComponent(meta['from']) +
 					'&_folder=' + encodeURIComponent(meta['folder']) + '&_msgno=' + encodeURIComponent(meta['msgno']) + '&_msguid=' +
-					encodeURIComponent(meta['msguid'].replace('<', '&lt;').replace('>', '&gt;'))
+					encodeURIComponent(meta['msguid'].replace('<', '&lt;').replace('>', '&gt;')) + '&_mto=' + encodeURIComponent(meta['to'])
 			}).done(function (transport) {
 				jQuery('#_mailrecord_findrel_btn_').html(MailManager.i18n('JSLBL_Find_Relation_Now'));
 				jQuery('#_mailrecord_findrel_btn_').prop('disabled', false);

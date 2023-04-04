@@ -48,6 +48,7 @@ class MailManager_MailController extends MailManager_Controller {
 
 			$metainfo = array(
 				'from' => $mail->from(),
+				'to' => $mail->to(),
 				'subject' => $mail->subject(),
 				'msgno' => $mail->msgNo(),
 				'msguid' => $mail->uniqueid(),
