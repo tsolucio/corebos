@@ -444,8 +444,8 @@ class Campaigns extends CRMEntity {
 				$popuphtml = '<div onmouseover="javascript:clearTimeout(statusPopupTimer);" onmouseout="javascript:closeStatusPopup(\'campaignstatus_popup_'.$key.
 					'\');" style="margin-top: -14px; width: 200px;position:relative;" id="campaignstatus_popup_'.$key.'" class="calAction">'.
 					'<div style="background-color: #FFFFFF; padding: 8px;">'.$popupitemshtml.'</div></div>';
-				$entry[$status_column] = "<a href=\"javascript: showBlock('campaignstatus_popup_$key');\">[+]</a> <span id='campaignstatus_$key'>".$entry[$status_column].
-					'</span>'.$popuphtml;
+				$entry[$status_column] = "<a href=\"javascript: showBlock('campaignstatus_popup_$key');\">[+]</a> <span id='campaignstatus_$key'>"
+					.getTranslatedString(trim(strip_tags($entry[$status_column]))).'</span>'.$popuphtml;
 			}
 		}
 		return $related_list;
