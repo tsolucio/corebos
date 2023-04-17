@@ -368,7 +368,18 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 						if (strpos($marcador, ':')) {
 							$cadena = substr($cadena, 0, 19);
 							$dt = DateTime::createFromFormat((strpos($cadena, ' ') ? 'Y-m-d H:i:s' : 'Y-m-d'), $cadena);
-							$cadena = date($tokeninfo[1], $dt->getTimestamp());
+							switch ($tokeninfo[1]) {
+								case 'l':
+									require_once 'modules/cbtranslation/cbtranslation.php';
+									$cadena = cbtranslation::getDayOfWeekName($dt->format('N') % 7, OpenDocument::$compile_language);
+									break;
+								case 'F':
+									require_once 'modules/cbtranslation/cbtranslation.php';
+									$cadena = cbtranslation::getMonthName($dt->format('n')-1, OpenDocument::$compile_language);
+									break;
+								default:
+									$cadena = date($tokeninfo[1], $dt->getTimestamp());
+							}
 						} else {
 							$date = new DateTimeField($cadena);
 							$cadena = $date->getDisplayDate($current_user);
