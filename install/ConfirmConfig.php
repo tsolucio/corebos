@@ -80,7 +80,7 @@ $dbCheckResult = Installation_Utils::checkDbConnection($db_type, $db_hostname, $
 $next = $dbCheckResult['flag'];
 $error_msg = isset($dbCheckResult['error_msg']) ? $dbCheckResult['error_msg'] : '';
 $error_msg_info = isset($dbCheckResult['error_msg_info']) ? $dbCheckResult['error_msg_info'] : '';
-$db_utf8_support = $dbCheckResult['db_utf8_support'];
+$db_utf8_support = true;
 $vt_charset = 'UTF-8';
 $_SESSION['config_file_info']['vt_charset']= $vt_charset;
 
