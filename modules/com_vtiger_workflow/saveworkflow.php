@@ -88,6 +88,12 @@ function vtWorkflowSave($adb, $request) {
 	} else {
 		$relatemodule = '';
 	}
+	if ($executionCondition == 'RECORD_ACCESS_CONTROL') {
+		$cache = new corebos_cache();
+		if ($cache->isUsable()) {
+			$cache->getCacheClient()->clear();
+		}
+	}
 
 	$wm = new VTWorkflowManager($adb);
 	if ($saveType == 'new') {
