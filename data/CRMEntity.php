@@ -868,6 +868,8 @@ class CRMEntity {
 							$fldvalue = $adb->query_result($res, 0, 'email1');
 						}
 					}
+				} elseif ($uitype == 13) {
+					$fldvalue = filter_var($this->column_fields[$fieldname], FILTER_SANITIZE_EMAIL);
 				} elseif (($uitype == 72 || $uitype == 7 || $uitype == 9) && !$ajaxSave) {
 					// Some of the currency fields like Unit Price, Total, Sub-total and normal numbers do not need currency conversion during save
 					$fldvalue = CurrencyField::convertToDBFormat($this->column_fields[$fieldname], null, true);

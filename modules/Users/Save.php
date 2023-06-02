@@ -124,6 +124,9 @@ if (empty($_REQUEST['changepassword']) || $_REQUEST['changepassword'] != 'true')
 		coreBOS_Session::set('internal_mailer', $focus->column_fields['internal_mailer']);
 	}
 	setObjectValuesFromRequest($focus);
+	$focus->column_fields['email1'] = filter_var($focus->column_fields['email1'], FILTER_SANITIZE_EMAIL);
+	$focus->column_fields['email2'] = filter_var($focus->column_fields['email2'], FILTER_SANITIZE_EMAIL);
+	$focus->column_fields['secondaryemail'] = filter_var($focus->column_fields['secondaryemail'], FILTER_SANITIZE_EMAIL);
 
 	if (empty($focus->column_fields['roleid']) && !empty($_POST['user_role'])) {
 		$focus->column_fields['roleid'] = $_POST['user_role'];
