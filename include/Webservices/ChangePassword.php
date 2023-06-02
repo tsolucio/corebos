@@ -38,7 +38,7 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 				VTWS_PreserveGlobal::flush();
 				throw new WebServiceException(WebServiceErrorCode::$INVALIDOLDPASSWORD, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$INVALIDOLDPASSWORD));
 			}
-			if (!$user->verifyPassword($oldPassword)) {
+			if ($oldPassword!='nocheck_old_password' && !$user->verifyPassword($oldPassword)) {
 				VTWS_PreserveGlobal::flush();
 				throw new WebServiceException(WebServiceErrorCode::$INVALIDOLDPASSWORD, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$INVALIDOLDPASSWORD));
 			}
