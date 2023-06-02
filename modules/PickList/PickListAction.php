@@ -37,7 +37,7 @@ if ($mode == 'add') {
 			$id = $adb->getUniqueID("vtiger_$tableName");
 			$picklist_valueid = getUniquePicklistID();
 			$sql = "insert into vtiger_$tableName values (?,?,?,?)";
-			$adb->pquery($sql, array($id, $val, 1, $picklist_valueid));
+			$adb->pquery($sql, array($id, vtlib_purify($val), 1, $picklist_valueid));
 			//add the picklist values to the selected roles
 			foreach ($roles as $roleid) {
 				$sql ="select max(sortid)+1 as sortid
