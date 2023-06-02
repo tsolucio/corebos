@@ -621,20 +621,14 @@ switch ($functiontocall) {
 		Vtiger_Request::validateRequest();
 		require_once 'modules/Users/Users.php';
 		require_once 'include/utils/UserInfoUtil.php';
+		require_once 'include/Webservices/ChangePassword.php';
 		$userid = vtlib_purify($_REQUEST['record']);
-		if (is_admin($current_user) || $current_user->id==$userid) {
-			$focus = new Users();
-			$focus->mode='edit';
-			$focus->id = $userid;
-			$focus->retrieve_entity_info($userid, 'Users');
-			$ret = $focus->change_password('old_password', vtlib_purify(substr($_REQUEST['new_password'], 0, 1024)));
-			if ($ret) {
-				$ret = array('password'=>$ret);
-			} else {
-				$ret = array('password'=>false, 'msg' => $focus->error_string);
-			}
-		} else {
-			$ret = array('password'=>false, 'msg' => $focus->error_string);
+		try {
+			$npass = vtlib_purify($_REQUEST['new_password']);
+			vtws_changePassword(vtlib_purify($_REQUEST['record']), 'nocheck_old_password', $npass, $npass, $current_user);
+			$ret = array('password'=>true);
+		} catch (\Throwable $th) {
+			$ret = array('password'=>false, 'msg' => $th->getMessage());
 		}
 		break;
 	case 'ismoduleactive':
