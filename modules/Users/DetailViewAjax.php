@@ -58,6 +58,11 @@ if ($ajaxaction == 'DETAILVIEW') {
 			$_REQUEST[$widget] = $visible;
 		}
 		$_REQUEST['tagcloudview'] = $homeStuffOrder['Tag Cloud'];
+		$userObj->column_fields['first_name'] = vtlib_purify($userObj->column_fields['first_name']);
+		$userObj->column_fields['last_name'] = vtlib_purify($userObj->column_fields['last_name']);
+		$userObj->column_fields['email1'] = filter_var($userObj->column_fields['email1'], FILTER_SANITIZE_EMAIL);
+		$userObj->column_fields['email2'] = filter_var($userObj->column_fields['email2'], FILTER_SANITIZE_EMAIL);
+		$userObj->column_fields['secondaryemail'] = filter_var($userObj->column_fields['secondaryemail'], FILTER_SANITIZE_EMAIL);
 		$userObj->save('Users');
 		if ($userObj->id != '') {
 			echo ':#:SUCCESS:#:';
