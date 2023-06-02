@@ -27,6 +27,7 @@ $userid = isset($_REQUEST['user_list']) ? vtlib_purify($_REQUEST['user_list']) :
 $do2FA = GlobalVariable::getVariable('User_2FAAuthentication', 0, 'Users', $userid);
 $isAppActive = ($do2FA==1);
 if (!empty($userid) && $_REQUEST['_op']=='setconfig2fa' && $isPermitted=='yes') {
+	Vtiger_Request::validateRequest();
 	$isFormActive = ((empty($_REQUEST['2faactive']) || $_REQUEST['2faactive']!='on') ? '0' : '1');
 	$crmEntityTable = CRMEntity::getcrmEntityTableAlias('GlobalVariable');
 	$recexists = $adb->pquery(

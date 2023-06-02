@@ -13,7 +13,7 @@
 	</header>
 	<div class="slds-modal__content slds-app-launcher__content slds-p-around_medium">
 		{include file='applicationmessage.tpl'}
-		<form role="form" style="margin:0 100px;" name="faform">
+		<form role="form" style="margin:0 100px;" name="faform" method="post">
 		<input type="hidden" name="module" value="Utilities">
 		<input type="hidden" name="action" value="integration">
 		<input type="hidden" name="_op" id="_op" value="setconfig2fa">
