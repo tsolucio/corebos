@@ -15,8 +15,8 @@ global $adb;
 
 $local_log = LoggerManager::getLogger('index');
 $folderid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
-$foldername = utf8RawUrlDecode($_REQUEST['foldername']);
-$folderdesc = utf8RawUrlDecode($_REQUEST['folderdesc']);
+$foldername = substr(vtlib_purify(trim(utf8RawUrlDecode($_REQUEST['foldername']))), 0, 20);
+$folderdesc = substr(vtlib_purify(trim(utf8RawUrlDecode($_REQUEST['folderdesc']))), 0, 50);
 
 if (isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'Save') {
 	if ($folderid == '') {
