@@ -9,22 +9,22 @@
 *
 * This library is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 * Lesser General Public License for more details.
 *
 * You should have received a copy of the GNU Lesser General Public
 * License along with this library; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 *
 * @category   File Formats
 * @package    OpenDocument
 * @author     Alexander Pak <irokez@gmail.com>
-* @license    http://www.gnu.org/copyleft/lesser.html  Lesser General Public License 2.1
+* @license    http://www.gnu.org/copyleft/lesser.html Lesser General Public License 2.1
 * @version    0.1.0
 * @link       http://pear.php.net/package/OpenDocument
 * @since      File available since Release 0.1.0
 *
-* Copyright 2009 JPL TSolucio, S.L.   --   This file is a part of coreBOS.
+* Copyright 2009 JPL TSolucio, S.L. -- This file is a part of coreBOS.
 * Author: Joe Bordes
 */
 
@@ -36,7 +36,7 @@ require_once 'StyledElement.php';
 * @category   File Formats
 * @package    OpenDocument
 * @author     Alexander Pak <irokez@gmail.com>
-* @license    http://www.gnu.org/copyleft/lesser.html  Lesser General Public License 2.1
+* @license    http://www.gnu.org/copyleft/lesser.html Lesser General Public License 2.1
 * @version    0.1.0
 * @link       http://pear.php.net/package/OpenDocument
 * @since      File available since Release 0.1.0
@@ -93,6 +93,7 @@ class OpenDocument_Paragraph extends OpenDocument_StyledElement {
 			'OpenDocument_Footnote',
 			'OpenDocument_ReferenceMark',
 			'OpenDocument_ReferenceRef',
+			'OpenDocument_DrawLink',
 			'OpenDocument_DrawLine',
 			'OpenDocument_DrawCustomShape',
 		);
@@ -225,6 +226,9 @@ class OpenDocument_Paragraph extends OpenDocument_StyledElement {
 	}
 	public function createDrawGraph() {
 		return OpenDocument_DrawGraph::instance($this);
+	}
+	public function createDrawLink() {
+		return OpenDocument_DrawLink::instance($this);
 	}
 	public function createDrawLine() {
 		return OpenDocument_DrawLine::instance($this);

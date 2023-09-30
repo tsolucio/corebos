@@ -8,7 +8,7 @@
  * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
  * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
  * applicable law or agreed to in writing, any software distributed under the License is distributed
- * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************
@@ -43,11 +43,11 @@ $orgfile=$adb->pquery(
 );
 $context = [
 	'GDTemplateID' => $fileid,
-	'GDTemplateName' => $adb->query_result($orgfile, 0, 'title'),
+	'GDTemplateName' => decode_html($adb->query_result($orgfile, 0, 'title')),
 	'GDTemplateNumber' => $adb->query_result($orgfile, 0, 'note_no'),
 ];
-$mergeTemplatePath=$adb->query_result($orgfile, 0, 'filepath');
-$mergeTemplateName=$adb->query_result($orgfile, 0, 'name');
+$mergeTemplatePath = decode_html($adb->query_result($orgfile, 0, 'filepath'));
+$mergeTemplateName = decode_html($adb->query_result($orgfile, 0, 'name'));
 $mergetemplate = $adb->query_result($orgfile, 0, 'mergetemplate');
 if ($mergetemplate=='1') {
 	$mergetemplatefor = $adb->query_result($orgfile, 0, 'template_for');
@@ -134,7 +134,7 @@ if ($mergetemplate=='1') {
 				rename(($format=='doc'?$filename:$pdfname), $sname);
 				break;
 			case 'save':
-				$docid = OpenDocument::saveAsDocument($record, $module, $format, basename($mergeTemplateName, '.odt'), ($format=='pdf' ? $fullpdfname : $fullfilename), $name);
+				$docid = OpenDocument::saveAsDocument($record, $module, $format, basename($mergeTemplateName, '.odt'), ($format=='pdf' ? $fullpdfname : $fullfilename), $name, true, $holdUser->id);
 				echo '<script>window.parent.postMessage('.$docid.', "*");</script>';
 				break;
 		}
