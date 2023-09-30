@@ -44,8 +44,8 @@ $orgfile=$adb->pquery(
 		WHERE n.notesid=?",
 	array($fileid)
 );
-$mergeTemplatePath=$adb->query_result($orgfile, 0, 'filepath');
-$mergeTemplateName=$adb->query_result($orgfile, 0, 'name');
+$mergeTemplatePath = decode_html($adb->query_result($orgfile, 0, 'filepath'));
+$mergeTemplateName = decode_html($adb->query_result($orgfile, 0, 'name'));
 $mergetemplate = $adb->query_result($orgfile, 0, 'mergetemplate');
 if ($mergetemplate=='1') {
 	$mergetemplatefor = $adb->query_result($orgfile, 0, 'template_for');

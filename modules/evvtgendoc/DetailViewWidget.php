@@ -8,7 +8,7 @@
  * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
  * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
  * applicable law or agreed to in writing, any software distributed under the License is distributed
- * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************
@@ -23,10 +23,10 @@ $modulei18n = getTranslatedString('SINGLE_'.$moduletemplate, $moduletemplate);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
 $crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 $templates=$adb->pquery(
-	'SELECT notesid,title
+	'SELECT vtiger_notes.notesid,vtiger_notes.title,vtiger_notes.note_no
 		FROM vtiger_notes
-		INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_notes.notesid
-		WHERE deleted = 0 and template=1 and template_for=? order by title',
+		INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid=vtiger_notes.notesid
+		WHERE deleted=0 and template=1 and template_for=? order by title',
 	array($moduletemplate)
 );
 $tpls = array();

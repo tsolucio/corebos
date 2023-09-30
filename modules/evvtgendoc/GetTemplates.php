@@ -21,7 +21,7 @@ $moduletemplate = vtlib_purify($_REQUEST['moduletemplate']);
 require_once 'data/CRMEntity.php';
 $crmEntityTable = CRMEntity::getcrmEntityTableAlias('Documents');
 $templates=$adb->pquery(
-	'SELECT notesid,title
+	'SELECT vtiger_notes.notesid,vtiger_notes.title
 		FROM vtiger_notes
 		INNER JOIN '.$crmEntityTable.' ON vtiger_crmentity.crmid = vtiger_notes.notesid
 		WHERE vtiger_crmentity.deleted = 0 and template=1 and template_for=? order by title',

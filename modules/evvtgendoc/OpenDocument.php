@@ -13,22 +13,22 @@
 *
 * This library is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 * Lesser General Public License for more details.
 *
 * You should have received a copy of the GNU Lesser General Public
 * License along with this library; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 *
 * @category   File Formats
 * @package    OpenDocument
 * @author     Alexander Pak <irokez@gmail.com>
-* @license    http://www.gnu.org/copyleft/lesser.html  Lesser General Public License 2.1
+* @license    http://www.gnu.org/copyleft/lesser.html Lesser General Public License 2.1
 * @version    0.1.1
 * @link       http://pear.php.net/package/OpenDocument
 * @since      File available since Release 0.1.0
 *
-* Copyright 2009 JPL TSolucio, S.L.   --   This file is a part of coreBOS.
+* Copyright 2009 JPL TSolucio, S.L. -- This file is a part of coreBOS.
 * Author: Joe Bordes
 *
 */
@@ -69,6 +69,7 @@ require_once 'OpenDocument/Image.php';
 require_once 'OpenDocument/DrawCustomShape.php';
 require_once 'OpenDocument/DrawEGeometry.php';
 require_once 'OpenDocument/DrawGraph.php';
+require_once 'OpenDocument/DrawLink.php';
 require_once 'OpenDocument/DrawLine.php';
 require_once 'OpenDocument/DrawConnector.php';
 require_once 'OpenDocument/DrawRect.php';
@@ -113,7 +114,7 @@ $genxmlaggregates = array();
 * @category   File Formats
 * @package    OpenDocument
 * @author     Alexander Pak <irokez@gmail.com>
-* @license    http://www.gnu.org/copyleft/lesser.html  Lesser General Public License 2.1
+* @license    http://www.gnu.org/copyleft/lesser.html Lesser General Public License 2.1
 * @version    0.1.0
 * @link       http://pear.php.net/package/OpenDocument
 * @since      File available since Release 0.1.0
@@ -344,8 +345,7 @@ class OpenDocument {
 								'font-variant','text-transform','text-shadow','letter-spacing','break-after','text-align-last'
 	);
 	private $NS_DRAW_attrib=array('luminance','contrast','red','green','blue','gamma','color-inversion','image-opacity','color-mode','transparency','opacity');
-	private $NS_XLINK_attrib=array('type','href','show','actuate'
-	);
+	private $NS_XLINK_attrib=array('type','href','show','actuate');
 	private $NS_LISTSTYLE=array('num-format','num-suffix','font-name','num-prefix');
 	private $NS_ENTITIES=array('paragraph','table','table-column','table-cell','table-row','graphic','section');
 	public static $ReservedStyles=array('Text_20_.*','Heading.*','Standard','Table_20_.*','Caption','Index','Internet_20_.*','First_20_Page');
@@ -434,7 +434,7 @@ class OpenDocument {
 		//set cursor
 		$this->cursor = $this->contentXPath->query('/office:document-content/office:body/office:text')->item(0);
 		$this->styles = $this->contentXPath->query('/office:document-content/office:automatic-styles')->item(0);
-		$this->fonts  = $this->contentXPath->query('/office:document-content/office:font-face-decls')->item(0);
+		$this->fonts = $this->contentXPath->query('/office:document-content/office:font-face-decls')->item(0);
 		$this->contentXPath->registerNamespace('text', self::NS_TEXT);
 		$this->styles_array = $this->getStyles();
 
@@ -446,7 +446,7 @@ class OpenDocument {
 	 * Magic method
 	 * Provide read only access to cursor private variable
 	 *
-	 * @param  string $name
+	 * @param string $name
 	 * @return mixed
 	 */
 	public function __get($name) {
@@ -549,6 +549,9 @@ class OpenDocument {
 						break;
 					case 'draw:rect':
 						$element = new OpenDocument_DrawRect($child, $this);
+						break;
+					case 'draw:a':
+						$element = new OpenDocument_DrawLink($child, $this);
 						break;
 					case 'draw:line':
 						$element = new OpenDocument_DrawLine($child, $this);
@@ -674,7 +677,7 @@ class OpenDocument {
 						$element = new OpenDocument_Heading($child, $this);
 						break;
 					default:
-						$element = $child;  // Si no sabemos lo que es lo pasamos tal cual
+						$element = $child; // Si no sabemos lo que es lo pasamos tal cual
 				}
 				if ($element) {
 					$this->children->append($element);
@@ -734,7 +737,7 @@ class OpenDocument {
 					$element=$tblrowelement;
 					break;
 				default:
-					$element = $child;  // Si no sabemos lo que es lo pasamos tal cual
+					$element = $child; // Si no sabemos lo que es lo pasamos tal cual
 			}
 			if ($element) {
 				$subtblelement->children->append($element);
@@ -1078,7 +1081,7 @@ class OpenDocument {
 					// obtener condición
 					$condicionparacada=rtrim(trim(substr($texto_p, $lenforeachGD)), '}');
 					$module_pcada = getModuleFromCondition($this->contextoParacada[$this->contextoActual-1]['condicion']);
-					$this->contextoParacada[$this->contextoActual]=array(  // guardo contexto modulos encontrados
+					$this->contextoParacada[$this->contextoActual]=array( // guardo contexto modulos encontrados
 						'condicion'=>$condicionparacada,
 						'module'=>($module_pcada=='Organization' ? 'cbCompany' : $module_pcada),
 					);
@@ -1181,7 +1184,7 @@ class OpenDocument {
 						$condicionparacada=rtrim(trim(substr($texto_p, $lenforeachGD)), '}');
 						eval_paracada($condicionparacada, $id, $module);
 						$this->contextoActual=0;
-						$this->contextoParacada[0]=array(  // guardo contexto modulos encontrados
+						$this->contextoParacada[0]=array( // guardo contexto modulos encontrados
 							'iter_modules'=>$iter_modules,
 							'condicion'=>$condicionparacada,
 							'module'=>($module == 'Organization' ? 'cbCompany' : $module),
@@ -1235,7 +1238,7 @@ class OpenDocument {
 						} else {
 							$pgsp = $topofarray->createParagraph(compile($child->text, $id, $module));
 						}
-						OpenDocument::copyAttributes($child, $pgsp);
+						OpenDocument::copyAttributes($child, $pgsp, $id, $module);
 						array_push($parentArray, $pgsp);
 						$this->toGenDoc($child, $id, $module);
 						array_pop($parentArray);
@@ -1249,6 +1252,7 @@ class OpenDocument {
 				case 'OpenDocument_DrawCustomShape':
 				case 'OpenDocument_DrawGraph':
 				case 'OpenDocument_DrawConnector':
+				case 'OpenDocument_DrawLink':
 				case 'OpenDocument_DrawLine':
 				case 'OpenDocument_DrawRect':
 				case 'OpenDocument_DrawObject':
@@ -1936,13 +1940,18 @@ class OpenDocument {
 	 * Copy Attributes
 	 *
 	 */
-	public function copyAttributes($orgNode, $destNode, $changedImage = '') {
+	public function copyAttributes($orgNode, $destNode, $id, $module, $changedImage = '') {
 		$attributes = $orgNode->getNode()->attributes;
 		if (!is_null($attributes)) {
 			foreach ($attributes as $attrib) {
 				$aname = $attrib->prefix.':'.$attrib->name;
 				$value = $attrib->value;
-				//echo "$aname = $value<br>";
+				if ($aname=='xlink:href') {
+					$href = strtr($value, ['%7B' => '{', '%7D' => '}']);
+					if (preg_match('/\{.*\}/', $href)) {
+						$value = compile($href, $id, $module);
+					}
+				}
 				if ($attrib->name=='href' && $changedImage!='') { // tenemos que cambiarlo, sustitución imagen paracada
 					$value='Pictures/'.$changedImage;
 				}
@@ -2001,7 +2010,7 @@ class OpenDocument {
 			$ret[$name] = $value;
 		}
 		//if (method_exists($node,'getElementsByTagNameNS')) {
-		//  $morenodes = $node->getElementsByTagNameNS(self::NS_STYLE, '*');
+		// $morenodes = $node->getElementsByTagNameNS(self::NS_STYLE, '*');
 		if (method_exists($node, 'getElementsByTagName')) {
 			$morenodes = $node->getElementsByTagName('*');
 		} else {
@@ -2342,7 +2351,7 @@ class OpenDocument {
 	 * @param name
 	 * @return int documentid
 	 */
-	public static function saveAsDocument($record, $module, $format, $mergeTemplateName, $fullfilename, $name, $addtemplatename = true) {
+	public static function saveAsDocument($record, $module, $format, $mergeTemplateName, $fullfilename, $name, $addtemplatename = true, $userid = 0) {
 		global $adb, $current_user;
 		$holdRequest = $_REQUEST;
 		if (substr($mergeTemplateName, -4)=='.odt' || substr($mergeTemplateName, -4)=='.pdf') {
@@ -2369,7 +2378,7 @@ class OpenDocument {
 		$doc->column_fields['filestatus'] = '1';
 		$doc->date_due_flag = 'off';
 		$_REQUEST['assigntype'] = 'U';
-		$doc->column_fields['assigned_user_id'] = $current_user->id;
+		$doc->column_fields['assigned_user_id'] = (empty($userid) ? $current_user->id : $userid);
 		unset($_FILES);
 		if (substr($name, -4)=='.odt' || substr($name, -4)=='.pdf') {
 			$name = substr($name, 0, strlen($name)-4);
@@ -2412,7 +2421,7 @@ class OpenDocument {
 	public static function doGenDocMerge($record, $templateid, $format = 'odt') {
 		global $adb, $root_directory, $current_language, $default_charset;
 		$module = getSalesEntityType($record);
-		$fullfilename = $root_directory .  OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.odt';
+		$fullfilename = $root_directory . OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.odt';
 		$fullpdfname = $root_directory . OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.pdf';
 		$filename = OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.odt';
 		$pdfname = OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.pdf';
@@ -2478,7 +2487,7 @@ class OpenDocument {
 		return $node;
 	}
 
-	public function processHTML($compiledtext, $child) {
+	public function processHTML($compiledtext, $child, $id, $module) {
 		global $parentArray;
 		$topofarray=$parentArray[count($parentArray)-1];
 		if (stripos($compiledtext, '<b>')!==false
@@ -2546,8 +2555,7 @@ class OpenDocument {
 								}
 									array_push($parentArray, $elem);
 								foreach ($childhtml->childNodes as $subchildhtml) {
-									//$this->processHTML($dochtml->saveHTML($subchildhtml), $child); PHP VERSION >= 5.3.6
-									$this->processHTML(html_entity_decode($subchildhtml->C14N(), ENT_NOQUOTES, 'UTF-8'), $child);
+									$this->processHTML(html_entity_decode($subchildhtml->C14N(), ENT_NOQUOTES, 'UTF-8'), $child, $id, $module);
 								}
 							} else {
 								$elem=$topofarray->createParagraph(html_entity_decode($childhtml->nodeValue, ENT_NOQUOTES, 'UTF-8'));
@@ -2575,8 +2583,7 @@ class OpenDocument {
 						case 'gendocstyle':
 							if ($childhtml->haschildNodes()) {
 								foreach ($childhtml->childNodes as $subchildhtml) {
-									//$this->processHTML($dochtml->saveHTML($subchildhtml), $child); PHP VERSION >= 5.3.6
-									$this->processHTML(html_entity_decode($subchildhtml->C14N(), ENT_NOQUOTES, 'UTF-8'), $child);
+									$this->processHTML(html_entity_decode($subchildhtml->C14N(), ENT_NOQUOTES, 'UTF-8'), $child, $id, $module);
 								}
 							} else {
 								$elem=$topofarray->createSpan(html_entity_decode($childhtml->nodeValue, ENT_NOQUOTES, 'UTF-8'));
@@ -2584,12 +2591,12 @@ class OpenDocument {
 							}
 							break;
 						case 'br':
-							$elem=$topofarray->createTextTab();  // para que la justificación completa funcione correctamente
+							$elem=$topofarray->createTextTab(); // para que la justificación completa funcione correctamente
 							$elem=$topofarray->createTextLineBreak();
 							break;
 						default: //case '#text':
 							$elem=$topofarray->createTextElement(html_entity_decode($childhtml->nodeValue, ENT_NOQUOTES, 'UTF-8'));
-							OpenDocument::copyAttributes($child, $elem);
+							OpenDocument::copyAttributes($child, $elem, $id, $module);
 							break;
 					}
 				}
@@ -2597,7 +2604,7 @@ class OpenDocument {
 		} else {
 			$topofarray=$parentArray[count($parentArray)-1];
 			$elem=$topofarray->createTextElement(html_entity_decode($compiledtext, ENT_NOQUOTES, 'UTF-8'));
-			OpenDocument::copyAttributes($child, $elem);
+			OpenDocument::copyAttributes($child, $elem, $id, $module);
 		}
 	}
 
@@ -2609,7 +2616,7 @@ class OpenDocument {
 		switch (get_class($child)) {
 			case 'OpenDocument_TextElement':
 				$compiledtext=compile($child->text, $id, $module);
-				$this->processHTML($compiledtext, $child);
+				$this->processHTML($compiledtext, $child, $id, $module);
 				break;
 			case 'OpenDocument_TextTab':
 				$elem=$topofarray->createTextTab();
@@ -2635,6 +2642,10 @@ class OpenDocument {
 				break;
 			case 'OpenDocument_DrawConnector':
 				array_push($parentArray, $topofarray->createDrawConnector());
+				$popcopy=true;
+				break;
+			case 'OpenDocument_DrawLink':
+				array_push($parentArray, $topofarray->createDrawLink());
 				$popcopy=true;
 				break;
 			case 'OpenDocument_DrawLine':
@@ -2687,14 +2698,14 @@ class OpenDocument {
 				break;
 			case 'OpenDocument_TextDate':
 				$tdt = $topofarray->createTextDate($child->text, $child->datevalue, $child->fixed, $child->getStyleName());
-				OpenDocument::copyAttributes($child, $tdt);
+				OpenDocument::copyAttributes($child, $tdt, $id, $module);
 				array_push($parentArray, $tdt);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
 				break;
 			case 'OpenDocument_TextTime':
 				$tdt = $topofarray->createTextTime($child->text, $child->timevalue, $child->fixed, $child->getStyleName());
-				OpenDocument::copyAttributes($child, $tdt);
+				OpenDocument::copyAttributes($child, $tdt, $id, $module);
 				array_push($parentArray, $tdt);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
@@ -2730,14 +2741,14 @@ class OpenDocument {
 				break;
 			case 'OpenDocument_Frame':
 				$frm=$topofarray->createFrame($child->text, $child->anchortype, $child->width, $child->height, $child->zindex, $child->framename, $child->x, $child->y, $child->anchorpagenumber);
-				OpenDocument::copyAttributes($child, $frm);
+				OpenDocument::copyAttributes($child, $frm, $id, $module);
 				array_push($parentArray, $frm);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
 				break;
 			case 'OpenDocument_FrameTextBox':
 				$ftb = $topofarray->createFrameTextBox($child->text, $child->minheight);
-				OpenDocument::copyAttributes($child, $ftb);
+				OpenDocument::copyAttributes($child, $ftb, $id, $module);
 				array_push($parentArray, $ftb);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
@@ -2749,7 +2760,7 @@ class OpenDocument {
 					if (!empty($ImageNodeName)) {
 						$this->changedImages[$ImageNodeName] = $changedImage;
 					}
-					OpenDocument::copyAttributes($child, $elem);
+					OpenDocument::copyAttributes($child, $elem, $id, $module);
 					$changedImage = '';
 				} elseif ($newImageAdded) { // hay que añadir esta imagen
 					$nifname = $this->newImages[count($this->newImages)-1];
@@ -2758,55 +2769,55 @@ class OpenDocument {
 					$mtype = finfo_file($finfo, $nifname);
 					if ($nifname != 'not_show_image') {
 						$this->makeFileEntryElement($nifname, $mtype);
-						OpenDocument::copyAttributes($child, $elem, basename($nifname));
+						OpenDocument::copyAttributes($child, $elem, $id, $module, basename($nifname));
 					}
 					$newImageAdded=false;
 				} else {
-					OpenDocument::copyAttributes($child, $elem);
+					OpenDocument::copyAttributes($child, $elem, $id, $module);
 				}
 				break;
 			case 'OpenDocument_List':
 				$lst = $topofarray->createList($child->continuenum);
-				OpenDocument::copyAttributes($child, $lst);
+				OpenDocument::copyAttributes($child, $lst, $id, $module);
 				array_push($parentArray, $lst);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
 				break;
 			case 'OpenDocument_ListItem':
 				$lst = $topofarray->createListItem($child->text);
-				OpenDocument::copyAttributes($child, $lst);
+				OpenDocument::copyAttributes($child, $lst, $id, $module);
 				array_push($parentArray, $lst);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
 				break;
 			case 'OpenDocument_Table':
 				$tbl = $topofarray->createTable($child->issubtable);
-				OpenDocument::copyAttributes($child, $tbl);
+				OpenDocument::copyAttributes($child, $tbl, $id, $module);
 				array_push($parentArray, $tbl);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
 				break;
 			case 'OpenDocument_TableColumn':
 				$elem=$topofarray->createTableColumn($child->numcolsrepeated);
-				OpenDocument::copyAttributes($child, $elem);
+				OpenDocument::copyAttributes($child, $elem, $id, $module);
 				break;
 			case 'OpenDocument_TableRow':
 				$tr = $topofarray->createTableRow();
-				OpenDocument::copyAttributes($child, $tr);
+				OpenDocument::copyAttributes($child, $tr, $id, $module);
 				array_push($parentArray, $tr);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
 				break;
 			case 'OpenDocument_TableHeaderRow':
 				$thr = $topofarray->createTableHeaderRow();
-				OpenDocument::copyAttributes($child, $thr);
+				OpenDocument::copyAttributes($child, $thr, $id, $module);
 				array_push($parentArray, $thr);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
 				break;
 			case 'OpenDocument_TableCell':
 				$tcell = $topofarray->createTableCell($child->text, $child->numbercolumnsspanned, $child->numberrowsspanned);
-				OpenDocument::copyAttributes($child, $tcell);
+				OpenDocument::copyAttributes($child, $tcell, $id, $module);
 				array_push($parentArray, $tcell);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
@@ -2818,14 +2829,18 @@ class OpenDocument {
 				break;
 			case 'OpenDocument_Heading':
 				$hdg = $topofarray->createHeading(compile($child->text, $id, $module), $child->level);
-				OpenDocument::copyAttributes($child, $hdg);
+				OpenDocument::copyAttributes($child, $hdg, $id, $module);
 				array_push($parentArray, $hdg);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
 				break;
 			case 'OpenDocument_Hyperlink':
-				$alink=$topofarray->createHyperlink(compile($child->text, $id, $module), compile($child->location, $id, $module), compile($child->target, $id, $module));
-				OpenDocument::copyAttributes($child, $alink);
+				$alink=$topofarray->createHyperlink(
+					compile($child->text, $id, $module),
+					compile(strtr($child->location, ['%7B' => '{', '%7D' => '}']), $id, $module),
+					compile($child->target, $id, $module)
+				);
+				OpenDocument::copyAttributes($child, $alink, $id, $module);
 				array_push($parentArray, $alink);
 				$this->toGenDoc($child, $id, $module);
 				$elem=array_pop($parentArray);
@@ -2840,7 +2855,7 @@ class OpenDocument {
 		if ($popcopy) {
 			$this->toGenDoc($child, $id, $module);
 			$elem=array_pop($parentArray);
-			OpenDocument::copyAttributes($child, $elem);
+			OpenDocument::copyAttributes($child, $elem, $id, $module);
 		}
 	}
 
@@ -2874,7 +2889,7 @@ class OpenDocument {
 			$nameparts = explode('/', $frompath);
 			$fname = $nameparts[count($nameparts)-1];
 			$filename = $frompath;
-			$mtype = finfo_file($finfo, $filename);  // posiblemente haya que instalar librerias PECL adicionales a PHP
+			$mtype = finfo_file($finfo, $filename); // posiblemente haya que instalar librerias PECL adicionales a PHP
 			$model_filename=array(
 				'name'=>$fname,
 				'size'=>filesize($filename),
@@ -2981,7 +2996,7 @@ class OpenDocument {
 				}
 			}
 			if (count($condition_pair) == 2 && strpos($condition_pair[0], '.')===false) {
-				$condicion=$entidad.'.'.$condicion;  // si el campo de la condición no tiene la entidad, la añadimos
+				$condicion=$entidad.'.'.$condicion; // si el campo de la condición no tiene la entidad, la añadimos
 			}
 			if (empty($condicion)) {
 				$condicion = $entidad;

@@ -1,6 +1,6 @@
 <?php
 /**
-* OpenDocument_DrawGraph class
+* OpenDocument_DrawLink class
 *
 * This file is based on the work done by Alexander Pak <irokez@gmail.com>
 * in his OpenDocument Library distributed on PEAR.
@@ -18,13 +18,13 @@
 * @category   File Formats
 * @package    OpenDocument
 * @author     Joe Bordes, JPL TSolucio, S.L. <joe@tsolucio.com>
-* Copyright 2009 JPL TSolucio, S.L. -- This file is a part of coreBOS.
+* Copyright 2023 JPL TSolucio, S.L. -- This file is a part of coreBOS.
 */
 
 require_once 'Element.php';
 
 /**
-* OpenDocument_DrawGraph element
+* OpenDocument_DrawLink element
 *
 * @category   File Formats
 * @package    OpenDocument
@@ -34,7 +34,7 @@ require_once 'Element.php';
 * @link       http://pear.php.net/package/OpenDocument
 * @since      File available since Release 0.1.0
 */
-class OpenDocument_DrawGraph extends OpenDocument_StyledElement {
+class OpenDocument_DrawLink extends OpenDocument_StyledElement {
 
 	/**
 	 * Node namespace
@@ -49,12 +49,12 @@ class OpenDocument_DrawGraph extends OpenDocument_StyledElement {
 	/**
 	 * Node name
 	 */
-	const nodeName = 'g';
+	const nodeName = 'a';
 
 	/**
 	 * Element style name prefix
 	 */
-	const styleNamePrefix = 'dg';
+	const styleNamePrefix = 'dlk';
 
 	/**
 	 * Constructor
@@ -81,7 +81,7 @@ class OpenDocument_DrawGraph extends OpenDocument_StyledElement {
 	 *
 	 * @param mixed $object
 	 * @param mixed $content
-	 * @return OpenDocument_DrawGraph
+	 * @return OpenDocument_DrawLink
 	 * @throws OpenDocument_Exception
 	 */
 	public static function instance($object) {
@@ -95,7 +95,7 @@ class OpenDocument_DrawGraph extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-		$element = new OpenDocument_DrawGraph($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
+		$element = new OpenDocument_DrawLink($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
 		$node->appendChild($element->node);
 
 		return $element;

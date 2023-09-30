@@ -475,7 +475,13 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 		} elseif (areModulesRelated($token_pair[0], $module)) {
 			$reemplazo = retrieve_from_db($marcador, $focus->column_fields[$related_module[$module][$token_pair[0]]], $token_pair[0], $applyformat);
 		} elseif ($token_pair[0] == 'Organization' || $token_pair[0] == 'cbCompany') {
-			$res = $adb->query('SELECT * FROM vtiger_cbcompany INNER JOIN vtiger_crmentity on crmid=cbcompanyid WHERE deleted=0 AND defaultcompany=1');
+			$crmEntityTable = CRMEntity::getcrmEntityTableAlias('cbCompany');
+			$res = $adb->query(
+				'SELECT *
+				FROM vtiger_cbcompany
+				INNER JOIN '.$crmEntityTable.' on vtiger_crmentity.crmid=cbcompanyid
+				WHERE defaultcompany=1 and vtiger_crmentity.deleted=0'
+			);
 			$org_fields = $adb->getFieldsArray($res);
 			if (in_array($token_pair[1], $org_fields)) {
 				$reemplazo = $adb->query_result($res, 0, $token_pair[1]);
@@ -950,6 +956,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 				} else {
 					$sortinfo = false;
 				}
+				OpenDocument::debugmsg(array('SORT ORDER OF FOREACH' => $sortinfo));
 				$related = getRelatedCRMIDs($relatedsql['query'], $sortinfo);
 			} else {
 				if (areModulesRelated($token_pair[0], $module)) {
@@ -1842,7 +1849,8 @@ function getUitypefield($module, $fieldname) {
 
 function getRelatedCRMIDs($relsql, $sortinfo = false) {
 	global $adb;
-	$relsql = empty($sortinfo) ? $relsql : $relsql . ' ORDER BY ' . $sortinfo['cname'] . ' ' . $sortinfo['order'];
+	$relsql = empty($sortinfo) || stripos($relsql, ' ORDER BY ')!==false ? $relsql : $relsql . ' ORDER BY ' . $sortinfo['cname'] . ' ' . $sortinfo['order'];
+	OpenDocument::debugmsg(array('FOREACH QUERY' => $relsql));
 	$res = $adb->pquery($relsql, array());
 	$nr = $adb->num_rows($res);
 	$ret = array('entries' => array());
