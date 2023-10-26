@@ -83,7 +83,9 @@ class OpenDocument_List extends OpenDocument_StyledElement {
 			$this->continuenum = $continuenum;
 		}
 
-		$this->allowedElements = array();
+		$this->allowedElements = array(
+			'OpenDocument_ListItem',
+		);
 	}
 
 	/**
@@ -190,6 +192,9 @@ class OpenDocument_List extends OpenDocument_StyledElement {
 	 * @access public
 	 */
 	public function getChildren() {
+		if (empty($this->children)) {
+			$this->listChildren();
+		}
 		return $this->children->getIterator();
 	}
 }
