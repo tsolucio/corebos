@@ -75,6 +75,12 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 	 */
 	public function __construct(DOMNode $node, OpenDocument $document, $colspan = '', $rowspan = '') {
 		parent::__construct($node, $document);
+		$this->allowedElements = array(
+			'OpenDocument_Table',
+			'OpenDocument_Paragraph',
+			'OpenDocument_TextElement',
+			'OpenDocument_Heading',
+		);
 		return true;
 	}
 
@@ -201,6 +207,9 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 	 * @access public
 	 */
 	public function getChildren() {
+		if (empty($this->children)) {
+			$this->listChildren();
+		}
 		return $this->children->getIterator();
 	}
 }
