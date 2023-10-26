@@ -65,6 +65,20 @@ class OpenDocument_ListItem extends OpenDocument_StyledElement {
 	const styleNamePrefix = 'L';
 
 	/**
+	 * Constructor
+	 *
+	 * @param DOMNode $node
+	 * @param OpenDocument $document
+	 */
+	public function __construct(DOMNode $node, OpenDocument $document) {
+		parent::__construct($node, $document);
+		$this->allowedElements = array(
+			'OpenDocument_Paragraph',
+			'OpenDocument_Span',
+		);
+	}
+
+	/**
 	 * Create element instance
 	 *
 	 * @param mixed $object
@@ -174,6 +188,9 @@ class OpenDocument_ListItem extends OpenDocument_StyledElement {
 	 * @access public
 	 */
 	public function getChildren() {
+		if (empty($this->children)) {
+			$this->listChildren();
+		}
 		return $this->children->getIterator();
 	}
 }
