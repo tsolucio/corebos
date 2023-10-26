@@ -75,6 +75,7 @@ class OpenDocument_Section extends OpenDocument_StyledElement {
 		$this->allowedElements = array(
 			'OpenDocument_Span',
 			'OpenDocument_Paragraph',
+			'OpenDocument_Heading',
 		);
 	}
 
@@ -119,6 +120,10 @@ class OpenDocument_Section extends OpenDocument_StyledElement {
 
 	public function createSpan($text) {
 		return OpenDocument_Span::instance($this, $text);
+	}
+
+	public function createHeading($text = '', $level = 1) {
+		return OpenDocument_Heading::instance($this, $text, $level);
 	}
 }
 ?>
