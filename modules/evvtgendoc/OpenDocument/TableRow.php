@@ -65,6 +65,21 @@ class OpenDocument_TableRow extends OpenDocument_StyledElement {
 	const styleNamePrefix = 'T';
 
 	/**
+	 * Constructor
+	 *
+	 * @param DOMNode $node
+	 * @param OpenDocument $document
+	 */
+	public function __construct(DOMNode $node, OpenDocument $document) {
+		parent::__construct($node, $document);
+		$this->allowedElements = array(
+			'OpenDocument_TableCoveredCell',
+			'OpenDocument_TableCell',
+			'OpenDocument_TextElement',
+		);
+	}
+
+	/**
 	 * Create element instance
 	 *
 	 * @param mixed $object
@@ -179,6 +194,9 @@ class OpenDocument_TableRow extends OpenDocument_StyledElement {
 	 * @access public
 	 */
 	public function getChildren() {
+		if (empty($this->children)) {
+			$this->listChildren();
+		}
 		return $this->children->getIterator();
 	}
 }

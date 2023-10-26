@@ -77,6 +77,7 @@ class OpenDocument_Section extends OpenDocument_StyledElement {
 			'OpenDocument_Paragraph',
 			'OpenDocument_Heading',
 			'OpenDocument_List',
+			'OpenDocument_Table',
 		);
 	}
 
@@ -129,6 +130,10 @@ class OpenDocument_Section extends OpenDocument_StyledElement {
 
 	public function createList() {
 		return OpenDocument_List::instance($this);
+	}
+
+	public function createTable($subtable = '') {
+		return OpenDocument_Table::instance($this, $subtable);
 	}
 }
 ?>

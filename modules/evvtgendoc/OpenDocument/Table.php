@@ -82,6 +82,13 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	 */
 	public function __construct(DOMNode $node, OpenDocument $document, $subtable = '') {
 		parent::__construct($node, $document);
+		$this->allowedElements = array(
+			'OpenDocument_TableHeaderRow',
+			'OpenDocument_TableRow',
+			'OpenDocument_TableColumn',
+			'OpenDocument_Span',
+			'OpenDocument_TextElement',
+		);
 		return true;
 	}
 
@@ -306,6 +313,9 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	 * @access public
 	 */
 	public function getChildren() {
+		if (empty($this->children)) {
+			$this->listChildren();
+		}
 		return $this->children->getIterator();
 	}
 }
