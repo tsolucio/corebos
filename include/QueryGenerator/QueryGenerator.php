@@ -938,7 +938,7 @@ class QueryGenerator {
 		$groupSql = $this->groupInfo;
 		$fieldSqlList = array();
 		foreach ($this->conditionals as $index => $conditionInfo) {
-			$fieldName = $conditionInfo['name'];
+			$fieldName = trim($conditionInfo['name']);
 			if ($fieldName=='id') {
 				if (empty($conditionInfo['value'])) {
 					$conditionInfo['value'] = '0';
@@ -1595,6 +1595,7 @@ class QueryGenerator {
 		}
 
 		$this->groupInfo .= "$conditionNumber ";
+		$fieldname = trim($fieldname);
 		$this->whereFields[] = $fieldname;
 		$this->reset();
 		$this->conditionals[$conditionNumber] = $this->getConditionalArray($fieldname, $value, $operator);
@@ -1618,7 +1619,7 @@ class QueryGenerator {
 		$this->referenceModuleField[$conditionNumber] = array(
 			'relatedModule'=> $relatedModule,
 			'referenceField'=> $referenceField,
-			'fieldName'=>$fieldName,
+			'fieldName'=>trim($fieldName),
 			'value'=>$value,
 			'SQLOperator'=>$SQLOperator,
 		);
