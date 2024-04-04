@@ -12,16 +12,17 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************
-*  Module       : OOMerge GENDOC
-*  Version      : 5.3.0
-*  Author       : JPL TSolucio, S. L.
-*************************************************************************************************/
+ *  Module       : OOMerge GENDOC
+ *  Author       : JPL TSolucio, S. L.
+ *************************************************************************************************/
 include_once 'config.inc.php';
 require_once 'include/logging.php';
 require_once 'data/Tracker.php';
 require_once 'include/utils/utils.php';
 require_once 'modules/evvtgendoc/OpenDocument.php';
-require_once 'data/CRMEntity.php';
+require_once 'modules/cbtranslation/cbtranslation.php';
+require_once 'modules/cbtranslation/number2string.php';
+require_once 'modules/Users/Users.php';
 if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 	include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
 } else {
@@ -110,76 +111,36 @@ $related_module = array(
 	'Organization' => array(
 		'Accounts' => 'accid'
 	),
+	'ProductComponent' => array(
+		'ProductFrom' => 'frompdo',
+		'ProductTo' => 'topdo',
+	),
 );
 
 //Array de mapeig de moduls especials, p.e. el presciptors son comptes
 //aleshores el tag Prescriptor el mapegem a Accounts
 //També per a llistes de relacionats, quan tenim més d'un tipus d'entitat per modul, p.e.
 //Productes i Soports són 2 tipus del Modul Products. La clau serà el nom del relatedlist.
-//Para UItype 10 con varios módulos posibles, el valor será un array con el nombre de los módulos
-//implicados.
+//Para UItype 10 con varios módulos posibles, el valor será un array con el nombre de los módulos implicados.
 global $special_modules;
 $special_modules = array(
 	'MemberOf' => 'Accounts',
-	'RelatedTo' => array('Contacts',
-		'Accounts'
+	'RelatedTo' => array('Contacts','Accounts'),
+	'Product' => array('Services','Products'),
+	'MCRelatedTo' => array('Project','Contacts','Potentials','ProjectTask','Leads','Accounts'),
+	'TCRelatedTo' => array(
+		'SalesOrder','HelpDesk','ProjectMilestone','Assets','Accounts','Vendors','Potentials','PurchaseOrder','Quotes',
+		'Project','ProjectTask','ServiceContracts','Leads','Contacts','Campaigns','Invoice'
 	),
-	'Product' => array('Services',
-		'Products'
+	'CPParent' => array('Accounts','Contacts','Leads','Vendors',),
+	'CPRelatedTo' => array(
+		'Products','ServiceContracts','Invoice','SalesOrder','Campaigns','HelpDesk','ProjectMilestone',
+		'Assets','Services','PurchaseOrder','Quotes','Potentials','Project','ProjectTask'
 	),
-	'MCRelatedTo' => array('Project',
-		'Contacts',
-		'Potentials',
-		'ProjectTask',
-		'Leads',
-		'Accounts'
-	),
-	'TCRelatedTo' => array('SalesOrder',
-		'HelpDesk',
-		'ProjectMilestone',
-		'Assets',
-		'Accounts',
-		'Vendors',
-		'Potentials',
-		'PurchaseOrder',
-		'Quotes',
-		'Project',
-		'ProjectTask',
-		'ServiceContracts',
-		'Leads',
-		'Contacts',
-		'Campaigns',
-		'Invoice'
-	),
-	'CPParent' => array(
-		'Accounts',
-		'Contacts',
-		'Leads',
-		'Vendors',
-	),
-	'CPRelatedTo' => array('Products',
-		'ServiceContracts',
-		'Invoice',
-		'SalesOrder',
-		'Campaigns',
-		'HelpDesk',
-		'ProjectMilestone',
-		'Assets',
-		'Services',
-		'PurchaseOrder',
-		'Quotes',
-		'Potentials',
-		'Project',
-		'ProjectTask'
-	),
-	'HDRelatedTo' => array(
-		'Accounts',
-		'Contacts'
-	),
-	'HDProducts' => array(
-		'Products',
-		'Services'
-	),
+	'HDRelatedTo' => array('Accounts','Contacts'),
+	'HDProducts' => array('Products','Services'),
+	'ProductFrom' => 'Products',
+	'ProductTo' => 'Products',
 );
 
 $image_modules = array(
@@ -269,8 +230,7 @@ function eval_expression($marcador, $entityid) {
 }
 
 function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
-	global $current_user,$repe,$adb,$related_module,$special_modules,$special_inv,$iter_modules,$default_charset,$genxmlaggregates;
-	global $dateGD, $repeticionGD, $lineGD;
+	global $current_user, $repe, $adb, $related_module, $special_modules, $iter_modules, $default_charset, $genxmlaggregates, $dateGD, $repeticionGD, $lineGD;
 	$module = trim(preg_replace('/\*(\w|\s)+\*/', '', $module));
 	OpenDocument::debugmsg("retrieve_from_db: $marcador with $module($id)");
 	$tokeninfo = explode(':', $marcador);
@@ -278,9 +238,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 	if (count($token_pair) == 1) {
 		if (module_exists($token_pair[0]) || (!empty($special_modules[$token_pair[0]])) && module_exists($special_modules[$token_pair[0]])) {
 			if (module_exists($module)) {
-				require_once "modules/$module/$module.php";
-				$focus = new $module();
-				//Comprovem que l'entitat existisca i no estiga borrada
+				$focus = CRMEntity::getInstance($module);
 				if (!entity_exists($focus, $id, $module)) {
 					return false;
 				}
@@ -305,11 +263,9 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 				case $dateGD: // fecha
 					switch ($date_format) {
 						case 'l':
-							require_once 'modules/cbtranslation/cbtranslation.php';
 							$reemplazo = cbtranslation::getDayOfWeekName(date('N') % 7, OpenDocument::$compile_language);
 							break;
 						case 'F':
-							require_once 'modules/cbtranslation/cbtranslation.php';
 							$reemplazo = cbtranslation::getMonthName(date('n')-1, OpenDocument::$compile_language);
 							break;
 						default:
@@ -330,7 +286,6 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 	}
 	if (count($token_pair) == 3) {
 		if ($token_pair[2]=='enletras') {
-			require_once 'modules/cbtranslation/number2string.php';
 			$nuevomarcador = $token_pair[0].'.'.$token_pair[1];
 			$reemplazo = retrieve_from_db($nuevomarcador, $id, $module, false);
 			$reemplazo = strtolower(number2string::convert($reemplazo, OpenDocument::$compile_language));
@@ -345,9 +300,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 	}
 	//Anem a vore si tenim un modul com el que ens passen
 	if (module_exists($module)) {
-		require_once "modules/$module/$module.php";
-		$focus = new $module();
-		//Comprovem que l'entitat existisca i no estiga borrada
+		$focus = CRMEntity::getInstance($module);
 		if (!entity_exists($focus, $id, $module)) {
 			return false;
 		}
@@ -370,11 +323,9 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 							$dt = DateTime::createFromFormat((strpos($cadena, ' ') ? 'Y-m-d H:i:s' : 'Y-m-d'), $cadena);
 							switch ($tokeninfo[1]) {
 								case 'l':
-									require_once 'modules/cbtranslation/cbtranslation.php';
 									$cadena = cbtranslation::getDayOfWeekName($dt->format('N') % 7, OpenDocument::$compile_language);
 									break;
 								case 'F':
-									require_once 'modules/cbtranslation/cbtranslation.php';
 									$cadena = cbtranslation::getMonthName($dt->format('n')-1, OpenDocument::$compile_language);
 									break;
 								default:
@@ -435,7 +386,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 				} else {
 					$reemplazo = elimina_llave(html_entity_decode($cadena, ENT_QUOTES, $default_charset));
 				}
-			} elseif (in_array($token_pair[0], getInventoryModules()) && ($token_pair[1] == 'TaxPercent' || $token_pair[1] == 'TaxTotal' )) {
+			} elseif (in_array($token_pair[0], getInventoryModules()) && ($token_pair[1] == 'TaxPercent' || $token_pair[1] == 'TaxTotal')) {
 				$totalFra = $focus->column_fields['hdnGrandTotal'];
 				$sbtotalFra = $focus->column_fields['hdnSubTotal'];
 				if ($applyformat) {
@@ -453,15 +404,29 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 			}
 		} elseif ($token_pair[0] == 'CurrentUser') {
 			$reemplazo = isset($current_user->column_fields[$token_pair[1]]) ? getTranslatedString($current_user->column_fields[$token_pair[1]], 'Users') : '';
-		} elseif ($token_pair[0] == 'CreatedBy' || $token_pair[0] == 'ModifiedBy') {
-			$uid = ($token_pair[0] == 'CreatedBy' ? $focus->column_fields['created_user_id'] : $focus->column_fields['modifiedby']);
-			require_once 'modules/Users/Users.php';
-			$usr = new Users();
-			if (!entity_exists($usr, $uid, 'Users')) {
-				return false;
+		} elseif ($token_pair[0] == 'Users' || $token_pair[0] == 'CreatedBy' || $token_pair[0] == 'ModifiedBy') {
+			if (empty($repe) || empty($iter_modules)) {
+				$imod = $module;
+				$iid = $id;
+			} else {
+				$imod = array_key_first($iter_modules);
+				$iid = $iter_modules[$imod][0];
 			}
-			$usr->retrieve_entity_info($uid, 'Users');
-			$reemplazo = isset($usr->column_fields[$token_pair[1]]) ? getTranslatedString($usr->column_fields[$token_pair[1]], 'Users') : '';
+			$idenorm = CRMEntity::getcrmEntityTableAlias($imod, true);
+			$irs = $adb->pquery('select smcreatorid,smownerid,modifiedby from '.$idenorm.' where crmid=?', [$iid]);
+			switch ($token_pair[0]) {
+				case 'CreatedBy':
+					$uid = $irs->fields['smcreatorid'];
+					break;
+				case 'ModifiedBy':
+					$uid = $irs->fields['modifiedby'];
+					break;
+				case 'Users':
+				default:
+					$uid = $irs->fields['smownerid'];
+					break;
+			}
+			$reemplazo = retrieve_from_db('Users.'.$token_pair[1], $uid, 'Users', $applyformat);
 		} elseif (array_key_exists($token_pair[0], $iter_modules)) {
 			if ($token_pair[0] == 'ProductList' || $token_pair[0] == 'ServiceList' || $token_pair[0] == 'QuestionList' || $token_pair[0] == 'QuestionListCat') {
 				if (array_key_exists($token_pair[1], $iter_modules[$token_pair[0]][0])) {
@@ -861,12 +826,15 @@ function make_json_condition($modname, $text_condition) {
 	return json_encode($conds_array);
 }
 
-function eval_paracada($condition, $id, $module, $check = false) {
+function eval_paracada($condition, $id, $module, $check = false, $workflowContext = array()) {
 	global $adb, $iter_modules, $special_modules, $currentModule, $related_module, $rootmod, $enGD, $current_user;
 	OpenDocument::debugmsg('<h3>FOREACH -- Condition: '.$condition.' ID: '.$id.' MODULE: '.$module.'</h3>');
 	if (!module_exists($module)) {
 		return false;
 	}
+	$params = explode('::', $condition);
+	$condition = $params[0];
+	$mapid = !empty($params[1]) ? $params[1] : 0;
 	if ($module == 'Organization') {
 		$module = 'cbCompany';
 	}
@@ -928,8 +896,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 			$tab_mod = getTabid($module);
 			$tab_rel = getTabid($relmodule);
 
-			$SQL = 'SELECT name FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=?'.$SQL_label;
-			$res = $adb->pquery($SQL, array($tab_mod,$tab_rel));
+			$res = $adb->pquery('SELECT name FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=?'.$SQL_label, array($tab_mod,$tab_rel));
 			$func_rel = $adb->query_result($res, 0, 'name');
 
 			require_once "modules/$module/$module.php";
@@ -944,11 +911,18 @@ function eval_paracada($condition, $id, $module, $check = false) {
 			$currentModule = $module;
 			$related = array();
 			$related['entries'] = array();
-			if (!empty($func_rel)) {
-				global $GetRelatedList_ReturnOnlyQuery;
-				$GetRelatedList_ReturnOnlyQuery = true;
-				$relatedsql = $focus->$func_rel($id, $tab_mod, $tab_rel);
-				$GetRelatedList_ReturnOnlyQuery = false;
+			if (!empty($func_rel) || $relmodule=='ModComments') {
+				if ($relmodule=='ModComments') {
+					$entityInstance = CRMEntity::getInstance($relmodule);
+					$relquery = $entityInstance->getListQuery('ModComments', sprintf(" AND %s.related_to=$id", $entityInstance->table_name));
+					$relatedsql = array();
+					$relatedsql['query'] = 'select crmid '.substr($relquery, stripos($relquery, ' FROM '), strlen($relquery));
+				} else {
+					global $GetRelatedList_ReturnOnlyQuery;
+					$GetRelatedList_ReturnOnlyQuery = true;
+					$relatedsql = $focus->$func_rel($id, $tab_mod, $tab_rel);
+					$GetRelatedList_ReturnOnlyQuery = false;
+				}
 				if (!empty($sortinfo)) {
 					list($sortstring, $bare_sortstring, $fieldname, $sortorder) = $sortinfo;
 					$columnname = getColumnnameByFieldname($tab_rel, $fieldname);
@@ -974,8 +948,7 @@ function eval_paracada($condition, $id, $module, $check = false) {
 			}
 			if (count($related['entries']) > 0) {
 				foreach ($related['entries'] as $key => $value) {
-					//Ara tenim totes les entitats relacionades, si ens pasen un parametre
-					//per a filtrar, el filtrem ara.
+					// tenim totes les entitats relacionades, si ens pasen un parametre per a filtrar, el filtrem ara.
 					if (count($condition_pair) == 2) {
 						$conditions = multiple_values(retrieve_from_db($condition_pair[0], $key, $token_pair[0]));
 						$cond = $conditions[0];
@@ -1030,6 +1003,14 @@ function eval_paracada($condition, $id, $module, $check = false) {
 						OpenDocument::debugmsg(array('ID' => $key, 'NEG' => $negado, 'COND' => $cond . $comp . $val, 'EVAL'=> $cond_ok));
 					} else {
 						$cond_ok = true;
+					}
+					if (!empty($mapid)) {
+						$ret = new $token_pair[0]();
+						$ret->retrieve_entity_info($key, $token_pair[0]);
+						$return = coreBOS_Rule::evaluate($mapid, $ret->column_fields, $workflowContext);
+						if ($return == 'false' || !$return) {
+							$cond_ok = false;
+						}
 					}
 					if ($cond_ok) {
 						if (!$check) {
@@ -1271,7 +1252,7 @@ function eval_incluir($entity, $id, $module) {
 		}
 
 		$document = get_plantilla($entid);
-		return $document['doc_no'];
+		return ($plantilla['documentid']==0) ? $entity : $document['doc_no'];
 	} else {
 		return $entity;
 	}
@@ -1295,7 +1276,7 @@ function iterations() {
 function pop_iter_modules() {
 	global $iter_modules,$rootmod;
 	$keys = array_keys($iter_modules);
-	$last_module = $keys[count($iter_modules)-1];
+	$last_module = isset($keys[count($iter_modules)-1]) ? $keys[count($iter_modules)-1] : $rootmod;
 	if ($rootmod != $last_module) {
 		array_shift($iter_modules[$last_module]);
 		if (count($iter_modules[$last_module]) == 0) {
@@ -1380,7 +1361,7 @@ function getProductList($module, $id) {
 			vtiger_inventoryproductrel.id, vtiger_inventoryproductrel.productid, sequence_no, quantity,
 			listprice, comment, vtiger_inventoryproductrel.description, quantity * listprice AS extgros,
 			coalesce(tax1, 0) AS tax1, coalesce(tax2, 0) AS tax2, coalesce(tax3, 0) AS tax3,
-			COALESCE(discount_percent, COALESCE(discount_amount *100 / ( quantity * listprice ), 0)) AS discount_percent,
+			COALESCE(discount_percent, COALESCE(discount_amount *100 / (quantity * listprice), 0)) AS discount_percent,
 			COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0)) AS discount_amount,
 			(quantity * listprice) - COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0)) AS extnet,
 			((quantity * listprice) - COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0))) * (COALESCE(tax1, 0) + COALESCE(tax2, 0) + COALESCE(tax3, 0)) /100 AS linetax,
@@ -1518,8 +1499,7 @@ function getQuestionListCat($module, $id) {
 }
 
 function elimina_llave($str) {
-	$arrstr = preg_replace("/\{.*?\}/i", '', $str);
-	return trim($arrstr);
+	return trim(preg_replace("/\{.*?\}/i", '', $str));
 }
 
 if (!function_exists('elimina_puntuacion')) {
@@ -1793,16 +1773,13 @@ function get_plantilla($entid) {
 		$IDplantilla = $entid;
 		$ent_no = '';
 	}
-	if ($plantillaid != 0) {
+	if (!empty($plantillaid) && isRecordExists($plantillaid)) {
 		$doc = new Documents();
 		$doc->retrieve_entity_info($plantillaid, 'Documents');
 		$title = $doc->column_fields['notes_title'];
 		$no = $doc->column_fields['note_no'];
 		$cat = isset($doc->column_fields['cat_documento']) ? $doc->column_fields['cat_documento'] : '';
 		$fijado = !empty($doc->column_fields['fijado_portal']);
-	}
-
-	if (!empty($plantillaid)) {
 		$SQL_att = 'SELECT at.attachmentsid, at.name, at.path
 			FROM vtiger_seattachmentsrel ar
 			LEFT JOIN vtiger_attachments at ON ar.attachmentsid=at.attachmentsid
@@ -1812,20 +1789,20 @@ function get_plantilla($entid) {
 		$ruta = $adb->query_result($res_att, 0, 'path');
 		$prefix = $adb->query_result($res_att, 0, 'attachmentsid').'_';
 		list($name,$ext) = explode('.', $plantilla);
+		return array(
+			'documentid' => $IDplantilla,
+			'document' => (empty($plantilla) ? '' : $root_directory.$ruta.$prefix.$plantilla),
+			'relmodule' => $relmodule,
+			'ent_no' => $ent_no,
+			'name' => $name,
+			'title' => $title,
+			'doc_no' => $no,
+			'fijado' => $fijado,
+			'categoria' => $cat,
+			'entityname' => (empty($entityname) ? '' : elimina_puntuacion(elimina_acentos($entityname))),
+		);
 	}
-
-	return array(
-		'documentid' => $IDplantilla,
-		'document' => (empty($plantilla) ? '' : $root_directory.$ruta.$prefix.$plantilla),
-		'relmodule' => $relmodule,
-		'ent_no' => $ent_no,
-		'name' => $name,
-		'title' => $title,
-		'doc_no' => $no,
-		'fijado' => $fijado,
-		'categoria' => $cat,
-		'entityname' => (empty($entityname) ? '' : elimina_puntuacion(elimina_acentos($entityname))),
-	);
+	return ['documentid' => 0];
 }
 
 function getEntityModule($crmid) {
