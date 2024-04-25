@@ -242,39 +242,43 @@ class InventoryDetails extends CRMEntity {
 		while ($txinfo = $adb->fetch_array($ipr_cols)) {
 			$tname = $txinfo['field'];
 			$txsql .= "coalesce($tname, 0) AS id_".$tname.'_perc,';
-			$txsumsql .= " COALESCE($tname, 0 ) +";
+			$txsumsql .= " COALESCE($tname, 0) +";
 		}
 		$txsumsql = rtrim($txsumsql, '+').')';
 		$taxtype = getInventoryTaxType($module, $related_to);
-		if ($taxtype == 'group') {
+		list($void1,$void2,$void3,$void4,$query) = cbEventHandler::do_filter(
+			'corebos.filter.TaxCalculation.getInventoryDetailsSQL',
+			array($related_focus, $taxtype, $txsql, $txsumsql, '')
+		);
+		if ($query=='' && $taxtype == 'group') {
 			$query = "SELECT id as related_to, vtiger_inventoryproductrel.productid, sequence_no, lineitem_id, quantity, listprice, comment as description,
 			quantity * listprice AS extgross, $txsql
-			COALESCE( discount_percent, COALESCE( discount_amount *100 / ( quantity * listprice ) , 0 ) ) AS discount_percent,
-			COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ) ) AS discount_amount,
-			(quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 )) AS extnet,
-			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) AS linetotal,
+			COALESCE(discount_percent, COALESCE(discount_amount *100 / (quantity * listprice) , 0)) AS discount_percent,
+			COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0)) AS discount_amount,
+			round((quantity * listprice) - COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0)), 6) AS extnet,
+			round(((quantity * listprice) - COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0))), 6) AS linetotal,
 			case when vtiger_products.productid != '' then vtiger_products.cost_price else vtiger_service.cost_price end as cost_price,
 			case when vtiger_products.productid != '' then vtiger_products.vendor_id else 0 end as vendor_id
 			FROM vtiger_inventoryproductrel
 			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_inventoryproductrel.productid
 			LEFT JOIN vtiger_service ON vtiger_service.serviceid=vtiger_inventoryproductrel.productid
-			WHERE id = ? ORDER BY sequence_no";
-		} elseif ($taxtype == 'individual') {
+			WHERE id=? ORDER BY sequence_no";
+		} elseif ($query=='' && $taxtype == 'individual') {
 			$query = "SELECT id as related_to, vtiger_inventoryproductrel.productid, sequence_no, lineitem_id, quantity, listprice, comment as description,
 			$txsql
 			$txsumsql as tax_percent,
 			quantity * listprice AS extgross,
-			COALESCE( discount_percent, COALESCE( discount_amount *100 / ( quantity * listprice ) , 0 ) ) AS discount_percent,
-			COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ) ) AS discount_amount,
-			(quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 )) AS extnet,
-			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) * $txsumsql/100 AS linetax,
-			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) * (1 + $txsumsql/100) AS linetotal,
+			COALESCE(discount_percent, COALESCE(discount_amount *100 / (quantity * listprice) , 0)) AS discount_percent,
+			COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0)) AS discount_amount,
+			(quantity * listprice) - COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0)) AS extnet,
+			round(((quantity * listprice) - COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0))) * $txsumsql/100, 6) AS linetax,
+			round(((quantity * listprice) - COALESCE(discount_amount, COALESCE(discount_percent * quantity * listprice /100, 0))) * (1 + $txsumsql/100), 6) AS linetotal,
 			case when vtiger_products.productid != '' then vtiger_products.cost_price else vtiger_service.cost_price end as cost_price,
 			case when vtiger_products.productid != '' then vtiger_products.vendor_id else 0 end as vendor_id
 			FROM vtiger_inventoryproductrel
 			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_inventoryproductrel.productid
 			LEFT JOIN vtiger_service ON vtiger_service.serviceid=vtiger_inventoryproductrel.productid
-			WHERE id = ? ORDER BY sequence_no";
+			WHERE id=? ORDER BY sequence_no";
 		}
 		$res_inv_lines = $adb->pquery($query, array($related_to));
 
