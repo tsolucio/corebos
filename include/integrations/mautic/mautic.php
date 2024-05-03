@@ -52,6 +52,7 @@ class corebos_mautic {
 	private $mauticUsername = '';
 	private $mauticPassword = '';
 	private $mauticWebhookSecret = '';
+	private $usrwsid = '0x0';
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'mautic_isactive';
@@ -77,7 +78,12 @@ class corebos_mautic {
 	public static $ERROR_NOACCESSTOKEN = 2;
 
 	public function __construct() {
+		global $current_user;
 		$this->initGlobalScope();
+		if (empty($current_user)) {
+			$current_user = Users::getActiveAdminUser();
+		}
+		$this->usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
 	}
 
 	public function initGlobalScope() {
@@ -320,6 +326,7 @@ class corebos_mautic {
 					foreach ($fields as $field) {
 						$mauticdata[$field['alias']] = $field['value'];
 					}
+					$mauticdata['contact_points'] = $contact['points'];
 
 					if (empty($mauticdata['corebos_id'])) {
 						if (!empty($mauticdata['lastname']) && !empty($mauticdata['email'])) {
@@ -346,9 +353,7 @@ class corebos_mautic {
 	}
 
 	public function createCBContact($contact_id, $mauticdata) {
-		global $adb;
-		$current_user = Users::getActiveAdminUser();
-		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		global $adb, $current_user;
 		$send2cb = array();
 		$bmapname = 'MauticToContacts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -361,7 +366,7 @@ class corebos_mautic {
 			$send2cb['email'] = $mauticdata['email'];
 		}
 		$send2cb['mautic_id'] = $contact_id;
-		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['assigned_user_id'] = $this->usrwsid;
 		$send2cb['from_externalsource'] = 'mautic';
 
 		$record = vtws_create('Contacts', $send2cb, $current_user);
@@ -375,9 +380,7 @@ class corebos_mautic {
 	}
 
 	public function updateCBContact($contact_id, $mauticdata) {
-		global $adb;
-		$current_user = Users::getActiveAdminUser();
-		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		global $adb, $current_user;
 		$send2cb = array();
 		$bmapname = 'MauticToContacts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -390,9 +393,10 @@ class corebos_mautic {
 			$send2cb['email'] = $mauticdata['email'];
 		}
 		$send2cb['mautic_id'] = $contact_id;
-		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['assigned_user_id'] = $this->usrwsid;
 		$send2cb['id'] = $mauticdata['corebos_id'];
 		$send2cb['from_externalsource'] = 'mautic';
+		$send2cb['contact_points'] = $mauticdata['contact_points'];
 
 		$record = vtws_update($send2cb, $current_user);
 		if ($record) {
@@ -446,9 +450,7 @@ class corebos_mautic {
 	}
 
 	public function createCBAccount($company_id, $mauticdata) {
-		global $adb;
-		$current_user = Users::getActiveAdminUser();
-		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		global $adb ,$current_user;
 		$send2cb = array();
 		$bmapname = 'MauticToAccounts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -459,9 +461,8 @@ class corebos_mautic {
 			$send2cb['accountname'] = $mauticdata['companyname'];
 		}
 		$send2cb['mautic_id'] = $company_id;
-		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['assigned_user_id'] = $this->usrwsid;
 		$send2cb['from_externalsource'] = 'mautic';
-
 		$record = vtws_create('Accounts', $send2cb, $current_user);
 		if ($record) {
 			// Reset from_externalsource
@@ -473,9 +474,7 @@ class corebos_mautic {
 	}
 
 	public function updateCBAccount($company_id, $mauticdata) {
-		global $adb;
-		$current_user = Users::getActiveAdminUser();
-		$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+		global $adb, $current_user;
 		$send2cb = array();
 		$bmapname = 'MauticToAccounts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -486,10 +485,9 @@ class corebos_mautic {
 			$send2cb['accountname'] = $mauticdata['companyname'];
 		}
 		$send2cb['mautic_id'] = $company_id;
-		$send2cb['assigned_user_id'] = $usrwsid;
+		$send2cb['assigned_user_id'] = $this->usrwsid;
 		$send2cb['id'] = $mauticdata['company_corebos_id'];
 		$send2cb['from_externalsource'] = 'mautic';
-
 		$record = vtws_update($send2cb, $current_user);
 		if ($record) {
 			// Reset from_externalsource

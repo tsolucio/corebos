@@ -54,6 +54,7 @@ function contactsync($input) {
 			foreach ($fields as $field) {
 				$mauticdata[$field['alias']] = $field['value'];
 			}
+			$mauticdata['contact_points'] = $contact['points'];
 			$send2cb = array();
 			$bmapname = 'MauticToContacts';
 			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -68,6 +69,7 @@ function contactsync($input) {
 			$send2cb['mautic_id'] = $contact['id'];
 			$send2cb['assigned_user_id'] = $usrwsid;
 			$send2cb['from_externalsource'] = 'mautic';
+			$send2cb['contact_points'] = $mauticdata['contact_points'];
 
 			$record = vtws_create('Contacts', $send2cb, $current_user);
 			if ($record) {
@@ -97,6 +99,7 @@ function contactsync($input) {
 		foreach ($fields as $field) {
 			$mauticdata[$field['alias']] = $field['value'];
 		}
+		$mauticdata['contact_points'] = $contact['points'];
 		$send2cb = array();
 		$bmapname = 'MauticToContacts';
 		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -112,6 +115,7 @@ function contactsync($input) {
 		$send2cb['assigned_user_id'] = $usrwsid;
 		$send2cb['id'] = $fields['corebos_id']['value'];
 		$send2cb['from_externalsource'] = 'mautic';
+		$send2cb['contact_points'] = $mauticdata['contact_points'];
 
 		$record = vtws_update($send2cb, $current_user);
 		if ($record) {
