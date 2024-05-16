@@ -91,7 +91,7 @@ foreach ($pdoInformation as $pdoline) {
 			$tax_val = $productTax['percentage'];
 			$request_tax_name = $tax_name.'_percentage'.$i;
 			$_REQUEST[$request_tax_name] = $tax_val;
-			$totalwithtax += ($qty * $_REQUEST['listPrice'.$i]) * ($tax_val/100);
+			$totalwithtax += ($qty * $_REQUEST['listPrice'.$i] - $discount) * ($tax_val/100);
 		}
 	}
 	$cbMap = cbMap::getMapByName($elementType.'InventoryDetails', 'MasterDetailLayout');
@@ -106,13 +106,9 @@ foreach ($pdoInformation as $pdoline) {
 }
 $_REQUEST['totalProductCount']=$i;
 $_REQUEST['subtotal']=round($subtotal + $totalwithtax, 2);
-if ($taxtype == 'individual') {
+if ($taxtype == 'individual') { // it is not legal to have global discount on individual type > use line discounts per product
+	$element['hdnDiscountAmount'] = $element['hdnDiscountPercent'] = 0;
 	$totaldoc=$subtotal+$totalwithtax;
-	if (!empty($element['discount_type_final']) && $element['discount_type_final']=='amount') {
-		$totaldoc=$totaldoc-$element['hdnDiscountAmount'];
-	} elseif (!empty($element['discount_type_final']) && $element['discount_type_final']=='percentage') {
-		$totaldoc=$totaldoc-($totaldoc*$element['hdnDiscountPercent']/100);
-	}
 } else {
 	$totaldoc=$subtotal;
 	if (!empty($element['discount_type_final']) && $element['discount_type_final']=='amount') {
