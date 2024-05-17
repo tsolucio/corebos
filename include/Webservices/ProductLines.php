@@ -131,8 +131,7 @@ if ($taxtype == 'individual') { // it is not legal to have global discount on in
 if (!empty($element['shipping_handling_charge'])) {
 	$_REQUEST['shipping_handling_charge']=$element['shipping_handling_charge'];
 	$totaldoc=$totaldoc+$element['shipping_handling_charge'];
-	$shtaxes=$adb->query('select taxname from vtiger_shippingtaxinfo where deleted=0');
-	while ($sht=$adb->fetch_array($shtaxes)) {
+	foreach (getAllTaxes('all', 'sh') as $sht) {
 		$shname=$sht['taxname'];
 		if (!empty($element[$shname])) {
 			$_REQUEST[$shname.'_sh_percent'] = $element[$shname];
