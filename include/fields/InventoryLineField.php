@@ -120,20 +120,22 @@ class InventoryLineField {
 			'item discount amount' => InventoryLineField::$ILFieldsName['discount_amount'],
 			'item discount percent' => InventoryLineField::$ILFieldsName['discount_percent'],
 		);
-		$taxes = getAllTaxes('all');
-		foreach ($taxes as $tax) {
-			$fieldlabel = strtolower($tax['taxlabel']);
-			InventoryLineField::$ILFieldsLabel[$fieldlabel] = array(
-				'uitype' => 7,
-				'fieldtype' => 'double',
-				'fieldname' => $tax['taxname'],
-				'columnname' => $tax['taxname'],
-				'fieldlabel' => $tax['taxlabel'],
-				'tablename' => 'vtiger_inventoryproductrel',
-				'typeofdata'=>'N~O',
-				'mandatory'=>'false',
-			);
-			InventoryLineField::$ILFieldsName[$tax['taxname']] = InventoryLineField::$ILFieldsLabel[$fieldlabel];
+		if (!cbEventHandler::do_filter('corebos.filter.TaxCalculation.isExternal', false)) {
+			$taxes = getAllTaxes('all');
+			foreach ($taxes as $tax) {
+				$fieldlabel = strtolower($tax['taxlabel']);
+				InventoryLineField::$ILFieldsLabel[$fieldlabel] = array(
+					'uitype' => 7,
+					'fieldtype' => 'double',
+					'fieldname' => $tax['taxname'],
+					'columnname' => $tax['taxname'],
+					'fieldlabel' => $tax['taxlabel'],
+					'tablename' => 'vtiger_inventoryproductrel',
+					'typeofdata'=>'N~O',
+					'mandatory'=>'false',
+				);
+				InventoryLineField::$ILFieldsName[$tax['taxname']] = InventoryLineField::$ILFieldsLabel[$fieldlabel];
+			}
 		}
 		$this->fieldname = $fieldname;
 	}

@@ -1272,6 +1272,10 @@ function getInventoryFieldsForExport($tableName) {
 		$sql .= $fdesc['tablename'].'.'.$fdesc['columnname'].' AS "'.$fdesc['fieldlabel'].'",';
 	}
 	$sql = rtrim($sql, ',').' ';
+	if (cbEventHandler::do_filter('corebos.filter.TaxCalculation.isExternal', false)) {
+		$taxSQLColumns = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getTaxSQLColumns', $sql);
+		$sql .= ','.$taxSQLColumns;
+	}
 	return $sql;
 }
 
