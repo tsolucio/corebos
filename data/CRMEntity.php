@@ -189,6 +189,16 @@ class CRMEntity {
 			$adb->pquery($update_query, $update_params);
 		}
 
+		if ($_REQUEST['assigned_user_id'] != $this->column_fields['assigned_user_id']) {
+			$cache = new corebos_cache();
+			if ($cache->isUsable()) {
+				$oldcacheId = $module_name.'#ListViewActions#'.$this->id.'#'.$this->column_fields['assigned_user_id'];
+				$newcacheId = $module_name.'#ListViewActions#'.$this->id.'#'.$_REQUEST['assigned_user_id'];
+				$cache->getCacheClient()->delete($oldcacheId);
+				$cache->getCacheClient()->delete($newcacheId);
+			}
+		}
+
 		//Calling the Module specific save code
 		$this->save_module($module);
 

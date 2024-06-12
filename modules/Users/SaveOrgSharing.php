@@ -13,12 +13,16 @@ global $adb;
 $sql2 = 'select * from vtiger_def_org_share where editstatus=0';
 $result2 = $adb->pquery($sql2, array());
 $num_rows = $adb->num_rows($result2);
-
+$cache = new corebos_cache();
 for ($i=0; $i<$num_rows; $i++) {
 	$ruleid=$adb->query_result($result2, $i, 'ruleid');
 	$tabid=$adb->query_result($result2, $i, 'tabid');
+	$activepermission=$adb->query_result($result2, $i, 'permission');
 	$reqval = $tabid.'_per';
 	$permission=(isset($_REQUEST[$reqval]) ? $_REQUEST[$reqval] : 2);
+	if ($cache->isUsable() && $activepermission != $permission) {
+		$cache->getCacheClient()->clear();
+	}
 	$sql7='update vtiger_def_org_share set permission=? where tabid=? and ruleid=?';
 	$adb->pquery($sql7, array($permission, $tabid, $ruleid));
 
