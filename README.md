@@ -1,18 +1,22 @@
-coreBOS
-=======
+## coreBOS
 
-**This project is currently being developed elsewhere.** The development efforts have moved to private servers. This repository will only receive some security and major bug fixes.
+### Project Archival Notice
 
-[Read more here](https://blog.corebos.org/blog/byebyeopensource)
+We regret to inform our valued community that **this open-source project is being archived**. This decision was not made lightly, but due to evolving European Union regulations, such as NIS2, and the complexities surrounding invoicing and compliance, continuing the development and maintenance of this project without proper support has become unviable. This note is to clearly state that **the continued usage of this version will be against EU regulations and be your own responsibility** if you continue to use it.
+
+Archiving this project means it will no longer be actively maintained or supported by the current team in its open-source form. However, we continue its development under a closed license to ensure compliance with these new requirements. If any current user of the open-source version wishes to discuss alternative options, feel free to contact us at TSolucio or Evolutivo.
+
+We want to thank everyone who has contributed, supported and used this project. Your collaboration and enthusiasm have been invaluable, and we deeply appreciate the trust you placed in us.
+
+Thank you for your understanding and support.
+
+This decision is aligned with the announcement we made some years ago: [Read more here](https://blog.corebos.org/blog/byebyeopensource)
 
 ------
 
-**core Business Operating System**
+### coreBOS: core Business Operating System
 
-![Stable Build](https://blog.corebos.org/stable.svg)
 ![License](https://blog.corebos.org/license.svg)
-[![Build Status](https://github.com/tsolucio/corebos/actions/workflows/formatting.yml/badge.svg)](https://github.com/tsolucio/corebos/actions)
-[![Chat with us on Gitter](https://badges.gitter.im/phpmd/community.svg)](https://gitter.im/corebos/discuss?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 **coreBOS** is a very flexible and powerful software application designed to easily adapt to the requirements of your business. In other words, a business software capable of managing the everyday needs of your business.
 
@@ -35,8 +39,6 @@ Here are some other interesting links you can have a look at:
 - [Youtube coreBOS](https://www.youtube.com/channel/UCmUzoelIqe2eL3YvEv5kLYw)
 - [Youtube coreBOSCRM](https://www.youtube.com/channel/UCqH0YuMrOI9HSEObq3xqXLQ)
 - [Twitter](https://twitter.com/coreBOSBeat)
-- [Documentation](http://corebos.org/documentation/)
-- [Demo Install](http://demo.corebos.com/) User and password: _admin_ there are a handful of other users whose password is the same as the name of the user.
 
 **Thank you** very much for your help and contribution.
 
