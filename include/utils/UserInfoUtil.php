@@ -531,12 +531,20 @@ function isPermitted($module, $actionname, $record_id = '') {
  */
 function _vtisPermitted($module, $actionname, $record_id = '') {
 	global $log, $adb, $current_user;
+	$cache = new corebos_cache();
 	if ($module=='com_vtiger_workflow') {
 		$module='CronTasks';
 	}
 	$log->debug('> isPermitted '.$module.','.$actionname.','.$record_id);
 	if (strpos($record_id, 'x')>0) { // is webserviceid
 		list($void,$record_id) = explode('x', $record_id);
+	}
+	$cacheId = $module.'#'.$actionname.'#'.$record_id.'#'.$current_user->id;
+	if (empty($record_id)) {
+		$cacheId = $module.'#'.$actionname.'#'.$current_user->id;
+	}
+	if ($cache->isUsable() && $cache->getCacheClient()->has($cacheId)) {
+		return $cache->getCacheClient()->get($cacheId);
 	}
 	if (!empty($record_id) && $module != getSalesEntityType($record_id)) {
 		$record_id = '';
@@ -830,7 +838,9 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 			$permission = 'no';
 		}
 	}
-
+	if ($cache->isUsable()) {
+		$cache->getCacheClient()->set($cacheId, $permission);
+	}
 	$log->debug('< isPermitted end '.$permission);
 	return $permission;
 }
